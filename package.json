@@ -1,0 +1,44 @@
+{
+  "name": "ebetstream-vue",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "peer-server": "peerjs --port 9000 --path /peerjs",
+    "build": "vue-tsc -b && vite build && npm run copy-htaccess",
+    "copy-htaccess": "node copy-htaccess.js",
+    "preview": "vite preview",
+    "test:api": "node test-api.js",
+    "test:api:complete": "node test-api-complete.js",
+    "diagnostic:images": "node scripts/diagnostic-images.js",
+    "check:symlink": "node scripts/check-storage-symlink.js"
+  },
+  "dependencies": {
+    "@headlessui/vue": "^1.7.22",
+    "@tabler/icons": "^3.14.0",
+    "@tabler/icons-vue": "^3.12.0",
+    "bootstrap": "^5.3.3",
+    "ffmpeg-static": "^5.3.0",
+    "node-media-server": "^2.7.4",
+    "peerjs": "^1.5.5",
+    "sass": "^1.77.6",
+    "swiper": "^11.1.10",
+    "vue": "^3.4.37",
+    "vue-i18n": "^9.14.5",
+    "vue-router": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.1",
+    "@vitalets/google-translate-api": "^9.2.1",
+    "@vitejs/plugin-vue": "^5.1.2",
+    "axios": "^1.13.2",
+    "csv-parse": "^6.1.0",
+    "csv-stringify": "^6.6.0",
+    "peer": "^1.0.2",
+    "terser": "^5.44.1",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.1",
+    "vue-tsc": "^2.0.29"
+  }
+}

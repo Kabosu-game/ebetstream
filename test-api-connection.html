@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test API Connection</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        button { padding: 10px 20px; margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Test de Connexion API Locale</h1>
+    
+    <button onclick="testAPI()">Tester API</button>
+    <button onclick="testStorage()">Tester Storage</button>
+    <button onclick="testAuth()">Tester Auth</button>
+    
+    <div id="results"></div>
+
+    <script>
+        const API_BASE = 'http://localhost:8001/api';
+        
+        async function testAPI() {
+            try {
+                const response = await fetch(`${API_BASE}/test`);
+                const data = await response.json();
+                addResult('API Test', 'SUCCESS', JSON.stringify(data, null, 2));
+            } catch (error) {
+                addResult('API Test', 'ERROR', error.message);
+            }
+        }
+        
+        async function testStorage() {
+            try {
+                const response = await fetch(`${API_BASE}/storage/profiles/test-profiles.txt`);
+                if (response.ok) {
+                    const text = await response.text();
+                    addResult('Storage Test', 'SUCCESS', text);
+                } else {
+                    addResult('Storage Test', 'ERROR', `Status: ${response.status}`);
+                }
+            } catch (error) {
+                addResult('Storage Test', 'ERROR', error.message);
+            }
+        }
+        
+        async function testAuth() {
+            try {
+                const response = await fetch(`${API_BASE}/user`, {
+                    headers: {
+                        'Authorization': 'Bearer test-token'
+                    }
+                });
+                const data = await response.json();
+                addResult('Auth Test', response.ok ? 'SUCCESS' : 'ERROR', JSON.stringify(data, null, 2));
+            } catch (error) {
+                addResult('Auth Test', 'ERROR', error.message);
+            }
+        }
+        
+        function addResult(title, status, content) {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `test ${status.toLowerCase()}`;
+            div.innerHTML = `
+                <h3>${title} - ${status}</h3>
+                <pre>${content}</pre>
+            `;
+            results.appendChild(div);
+        }
+        
+        // Auto-test on load
+        window.onload = () => testAPI();
+    </script>
+</body>
+</html>

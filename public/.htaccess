@@ -1,0 +1,72 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  
+  # Don't rewrite requests for existing files or directories
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+  
+  # Don't rewrite requests for assets (CSS, JS, images, etc.)
+  RewriteRule ^assets/ - [L]
+  RewriteRule ^ico\.jpeg$ - [L]
+  
+  # Handle Vue Router - redirect all other requests to index.html
+  RewriteRule ^index\.html$ - [L]
+  RewriteRule . /index.html [L]
+  
+  # Security Headers
+  <IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+  </IfModule>
+  
+  # Enable Compression
+  <IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+  </IfModule>
+  
+  # Cache Control
+  <IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType application/pdf "access plus 1 month"
+    ExpiresByType text/x-javascript "access plus 1 month"
+    ExpiresByType application/x-shockwave-flash "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 year"
+    ExpiresDefault "access plus 2 days"
+  </IfModule>
+</IfModule>
+
+# Set correct MIME types
+<IfModule mod_mime.c>
+  AddType text/css .css
+  AddType application/javascript .js
+  AddType application/json .json
+  AddType image/jpeg .jpeg .jpg
+  AddType image/png .png
+  AddType image/gif .gif
+  AddType image/svg+xml .svg
+  AddType image/webp .webp
+  AddType image/x-icon .ico
+  AddType font/woff .woff
+  AddType font/woff2 .woff2
+  AddType font/ttf .ttf
+  AddType font/otf .otf
+</IfModule>
+
+# Prevent directory browsing
+Options -Indexes
+
+# Custom Error Pages (optional)
+ErrorDocument 404 /index.html
+
+
+

@@ -1,0 +1,128 @@
+// Fix pour les champs de formulaire - Contraste blanc sur blanc
+// Ce fichier corrige le problème où les champs ont un fond blanc avec texte blanc
+
+// Bootstrap form controls - Fix global (déjà dans _global.scss mais renforcé ici)
+.form-control,
+.form-select {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: rgba(255, 255, 255, 1) !important;
+  
+  &:focus {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 159, 0, 0.5) !important;
+    color: rgba(255, 255, 255, 1) !important;
+    box-shadow: 0 0 0 0.2rem rgba(255, 159, 0, 0.25) !important;
+    outline: none !important;
+  }
+  
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+  
+  option {
+    background-color: #1a1f3a !important;
+    color: rgba(255, 255, 255, 1) !important;
+    padding: 10px;
+  }
+}
+
+// Fix pour les selects Bootstrap - Flèche blanche
+.form-select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 0.75rem center !important;
+  background-size: 16px 12px !important;
+  
+  &:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e") !important;
+    border-color: rgba(255, 159, 0, 0.5) !important;
+  }
+  
+  option {
+    background-color: #1a1f3a !important;
+    color: rgba(255, 255, 255, 1) !important;
+    
+    &:checked {
+      background-color: rgba(255, 159, 0, 0.3) !important;
+    }
+  }
+}
+
+// Fix pour les selects natifs (sans Bootstrap)
+select:not(.form-select) {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: rgba(255, 255, 255, 1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  
+  &:focus {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    color: rgba(255, 255, 255, 1) !important;
+    outline: 2px solid rgba(255, 159, 0, 0.5) !important;
+    outline-offset: -2px;
+    border-color: rgba(255, 159, 0, 0.5) !important;
+  }
+  
+  option {
+    background-color: #1a1f3a !important;
+    color: rgba(255, 255, 255, 1) !important;
+    padding: 10px;
+    
+    &:checked {
+      background-color: rgba(255, 159, 0, 0.3) !important;
+    }
+  }
+}
+
+// Fix pour les inputs (sans Bootstrap)
+input[type="text"]:not(.form-control),
+input[type="email"]:not(.form-control),
+input[type="password"]:not(.form-control),
+input[type="number"]:not(.form-control),
+input[type="date"]:not(.form-control),
+input[type="time"]:not(.form-control),
+input[type="datetime-local"]:not(.form-control),
+textarea:not(.form-control) {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: rgba(255, 255, 255, 1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  
+  &:focus {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    color: rgba(255, 255, 255, 1) !important;
+    border-color: rgba(255, 159, 0, 0.5) !important;
+    box-shadow: 0 0 0 0.2rem rgba(255, 159, 0, 0.25) !important;
+    outline: none !important;
+  }
+  
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+}
+
+// Fix pour les popups/modals
+.popup-box,
+.modal-content,
+.modal-body {
+  .form-control,
+  .form-select,
+  select,
+  input {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: rgba(255, 255, 255, 1) !important;
+    
+    &:focus {
+      background-color: rgba(255, 255, 255, 0.15) !important;
+      border-color: rgba(255, 159, 0, 0.5) !important;
+      color: rgba(255, 255, 255, 1) !important;
+      box-shadow: 0 0 0 0.2rem rgba(255, 159, 0, 0.25) !important;
+    }
+    
+    option {
+      background-color: #1a1f3a !important;
+      color: rgba(255, 255, 255, 1) !important;
+    }
+  }
+}
+

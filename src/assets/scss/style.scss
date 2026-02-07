@@ -1,0 +1,24 @@
+/*============================================ 
+# Template Name: Ebetstream
+# Version: 1.0
+# Date: 26-08-2024
+# Author: 
+# Author URI: 
+# Description: Ebetstream Sports Betting
+============================================*/
+
+@use "sass:math";
+// Bootstrap
+@import "bootstrap.scss";
+// Scss main
+@import "main/_variable";
+@import "main/_mixins";
+@import "main/_typography";
+@import "main/_global";
+@import "main/_form-fixes";
+
+// Scss Pages
+@import "pages/_navbar";
+@import "pages/_footer";
+@import "pages/_section";
+@import "pages/_index.scss";
