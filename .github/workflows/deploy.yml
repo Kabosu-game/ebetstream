@@ -45,7 +45,7 @@ jobs:
             --exclude='package*.json' \
             --chmod=D755,F644 \
             -e "ssh -o StrictHostKeyChecking=no" \
-            ./dist/ "${{ secrets.SERVER_USER }}"@"${{ secrets.SERVER_IP }}":"${{ secrets.DEPLOY_PATH }}"
+            ./dist/"${{ secrets.SERVER_USER }}"@"${{ secrets.SERVER_IP }}":"${{ secrets.DEPLOY_PATH }}"
 
       - name: Restart Nginx
         run: |
