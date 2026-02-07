@@ -1,0 +1,56 @@
+name: Deploy Vue.js Frontend
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: Build Vue.js app
+        run: npm run build
+
+      - name: Install sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
+
+      - name: Deploy files to VPS
+        run: |
+          sshpass -p "${{ secrets.SERVER_PASSWORD }}" rsync -avz --delete \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='node_modules' \
+            --exclude='.env' \
+            --exclude='.env.development' \
+            --exclude='src' \
+            --exclude='public' \
+            --exclude='scripts' \
+            --exclude='*.md' \
+            --exclude='*.js' \
+            --exclude='*.ts' \
+            --exclude='tsconfig.*' \
+            --exclude='vite.config.*' \
+            --exclude='package*.json' \
+            --chmod=D755,F644 \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            ./dist/ "${{ secrets.SERVER_USER }}"@"${{ secrets.SERVER_IP }}":"${{ secrets.DEPLOY_PATH }}"
+
+      - name: Restart Nginx
+        run: |
+          sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh -o StrictHostKeyChecking=no "${{ secrets.SERVER_USER }}"@"${{ secrets.SERVER_IP }}" << 'ENDSSH'
+            set -e
+            sudo systemctl reload nginx 2>/dev/null || true
+            echo "✅ Frontend déployé avec succès"
+          ENDSSH
