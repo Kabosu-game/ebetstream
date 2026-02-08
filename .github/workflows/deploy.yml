@@ -32,12 +32,16 @@ jobs:
             set -e
             cd /var/www/ebetstream_front
             
+            # Installer les dépendances
             npm install
             
+            # Arrêter l'ancien processus PM2
             pm2 delete ebetstream-frontend 2>/dev/null || true
             
-            pm2 start npm --name "ebetstream-frontend" -- run dev -- --host 0.0.0.0 --port 5173
+            # Démarrer avec NODE_ENV=production pour désactiver le proxy
+            NODE_ENV=production pm2 start npm --name "ebetstream-frontend" -- run dev -- --host 0.0.0.0 --port 5173
             
+            # Sauvegarder la config PM2
             pm2 save
             
             echo "✅ Frontend déployé avec PM2 à: $(date)"
