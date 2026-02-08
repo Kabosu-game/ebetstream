@@ -47,10 +47,16 @@ jobs:
             -e "ssh -o StrictHostKeyChecking=no" \
             ./dist/ "${{ secrets.SERVER_USER }}"@"${{ secrets.SERVER_IP }}":"${{ secrets.DEPLOY_PATH }}"
 
-      - name: Restart Nginx
+      - name: Clear cache and restart Nginx
         run: |
           sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh -o StrictHostKeyChecking=no "${{ secrets.SERVER_USER }}"@"${{ secrets.SERVER_IP }}" << 'ENDSSH'
             set -e
-            sudo systemctl reload nginx 2>/dev/null || true
-            echo "✅ Frontend déployé avec succès"
+            # Clear Nginx cache
+            sudo rm -rf /var/cache/nginx/* 2>/dev/null || true
+            # Reload Nginx
+            sudo systemctl reload nginx
+            # Show deployment info
+            echo "✅ Déployé à: $(date)"
+            echo "📁 Fichiers dans ${{ secrets.DEPLOY_PATH }}:"
+            ls -lh ${{ secrets.DEPLOY_PATH }}/index.html
           ENDSSH
