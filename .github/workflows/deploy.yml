@@ -53,7 +53,7 @@ jobs:
             # Test Nginx configuration
             sudo nginx -t
             
-            # Restart Nginx (pas juste reload)
+            # Restart Nginx (pas juste reload) 
             sudo systemctl restart nginx
             
             # Deployment info
