@@ -2,7 +2,7 @@ name: Deploy Vue.js Frontend with PM2
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
 
 jobs:
   deploy:
@@ -24,24 +24,20 @@ jobs:
             --exclude='dist' \
             --chmod=D755,F644 \
             -e "ssh -o StrictHostKeyChecking=no" \
-            ./ "${{ secrets.SERVER_USER }}"@"${{ secrets.SERVER_IP }}":"${{ secrets.DEPLOY_PATH }}"
+            ./ "${{ secrets.SERVER_USER }}"@"${{ secrets.SERVER_IP }}":/var/www/ebetstream_front/
 
       - name: Install dependencies and restart PM2
         run: |
           sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh -o StrictHostKeyChecking=no "${{ secrets.SERVER_USER }}"@"${{ secrets.SERVER_IP }}" << 'ENDSSH'
             set -e
-            cd ${{ secrets.DEPLOY_PATH }}
+            cd /var/www/ebetstream_front
             
-            # Installer les dépendances
             npm install
             
-            # Arrêter l'ancien processus PM2 s'il existe
             pm2 delete ebetstream-frontend 2>/dev/null || true
             
-            # Démarrer avec PM2
-            pm2 start npm --name "ebetstream-frontend" -- run dev -- --host 0.0.0.0 --port 3000
+            pm2 start npm --name "ebetstream-frontend" -- run dev -- --host 0.0.0.0 --port 5173
             
-            # Sauvegarder la configuration PM2
             pm2 save
             
             echo "✅ Frontend déployé avec PM2 à: $(date)"
