@@ -1,49 +1,67 @@
-name: Deploy Vue.js Frontend with PM2
-
+name: Deploy Vue.js Frontend
 on:
   push:
-    branches: ["master"]
-
+    branches: [ "master" ]
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+      
+      - name: Build Vue.js app
+        run: npm run build
+      
       - name: Install sshpass
         run: sudo apt-get update && sudo apt-get install -y sshpass
-
-      - name: Deploy source files to VPS
+      
+      - name: Deploy files to VPS
         run: |
           sshpass -p "${{ secrets.SERVER_PASSWORD }}" rsync -avz --delete \
             --exclude='.git' \
             --exclude='.github' \
             --exclude='node_modules' \
-            --exclude='dist' \
+            --exclude='.env' \
+            --exclude='.env.development' \
+            --exclude='src' \
+            --exclude='public' \
+            --exclude='scripts' \
+            --exclude='*.md' \
             --chmod=D755,F644 \
             -e "ssh -o StrictHostKeyChecking=no" \
-            ./ "${{ secrets.SERVER_USER }}"@"${{ secrets.SERVER_IP }}":/var/www/ebetstream_front/
-
-      - name: Install dependencies and restart PM2
+            ./dist/ "${{ secrets.SERVER_USER }}"@"${{ secrets.SERVER_IP }}":"${{ secrets.DEPLOY_PATH }}"
+      
+      - name: Clear all caches and restart Nginx
         run: |
           sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh -o StrictHostKeyChecking=no "${{ secrets.SERVER_USER }}"@"${{ secrets.SERVER_IP }}" << 'ENDSSH'
             set -e
-            cd /var/www/ebetstream_front
             
-            # Installer les dépendances
-            npm install
+            # Clear Nginx cache
+            sudo rm -rf /var/cache/nginx/* 2>/dev/null || true
             
-            # Arrêter l'ancien processus PM2
-            pm2 delete ebetstream-frontend 2>/dev/null || true
+            # Clear browser cache headers (touch files to update modification time)
+            find ${{ secrets.DEPLOY_PATH }} -type f \( -name "*.js" -o -name "*.css" -o -name "*.html" \) -exec touch {} \;
             
-            # Démarrer avec NODE_ENV=production pour désactiver le proxy
-            NODE_ENV=production pm2 start npm --name "ebetstream-frontend" -- run dev -- --host 0.0.0.0 --port 5173
+            # Test Nginx configuration
+            sudo nginx -t
             
-            # Sauvegarder la config PM2
-            pm2 save
+            # Restart Nginx (pas juste reload)
+            sudo systemctl restart nginx
             
-            echo "✅ Frontend déployé avec PM2 à: $(date)"
-            pm2 list
+            # Deployment info
+            echo "✅ Déployé à: $(date)"
+            echo "📁 Fichiers dans ${{ secrets.DEPLOY_PATH }}:"
+            ls -lh ${{ secrets.DEPLOY_PATH }}/index.html
+            
+            # Show hash of index.html to verify changes
+            echo "🔍 Hash index.html:"
+            md5sum ${{ secrets.DEPLOY_PATH }}/index.html
           ENDSSH
