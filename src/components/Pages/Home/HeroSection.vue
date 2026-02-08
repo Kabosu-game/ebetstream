@@ -89,7 +89,7 @@
           </div>
         </swiper-slide>
 
-        <!-- Slide 4: Turn play into profit -->
+        <!-- Slide 4: Turn play into profi -->
         <swiper-slide>
           <div class="hero_slide hero_slide_4" :style="{ backgroundImage: `url(${bg14})` }">
             <div class="hero_overlay_dark"></div>
