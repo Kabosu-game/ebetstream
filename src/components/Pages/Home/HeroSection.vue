@@ -98,7 +98,7 @@
                 <div class="hero_content text-center">
                   <h2 class="hero_subtitle_title mb-3">Bet between players, securely</h2>
                   <h1 class="hero_title mb-4">
-                    Turn play into <span class="text_gradient">profit</span>
+                    Turn play into <span class="text_gradient">profi</span>
                   </h1>
                   <p class="hero_subtitle mb-4">
                     Bet on matches, create challenges, and win based on your performance.<br />
