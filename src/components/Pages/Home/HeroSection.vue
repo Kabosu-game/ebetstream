@@ -18,7 +18,7 @@
                 <div class="hero_content text-center">
                   <h2 class="hero_subtitle_title mb-3">Gaming becomes a spectacle</h2>
                   <h1 class="hero_title mb-4">
-                    Welcome to <span class="text_gradient">EBETSTREM</span>
+                    Welcome to <span class="text_gradient">EBETSTREAM</span>
                   </h1>
                   <p class="hero_subtitle mb-4">
                     One platform to compete, stream your matches live, and bet between players.<br />
