@@ -413,6 +413,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 import apiClient from '@/utils/axios';
+import { getStorageUrl } from '@/config/api';
 import { IconEye, IconCheck, IconX } from '@tabler/icons-vue';
 
 interface CertificationRequest {
@@ -659,17 +660,8 @@ const formatDate = (dateString: string) => {
 
 const getDocumentUrl = (path: string) => {
   if (!path) return '';
-  // Remove 'public/' prefix if present
   const cleanPath = path.startsWith('public/') ? path.replace('public/', '') : path;
-  // Extract folder and filename from path (e.g., "certifications/id_cards/file.jpg")
-  const parts = cleanPath.split('/');
-  if (parts.length >= 3) {
-    const folder = parts[1]; // e.g., "id_cards"
-    const filename = parts.slice(2).join('/'); // e.g., "file.jpg"
-    return `${import.meta.env.VITE_API_BASE_URL || '/api'}/storage/certifications/${folder}/${filename}`;
-  }
-  // Fallback for other paths
-  return `${import.meta.env.VITE_API_BASE_URL || '/api'}/storage/${cleanPath}`;
+  return getStorageUrl(cleanPath);
 };
 
 watch([filterType, filterStatus], () => {

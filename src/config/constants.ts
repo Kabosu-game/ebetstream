@@ -3,18 +3,20 @@
 // UNE SEULE CONSTANTE À MODIFIER POUR TOUT CHANGER
 // ========================================
 
-// Détection automatique de l'environnement
-const isDevelopment = import.meta.env.DEV || import.meta.env.MODE === 'development' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+// API de production - utilisée partout sauf localhost
+export const PRODUCTION_API_URL = 'https://acmpt.online/api';
+export const PRODUCTION_BASE_URL = 'https://acmpt.online';
 
-// URL UNIQUE de l'API - MODIFIER ICI SEULEMENT
-// En développement: utilise le proxy Vite (/api) → http://localhost:8000/api (API Laravel locale)
-// En production: utilise https://acmpt.online/api
-export const API_URL = isDevelopment ? '' : 'https://acmpt.online';
-export const API_BASE_URL = isDevelopment ? '/api' : 'https://acmpt.online/api';
+// Détection: localhost uniquement = dev, sinon = production (ebetstream.com, acmpt.online, etc.)
+const isDevHost = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+const isDevelopment = import.meta.env.DEV || isDevHost;
+
+// URL UNIQUE de l'API - En prod TOUJOURS https://acmpt.online/api
+export const API_URL = isDevelopment ? '' : PRODUCTION_BASE_URL;
+export const API_BASE_URL = isDevelopment ? '/api' : PRODUCTION_API_URL;
 
 // URLs automatiquement dérivées (NE PAS MODIFIER)
-// En dev: /api → proxy vers localhost:8000
-export const STORAGE_BASE_URL = isDevelopment ? '/api' : 'https://acmpt.online';
+export const STORAGE_BASE_URL = isDevelopment ? '/api' : PRODUCTION_BASE_URL;
 export const API_TIMEOUT = 60000;
 
 // Helper pour obtenir les URLs complètes
@@ -64,9 +66,9 @@ export const correctImageUrl = (url: string): string => {
 
 // URLs de production pour compatibilité
 export const PRODUCTION_URLS = {
-  API: 'https://acmpt.online/api',
-  STORAGE: 'https://acmpt.online',
-  BASE: 'https://acmpt.online'
+  API: PRODUCTION_API_URL,
+  STORAGE: PRODUCTION_BASE_URL,
+  BASE: PRODUCTION_BASE_URL
 };
 
 // Export par défaut pour compatibilité
