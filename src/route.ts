@@ -151,11 +151,6 @@ export const router = createRouter({
       meta: { title: "Ebetstream - Sports betting platform" },
     },
     {
-      path: "/ice-hockey",
-      component: IceHockey,
-      meta: { title: "Ebetstream - Sports betting platform" },
-    },
-    {
       path: "/kabaddi",
       component: Kabaddi,
       meta: { title: "Ebetstream - Sports betting platform" },
@@ -241,9 +236,13 @@ export const router = createRouter({
       meta: { title: "Ebetstream - Sports betting platform" },
     },
     {
-      path: "/create-acount",
+      path: "/create-account",
       component: CreateAccount,
       meta: { layout: LayoutTwo, title: "Ebetstream - Sports betting platform" },
+    },
+    {
+      path: "/create-acount",
+      redirect: "/create-account",
     },
     {
       path: "/login",

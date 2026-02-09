@@ -213,7 +213,7 @@
                     <p class="text-white mb-4" style="opacity: 0.9;">
                       Start your adventure today and discover a new way to play.
                     </p>
-                    <router-link to="/create-acount" class="btn_primary text-decoration-none">
+                    <router-link to="/create-account" class="btn_primary text-decoration-none">
                       <span>Create an Account</span>
                       <i class="fas fa-arrow-right ms-2"></i>
                     </router-link>

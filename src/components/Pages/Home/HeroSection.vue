@@ -52,7 +52,7 @@
                     Climb the ranks, gain visibility, and unlock greater rewards.
                   </p>
                   <div class="hero_actions d-flex flex-wrap gap-3 justify-content-center">
-                    <router-link to="/tournaments" class="btn_primary text-decoration-none">
+                    <router-link to="/championships" class="btn_primary text-decoration-none">
                       <span>Join a Championship</span>
                       <i class="fas fa-trophy ms-2"></i>
                     </router-link>
@@ -105,7 +105,7 @@
                     A clear, secure, and transparent system for fair competition.
                   </p>
                   <div class="hero_actions d-flex flex-wrap gap-3 justify-content-center">
-                    <router-link to="/create-acount" class="btn_primary text-decoration-none">
+                    <router-link to="/create-account" class="btn_primary text-decoration-none">
                       <span>👉 Create My Account</span>
                       <i class="fas fa-user-plus ms-2"></i>
                     </router-link>

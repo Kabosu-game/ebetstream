@@ -20,7 +20,7 @@
                       </h2>
                     
                       <div class="hero_actions d-flex flex-wrap gap-3">
-                        <router-link to="/create-acount" class="btn_primary btn-lg text-decoration-none">
+                        <router-link to="/create-account" class="btn_primary btn-lg text-decoration-none">
                           <span>Sign Up Now</span>
                           <i class="fas fa-arrow-right ms-2"></i>
                         </router-link>

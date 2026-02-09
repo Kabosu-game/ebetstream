@@ -249,7 +249,7 @@ onBeforeUnmount(() => {
                   class="cmn-btn second-alt px-xxl-11 rounded-2"
                   >Log In</router-link
                 >
-                <router-link to="/create-acount" class="cmn-btn px-xxl-11"
+                <router-link to="/create-account" class="cmn-btn px-xxl-11"
                   >Sign Up</router-link
                 >
               </div>

@@ -89,7 +89,7 @@ onBeforeUnmount(() => {
                 class="cmn-btn second-alt px-xxl-11 rounded-2"
                 >{{ $t('common.login') }}</router-link
               >
-              <router-link to="/create-acount" class="cmn-btn px-xxl-11"
+              <router-link to="/create-account" class="cmn-btn px-xxl-11"
                 >{{ $t('common.signUp') }}</router-link
               >
             </div>
@@ -135,7 +135,7 @@ onBeforeUnmount(() => {
             >{{ $t('common.login') }}</router-link
           >
           <router-link
-            to="/create-acount"
+            to="/create-account"
             class="cmn-btn d-none px-xxl-11 d-sm-block d-lg-none d-xl-block"
             >{{ $t('common.signUp') }}</router-link
           >

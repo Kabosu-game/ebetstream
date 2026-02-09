@@ -97,7 +97,7 @@
 
                   <span class="d-center gap-1">
                     {{ $t('auth.createYourAccount') }}
-                    <router-link class="g1-color" to="/create-acount">{{ $t('auth.signUpNowLink') }}</router-link>
+                    <router-link class="g1-color" to="/create-account">{{ $t('auth.signUpNowLink') }}</router-link>
                   </span>
 
                 </div>

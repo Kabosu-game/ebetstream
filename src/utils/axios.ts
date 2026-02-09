@@ -90,26 +90,54 @@ apiClient.interceptors.response.use(
     // Handle 401 Unauthorized - redirect to login only if not on public pages
     if (error.response?.status === 401) {
       const publicPages = [
-        '/login', 
-        '/create-acount', 
+        '/login',
+        '/create-account',
+        '/create-acount',
         '/',
         '/forgot-password',
         '/reset-password',
         '/become-organizer',
         '/become-referee',
         '/become-ambassador',
+        '/become-agent',
         '/events',
         '/clans',
+        '/federations',
         '/streams',
         '/challenges',
+        '/championships',
+        '/marketplace',
+        '/ballon-dor',
         '/players',
         '/partners',
         '/ambassadors',
+        '/games',
+        '/about',
+        '/contact',
+        '/careers',
+        '/help',
+        '/faq',
+        '/support',
+        '/privacy',
+        '/terms',
+        '/cookies',
       ];
       const currentPath = window.location.pathname;
-      
-      // Only redirect if not already on a public page
-      if (!publicPages.includes(currentPath) && !currentPath.startsWith('/events/') && !currentPath.startsWith('/clans/') && !currentPath.startsWith('/streams/') && !currentPath.startsWith('/challenges/') && !currentPath.startsWith('/players/') && !currentPath.startsWith('/partners/') && !currentPath.startsWith('/ambassadors/')) {
+
+      // Paths that are public (exact or prefix match)
+      const isPublic = publicPages.includes(currentPath) ||
+        currentPath.startsWith('/events/') ||
+        currentPath.startsWith('/clans/') ||
+        currentPath.startsWith('/federations/') ||
+        currentPath.startsWith('/streams/') ||
+        currentPath.startsWith('/challenges/') ||
+        currentPath.startsWith('/championships/') ||
+        currentPath.startsWith('/players/') ||
+        currentPath.startsWith('/partners/') ||
+        currentPath.startsWith('/ambassadors/') ||
+        currentPath.startsWith('/games/');
+
+      if (!isPublic) {
         localStorage.removeItem('auth_token');
         localStorage.removeItem('user_role');
         window.location.href = '/login';
