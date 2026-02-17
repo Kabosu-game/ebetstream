@@ -238,7 +238,7 @@ const debouncedSearch = () => {
 
 const loadLiveChallenges = async () => {
   try {
-    const response = await apiClient.get("/challenges/live/list");
+    const response = await apiClient.get("/challenges/live");
     if (response.data.success) {
       liveChallenges.value = response.data.data || [];
     }
