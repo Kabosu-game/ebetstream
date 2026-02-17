@@ -1,112 +1,91 @@
 <template>
   <div class="page-content-with-space">
-    <!-- Section Visualisation Stream -->
     <section class="defis_section py-6 position-relative overflow-hidden pb-120">
       <div class="container-fluid">
         <div class="row">
           <div class="col-12 gx-0 gx-lg-4">
             <div class="defis__main">
-              
-              <!-- Loading State -->
+
+              <!-- Loading -->
               <div v-if="loading" class="text-center py-5">
-                <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                <div class="spinner-border text-primary" role="status" style="width:3rem;height:3rem;">
                   <span class="visually-hidden">Loading...</span>
                 </div>
               </div>
 
-              <!-- Error State -->
-              <div v-else-if="error" class="text-center py-5">
-                <div class="alert alert-danger">
-                  {{ error }}
-                </div>
+              <!-- Erreur -->
+              <div v-else-if="pageError" class="text-center py-5">
+                <div class="alert alert-danger">{{ pageError }}</div>
                 <button class="btn_primary mt-3" @click="$router.push('/streams')">
-                  <i class="fas fa-arrow-left me-2"></i>
-                  Back to Streams
+                  <i class="fas fa-arrow-left me-2"></i>Back to Streams
                 </button>
               </div>
 
-              <!-- Stream Content -->
+              <!-- Contenu -->
               <div v-else-if="stream">
-                <!-- Back Button -->
                 <button class="btn_secondary mb-4" @click="$router.push('/streams')">
-                  <i class="fas fa-arrow-left me-2"></i>
-                  Back
+                  <i class="fas fa-arrow-left me-2"></i>Back
                 </button>
 
                 <div class="row g-4">
-                  <!-- Left Column - Video Player -->
+                  <!-- Colonne vidéo -->
                   <div class="col-lg-8">
-                    <!-- Video Player -->
                     <div class="defi_card n11-bg rounded-8 p-0 mb-4 overflow-hidden">
-                      <div class="video_container position-relative" style="background: #000; aspect-ratio: 16/9;">
-                        <!-- WebRTC Live Stream (Native Browser Capture) -->
-                        <video 
-                          ref="liveVideo"
-                          v-if="stream.is_live && useNativeStream"
-                          autoplay
-                          playsinline
-                          controls
-                          class="w-100 h-100"
-                          style="object-fit: contain;"
-                        ></video>
-                        <!-- Twitch Embed -->
-                        <div 
-                          v-else-if="stream.use_twitch && stream.twitch_username"
-                          class="w-100 h-100"
-                        >
-                          <iframe
-                            :src="`https://player.twitch.tv/?channel=${stream.twitch_username}&parent=${windowLocationHost}&muted=false`"
-                            frameborder="0"
-                            allowfullscreen="true"
-                            scrolling="no"
-                            class="w-100 h-100"
-                            style="min-height: 400px;"
-                          ></iframe>
-                        </div>
-                        <!-- HLS Video Player (Local/MediaMTX) -->
-                        <video 
-                          v-else-if="stream.is_live && stream.hls_url"
-                          :src="stream.hls_url"
-                          controls
-                          autoplay
-                          class="w-100 h-100"
-                          style="object-fit: contain;"
-                        ></video>
-                        <div v-else class="w-100 h-100 d-flex align-items-center justify-content-center">
+                      <div class="video_container position-relative" style="background:#000;aspect-ratio:16/9;">
+
+                        <!-- WebRTC live -->
+                        <video ref="remoteVideo" v-if="stream.is_live" autoplay playsinline controls class="w-100 h-100"
+                          style="object-fit:contain;" :class="{ 'd-none': !connected }"></video>
+
+                        <!-- Overlay attente WebRTC -->
+                        <div v-if="stream.is_live && !connected"
+                          class="w-100 h-100 d-flex align-items-center justify-content-center position-absolute top-0 start-0">
                           <div class="text-center text-white">
-                            <i class="fas fa-video-slash fs-1 mb-3" style="opacity: 0.5;"></i>
+                            <div class="spinner-border text-warning mb-3" role="status"></div>
+                            <p class="mb-0">{{ waitingMsg }}</p>
+                          </div>
+                        </div>
+
+                        <!-- Offline -->
+                        <div v-if="!stream.is_live"
+                          class="w-100 h-100 d-flex align-items-center justify-content-center">
+                          <div class="text-center text-white">
+                            <i class="fas fa-video-slash fs-1 mb-3" style="opacity:.5;"></i>
                             <p class="mb-0">Stream offline</p>
                           </div>
                         </div>
-                        
-                        <!-- Live Badge -->
+
+                        <!-- Badge LIVE -->
                         <div v-if="stream.is_live" class="position-absolute top-0 start-0 m-3">
                           <span class="badge bg-danger px-3 py-2">
-                            <i class="fas fa-circle me-1" style="font-size: 0.6rem; animation: pulse 2s infinite;"></i>
-                            LIVE
+                            <i class="fas fa-circle me-1" style="font-size:.6rem;animation:pulse 2s infinite;"></i>LIVE
+                          </span>
+                        </div>
+                        <!-- Viewers -->
+                        <div v-if="stream.is_live && connected" class="position-absolute bottom-0 end-0 m-3">
+                          <span class="badge bg-dark px-2 py-1">
+                            <i class="fas fa-eye me-1"></i>{{ stream.viewer_count || 0 }}
                           </span>
                         </div>
                       </div>
                     </div>
 
-                    <!-- Stream Info -->
+                    <!-- Infos stream -->
                     <div class="defi_card n11-bg rounded-8 p-4">
                       <h2 class="fw-bold mb-3 text-white">{{ stream.title || 'Sans titre' }}</h2>
                       <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="avatar_small rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <div class="avatar_small rounded-circle d-flex align-items-center justify-content-center"
+                          style="width:48px;height:48px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);">
                           <i class="fas fa-user text-white"></i>
                         </div>
                         <div>
                           <h5 class="mb-0 text-white">{{ stream.user?.username || 'User' }}</h5>
-                          <span class="text-white small" style="opacity: 0.8;">{{ stream.follower_count }} followers</span>
+                          <span class="text-white small" style="opacity:.8;">{{ stream.follower_count }}
+                            followers</span>
                         </div>
                         <div class="ms-auto">
-                          <button 
-                            v-if="isAuthenticated"
-                            class="btn_primary"
-                            @click="toggleFollow"
-                            :disabled="followingLoading"
-                          >
+                          <button v-if="isAuthenticated" class="btn_primary" @click="toggleFollow"
+                            :disabled="followingLoading">
                             <span v-if="followingLoading">...</span>
                             <span v-else>
                               <i :class="(isFollowing ? 'fas' : 'far') + ' fa-heart me-2'"></i>
@@ -115,52 +94,46 @@
                           </button>
                         </div>
                       </div>
-                      
                       <div class="mb-3">
                         <span v-if="stream.category" class="badge bg-secondary me-2">{{ stream.category }}</span>
                         <span v-if="stream.game" class="badge bg-info">{{ stream.game }}</span>
                       </div>
-
-                      <p class="text-white" style="opacity: 0.9;">{{ stream.description || 'Aucune description' }}</p>
+                      <p class="text-white" style="opacity:.9;">{{ stream.description || 'Aucune description' }}</p>
                     </div>
                   </div>
 
-                  <!-- Right Column - Chat -->
+                  <!-- Chat -->
                   <div class="col-lg-4">
-                    <div class="defi_card n11-bg rounded-8 p-4 h-100 d-flex flex-column" style="max-height: 800px;">
+                    <div class="defi_card n11-bg rounded-8 p-4 h-100 d-flex flex-column" style="max-height:800px;">
                       <h5 class="fw-bold mb-4 text-white">
-                        <i class="fas fa-comments me-2"></i>
-                        Chat
+                        <i class="fas fa-comments me-2"></i>Chat
                       </h5>
-                      
-                      <!-- Chat Messages -->
+
                       <div class="chat_messages flex-grow-1 mb-3 overflow-auto" ref="chatContainer">
                         <div v-if="chatLoading" class="text-center py-3">
                           <div class="spinner-border spinner-border-sm text-primary"></div>
                         </div>
-                        <div v-else-if="chatMessages.length === 0" class="text-center py-5 text-white" style="opacity: 0.7;">
+                        <div v-else-if="chatMessages.length === 0" class="text-center py-5 text-white"
+                          style="opacity:.7;">
                           <p>Aucun message pour le moment</p>
                         </div>
                         <div v-else>
-                          <div 
-                            v-for="message in chatMessages" 
-                            :key="message.id"
-                            class="chat_message mb-3 p-2 rounded-3"
-                            :class="{ 'n11-bg': message.user_id === currentUserId }"
-                          >
+                          <div v-for="message in chatMessages" :key="message.id" class="chat_message mb-3 p-2 rounded-3"
+                            :class="{ 'n11-bg': message.user_id === currentUserId }">
                             <div class="d-flex align-items-start gap-2">
-                              <div class="avatar_tiny rounded-circle d-flex align-items-center justify-content-center" style="width: 24px; height: 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); flex-shrink: 0;">
-                                <i class="fas fa-user text-white" style="font-size: 0.7rem;"></i>
+                              <div class="rounded-circle d-flex align-items-center justify-content-center"
+                                style="width:24px;height:24px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);flex-shrink:0;">
+                                <i class="fas fa-user text-white" style="font-size:.7rem;"></i>
                               </div>
                               <div class="flex-grow-1">
                                 <div class="d-flex align-items-center gap-2 mb-1">
                                   <span class="fw-bold text-white small">{{ message.user?.username || 'User' }}</span>
-                                  <span v-if="message.user?.profile?.certifications && message.user.profile.certifications.includes('Ebetstream')" class="badge bg-success" style="font-size: 0.65rem;">
-                                    <i class="fas fa-certificate me-1"></i>Certifié
-                                  </span>
-                                  <span v-if="message.is_moderator" class="badge bg-success" style="font-size: 0.65rem;">MOD</span>
-                                  <span v-if="message.is_subscriber" class="badge bg-warning" style="font-size: 0.65rem;">SUB</span>
-                                  <span class="text-white small" style="opacity: 0.6; font-size: 0.75rem;">{{ formatTime(message.created_at) }}</span>
+                                  <span v-if="message.is_moderator" class="badge bg-success"
+                                    style="font-size:.65rem;">MOD</span>
+                                  <span v-if="message.is_subscriber" class="badge bg-warning"
+                                    style="font-size:.65rem;">SUB</span>
+                                  <span class="text-white small" style="opacity:.6;font-size:.75rem;">{{
+                                    formatTime(message.created_at) }}</span>
                                 </div>
                                 <p class="mb-0 text-white small">{{ message.message }}</p>
                               </div>
@@ -169,36 +142,26 @@
                         </div>
                       </div>
 
-                      <!-- Chat Input -->
                       <div v-if="isAuthenticated" class="chat_input">
                         <div class="input-group">
-                          <input 
-                            v-model="newMessage"
-                            type="text" 
-                            class="form-control n11-bg text-white border-secondary" 
-                            placeholder="Tapez votre message..."
-                            @keyup.enter="sendMessage"
-                            :disabled="sendingMessage"
-                          />
-                          <button 
-                            class="btn_primary"
-                            @click="sendMessage"
-                            :disabled="sendingMessage || !newMessage.trim()"
-                          >
+                          <input v-model="newMessage" type="text"
+                            class="form-control n11-bg text-white border-secondary" placeholder="Tapez votre message..."
+                            @keyup.enter="sendMessage" :disabled="sendingMessage" />
+                          <button class="btn_primary" @click="sendMessage"
+                            :disabled="sendingMessage || !newMessage.trim()">
                             <i class="fas fa-paper-plane"></i>
                           </button>
                         </div>
                       </div>
                       <div v-else class="text-center py-3">
-                        <p class="text-white small mb-2" style="opacity: 0.8;">Connectez-vous pour chatter</p>
-                        <button class="btn_secondary btn-sm" @click="$router.push('/login')">
-                          Se connecter
-                        </button>
+                        <p class="text-white small mb-2" style="opacity:.8;">Connectez-vous pour chatter</p>
+                        <button class="btn_secondary btn-sm" @click="$router.push('/login')">Se connecter</button>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -208,285 +171,167 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed, nextTick } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import apiClient from '@/utils/axios';
 
 interface Stream {
-  id: number;
-  title: string;
-  description: string;
-  thumbnail: string | null;
-  category: string | null;
-  game: string | null;
-  is_live: boolean;
-  viewer_count: number;
-  follower_count: number;
-  hls_url: string | null;
-  use_twitch?: boolean;
-  twitch_username?: string | null;
-  user: {
-    id: number;
-    username: string;
-    profile?: {
-      certifications?: string[] | null;
-    };
-  };
+  id: number; title: string; description: string; thumbnail_url?: string;
+  category?: string; game?: string; is_live: boolean;
+  viewer_count: number; follower_count: number;
+  user: { id: number; username: string; };
 }
-
 interface ChatMessage {
-  id: number;
-  message: string;
-  user_id: number;
-  user: {
-    id: number;
-    username: string;
-    profile?: {
-      certifications?: string[] | null;
-    } | null;
-  };
-  is_moderator: boolean;
-  is_subscriber: boolean;
-  created_at: string;
+  id: number; message: string; user_id: number;
+  user: { id: number; username: string; };
+  is_moderator: boolean; is_subscriber: boolean; created_at: string;
 }
 
 const route = useRoute();
+const router = useRouter();
+const streamId = route.params.id as string;
+
 const stream = ref<Stream | null>(null);
-const windowLocationHost = ref(window.location.hostname);
 const loading = ref(false);
-const error = ref("");
+const pageError = ref('');
+const connected = ref(false);
+const waitingMsg = ref('Connexion au stream...');
+
 const chatMessages = ref<ChatMessage[]>([]);
 const chatLoading = ref(false);
-const newMessage = ref("");
+const newMessage = ref('');
 const sendingMessage = ref(false);
 const isFollowing = ref(false);
 const followingLoading = ref(false);
 const currentUserId = ref<number | null>(null);
 const chatContainer = ref<HTMLElement | null>(null);
-const liveVideo = ref<HTMLVideoElement | null>(null);
-const useNativeStream = ref(false);
-let peerConnection: RTCPeerConnection | null = null;
-let wsConnection: WebSocket | null = null;
+const remoteVideo = ref<HTMLVideoElement | null>(null);
 
-let chatInterval: NodeJS.Timeout | null = null;
-let streamInterval: NodeJS.Timeout | null = null;
+const isAuthenticated = computed(() => !!localStorage.getItem('auth_token'));
 
-const isAuthenticated = computed(() => {
-  return !!localStorage.getItem("auth_token");
-});
+// ── WebRTC viewer ─────────────────────────────────────────────────────────────
+let ws: WebSocket | null = null;
+let pc: RTCPeerConnection | null = null;
 
-const loadStream = async () => {
-  try {
-    loading.value = true;
-    error.value = "";
-    const streamId = route.params.id;
+const connectWebRTC = () => {
+  const token = localStorage.getItem('auth_token') || '';
+  const WS_URL = import.meta.env.VITE_STREAM_WS_URL || 'ws://localhost:8082';
+  ws = new WebSocket(`${WS_URL}/watch/${streamId}?token=${encodeURIComponent(token)}`);
 
-    const response = await apiClient.get(`/streams/${streamId}`);
-
-    if (response.data.success) {
-      stream.value = response.data.data;
-      
-      // Check if stream is live and try to connect via WebRTC
-      if (stream.value && stream.value.is_live) {
-        // Try to connect to native stream first
-        await connectToNativeStream(Array.isArray(streamId) ? streamId[0] : streamId);
-      }
-      
-      if (isAuthenticated.value) {
-        checkFollowing();
-      }
+  ws.onmessage = async (evt) => {
+    const msg = JSON.parse(evt.data);
+    if (msg.type === 'waiting') { waitingMsg.value = "En attente du streamer..."; }
+    else if (msg.type === 'offer') { await handleOffer(msg.sdp); }
+    else if (msg.type === 'ice-candidate') {
+      if (pc && msg.candidate) await pc.addIceCandidate(new RTCIceCandidate(msg.candidate));
     }
-  } catch (error: any) {
-    console.error("Error loading stream:", error);
-    if (error.response?.status === 404) {
-      error.value = "Stream non trouvé";
-    } else {
-      error.value = "Error loading stream";
-    }
-  } finally {
-    loading.value = false;
-  }
+    else if (msg.type === 'stream-ended') { connected.value = false; cleanupWebRTC(); }
+  };
+  ws.onerror = () => { waitingMsg.value = 'Impossible de rejoindre le stream.'; };
+  ws.onclose = () => { if (connected.value) connected.value = false; };
 };
 
-const connectToNativeStream = async (streamId: string | number) => {
-  try {
-    // Check if stream is using native browser capture
-    // For now, we'll use a simple approach: store stream in sessionStorage when started
-    // In production, you'd use WebRTC with a signaling server
-    
-    // Try to establish WebRTC connection
-    // This is a simplified version - in production you'd use a signaling server
-    peerConnection = new RTCPeerConnection({
-      iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
-    });
-
-    // Handle incoming stream
-    peerConnection.ontrack = (event) => {
-      if (liveVideo.value && event.streams[0]) {
-        liveVideo.value.srcObject = event.streams[0];
-        useNativeStream.value = true;
-      }
-    };
-
-    // Create offer and send to server
-    const offer = await peerConnection.createOffer();
-    await peerConnection.setLocalDescription(offer);
-
-    // In a real implementation, you'd send this offer to a signaling server
-    // For now, we'll just try to connect if the streamer is broadcasting
-    // This requires a WebSocket server for signaling
-    
-    console.log("Attempting to connect to native stream...");
-    
-    // Fallback: if WebRTC is not available, use Twitch or HLS
-    if (!useNativeStream.value) {
-      console.log("WebRTC connection not available, using fallback stream");
+const handleOffer = async (sdp: RTCSessionDescriptionInit) => {
+  pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+  pc.ontrack = (evt) => {
+    if (remoteVideo.value && evt.streams[0]) {
+      remoteVideo.value.srcObject = evt.streams[0];
+      connected.value = true;
     }
-  } catch (err) {
-    console.error("Error connecting to native stream:", err);
-    // Fall back to Twitch/HLS if native stream is not available
-  }
+  };
+  pc.onicecandidate = ({ candidate }) => {
+    if (candidate && ws?.readyState === WebSocket.OPEN)
+      ws.send(JSON.stringify({ type: 'ice-candidate', candidate }));
+  };
+  await pc.setRemoteDescription(new RTCSessionDescription(sdp));
+  const answer = await pc.createAnswer();
+  await pc.setLocalDescription(answer);
+  ws?.send(JSON.stringify({ type: 'answer', sdp: answer }));
+};
+
+const cleanupWebRTC = () => {
+  pc?.close(); pc = null;
+  ws?.close(); ws = null;
+  if (remoteVideo.value) remoteVideo.value.srcObject = null;
+};
+
+// ── Stream / Chat ─────────────────────────────────────────────────────────────
+const loadStream = async () => {
+  loading.value = true; pageError.value = '';
+  try {
+    const res = await apiClient.get(`/streams/${streamId}`);
+    if (res.data.success) {
+      stream.value = res.data.data;
+      if (stream.value?.is_live) connectWebRTC();
+      if (isAuthenticated.value) checkFollowing();
+    }
+  } catch (e: any) {
+    pageError.value = e.response?.status === 404 ? 'Stream non trouvé' : 'Erreur chargement';
+  } finally { loading.value = false; }
 };
 
 const loadChatMessages = async () => {
   if (!stream.value) return;
-  
+  chatLoading.value = true;
   try {
-    chatLoading.value = true;
-    const response = await apiClient.get(`/streams/${stream.value.id}/chat`, {
-      params: { limit: 50 },
-    });
-
-    if (response.data.success) {
-      chatMessages.value = response.data.data;
-      await nextTick();
-      scrollChatToBottom();
-    }
-  } catch (error: any) {
-    console.error("Error loading chat:", error);
-  } finally {
-    chatLoading.value = false;
-  }
+    const res = await apiClient.get(`/streams/${stream.value.id}/chat`, { params: { limit: 50 } });
+    if (res.data.success) { chatMessages.value = res.data.data; await nextTick(); scrollChat(); }
+  } catch { } finally { chatLoading.value = false; }
 };
 
 const sendMessage = async () => {
-  if (!newMessage.value.trim() || !isAuthenticated.value || !stream.value) return;
-
+  if (!newMessage.value.trim() || !stream.value) return;
+  sendingMessage.value = true;
   try {
-    sendingMessage.value = true;
-    const response = await apiClient.post(
-      `/streams/${stream.value.id}/chat`,
-      { message: newMessage.value }
-    );
-
-    if (response.data.success) {
-      newMessage.value = "";
-      await loadChatMessages();
-    }
-  } catch (error: any) {
-    console.error("Error sending message:", error);
-    alert(error.response?.data?.message || "Error sending message");
-  } finally {
-    sendingMessage.value = false;
-  }
+    const res = await apiClient.post(`/streams/${stream.value.id}/chat`, { message: newMessage.value });
+    if (res.data.success) { newMessage.value = ''; await loadChatMessages(); }
+  } catch (e: any) { alert(e.response?.data?.message || 'Erreur envoi'); }
+  finally { sendingMessage.value = false; }
 };
 
 const toggleFollow = async () => {
-  if (!isAuthenticated.value || !stream.value) return;
-
+  if (!stream.value) return;
+  followingLoading.value = true;
   try {
-    followingLoading.value = true;
-    const response = await apiClient.post(`/streams/${stream.value.id}/follow`, {});
-
-    if (response.data.success) {
-      isFollowing.value = response.data.data.is_following;
-      if (stream.value) {
-        stream.value.follower_count = response.data.data.follower_count;
-      }
+    const res = await apiClient.post(`/streams/${stream.value.id}/follow`, {});
+    if (res.data.success) {
+      isFollowing.value = res.data.data.is_following;
+      stream.value.follower_count = res.data.data.follower_count;
     }
-  } catch (error: any) {
-    console.error("Error toggling follow:", error);
-    alert(error.response?.data?.message || "Error");
-  } finally {
-    followingLoading.value = false;
-  }
+  } catch { } finally { followingLoading.value = false; }
 };
 
-const checkFollowing = async () => {
-  // This would require an endpoint to check if user is following
-  // For now, we'll assume false
-  isFollowing.value = false;
+const checkFollowing = async () => { isFollowing.value = false; };
+
+const scrollChat = () => { if (chatContainer.value) chatContainer.value.scrollTop = chatContainer.value.scrollHeight; };
+
+const formatTime = (d: string) => {
+  const diff = Date.now() - new Date(d).getTime();
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return 'Just now';
+  if (m < 60) return `${m}min ago`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h ago`;
+  return new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
 };
 
-const getCurrentUser = async () => {
+let chatTimer: ReturnType<typeof setInterval>;
+let streamTimer: ReturnType<typeof setInterval>;
+
+onMounted(async () => {
   try {
-    const token = localStorage.getItem("auth_token");
-    if (!token) return;
-    
-    const response = await apiClient.get("/user");
-    currentUserId.value = response.data.id;
-  } catch (error) {
-    console.error("Error getting current user:", error);
-  }
-};
-
-const formatTime = (dateString: string) => {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diff = now.getTime() - date.getTime();
-  const minutes = Math.floor(diff / 60000);
-  
-  if (minutes < 1) return "Just now";
-  if (minutes < 60) return `${minutes}min ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
-};
-
-const scrollChatToBottom = () => {
-  if (chatContainer.value) {
-    chatContainer.value.scrollTop = chatContainer.value.scrollHeight;
-  }
-};
-
-onMounted(() => {
-  getCurrentUser();
-  loadStream();
+    const res = await apiClient.get('/user');
+    currentUserId.value = res.data.id;
+  } catch { }
+  await loadStream();
   loadChatMessages();
-  
-  // Refresh chat every 3 seconds
-  chatInterval = setInterval(() => {
-    if (stream.value) {
-      loadChatMessages();
-    }
-  }, 3000);
-  
-  // Refresh stream info every 10 seconds
-  streamInterval = setInterval(() => {
-    if (stream.value) {
-      loadStream();
-    }
-  }, 10000);
+  chatTimer = setInterval(loadChatMessages, 3000);
+  streamTimer = setInterval(loadStream, 10000);
 });
 
-onUnmounted(() => {
-  if (chatInterval) clearInterval(chatInterval);
-  if (streamInterval) clearInterval(streamInterval);
-  
-  // Clean up WebRTC connection
-  if (peerConnection) {
-    peerConnection.close();
-    peerConnection = null;
-  }
-  
-  if (wsConnection) {
-    wsConnection.close();
-    wsConnection = null;
-  }
-  
-  if (liveVideo.value) {
-    liveVideo.value.srcObject = null;
-  }
+onBeforeUnmount(() => {
+  clearInterval(chatTimer); clearInterval(streamTimer);
+  cleanupWebRTC();
 });
 </script>
 
@@ -510,9 +355,14 @@ onUnmounted(() => {
   transition: 0.3s;
   cursor: pointer;
 }
+
 .btn_primary:hover {
-  background-color: #FF9F00;
   transform: translateY(-2px);
+}
+
+.btn_primary:disabled {
+  opacity: .5;
+  cursor: not-allowed;
 }
 
 .btn_secondary {
@@ -525,6 +375,7 @@ onUnmounted(() => {
   transition: 0.3s;
   cursor: pointer;
 }
+
 .btn_secondary:hover {
   background-color: #FF9F00;
   color: #000;
@@ -551,9 +402,30 @@ onUnmounted(() => {
   padding-top: 1rem;
 }
 
+.form-control {
+  color: white;
+}
+
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.form-control:focus {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: #FF9F00;
+  color: white;
+}
+
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
 }
 
 .page-content-with-space {
@@ -564,14 +436,13 @@ onUnmounted(() => {
   .page-content-with-space {
     padding-top: 60px;
   }
-  
+
   .container-fluid {
     margin-left: 0 !important;
   }
-  
+
   .defis__main {
     margin-left: 0 !important;
   }
 }
 </style>
-
