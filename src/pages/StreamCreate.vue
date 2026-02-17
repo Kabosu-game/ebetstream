@@ -1,24 +1,29 @@
 <template>
   <div class="page-content-with-space">
+    <!-- Stream Creation Section -->
     <section class="defis_section py-6 position-relative overflow-hidden pb-120">
       <div class="container-fluid">
         <div class="row">
           <div class="col-12 gx-0 gx-lg-4">
             <div class="defis__main">
-
+              
               <!-- Header -->
               <div class="row mb-5">
                 <div class="col-12">
                   <button class="btn_secondary mb-4" @click="$router.push('/streams')">
-                    <i class="fas fa-arrow-left me-2"></i>Back
+                    <i class="fas fa-arrow-left me-2"></i>
+                    Back
                   </button>
+                  
                   <div class="defis_content">
-                    <span class="hero_badge mb-3 d-inline-block">📺 Create a Stream</span>
+                    <span class="hero_badge mb-3 d-inline-block">
+                      📺 Create a Stream
+                    </span>
                     <h2 class="hero_title mb-4">
                       Launch your <span class="text_gradient">Live Stream</span>
                     </h2>
                     <p class="hero_subtitle mb-5">
-                      Configurez votre stream et partagez votre écran en direct avec vos spectateurs.
+                      Configure your stream and start broadcasting your games live.
                     </p>
                   </div>
                 </div>
@@ -28,27 +33,40 @@
               <div class="row justify-content-center">
                 <div class="col-lg-8">
                   <div class="defi_card n11-bg rounded-8 p-4 p-lg-6">
-
-                    <!-- ── ÉTAPE 1 : Formulaire ── -->
-                    <form v-if="!streamId" @submit.prevent="createStream">
+                    <form @submit.prevent="handleSubmit">
+                      <!-- Title -->
                       <div class="mb-4">
-                        <label class="text-white mb-2 d-block fw-bold">Titre du stream *</label>
-                        <input v-model="form.title" type="text"
-                          class="form-control n11-bg text-white border-secondary"
-                          placeholder="Ex: Session live eBetStream" required maxlength="255" />
+                        <label class="text-white mb-2 d-block fw-bold">Stream Title *</label>
+                        <input 
+                          v-model="form.title"
+                          type="text" 
+                          class="form-control n11-bg text-white border-secondary" 
+                          placeholder="Ex: My first eBetStream"
+                          required
+                          maxlength="255"
+                        />
                       </div>
 
+                      <!-- Description -->
                       <div class="mb-4">
                         <label class="text-white mb-2 d-block fw-bold">Description</label>
-                        <textarea v-model="form.description"
-                          class="form-control n11-bg text-white border-secondary"
-                          placeholder="Décrivez votre stream..." rows="4" maxlength="1000"></textarea>
+                        <textarea 
+                          v-model="form.description"
+                          class="form-control n11-bg text-white border-secondary" 
+                          placeholder="Describe your stream..."
+                          rows="4"
+                          maxlength="1000"
+                        ></textarea>
                       </div>
 
+                      <!-- Category -->
                       <div class="mb-4">
-                        <label class="text-white mb-2 d-block fw-bold">Catégorie</label>
-                        <select v-model="form.category" class="form-control n11-bg text-white border-secondary">
-                          <option value="">Sélectionner une catégorie</option>
+                        <label class="text-white mb-2 d-block fw-bold">Category</label>
+                        <select 
+                          v-model="form.category"
+                          class="form-control n11-bg text-white border-secondary"
+                        >
+                          <option value="">Select a category</option>
                           <option value="Gaming">Gaming</option>
                           <option value="Esports">Esports</option>
                           <option value="Just Chatting">Just Chatting</option>
@@ -58,104 +76,258 @@
                         </select>
                       </div>
 
+                      <!-- Game -->
                       <div class="mb-4">
-                        <label class="text-white mb-2 d-block fw-bold">Jeu</label>
-                        <input v-model="form.game" type="text"
-                          class="form-control n11-bg text-white border-secondary"
-                          placeholder="Ex: FC Mobile 25, Call of Duty..." maxlength="100" />
+                        <label class="text-white mb-2 d-block fw-bold">Game</label>
+                        <input 
+                          v-model="form.game"
+                          type="text" 
+                          class="form-control n11-bg text-white border-secondary" 
+                          placeholder="Ex: FC Mobile 25, Call of Duty..."
+                          maxlength="100"
+                        />
                       </div>
 
+                      <!-- Thumbnail -->
                       <div class="mb-4">
-                        <label class="text-white mb-2 d-block fw-bold">Miniature</label>
-                        <input ref="thumbInput" type="file"
-                          accept="image/jpeg,image/png,image/jpg,image/webp"
-                          class="form-control n11-bg text-white border-secondary"
-                          @change="onThumbChange" />
-                        <small class="text-white d-block mt-2" style="opacity:.7;">
-                          JPEG, PNG, WebP (max 5MB)
+                        <label class="text-white mb-2 d-block fw-bold">Thumbnail</label>
+                        <input 
+                          ref="thumbnailInput"
+                          type="file" 
+                          accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"
+                          class="form-control n11-bg text-white border-secondary" 
+                          @change="handleThumbnailChange"
+                        />
+                        <small class="text-white d-block mt-2" style="opacity: 0.7;">
+                          Accepted formats: JPEG, PNG, JPG, GIF, WebP (max 5MB)
                         </small>
-                        <img v-if="thumbPreview" :src="thumbPreview" class="img-thumbnail mt-3"
-                          style="max-width:200px;max-height:200px;object-fit:cover;" />
-                      </div>
-
-                      <div v-if="error" class="alert alert-danger mb-4 d-flex align-items-center justify-content-between">
-                        <span><i class="fas fa-exclamation-circle me-2"></i>{{ error }}</span>
-                        <button type="button" class="btn-close btn-close-white" @click="error=''"></button>
-                      </div>
-                      <div v-if="successMsg" class="alert alert-success mb-4 d-flex align-items-center justify-content-between">
-                        <span>{{ successMsg }}</span>
-                        <button type="button" class="btn-close btn-close-white" @click="successMsg=''"></button>
-                      </div>
-
-                      <div class="d-flex gap-3">
-                        <button type="submit" class="btn_primary flex-fill" :disabled="loading">
-                          <span v-if="loading">Création...</span>
-                          <span v-else><i class="fas fa-video me-2"></i>Créer le stream</span>
-                        </button>
-                        <button type="button" class="btn_secondary" @click="$router.push('/streams')">Annuler</button>
-                      </div>
-                    </form>
-
-                    <!-- ── ÉTAPE 2 : Stream créé ── -->
-                    <div v-else>
-                      <h5 class="fw-bold mb-1 text-white">{{ form.title }}</h5>
-                      <p class="text-white mb-4" style="opacity:.7;">
-                        <span :class="isLive ? 'text-danger' : 'text-warning'">
-                          <i class="fas fa-circle me-1" style="font-size:.6rem;"></i>
-                          {{ isLive ? 'EN DIRECT' : 'En attente' }}
-                        </span>
-                      </p>
-
-                      <!-- Lien spectateurs -->
-                      <div class="alert alert-info mb-4">
-                        <p class="mb-2 fw-bold"><i class="fas fa-link me-2"></i>Lien pour les spectateurs</p>
-                        <div class="d-flex align-items-center gap-2">
-                          <code class="d-block p-2 rounded bg-dark text-white flex-grow-1" style="word-break:break-all;">
-                            {{ viewerUrl }}
-                          </code>
-                          <button class="btn btn-sm btn-outline-light" @click="copy(viewerUrl)" title="Copier">
-                            <i class="fas fa-copy"></i>
-                          </button>
+                        <div v-if="thumbnailPreview" class="mt-3">
+                          <img 
+                            :src="thumbnailPreview" 
+                            alt="Thumbnail preview" 
+                            class="img-thumbnail"
+                            style="max-width: 200px; max-height: 200px; object-fit: cover;"
+                          />
                         </div>
                       </div>
 
-                      <!-- Preview vidéo (en live) -->
-                      <div v-if="isLive" class="mb-4">
-                        <video ref="localVideo" autoplay muted playsinline class="w-100 rounded"
-                          style="max-height:400px;background:#000;"></video>
-                        <p class="text-white mt-2 small" style="opacity:.7;">
-                          <i class="fas fa-eye me-1"></i>{{ viewerCount }} spectateur(s)
-                        </p>
+                      <!-- Twitch Integration (Always Required) -->
+                      <div class="mb-4">
+                        <div class="alert alert-info mb-3 d-flex align-items-center">
+                          <i class="fab fa-twitch fs-4 me-2 text-purple"></i>
+                          <div>
+                            <strong>Streaming via Twitch</strong>
+                            <p class="mb-0 small">All streams use Twitch for broadcasting.</p>
+                          </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                          <label class="text-white mb-2 d-block fw-bold">Twitch Username *</label>
+                          <input 
+                            v-model="form.twitch_username"
+                            type="text" 
+                            class="form-control n11-bg text-white border-secondary" 
+                            placeholder="your_twitch_name"
+                            required
+                          />
+                          <small class="text-white d-block mt-2" style="opacity: 0.7;">
+                            Your Twitch username (without @)
+                          </small>
+                        </div>
+                        
+                        <div class="mb-3">
+                          <label class="text-white mb-2 d-block fw-bold">Twitch Stream Key *</label>
+                          <input 
+                            v-model="form.twitch_stream_key"
+                            type="password" 
+                            class="form-control n11-bg text-white border-secondary" 
+                            placeholder="live_xxxxxxxxxxxxx"
+                            required
+                          />
+                          <small class="text-white d-block mt-2" style="opacity: 0.7;">
+                            Find your Stream Key in: <a href="https://www.twitch.tv/settings/channel" target="_blank" class="text-primary">Twitch Settings → Stream</a>
+                          </small>
+                        </div>
                       </div>
 
+                      <!-- Error Message -->
                       <div v-if="error" class="alert alert-danger mb-4 d-flex align-items-center justify-content-between">
                         <span><i class="fas fa-exclamation-circle me-2"></i>{{ error }}</span>
-                        <button type="button" class="btn-close btn-close-white" @click="error=''"></button>
-                      </div>
-                      <div v-if="successMsg" class="alert alert-success mb-4 d-flex align-items-center justify-content-between">
-                        <span>{{ successMsg }}</span>
-                        <button type="button" class="btn-close btn-close-white" @click="successMsg=''"></button>
+                        <button class="btn-close btn-close-white" @click="error = ''"></button>
                       </div>
 
-                      <div class="d-flex gap-3 flex-wrap">
-                        <button v-if="!isLive" class="btn_primary" @click="startStream" :disabled="starting">
-                          <span v-if="starting">Démarrage...</span>
-                          <span v-else><i class="fas fa-play me-2"></i>Partager mon écran</span>
+                      <!-- Success Message -->
+                      <div v-if="success" class="alert alert-success mb-4 d-flex align-items-center justify-content-between">
+                        <span>{{ success }}</span>
+                        <button class="btn-close btn-close-white" @click="success = ''"></button>
+                      </div>
+
+                      <!-- Actions -->
+                      <div class="d-flex gap-3">
+                        <button 
+                          v-if="!currentStreamId"
+                          type="submit" 
+                          class="btn_primary flex-fill" 
+                          :disabled="loading"
+                        >
+                          <span v-if="loading">Creating...</span>
+                          <span v-else>
+                            <i class="fas fa-video me-2"></i>
+                            Create Stream
+                          </span>
                         </button>
-                        <button v-else class="btn_primary" style="background:#ef4444;" @click="stopStream" :disabled="stopping">
-                          <span v-if="stopping">Arrêt...</span>
-                          <span v-else><i class="fas fa-stop me-2"></i>Arrêter le stream</span>
+                        <button 
+                          v-else
+                          type="button" 
+                          class="btn_primary flex-fill" 
+                          @click="updateStream"
+                          :disabled="loading"
+                        >
+                          <span v-if="loading">Updating...</span>
+                          <span v-else>
+                            <i class="fas fa-save me-2"></i>
+                            Update Stream
+                          </span>
                         </button>
-                        <button v-if="!isLive" class="btn_secondary" @click="deleteStream">
-                          <i class="fas fa-trash me-2"></i>Supprimer
+                        <button 
+                          type="button" 
+                          class="btn_secondary" 
+                          @click="$router.push('/streams')"
+                          :disabled="loading"
+                        >
+                          Cancel
                         </button>
+                      </div>
+                    </form>
+
+                    <!-- Stream Key Section (if stream exists) -->
+                    <div v-if="(twitchStreamKey || currentStreamId)" class="mt-5 pt-5 border-top" style="border-color: rgba(255, 255, 255, 0.1) !important;">
+                      <h5 class="fw-bold mb-3 text-white">
+                        <i class="fab fa-twitch me-2 text-purple"></i>
+                        Twitch Streaming Information
+                      </h5>
+                      
+                      <div v-if="!twitchStreamKey && currentStreamId" class="alert alert-warning mb-3">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Loading streaming information...
+                        <button class="btn btn-sm btn-outline-light ms-2" @click="loadStreamKey">
+                          <i class="fas fa-sync me-1"></i> Refresh
+                        </button>
+                      </div>
+                      
+                      <!-- Twitch Information -->
+                      <div v-if="useTwitch && twitchStreamKey" class="alert alert-info">
+                        <div class="d-flex align-items-center mb-3">
+                          <i class="fab fa-twitch fs-4 me-2 text-purple"></i>
+                          <h6 class="mb-0 fw-bold">Streaming via Twitch</h6>
+                        </div>
+                        <p class="mb-2"><strong>Twitch Username:</strong></p>
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                          <code class="d-block p-2 rounded bg-dark text-white flex-grow-1">{{ twitchUsername }}</code>
+                          <button 
+                            class="btn btn-sm btn-outline-light" 
+                            @click="copyToClipboard(twitchUsername)"
+                            title="Copy"
+                          >
+                            <i class="fas fa-copy"></i>
+                          </button>
+                        </div>
+                        <p class="mb-2"><strong>Twitch Stream Key:</strong></p>
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                          <code class="d-block p-2 rounded bg-dark text-white flex-grow-1">{{ twitchStreamKey }}</code>
+                          <button 
+                            class="btn btn-sm btn-outline-light" 
+                            @click="copyToClipboard(twitchStreamKey)"
+                            title="Copy"
+                          >
+                            <i class="fas fa-copy"></i>
+                          </button>
+                        </div>
+                        <p class="mb-2"><strong>Twitch RTMP URL:</strong></p>
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                          <code class="d-block p-2 rounded bg-dark text-white flex-grow-1">{{ rtmpUrl || 'rtmp://live.twitch.tv/app/' + twitchStreamKey }}</code>
+                          <button 
+                            class="btn btn-sm btn-outline-light" 
+                            @click="copyToClipboard(rtmpUrl || 'rtmp://live.twitch.tv/app/' + twitchStreamKey)"
+                            title="Copy"
+                          >
+                            <i class="fas fa-copy"></i>
+                          </button>
+                        </div>
+                        <p class="small mb-0">
+                          <i class="fas fa-info-circle me-2"></i>
+                          In OBS: Service = <strong>Twitch</strong>, Server = <strong>Auto</strong>, Stream Key = your key above
+                        </p>
+                      </div>
+                      
+                      
+                      <!-- Screen Capture Section -->
+                      <div v-if="currentStreamId && streamStarted" class="mt-4 pt-4 border-top" style="border-color: rgba(255, 255, 255, 0.1) !important;">
+                        <h5 class="fw-bold mb-3 text-white">
+                          <i class="fas fa-desktop me-2"></i>
+                          Live Screen Capture
+                        </h5>
+                        
+                        <!-- Video Preview -->
+                        <div class="mb-3">
+                          <video 
+                            ref="previewVideo"
+                            autoplay
+                            muted
+                            playsinline
+                            class="w-100 rounded"
+                            style="max-height: 400px; background: #000;"
+                          ></video>
+                        </div>
+                        
+                        <!-- Controls -->
+                        <div class="d-flex gap-2">
+                          <button 
+                            class="btn_primary"
+                            @click="stopScreenCapture"
+                            :disabled="stoppingCapture"
+                          >
+                            <i class="fas fa-stop me-2"></i>
+                            {{ stoppingCapture ? 'Stopping...' : 'Stop Stream' }}
+                          </button>
+                        </div>
+                      </div>
+                      
+                      <div v-else class="d-flex gap-3 flex-wrap mt-4">
+                        <button 
+                          class="btn_primary" 
+                          @click="startStreamWithScreenCapture" 
+                          :disabled="startingStream || !currentStreamId"
+                        >
+                          <span v-if="startingStream">Starting...</span>
+                          <span v-else>
+                            <i class="fas fa-play me-2"></i>
+                            Start Stream & Share Screen
+                          </span>
+                        </button>
+                        <button 
+                          class="btn_secondary" 
+                          @click="loadStreamKey"
+                          :disabled="loading"
+                        >
+                          <i class="fas fa-sync me-2"></i>
+                          Refresh Information
+                        </button>
+                      </div>
+                      
+                      <div v-if="!currentStreamId" class="alert alert-warning mt-3">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Stream ID not found. Please refresh or recreate the stream.
+                      </div>
+                      
+                      <div v-if="currentStreamId" class="alert alert-success mt-3">
+                        <i class="fas fa-check-circle me-2"></i>
+                        Stream created successfully! ID: {{ currentStreamId }}
                       </div>
                     </div>
-
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -165,175 +337,486 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-import { useRouter } from 'vue-router';
-import apiClient from '@/utils/axios';
+import { ref, onMounted, nextTick } from "vue";
+import { useRouter } from "vue-router";
+import apiClient from "@/utils/axios";
+import { getStorageUrl } from '@/config/constants';
+import { fixImageUrl } from '@/utils/imageFixer';
 
 const router = useRouter();
+const form = ref({
+  title: "",
+  description: "",
+  category: "",
+  game: "",
+  thumbnail: "",
+  use_twitch: true, // Always true - Twitch only
+  twitch_username: "",
+  twitch_stream_key: "",
+});
 
-const form = ref({ title: '', description: '', category: '', game: '' });
-const thumbFile  = ref<File | null>(null);
-const thumbPreview = ref<string | null>(null);
-const thumbInput = ref<HTMLInputElement | null>(null);
-const localVideo = ref<HTMLVideoElement | null>(null);
-
-const streamId    = ref<number | null>(null);
-const isLive      = ref(false);
-const viewerCount = ref(0);
-const loading   = ref(false);
-const starting  = ref(false);
-const stopping  = ref(false);
-const error     = ref('');
-const successMsg = ref('');
-
-let screenStream = ref<MediaStream | null>(null);
-let peerConns    = ref<Map<string, RTCPeerConnection>>(new Map());
-let ws           = ref<WebSocket | null>(null);
-
-const viewerUrl = computed(() =>
-  streamId.value ? `${window.location.origin}/streams/${streamId.value}/watch` : ''
-);
-
-const onThumbChange = (e: Event) => {
-  const file = (e.target as HTMLInputElement).files?.[0];
-  if (!file) return;
-  if (file.size > 5 * 1024 * 1024) { error.value = 'Image trop grande (max 5MB)'; return; }
-  thumbFile.value = file;
-  const reader = new FileReader();
-  reader.onload = (ev) => { thumbPreview.value = ev.target?.result as string; };
-  reader.readAsDataURL(file);
-};
-
-const createStream = async () => {
-  loading.value = true; error.value = '';
-  try {
-    const fd = new FormData();
-    fd.append('title', form.value.title);
-    fd.append('description', form.value.description || '');
-    fd.append('category', form.value.category || '');
-    fd.append('game', form.value.game || '');
-    if (thumbFile.value) fd.append('thumbnail', thumbFile.value);
-    const res = await apiClient.post('/streams', fd);
-    if (res.data.success) {
-      streamId.value  = res.data.data.id;
-      successMsg.value = 'Stream créé ! Cliquez sur "Partager mon écran" pour démarrer.';
-    } else { error.value = res.data.message || 'Erreur création'; }
-  } catch (e: any) {
-    error.value = e.response?.data?.message || 'Erreur lors de la création';
-  } finally { loading.value = false; }
-};
-
-const startStream = async () => {
-  starting.value = true; error.value = '';
-  try {
-    const stream = await navigator.mediaDevices.getDisplayMedia({
-      video: { frameRate: { ideal: 30 }, width: { ideal: 1920 }, height: { ideal: 1080 } },
-      audio: true,
-    });
-    screenStream.value = stream;
-    if (localVideo.value) localVideo.value.srcObject = stream;
-    await apiClient.post(`/streams/${streamId.value}/start`);
-    connectSignaling(stream);
-    stream.getVideoTracks()[0].addEventListener('ended', stopStream);
-    isLive.value = true;
-    successMsg.value = 'Stream démarré ! Partagez le lien aux spectateurs.';
-  } catch (e: any) {
-    error.value = e.name === 'NotAllowedError' ? 'Permission refusée.' : (e.response?.data?.message || 'Impossible de démarrer.');
-    cleanup();
-  } finally { starting.value = false; }
-};
-
-const connectSignaling = (stream: MediaStream) => {
-  const token  = localStorage.getItem('auth_token') || '';
-  const WS_URL = import.meta.env.VITE_STREAM_WS_URL || 'ws://localhost:8082';
-  const socket = new WebSocket(`${WS_URL}/stream/${streamId.value}?token=${encodeURIComponent(token)}`);
-  ws.value = socket;
-
-  socket.onmessage = async (evt) => {
-    const msg = JSON.parse(evt.data);
-    if (msg.type === 'viewer-joined') {
-      const pc = createPeerConnection(msg.viewerId, stream, socket);
-      const offer = await pc.createOffer();
-      await pc.setLocalDescription(offer);
-      socket.send(JSON.stringify({ type: 'offer', viewerId: msg.viewerId, sdp: offer }));
-      viewerCount.value = msg.count ?? viewerCount.value + 1;
-    } else if (msg.type === 'answer') {
-      const pc = peerConns.value.get(msg.viewerId);
-      if (pc) await pc.setRemoteDescription(new RTCSessionDescription(msg.sdp));
-    } else if (msg.type === 'ice-candidate') {
-      const pc = peerConns.value.get(msg.viewerId);
-      if (pc && msg.candidate) await pc.addIceCandidate(new RTCIceCandidate(msg.candidate));
-    } else if (msg.type === 'viewer-left') {
-      peerConns.value.get(msg.viewerId)?.close();
-      peerConns.value.delete(msg.viewerId);
-      viewerCount.value = msg.count ?? Math.max(0, viewerCount.value - 1);
+const handleThumbnailChange = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  if (target.files && target.files[0]) {
+    const file = target.files[0];
+    
+    // Validate file size (5MB max)
+    if (file.size > 5 * 1024 * 1024) {
+      error.value = "Image is too large. Maximum size: 5MB";
+      if (thumbnailInput.value) {
+        thumbnailInput.value.value = "";
+      }
+      return;
     }
-  };
-  socket.onerror = () => { error.value = 'Erreur connexion serveur.'; };
-  socket.onclose = () => { if (isLive.value) stopStream(); };
+    
+    // Validate file type
+    const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'];
+    if (!validTypes.includes(file.type)) {
+      error.value = "Unsupported image format. Use JPEG, PNG, JPG, GIF, or WebP";
+      if (thumbnailInput.value) {
+        thumbnailInput.value.value = "";
+      }
+      return;
+    }
+    
+    thumbnailFile.value = file;
+    
+    // Create preview
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      thumbnailPreview.value = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
 };
 
-const createPeerConnection = (viewerId: string, stream: MediaStream, socket: WebSocket) => {
-  const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
-  stream.getTracks().forEach(t => pc.addTrack(t, stream));
-  pc.onicecandidate = ({ candidate }) => {
-    if (candidate) socket.send(JSON.stringify({ type: 'ice-candidate', viewerId, candidate }));
-  };
-  peerConns.value.set(viewerId, pc);
-  return pc;
-};
+const loading = ref(false);
+const error = ref("");
+const success = ref("");
+const streamKey = ref("");
+const rtmpUrl = ref("");
+const useTwitch = ref(false);
+const twitchUsername = ref("");
+const twitchStreamKey = ref("");
+const startingStream = ref(false);
+const currentStreamId = ref<number | null>(null);
+const thumbnailFile = ref<File | null>(null);
+const thumbnailPreview = ref<string | null>(null);
+const thumbnailInput = ref<HTMLInputElement | null>(null);
+const previewVideo = ref<HTMLVideoElement | null>(null);
+const screenStream = ref<MediaStream | null>(null);
+const streamStarted = ref(false);
+const stoppingCapture = ref(false);
 
-const stopStream = async () => {
-  stopping.value = true;
-  try { await apiClient.post(`/streams/${streamId.value}/stop`); } catch {}
-  cleanup();
-  isLive.value = false; viewerCount.value = 0;
-  successMsg.value = 'Stream arrêté.';
-  stopping.value = false;
-};
-
-const deleteStream = async () => {
-  if (!confirm('Supprimer ce stream ?')) return;
+const handleSubmit = async () => {
   try {
-    await apiClient.delete(`/streams/${streamId.value}`);
-    router.push('/streams');
-  } catch { error.value = 'Erreur lors de la suppression.'; }
+    loading.value = true;
+    error.value = "";
+    success.value = "";
+    
+    const token = localStorage.getItem("auth_token");
+    if (!token) {
+      router.push("/login");
+      return;
+    }
+
+    // Ensure Twitch is always enabled
+    const streamData = {
+      ...form.value,
+      use_twitch: true, // Force Twitch
+    };
+    
+    // Validate Twitch fields
+    if (!streamData.twitch_username || !streamData.twitch_stream_key) {
+      error.value = "Twitch username and Stream Key are required.";
+      loading.value = false;
+      return;
+    }
+    
+    // Create FormData for file upload
+    const formData = new FormData();
+    formData.append('title', streamData.title);
+    formData.append('description', streamData.description || '');
+    formData.append('category', streamData.category || '');
+    formData.append('game', streamData.game || '');
+    formData.append('use_twitch', '1');
+    formData.append('twitch_username', streamData.twitch_username);
+    formData.append('twitch_stream_key', streamData.twitch_stream_key);
+    
+    // Add thumbnail file if selected
+    if (thumbnailFile.value) {
+      formData.append('thumbnail', thumbnailFile.value);
+    }
+    
+    console.log("Creating stream with data:", streamData);
+    
+    const response = await apiClient.post(
+      '/streams',
+      formData
+    );
+
+    console.log("Stream creation response:", response.data);
+
+    if (response.data.success) {
+      success.value = "✅ Stream created successfully! Streaming information will appear below...";
+      currentStreamId.value = response.data.data.id;
+      console.log("Stream ID set to:", currentStreamId.value);
+      
+      // Scroll to stream key section
+      await nextTick();
+      setTimeout(() => {
+        const streamKeySection = document.querySelector('.border-top');
+        if (streamKeySection) {
+          streamKeySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+      
+      // Load stream key immediately
+      await loadStreamKey();
+    } else {
+      error.value = response.data.message || "Error creating stream";
+    }
+  } catch (error: any) {
+    console.error("Error creating stream:", error);
+    console.error("Error response:", error.response?.data);
+    
+    // If user already has a stream, load existing information
+    if (error.response?.status === 400 && error.response?.data?.message?.includes('already have a stream')) {
+      error.value = "You already have a stream. Loading your existing information...";
+      // Load existing stream
+      await loadStreamKey();
+      // Try to load stream information
+      try {
+        const streamsResponse = await apiClient.get("/streams");
+        if (streamsResponse.data.success) {
+          const streams = streamsResponse.data.data.data || streamsResponse.data.data || [];
+          const userResponse = await apiClient.get("/user");
+          if (userResponse.data && userResponse.data.id) {
+            const userStream = streams.find((s: any) => s.user_id === userResponse.data.id || s.user?.id === userResponse.data.id);
+            if (userStream) {
+              currentStreamId.value = userStream.id;
+              form.value.title = userStream.title || "";
+              form.value.description = userStream.description || "";
+              form.value.category = userStream.category || "";
+              form.value.game = userStream.game || "";
+              form.value.thumbnail = userStream.thumbnail || "";
+              form.value.use_twitch = true; // Always Twitch
+              form.value.twitch_username = userStream.twitch_username || "";
+              form.value.twitch_stream_key = userStream.twitch_stream_key || "";
+              success.value = "Your existing stream information has been loaded. You can modify it above.";
+            }
+          }
+        }
+      } catch (loadError) {
+        console.error("Error loading existing stream:", loadError);
+      }
+    } else if (error.response?.data?.errors) {
+      const errors = error.response.data.errors;
+      error.value = Object.values(errors).flat().join(', ');
+    } else if (error.response?.data?.message) {
+      error.value = error.response.data.message;
+    } else {
+      error.value = "Error creating stream. Check the console for more details.";
+    }
+  } finally {
+    loading.value = false;
+  }
 };
 
-const cleanup = () => {
-  screenStream.value?.getTracks().forEach(t => t.stop());
-  screenStream.value = null;
-  if (localVideo.value) localVideo.value.srcObject = null;
-  peerConns.value.forEach(pc => pc.close()); peerConns.value.clear();
-  ws.value?.close(); ws.value = null;
+const loadStreamKey = async () => {
+  try {
+    loading.value = true;
+    
+    const response = await apiClient.get("/stream-key");
+
+    if (response.data.success) {
+      // Check if using Twitch
+      if (response.data.data.use_twitch) {
+        useTwitch.value = true;
+        twitchUsername.value = response.data.data.twitch_username || "";
+        twitchStreamKey.value = response.data.data.stream_key || ""; // Stream key is the Twitch key
+        rtmpUrl.value = response.data.data.rtmp_url || "";
+      } else {
+        useTwitch.value = false;
+        streamKey.value = response.data.data.stream_key || "";
+        rtmpUrl.value = response.data.data.rtmp_url || "";
+      }
+      // Set stream ID if available
+      if (response.data.data.stream_id) {
+        currentStreamId.value = response.data.data.stream_id;
+      }
+      success.value = "Streaming information loaded successfully!";
+    } else {
+      console.error("Failed to load stream key:", response.data.message);
+      error.value = response.data.message || "Error loading information";
+    }
+  } catch (error: any) {
+    console.error("Error loading stream key:", error);
+    if (error.response?.status === 404) {
+      error.value = "No stream found. Please create a stream first.";
+    } else {
+      error.value = error.response?.data?.message || "Error loading information";
+    }
+  } finally {
+    loading.value = false;
+  }
 };
 
-const copy = async (text: string) => {
-  await navigator.clipboard.writeText(text);
-  successMsg.value = 'Lien copié !';
-  setTimeout(() => { successMsg.value = ''; }, 2000);
+const updateStream = async () => {
+  if (!currentStreamId.value) return;
+  
+  try {
+    loading.value = true;
+    error.value = "";
+    success.value = "";
+    
+    // Ensure Twitch is always enabled
+    const streamData = {
+      ...form.value,
+      use_twitch: true, // Force Twitch
+    };
+    
+    // Validate Twitch fields
+    if (!streamData.twitch_username || !streamData.twitch_stream_key) {
+      error.value = "Twitch username and Stream Key are required.";
+      loading.value = false;
+      return;
+    }
+    
+    const token = localStorage.getItem("auth_token");
+    if (!token) {
+      router.push("/login");
+      return;
+    }
+
+    // Create FormData for file upload
+    const formData = new FormData();
+    formData.append('title', streamData.title);
+    formData.append('description', streamData.description || '');
+    formData.append('category', streamData.category || '');
+    formData.append('game', streamData.game || '');
+    formData.append('use_twitch', '1');
+    formData.append('twitch_username', streamData.twitch_username);
+    formData.append('twitch_stream_key', streamData.twitch_stream_key);
+    
+    // Add thumbnail file if selected
+    if (thumbnailFile.value) {
+      formData.append('thumbnail', thumbnailFile.value);
+    }
+
+    const response = await apiClient.put(
+      `/streams/${currentStreamId.value}`,
+      formData
+    );
+
+    if (response.data.success) {
+      success.value = "✅ Stream updated successfully!";
+    } else {
+      error.value = response.data.message || "Error updating";
+    }
+  } catch (error: any) {
+    console.error("Error updating stream:", error);
+    if (error.response?.data?.errors) {
+      const errors = error.response.data.errors;
+      error.value = Object.values(errors).flat().join(', ');
+    } else {
+      error.value = error.response?.data?.message || "Error updating stream";
+    }
+  } finally {
+    loading.value = false;
+  }
+};
+
+const copyToClipboard = async (text: string) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    success.value = "Copied to clipboard!";
+    setTimeout(() => {
+      success.value = "";
+    }, 2000);
+  } catch (err) {
+    console.error("Failed to copy:", err);
+    error.value = "Unable to copy to clipboard";
+  }
+};
+
+const startStreamWithScreenCapture = async () => {
+  if (!currentStreamId.value) {
+    error.value = "No stream found. Please create a stream first.";
+    return;
+  }
+
+  try {
+    startingStream.value = true;
+    error.value = "";
+    success.value = "";
+    const token = localStorage.getItem("auth_token");
+    
+    if (!token) {
+      router.push("/login");
+      return;
+    }
+
+    // Request screen capture
+    const displayMediaOptions = {
+      video: {
+        displaySurface: "monitor" as const,
+        cursor: "always" as const,
+        width: { ideal: 1920 },
+        height: { ideal: 1080 }
+      },
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        sampleRate: 44100
+      },
+      preferCurrentTab: false
+    };
+
+    // Get screen stream
+    const stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+    screenStream.value = stream;
+
+    // Display stream in video element
+    if (previewVideo.value) {
+      previewVideo.value.srcObject = stream;
+    }
+
+    // Notify backend that stream has started
+    const response = await apiClient.post(
+      `/streams/${currentStreamId.value}/start`
+    );
+
+    if (response.data.success) {
+      streamStarted.value = true;
+      success.value = "Stream started successfully! Your screen is being captured.";
+      
+      // Monitor for stop events (user stops sharing from browser)
+      stream.getVideoTracks()[0].addEventListener('ended', () => {
+        stopScreenCapture();
+      });
+
+      // Start WebRTC peer connection for viewers
+      await initializeWebRTC(stream);
+    } else {
+      error.value = response.data.message || "Error starting stream";
+      // Clean up if error
+      stream.getTracks().forEach(track => track.stop());
+      screenStream.value = null;
+    }
+  } catch (err: any) {
+    console.error("Error starting stream:", err);
+    
+    // Clean up on error
+    if (screenStream.value) {
+      screenStream.value.getTracks().forEach(track => track.stop());
+      screenStream.value = null;
+    }
+
+    if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+      error.value = "Screen sharing permission denied. Please allow screen sharing to start streaming.";
+    } else if (err.name === 'NotFoundError') {
+      error.value = "No screen capture device found.";
+    } else if (err.response?.status === 404) {
+      error.value = "Stream not found. Please create a new stream.";
+    } else if (err.response?.status === 400) {
+      error.value = err.response.data.message || "Stream is already live";
+    } else {
+      error.value = err.response?.data?.message || "Error starting stream";
+    }
+  } finally {
+    startingStream.value = false;
+  }
+};
+
+const stopScreenCapture = async () => {
+  if (!currentStreamId.value || !streamStarted.value) return;
+
+  try {
+    stoppingCapture.value = true;
+    
+    // Stop media tracks
+    if (screenStream.value) {
+      screenStream.value.getTracks().forEach(track => track.stop());
+      screenStream.value = null;
+    }
+
+    // Clear video element
+    if (previewVideo.value) {
+      previewVideo.value.srcObject = null;
+    }
+
+    // Notify backend to stop stream
+    try {
+      await apiClient.post(`/streams/${currentStreamId.value}/stop`);
+    } catch (err: any) {
+      console.error("Error stopping stream on backend:", err);
+    }
+
+    streamStarted.value = false;
+    success.value = "Stream stopped successfully!";
+    
+    // Redirect to streams page after a delay
+    setTimeout(() => {
+      router.push('/streams');
+    }, 2000);
+  } catch (err: any) {
+    console.error("Error stopping screen capture:", err);
+    error.value = "Error stopping stream";
+  } finally {
+    stoppingCapture.value = false;
+  }
+};
+
+const initializeWebRTC = async (stream: MediaStream) => {
+  // Store stream in sessionStorage for viewers to access
+  // In a real implementation, you'd use WebRTC with a signaling server
+  // For now, we'll store the stream ID and let viewers connect via the stream page
+  if (currentStreamId.value) {
+    sessionStorage.setItem(`stream_${currentStreamId.value}`, 'live');
+  }
 };
 
 onMounted(async () => {
-  if (!localStorage.getItem('auth_token')) { router.push('/login'); return; }
+  const token = localStorage.getItem("auth_token");
+  if (!token) {
+    router.push("/login");
+    return;
+  }
+  
+  // Check if user already has a stream and load stream key (which includes stream_id)
   try {
-    const res = await apiClient.get('/stream-key');
-    if (res.data.success && res.data.data?.stream_id) {
-      streamId.value = res.data.data.stream_id;
-      const detail = await apiClient.get(`/streams/${streamId.value}`);
-      if (detail.data.success) {
-        form.value.title       = detail.data.data.title || '';
-        form.value.description = detail.data.data.description || '';
-        form.value.category    = detail.data.data.category || '';
-        form.value.game        = detail.data.data.game || '';
-        if (detail.data.data.thumbnail_url) thumbPreview.value = detail.data.data.thumbnail_url;
-        successMsg.value = 'Votre stream existant a été chargé.';
+    await loadStreamKey();
+    
+    // If we have a stream ID, load stream information
+    if (currentStreamId.value) {
+      try {
+        const response = await apiClient.get(`/streams/${currentStreamId.value}`);
+        
+        if (response.data.success && response.data.data) {
+          const stream = response.data.data;
+          form.value.title = stream.title || "";
+          form.value.description = stream.description || "";
+          form.value.category = stream.category || "";
+          form.value.game = stream.game || "";
+          // Load thumbnail preview if exists with correction
+          if (stream.thumbnail_url || stream.thumbnail) {
+            const thumbnailUrl = stream.thumbnail_url || getStorageUrl(`streams/thumbnails/${stream.thumbnail.split('/').pop()}`);
+            thumbnailPreview.value = fixImageUrl(thumbnailUrl);
+          }
+          form.value.use_twitch = true; // Always Twitch
+          form.value.twitch_username = stream.twitch_username || "";
+          form.value.twitch_stream_key = stream.twitch_stream_key || "";
+          success.value = "Your existing stream information has been loaded. You can modify it above.";
+        }
+      } catch (loadError) {
+        console.error("Error loading stream details:", loadError);
       }
     }
-  } catch {}
+  } catch (error) {
+    console.error("Error loading existing stream:", error);
+  }
 });
-
-onBeforeUnmount(() => { if (isLive.value) stopStream(); });
 </script>
 
 <style scoped>
@@ -345,11 +828,13 @@ onBeforeUnmount(() => { if (isLive.value) stopStream(); });
   overflow: hidden;
   border-radius: 24px;
 }
+
 .text_gradient {
   background: linear-gradient(90deg, #FF9F00, #FF9F00);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
 .btn_primary {
   background-color: #FF9F00;
   color: #000;
@@ -360,8 +845,11 @@ onBeforeUnmount(() => { if (isLive.value) stopStream(); });
   transition: 0.3s;
   cursor: pointer;
 }
-.btn_primary:hover { transform: translateY(-2px); }
-.btn_primary:disabled { opacity: .5; cursor: not-allowed; }
+.btn_primary:hover {
+  background-color: #FF9F00;
+  transform: translateY(-2px);
+}
+
 .btn_secondary {
   background: transparent;
   border: 2px solid #FF9F00;
@@ -372,12 +860,17 @@ onBeforeUnmount(() => { if (isLive.value) stopStream(); });
   transition: 0.3s;
   cursor: pointer;
 }
-.btn_secondary:hover { background-color: #FF9F00; color: #000; }
+.btn_secondary:hover {
+  background-color: #FF9F00;
+  color: #000;
+}
+
 .defi_card {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border-radius: 16px;
 }
+
 .hero_badge {
   background: rgba(255, 159, 0, 0.2);
   color: #FF9F00;
@@ -386,14 +879,46 @@ onBeforeUnmount(() => { if (isLive.value) stopStream(); });
   font-size: 0.9rem;
   font-weight: 600;
 }
-.hero_title { font-size: 2.5rem; font-weight: 800; color: white; line-height: 1.2; }
-.hero_subtitle { font-size: 1.1rem; color: rgba(255,255,255,0.8); line-height: 1.6; }
-.form-control { color: white; }
-.form-control::placeholder { color: rgba(255,255,255,0.5); }
-.form-control:focus { background-color: rgba(255,255,255,0.1); border-color: #FF9F00; color: white; }
-.page-content-with-space { padding-top: 90px; }
+
+.hero_title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: white;
+  line-height: 1.2;
+}
+
+.hero_subtitle {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+}
+
+.form-control {
+  color: white;
+}
+
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.form-control:focus {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: #FF9F00;
+  color: white;
+}
+
+.page-content-with-space {
+  padding-top: 90px;
+}
+
 @media (max-width: 768px) {
-  .page-content-with-space { padding-top: 60px; }
-  .hero_title { font-size: 1.8rem; }
+  .page-content-with-space {
+    padding-top: 60px;
+  }
+  
+  .hero_title {
+    font-size: 1.8rem;
+  }
 }
 </style>
+
