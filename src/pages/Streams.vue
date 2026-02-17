@@ -50,7 +50,7 @@
                   <div v-for="challenge in liveChallenges" :key="challenge.id" class="col-12 col-md-6 col-lg-4">
                     <div
                       class="stream_card defi_card n11-bg rounded-8 p-0 h-100 d-flex flex-column overflow-hidden position-relative"
-                      @click="$router.push(`/challenges/${challenge.id}/live`)">
+                      @click="$router.push(`/challenges/${challenge.id}/live/list`)">
                       <div class="position-absolute top-0 start-0 m-2" style="z-index:1;">
                         <span class="badge bg-danger px-2 py-1">
                           <i class="fas fa-circle me-1" style="font-size:.5rem;animation:pulse 2s infinite;"></i>LIVE

@@ -33,13 +33,15 @@
                     <form v-if="!streamId" @submit.prevent="createStream">
                       <div class="mb-4">
                         <label class="text-white mb-2 d-block fw-bold">Titre du stream *</label>
-                        <input v-model="form.title" type="text" class="form-control n11-bg text-white border-secondary"
+                        <input v-model="form.title" type="text"
+                          class="form-control n11-bg text-white border-secondary"
                           placeholder="Ex: Session live eBetStream" required maxlength="255" />
                       </div>
 
                       <div class="mb-4">
                         <label class="text-white mb-2 d-block fw-bold">Description</label>
-                        <textarea v-model="form.description" class="form-control n11-bg text-white border-secondary"
+                        <textarea v-model="form.description"
+                          class="form-control n11-bg text-white border-secondary"
                           placeholder="Décrivez votre stream..." rows="4" maxlength="1000"></textarea>
                       </div>
 
@@ -58,14 +60,17 @@
 
                       <div class="mb-4">
                         <label class="text-white mb-2 d-block fw-bold">Jeu</label>
-                        <input v-model="form.game" type="text" class="form-control n11-bg text-white border-secondary"
+                        <input v-model="form.game" type="text"
+                          class="form-control n11-bg text-white border-secondary"
                           placeholder="Ex: FC Mobile 25, Call of Duty..." maxlength="100" />
                       </div>
 
                       <div class="mb-4">
                         <label class="text-white mb-2 d-block fw-bold">Miniature</label>
-                        <input ref="thumbInput" type="file" accept="image/jpeg,image/png,image/jpg,image/webp"
-                          class="form-control n11-bg text-white border-secondary" @change="onThumbChange" />
+                        <input ref="thumbInput" type="file"
+                          accept="image/jpeg,image/png,image/jpg,image/webp"
+                          class="form-control n11-bg text-white border-secondary"
+                          @change="onThumbChange" />
                         <small class="text-white d-block mt-2" style="opacity:.7;">
                           JPEG, PNG, WebP (max 5MB)
                         </small>
@@ -73,15 +78,13 @@
                           style="max-width:200px;max-height:200px;object-fit:cover;" />
                       </div>
 
-                      <div v-if="error"
-                        class="alert alert-danger mb-4 d-flex align-items-center justify-content-between">
+                      <div v-if="error" class="alert alert-danger mb-4 d-flex align-items-center justify-content-between">
                         <span><i class="fas fa-exclamation-circle me-2"></i>{{ error }}</span>
-                        <button type="button" class="btn-close btn-close-white" @click="error = ''"></button>
+                        <button type="button" class="btn-close btn-close-white" @click="error=''"></button>
                       </div>
-                      <div v-if="successMsg"
-                        class="alert alert-success mb-4 d-flex align-items-center justify-content-between">
+                      <div v-if="successMsg" class="alert alert-success mb-4 d-flex align-items-center justify-content-between">
                         <span>{{ successMsg }}</span>
-                        <button type="button" class="btn-close btn-close-white" @click="successMsg = ''"></button>
+                        <button type="button" class="btn-close btn-close-white" @click="successMsg=''"></button>
                       </div>
 
                       <div class="d-flex gap-3">
@@ -107,8 +110,7 @@
                       <div class="alert alert-info mb-4">
                         <p class="mb-2 fw-bold"><i class="fas fa-link me-2"></i>Lien pour les spectateurs</p>
                         <div class="d-flex align-items-center gap-2">
-                          <code class="d-block p-2 rounded bg-dark text-white flex-grow-1"
-                            style="word-break:break-all;">
+                          <code class="d-block p-2 rounded bg-dark text-white flex-grow-1" style="word-break:break-all;">
                             {{ viewerUrl }}
                           </code>
                           <button class="btn btn-sm btn-outline-light" @click="copy(viewerUrl)" title="Copier">
@@ -126,15 +128,13 @@
                         </p>
                       </div>
 
-                      <div v-if="error"
-                        class="alert alert-danger mb-4 d-flex align-items-center justify-content-between">
+                      <div v-if="error" class="alert alert-danger mb-4 d-flex align-items-center justify-content-between">
                         <span><i class="fas fa-exclamation-circle me-2"></i>{{ error }}</span>
-                        <button type="button" class="btn-close btn-close-white" @click="error = ''"></button>
+                        <button type="button" class="btn-close btn-close-white" @click="error=''"></button>
                       </div>
-                      <div v-if="successMsg"
-                        class="alert alert-success mb-4 d-flex align-items-center justify-content-between">
+                      <div v-if="successMsg" class="alert alert-success mb-4 d-flex align-items-center justify-content-between">
                         <span>{{ successMsg }}</span>
-                        <button type="button" class="btn-close btn-close-white" @click="successMsg = ''"></button>
+                        <button type="button" class="btn-close btn-close-white" @click="successMsg=''"></button>
                       </div>
 
                       <div class="d-flex gap-3 flex-wrap">
@@ -142,8 +142,7 @@
                           <span v-if="starting">Démarrage...</span>
                           <span v-else><i class="fas fa-play me-2"></i>Partager mon écran</span>
                         </button>
-                        <button v-else class="btn_primary" style="background:#ef4444;" @click="stopStream"
-                          :disabled="stopping">
+                        <button v-else class="btn_primary" style="background:#ef4444;" @click="stopStream" :disabled="stopping">
                           <span v-if="stopping">Arrêt...</span>
                           <span v-else><i class="fas fa-stop me-2"></i>Arrêter le stream</span>
                         </button>
@@ -173,23 +172,23 @@ import apiClient from '@/utils/axios';
 const router = useRouter();
 
 const form = ref({ title: '', description: '', category: '', game: '' });
-const thumbFile = ref<File | null>(null);
+const thumbFile  = ref<File | null>(null);
 const thumbPreview = ref<string | null>(null);
 const thumbInput = ref<HTMLInputElement | null>(null);
 const localVideo = ref<HTMLVideoElement | null>(null);
 
-const streamId = ref<number | null>(null);
-const isLive = ref(false);
+const streamId    = ref<number | null>(null);
+const isLive      = ref(false);
 const viewerCount = ref(0);
-const loading = ref(false);
-const starting = ref(false);
-const stopping = ref(false);
-const error = ref('');
+const loading   = ref(false);
+const starting  = ref(false);
+const stopping  = ref(false);
+const error     = ref('');
 const successMsg = ref('');
 
 let screenStream = ref<MediaStream | null>(null);
-let peerConns = ref<Map<string, RTCPeerConnection>>(new Map());
-let ws = ref<WebSocket | null>(null);
+let peerConns    = ref<Map<string, RTCPeerConnection>>(new Map());
+let ws           = ref<WebSocket | null>(null);
 
 const viewerUrl = computed(() =>
   streamId.value ? `${window.location.origin}/streams/${streamId.value}/watch` : ''
@@ -216,7 +215,7 @@ const createStream = async () => {
     if (thumbFile.value) fd.append('thumbnail', thumbFile.value);
     const res = await apiClient.post('/streams', fd);
     if (res.data.success) {
-      streamId.value = res.data.data.id;
+      streamId.value  = res.data.data.id;
       successMsg.value = 'Stream créé ! Cliquez sur "Partager mon écran" pour démarrer.';
     } else { error.value = res.data.message || 'Erreur création'; }
   } catch (e: any) {
@@ -245,7 +244,7 @@ const startStream = async () => {
 };
 
 const connectSignaling = (stream: MediaStream) => {
-  const token = localStorage.getItem('auth_token') || '';
+  const token  = localStorage.getItem('auth_token') || '';
   const WS_URL = import.meta.env.VITE_STREAM_WS_URL || 'ws://localhost:8082';
   const socket = new WebSocket(`${WS_URL}/stream/${streamId.value}?token=${encodeURIComponent(token)}`);
   ws.value = socket;
@@ -286,7 +285,7 @@ const createPeerConnection = (viewerId: string, stream: MediaStream, socket: Web
 
 const stopStream = async () => {
   stopping.value = true;
-  try { await apiClient.post(`/streams/${streamId.value}/stop`); } catch { }
+  try { await apiClient.post(`/streams/${streamId.value}/stop`); } catch {}
   cleanup();
   isLive.value = false; viewerCount.value = 0;
   successMsg.value = 'Stream arrêté.';
@@ -323,15 +322,15 @@ onMounted(async () => {
       streamId.value = res.data.data.stream_id;
       const detail = await apiClient.get(`/streams/${streamId.value}`);
       if (detail.data.success) {
-        form.value.title = detail.data.data.title || '';
+        form.value.title       = detail.data.data.title || '';
         form.value.description = detail.data.data.description || '';
-        form.value.category = detail.data.data.category || '';
-        form.value.game = detail.data.data.game || '';
+        form.value.category    = detail.data.data.category || '';
+        form.value.game        = detail.data.data.game || '';
         if (detail.data.data.thumbnail_url) thumbPreview.value = detail.data.data.thumbnail_url;
         successMsg.value = 'Votre stream existant a été chargé.';
       }
     }
-  } catch { }
+  } catch {}
 });
 
 onBeforeUnmount(() => { if (isLive.value) stopStream(); });
@@ -346,13 +345,11 @@ onBeforeUnmount(() => { if (isLive.value) stopStream(); });
   overflow: hidden;
   border-radius: 24px;
 }
-
 .text_gradient {
   background: linear-gradient(90deg, #FF9F00, #FF9F00);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
 .btn_primary {
   background-color: #FF9F00;
   color: #000;
@@ -363,16 +360,8 @@ onBeforeUnmount(() => { if (isLive.value) stopStream(); });
   transition: 0.3s;
   cursor: pointer;
 }
-
-.btn_primary:hover {
-  transform: translateY(-2px);
-}
-
-.btn_primary:disabled {
-  opacity: .5;
-  cursor: not-allowed;
-}
-
+.btn_primary:hover { transform: translateY(-2px); }
+.btn_primary:disabled { opacity: .5; cursor: not-allowed; }
 .btn_secondary {
   background: transparent;
   border: 2px solid #FF9F00;
@@ -383,18 +372,12 @@ onBeforeUnmount(() => { if (isLive.value) stopStream(); });
   transition: 0.3s;
   cursor: pointer;
 }
-
-.btn_secondary:hover {
-  background-color: #FF9F00;
-  color: #000;
-}
-
+.btn_secondary:hover { background-color: #FF9F00; color: #000; }
 .defi_card {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border-radius: 16px;
 }
-
 .hero_badge {
   background: rgba(255, 159, 0, 0.2);
   color: #FF9F00;
@@ -403,45 +386,14 @@ onBeforeUnmount(() => { if (isLive.value) stopStream(); });
   font-size: 0.9rem;
   font-weight: 600;
 }
-
-.hero_title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: white;
-  line-height: 1.2;
-}
-
-.hero_subtitle {
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.6;
-}
-
-.form-control {
-  color: white;
-}
-
-.form-control::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.form-control:focus {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: #FF9F00;
-  color: white;
-}
-
-.page-content-with-space {
-  padding-top: 90px;
-}
-
+.hero_title { font-size: 2.5rem; font-weight: 800; color: white; line-height: 1.2; }
+.hero_subtitle { font-size: 1.1rem; color: rgba(255,255,255,0.8); line-height: 1.6; }
+.form-control { color: white; }
+.form-control::placeholder { color: rgba(255,255,255,0.5); }
+.form-control:focus { background-color: rgba(255,255,255,0.1); border-color: #FF9F00; color: white; }
+.page-content-with-space { padding-top: 90px; }
 @media (max-width: 768px) {
-  .page-content-with-space {
-    padding-top: 60px;
-  }
-
-  .hero_title {
-    font-size: 1.8rem;
-  }
+  .page-content-with-space { padding-top: 60px; }
+  .hero_title { font-size: 1.8rem; }
 }
 </style>
