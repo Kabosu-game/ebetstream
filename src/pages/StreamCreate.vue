@@ -343,6 +343,9 @@ import apiClient from "@/utils/axios";
 import { getStorageUrl } from '@/config/constants';
 import { fixImageUrl } from '@/utils/imageFixer';
 
+
+const mediaRecorder = ref<MediaRecorder | null>(null);
+const wsConnection = ref<WebSocket | null>(null);
 const router = useRouter();
 const form = ref({
   title: "",
@@ -734,7 +737,14 @@ const stopScreenCapture = async () => {
 
   try {
     stoppingCapture.value = true;
-    
+    if (mediaRecorder.value && mediaRecorder.value.state !== 'inactive') {
+  mediaRecorder.value.stop();
+  mediaRecorder.value = null;
+}
+if (wsConnection.value) {
+  wsConnection.value.close();
+  wsConnection.value = null;
+}
     // Stop media tracks
     if (screenStream.value) {
       screenStream.value.getTracks().forEach(track => track.stop());
@@ -769,13 +779,109 @@ const stopScreenCapture = async () => {
 };
 
 const initializeWebRTC = async (stream: MediaStream) => {
-  // Store stream in sessionStorage for viewers to access
-  // In a real implementation, you'd use WebRTC with a signaling server
-  // For now, we'll store the stream ID and let viewers connect via the stream page
-  if (currentStreamId.value) {
-    sessionStorage.setItem(`stream_${currentStreamId.value}`, 'live');
+  if (!currentStreamId.value) {
+    error.value = "Stream ID manquant";
+    return;
+  }
+
+  const token = localStorage.getItem("auth_token");
+  if (!token) {
+    router.push("/login");
+    return;
+  }
+
+  // URL du serveur WebSocket Node.js
+  // Remplacer par ton domaine en prod : wss://ton-domaine.com:8082
+  const WS_URL = import.meta.env.VITE_STREAM_WS_URL || "ws://localhost:8082";
+  const wsUrl = `${WS_URL}/stream/${currentStreamId.value}?token=${encodeURIComponent(token)}`;
+
+  console.log("[Stream] Connexion WebSocket →", wsUrl.replace(token, "****"));
+
+  const ws = new WebSocket(wsUrl);
+  wsConnection.value = ws;
+
+  ws.onopen = () => {
+    console.log("[Stream] WebSocket connecté, démarrage MediaRecorder...");
+  };
+
+  ws.onmessage = (event) => {
+    try {
+      const msg = JSON.parse(event.data);
+      console.log("[Stream] Message serveur:", msg);
+
+      if (msg.type === "ready") {
+        // FFmpeg est prêt → démarrer l'enregistrement
+        startMediaRecorder(stream, ws);
+        success.value = "🔴 Stream en direct sur Twitch !";
+      } else if (msg.type === "error") {
+        error.value = "Erreur serveur : " + msg.message;
+        stopScreenCapture();
+      }
+    } catch (e) {
+      console.log("[Stream] Message non-JSON:", event.data);
+    }
+  };
+
+  ws.onerror = (err) => {
+    console.error("[Stream] WebSocket error:", err);
+    error.value = "Impossible de se connecter au serveur de streaming. Vérifiez que le serveur Node.js tourne.";
+    stopScreenCapture();
+  };
+
+  ws.onclose = (event) => {
+    console.log("[Stream] WebSocket fermé:", event.code, event.reason);
+    if (streamStarted.value) {
+      stopScreenCapture();
+    }
+  };
+};
+
+const startMediaRecorder = (stream: MediaStream, ws: WebSocket) => {
+  // Sélectionner le meilleur codec supporté
+  const mimeTypes = [
+    'video/webm;codecs=h264,opus',
+    'video/webm;codecs=avc1,opus',
+    'video/webm;codecs=vp8,opus',
+    'video/webm',
+  ];
+
+  const mimeType = mimeTypes.find(type => MediaRecorder.isTypeSupported(type)) || 'video/webm';
+  console.log("[MediaRecorder] Using mimeType:", mimeType);
+
+  try {
+    const recorder = new MediaRecorder(stream, {
+      mimeType,
+      videoBitsPerSecond: 3_000_000, // 3 Mbps
+      audioBitsPerSecond: 160_000,
+    });
+
+    recorder.ondataavailable = (e) => {
+      if (e.data && e.data.size > 0 && ws.readyState === WebSocket.OPEN) {
+        ws.send(e.data);
+      }
+    };
+
+    recorder.onerror = (e) => {
+      console.error("[MediaRecorder] Error:", e);
+      error.value = "Erreur d'enregistrement vidéo";
+    };
+
+    recorder.onstop = () => {
+      console.log("[MediaRecorder] Stopped");
+    };
+
+    // Envoyer un chunk toutes les 1 seconde
+    recorder.start(1000);
+    mediaRecorder.value = recorder;
+
+    console.log("[MediaRecorder] Started, sending chunks to Twitch via WebSocket");
+  } catch (err: any) {
+    console.error("[MediaRecorder] Failed to start:", err);
+    error.value = "Impossible de démarrer l'enregistrement : " + err.message;
+    stopScreenCapture();
   }
 };
+
 
 onMounted(async () => {
   const token = localStorage.getItem("auth_token");
