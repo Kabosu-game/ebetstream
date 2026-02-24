@@ -54,7 +54,11 @@ const publicPages = [
   '/cookies',
 ];
 
-const isPublicPath = (path) => {
+interface IsPublicPathFunction {
+  (path: string): boolean;
+}
+
+const isPublicPath: IsPublicPathFunction = (path: string): boolean => {
   return publicPages.includes(path) ||
     path.startsWith('/events/') ||
     path.startsWith('/clans/') ||
