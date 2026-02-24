@@ -35,8 +35,8 @@
                       <div class="video_container position-relative" style="background:#000;aspect-ratio:16/9;">
 
                         <!-- Vidéo WebRTC -->
-                        <video ref="remoteVideo" v-show="stream.is_live && connected" autoplay playsinline controls
-                          class="w-100 h-100" style="object-fit:contain;"></video>
+                        <video ref="remoteVideo" v-show="connected" autoplay playsinline controls class="w-100 h-100"
+                          style="object-fit:contain;"></video>
 
                         <!-- Attente connexion WebRTC -->
                         <div v-if="stream.is_live && !connected"
@@ -44,6 +44,11 @@
                           <div class="text-center text-white">
                             <div class="spinner-border text-warning mb-3" role="status"></div>
                             <p class="mb-0">{{ waitingMsg }}</p>
+                            <!-- Bouton retry si ça prend trop longtemps -->
+                            <button v-if="showRetry" class="btn_secondary mt-3"
+                              style="padding:.5rem 1rem;font-size:.85rem;" @click="retryConnection">
+                              <i class="fas fa-redo me-1"></i>Réessayer
+                            </button>
                           </div>
                         </div>
 
@@ -65,9 +70,16 @@
                         </div>
 
                         <!-- Viewers -->
-                        <div v-if="stream.is_live && connected" class="position-absolute bottom-0 end-0 m-3">
+                        <div v-if="stream.is_live" class="position-absolute bottom-0 end-0 m-3">
                           <span class="badge bg-dark px-2 py-1">
                             <i class="fas fa-eye me-1"></i>{{ stream.viewer_count || 0 }}
+                          </span>
+                        </div>
+
+                        <!-- Statut debug (petit indicateur discret) -->
+                        <div class="position-absolute top-0 end-0 m-3">
+                          <span class="badge px-2 py-1" :style="{ background: wsStatusColor, fontSize: '.7rem' }">
+                            {{ wsStatusLabel }}
                           </span>
                         </div>
 
@@ -214,6 +226,7 @@ const pageError = ref('');
 const remoteVideo = ref<HTMLVideoElement | null>(null);
 const connected = ref(false);
 const waitingMsg = ref('Connexion au stream...');
+const showRetry = ref(false);
 
 const chatMessages = ref<ChatMessage[]>([]);
 const chatLoading = ref(false);
@@ -226,80 +239,153 @@ const chatContainer = ref<HTMLElement | null>(null);
 
 const isAuthenticated = computed(() => !!localStorage.getItem('auth_token'));
 
-// ── WebRTC viewer ─────────────────────────────────────────────────────────────
+// ── WebRTC ─────────────────────────────────────────────────────────────────
 let ws: WebSocket | null = null;
 let pc: RTCPeerConnection | null = null;
+let retryTimer: ReturnType<typeof setTimeout> | null = null;
+let wsReconnectTimer: ReturnType<typeof setTimeout> | null = null;
+let wsStatus = ref<'disconnected' | 'connecting' | 'connected'>('disconnected');
 
-/**
- * IMPORTANT — l'URL doit pointer sur le proxy Nginx :
- *   wss://ebetstream.com/ws  →  Nginx strip /ws/  →  ws://127.0.0.1:8082
- * Donc Node.js reçoit bien  /watch/{id}?token=...
- *
- * Dans .env du frontend :  VITE_STREAM_WS_URL=wss://ebetstream.com/ws
- */
 const WS_BASE = (import.meta.env.VITE_STREAM_WS_URL || 'wss://ebetstream.com/ws').replace(/\/$/, '');
-const ICE_SERVERS = [{ urls: 'stun:stun.l.google.com:19302' }];
+const ICE_SERVERS = [
+  { urls: 'stun:stun.l.google.com:19302' },
+  { urls: 'stun:stun1.l.google.com:19302' },
+];
+
+const wsStatusColor = computed(() => {
+  if (wsStatus.value === 'connected') return 'rgba(40,167,69,.8)';
+  if (wsStatus.value === 'connecting') return 'rgba(255,193,7,.8)';
+  return 'rgba(220,53,69,.8)';
+});
+const wsStatusLabel = computed(() => {
+  if (wsStatus.value === 'connected') return '● WS';
+  if (wsStatus.value === 'connecting') return '◌ WS';
+  return '○ WS';
+});
+
+// Afficher le bouton retry après 8 secondes sans connexion
+const startRetryTimer = () => {
+  showRetry.value = false;
+  if (retryTimer) clearTimeout(retryTimer);
+  retryTimer = setTimeout(() => {
+    if (!connected.value) showRetry.value = true;
+  }, 8000);
+};
 
 const connectWebRTC = () => {
+  // Éviter les doubles connexions
+  if (ws && ws.readyState === WebSocket.OPEN) return;
+
+  wsStatus.value = 'connecting';
   const token = localStorage.getItem('auth_token') || '';
   const url = `${WS_BASE}/watch/${streamId}?token=${encodeURIComponent(token)}`;
+
   ws = new WebSocket(url);
 
-  ws.onopen = () => { waitingMsg.value = 'Connecté — en attente du streamer...'; };
+  ws.onopen = () => {
+    wsStatus.value = 'connected';
+    waitingMsg.value = 'Connecté — en attente du flux vidéo...';
+    startRetryTimer();
+  };
 
   ws.onmessage = async (evt) => {
     let msg: any;
     try { msg = JSON.parse(evt.data); } catch { return; }
 
     switch (msg.type) {
+
       case 'waiting':
         waitingMsg.value = msg.message || 'En attente du streamer...';
+        startRetryTimer();
         break;
 
+      // Le serveur transmet l'offre SDP créée par le streamer
       case 'offer':
         await handleOffer(msg.sdp);
         break;
 
       case 'ice-candidate':
         if (pc && msg.candidate) {
-          try { await pc.addIceCandidate(new RTCIceCandidate(msg.candidate)); } catch { }
+          try {
+            await pc.addIceCandidate(new RTCIceCandidate(msg.candidate));
+          } catch { /* ignore les candidats obsolètes */ }
         }
         break;
 
       case 'stream-ended':
         connected.value = false;
         waitingMsg.value = 'Le stream est terminé.';
-        cleanupWebRTC();
-        // Recharger les infos stream pour mettre is_live à false
+        showRetry.value = false;
+        cleanupPeer();
         await loadStream(false);
         break;
     }
   };
 
-  ws.onerror = () => { waitingMsg.value = 'Impossible de rejoindre le stream.'; };
-  ws.onclose = () => { if (!connected.value) waitingMsg.value = 'Connexion fermée.'; };
+  ws.onerror = () => {
+    wsStatus.value = 'disconnected';
+    waitingMsg.value = 'Erreur de connexion WebSocket.';
+  };
+
+  ws.onclose = () => {
+    wsStatus.value = 'disconnected';
+    // Reconnexion automatique si le stream est encore live et qu'on n'est pas connecté
+    if (!connected.value && stream.value?.is_live) {
+      waitingMsg.value = 'Reconnexion...';
+      if (wsReconnectTimer) clearTimeout(wsReconnectTimer);
+      wsReconnectTimer = setTimeout(connectWebRTC, 3000);
+    }
+  };
 };
 
+// Crée la PeerConnection et répond à l'offre du streamer
 const handleOffer = async (sdp: RTCSessionDescriptionInit) => {
+  // Nettoyer une éventuelle ancienne peer connection
+  cleanupPeer();
+
   pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
 
+  // Réception des tracks vidéo/audio du streamer
   pc.ontrack = (evt) => {
     if (remoteVideo.value && evt.streams[0]) {
       remoteVideo.value.srcObject = evt.streams[0];
       connected.value = true;
+      showRetry.value = false;
+      waitingMsg.value = '';
+      if (retryTimer) clearTimeout(retryTimer);
+      console.log('[WebRTC] ✅ Stream reçu !');
     }
   };
 
+  // Envoi de nos ICE candidates au serveur de signaling
   pc.onicecandidate = ({ candidate }) => {
     if (candidate && ws?.readyState === WebSocket.OPEN) {
       ws.send(JSON.stringify({ type: 'ice-candidate', candidate }));
     }
   };
 
+  pc.oniceconnectionstatechange = () => {
+    console.log('[WebRTC] ICE state:', pc?.iceConnectionState);
+    if (pc?.iceConnectionState === 'failed') {
+      // Forcer un restart ICE
+      pc.restartIce();
+    }
+  };
+
   pc.onconnectionstatechange = () => {
+    console.log('[WebRTC] Connection state:', pc?.connectionState);
     if (pc?.connectionState === 'disconnected' || pc?.connectionState === 'failed') {
       connected.value = false;
-      waitingMsg.value = 'Connexion perdue. Reconnexion...';
+      waitingMsg.value = 'Connexion perdue — tentative de reconnexion...';
+      startRetryTimer();
+      // Demander une nouvelle offre au streamer via le serveur
+      if (ws?.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({ type: 'request-offer' }));
+      }
+    }
+    if (pc?.connectionState === 'connected') {
+      connected.value = true;
+      showRetry.value = false;
     }
   };
 
@@ -309,10 +395,33 @@ const handleOffer = async (sdp: RTCSessionDescriptionInit) => {
   ws?.send(JSON.stringify({ type: 'answer', sdp: answer }));
 };
 
+const cleanupPeer = () => {
+  if (pc) {
+    pc.ontrack = null;
+    pc.onicecandidate = null;
+    pc.onconnectionstatechange = null;
+    pc.close();
+    pc = null;
+  }
+};
+
 const cleanupWebRTC = () => {
-  pc?.close(); pc = null;
-  ws?.close(); ws = null;
+  if (retryTimer) clearTimeout(retryTimer);
+  if (wsReconnectTimer) clearTimeout(wsReconnectTimer);
+  cleanupPeer();
+  if (ws) { ws.onclose = null; ws.close(); ws = null; }
   if (remoteVideo.value) remoteVideo.value.srcObject = null;
+  connected.value = false;
+  wsStatus.value = 'disconnected';
+};
+
+// Bouton "Réessayer" : ferme tout et reconnecte
+const retryConnection = () => {
+  showRetry.value = false;
+  connected.value = false;
+  waitingMsg.value = 'Reconnexion...';
+  cleanupWebRTC();
+  setTimeout(connectWebRTC, 500);
 };
 
 // ── API ───────────────────────────────────────────────────────────────────────
@@ -323,7 +432,7 @@ const loadStream = async (connectRtc = true) => {
     const res = await apiClient.get(`/streams/${streamId}`);
     if (res.data.success) {
       stream.value = res.data.data;
-      if (connectRtc && stream.value?.is_live && !ws) {
+      if (connectRtc && stream.value?.is_live && (!ws || ws.readyState !== WebSocket.OPEN)) {
         connectWebRTC();
       }
       if (isAuthenticated.value && !currentUserId.value) {
@@ -331,7 +440,9 @@ const loadStream = async (connectRtc = true) => {
       }
     }
   } catch (e: any) {
-    pageError.value = e.response?.status === 404 ? 'Stream introuvable.' : 'Erreur lors du chargement.';
+    pageError.value = e.response?.status === 404
+      ? 'Stream introuvable.'
+      : 'Erreur lors du chargement.';
   } finally {
     loading.value = false;
   }
@@ -341,8 +452,6 @@ const checkCurrentUser = async () => {
   try {
     const res = await apiClient.get('/user');
     currentUserId.value = res.data.id;
-    // Vérifier si l'utilisateur suit le stream
-    // (nécessiterait un endpoint dédié ; pour l'instant on laisse false)
   } catch { }
 };
 
@@ -368,7 +477,6 @@ const sendMessage = async () => {
     const res = await apiClient.post(`/streams/${stream.value.id}/chat`, { message: newMessage.value.trim() });
     if (res.data.success) {
       newMessage.value = '';
-      // Ajouter directement le message sans recharger
       chatMessages.value.push(res.data.data);
       await nextTick();
       scrollChat();
@@ -415,7 +523,6 @@ let streamTimer: ReturnType<typeof setInterval>;
 onMounted(async () => {
   await loadStream();
   loadChatMessages();
-  // Refresh chat toutes les 3s, infos stream toutes les 15s
   chatTimer = setInterval(loadChatMessages, 3000);
   streamTimer = setInterval(() => loadStream(false), 15000);
 });
@@ -540,7 +647,7 @@ onBeforeUnmount(() => {
   padding-top: 90px;
 }
 
-@media (max-width:768px) {
+@media (max-width: 768px) {
   .page-content-with-space {
     padding-top: 60px;
   }
