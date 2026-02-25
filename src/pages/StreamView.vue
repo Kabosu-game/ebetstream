@@ -44,7 +44,6 @@
                           <div class="text-center text-white">
                             <div class="spinner-border text-warning mb-3" role="status"></div>
                             <p class="mb-0">{{ waitingMsg }}</p>
-                            <!-- Bouton retry si ça prend trop longtemps -->
                             <button v-if="showRetry" class="btn_secondary mt-3"
                               style="padding:.5rem 1rem;font-size:.85rem;" @click="retryConnection">
                               <i class="fas fa-redo me-1"></i>Réessayer
@@ -54,7 +53,8 @@
 
                         <!-- Stream offline -->
                         <div v-if="!stream.is_live"
-                          class="w-100 h-100 d-flex align-items-center justify-content-center position-absolute top-0 start-0">
+                          class="w-100 h-100 d-flex align-items-center justify-content-center position-absolute top-0 start-0"
+                          style="background:#000;">
                           <div class="text-center text-white">
                             <i class="fas fa-video-slash fs-1 mb-3" style="opacity:.5;"></i>
                             <p class="mb-0">Stream offline</p>
@@ -76,7 +76,7 @@
                           </span>
                         </div>
 
-                        <!-- Statut debug (petit indicateur discret) -->
+                        <!-- Statut WS (discret) -->
                         <div class="position-absolute top-0 end-0 m-3">
                           <span class="badge px-2 py-1" :style="{ background: wsStatusColor, fontSize: '.7rem' }">
                             {{ wsStatusLabel }}
@@ -128,7 +128,6 @@
                         <i class="fas fa-comments me-2"></i>Chat
                       </h5>
 
-                      <!-- Messages -->
                       <div class="chat_messages flex-grow-1 mb-3 overflow-auto" ref="chatContainer">
                         <div v-if="chatLoading && chatMessages.length === 0" class="text-center py-3">
                           <div class="spinner-border spinner-border-sm text-primary"></div>
@@ -162,7 +161,6 @@
                         </div>
                       </div>
 
-                      <!-- Input chat -->
                       <div v-if="isAuthenticated" class="chat_input">
                         <div class="input-group">
                           <input v-model="newMessage" type="text"
@@ -201,7 +199,6 @@ import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import apiClient from '@/utils/axios';
 
-// ── Types ─────────────────────────────────────────────────────────────────────
 interface Stream {
   id: number; title: string; description: string; thumbnail_url?: string;
   category?: string; game?: string; is_live: boolean;
@@ -214,7 +211,6 @@ interface ChatMessage {
   is_moderator: boolean; is_subscriber: boolean; created_at: string;
 }
 
-// ── State ─────────────────────────────────────────────────────────────────────
 const route = useRoute();
 const router = useRouter();
 const streamId = route.params.id as string;
@@ -222,7 +218,6 @@ const streamId = route.params.id as string;
 const stream = ref<Stream | null>(null);
 const loading = ref(false);
 const pageError = ref('');
-
 const remoteVideo = ref<HTMLVideoElement | null>(null);
 const connected = ref(false);
 const waitingMsg = ref('Connexion au stream...');
@@ -239,12 +234,15 @@ const chatContainer = ref<HTMLElement | null>(null);
 
 const isAuthenticated = computed(() => !!localStorage.getItem('auth_token'));
 
-// ── WebRTC ─────────────────────────────────────────────────────────────────
+// ── WebRTC ────────────────────────────────────────────────────────────────────
 let ws: WebSocket | null = null;
 let pc: RTCPeerConnection | null = null;
 let retryTimer: ReturnType<typeof setTimeout> | null = null;
 let wsReconnectTimer: ReturnType<typeof setTimeout> | null = null;
-let wsStatus = ref<'disconnected' | 'connecting' | 'connected'>('disconnected');
+// Flag : empêche la reconnexion WS après un stream-ended volontaire
+let streamEnded = false;
+
+const wsStatus = ref<'disconnected' | 'connecting' | 'connected'>('disconnected');
 
 const WS_BASE = (import.meta.env.VITE_STREAM_WS_URL || 'wss://ebetstream.com/ws').replace(/\/$/, '');
 const ICE_SERVERS = [
@@ -263,7 +261,6 @@ const wsStatusLabel = computed(() => {
   return '○ WS';
 });
 
-// Afficher le bouton retry après 8 secondes sans connexion
 const startRetryTimer = () => {
   showRetry.value = false;
   if (retryTimer) clearTimeout(retryTimer);
@@ -273,9 +270,9 @@ const startRetryTimer = () => {
 };
 
 const connectWebRTC = () => {
-  // Éviter les doubles connexions
   if (ws && ws.readyState === WebSocket.OPEN) return;
 
+  streamEnded = false;
   wsStatus.value = 'connecting';
   const token = localStorage.getItem('auth_token') || '';
   const url = `${WS_BASE}/watch/${streamId}?token=${encodeURIComponent(token)}`;
@@ -299,24 +296,29 @@ const connectWebRTC = () => {
         startRetryTimer();
         break;
 
-      // Le serveur transmet l'offre SDP créée par le streamer
       case 'offer':
         await handleOffer(msg.sdp);
         break;
 
       case 'ice-candidate':
         if (pc && msg.candidate) {
-          try {
-            await pc.addIceCandidate(new RTCIceCandidate(msg.candidate));
-          } catch { /* ignore les candidats obsolètes */ }
+          try { await pc.addIceCandidate(new RTCIceCandidate(msg.candidate)); } catch { }
         }
         break;
 
       case 'stream-ended':
+        // ── FIX : marquer la fin AVANT de fermer le WS pour bloquer la reconnexion ──
+        streamEnded = true;
+        if (wsReconnectTimer) clearTimeout(wsReconnectTimer);
         connected.value = false;
         waitingMsg.value = 'Le stream est terminé.';
         showRetry.value = false;
         cleanupPeer();
+        // Fermer proprement le WS (onclose ne relancera pas de reconnexion)
+        if (ws) { ws.onclose = null; ws.close(); ws = null; }
+        wsStatus.value = 'disconnected';
+        if (remoteVideo.value) remoteVideo.value.srcObject = null;
+        // Recharger pour mettre à jour is_live → affiche le bloc "offline"
         await loadStream(false);
         break;
     }
@@ -329,7 +331,8 @@ const connectWebRTC = () => {
 
   ws.onclose = () => {
     wsStatus.value = 'disconnected';
-    // Reconnexion automatique si le stream est encore live et qu'on n'est pas connecté
+    // Ne pas reconnecter si le stream est volontairement terminé
+    if (streamEnded) return;
     if (!connected.value && stream.value?.is_live) {
       waitingMsg.value = 'Reconnexion...';
       if (wsReconnectTimer) clearTimeout(wsReconnectTimer);
@@ -338,14 +341,11 @@ const connectWebRTC = () => {
   };
 };
 
-// Crée la PeerConnection et répond à l'offre du streamer
 const handleOffer = async (sdp: RTCSessionDescriptionInit) => {
-  // Nettoyer une éventuelle ancienne peer connection
   cleanupPeer();
 
   pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
 
-  // Réception des tracks vidéo/audio du streamer
   pc.ontrack = (evt) => {
     if (remoteVideo.value && evt.streams[0]) {
       remoteVideo.value.srcObject = evt.streams[0];
@@ -353,11 +353,9 @@ const handleOffer = async (sdp: RTCSessionDescriptionInit) => {
       showRetry.value = false;
       waitingMsg.value = '';
       if (retryTimer) clearTimeout(retryTimer);
-      console.log('[WebRTC] ✅ Stream reçu !');
     }
   };
 
-  // Envoi de nos ICE candidates au serveur de signaling
   pc.onicecandidate = ({ candidate }) => {
     if (candidate && ws?.readyState === WebSocket.OPEN) {
       ws.send(JSON.stringify({ type: 'ice-candidate', candidate }));
@@ -365,20 +363,14 @@ const handleOffer = async (sdp: RTCSessionDescriptionInit) => {
   };
 
   pc.oniceconnectionstatechange = () => {
-    console.log('[WebRTC] ICE state:', pc?.iceConnectionState);
-    if (pc?.iceConnectionState === 'failed') {
-      // Forcer un restart ICE
-      pc.restartIce();
-    }
+    if (pc?.iceConnectionState === 'failed') pc.restartIce();
   };
 
   pc.onconnectionstatechange = () => {
-    console.log('[WebRTC] Connection state:', pc?.connectionState);
     if (pc?.connectionState === 'disconnected' || pc?.connectionState === 'failed') {
       connected.value = false;
       waitingMsg.value = 'Connexion perdue — tentative de reconnexion...';
       startRetryTimer();
-      // Demander une nouvelle offre au streamer via le serveur
       if (ws?.readyState === WebSocket.OPEN) {
         ws.send(JSON.stringify({ type: 'request-offer' }));
       }
@@ -406,6 +398,7 @@ const cleanupPeer = () => {
 };
 
 const cleanupWebRTC = () => {
+  streamEnded = true;
   if (retryTimer) clearTimeout(retryTimer);
   if (wsReconnectTimer) clearTimeout(wsReconnectTimer);
   cleanupPeer();
@@ -415,12 +408,12 @@ const cleanupWebRTC = () => {
   wsStatus.value = 'disconnected';
 };
 
-// Bouton "Réessayer" : ferme tout et reconnecte
 const retryConnection = () => {
   showRetry.value = false;
   connected.value = false;
   waitingMsg.value = 'Reconnexion...';
   cleanupWebRTC();
+  streamEnded = false;
   setTimeout(connectWebRTC, 500);
 };
 
@@ -435,9 +428,7 @@ const loadStream = async (connectRtc = true) => {
       if (connectRtc && stream.value?.is_live && (!ws || ws.readyState !== WebSocket.OPEN)) {
         connectWebRTC();
       }
-      if (isAuthenticated.value && !currentUserId.value) {
-        checkCurrentUser();
-      }
+      if (isAuthenticated.value && !currentUserId.value) checkCurrentUser();
     }
   } catch (e: any) {
     pageError.value = e.response?.status === 404
@@ -516,7 +507,6 @@ const formatTime = (d: string) => {
   return new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
 };
 
-// ── Timers ────────────────────────────────────────────────────────────────────
 let chatTimer: ReturnType<typeof setInterval>;
 let streamTimer: ReturnType<typeof setInterval>;
 

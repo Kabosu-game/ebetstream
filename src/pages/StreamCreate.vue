@@ -328,15 +328,40 @@ const goLive = async () => {
   startingStream.value = true;
 
   try {
-    // 1. Capturer l'écran
-    const stream = await navigator.mediaDevices.getDisplayMedia({
+    // 1. Capturer l'écran (+ audio système si l'utilisateur l'autorise)
+    const screenStream = await navigator.mediaDevices.getDisplayMedia({
       video: { width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 30 } },
       audio: true,
     });
-    localStream.value = stream;
+
+    // 2. Capturer le micro en parallèle (silencieux si refusé)
+    let micStream: MediaStream | null = null;
+    try {
+      micStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+    } catch { /* micro non disponible ou refusé */ }
+
+    // 3. Construire un stream combiné :
+    //    - vidéo de l'écran
+    //    - audio système si disponible, sinon micro, sinon rien
+    const combined = new MediaStream();
+    screenStream.getVideoTracks().forEach(t => combined.addTrack(t));
+
+    const systemAudio = screenStream.getAudioTracks();
+    if (systemAudio.length > 0) {
+      // Audio système disponible (Chrome avec "Partager l'audio système" coché)
+      systemAudio.forEach(t => combined.addTrack(t));
+    } else if (micStream) {
+      // Fallback : micro
+      micStream.getAudioTracks().forEach(t => combined.addTrack(t));
+    }
+
+    localStream.value = combined;
 
     // Arrêt automatique si l'utilisateur ferme le partage depuis le navigateur
-    stream.getVideoTracks()[0].addEventListener('ended', () => stopStream());
+    screenStream.getVideoTracks()[0].addEventListener('ended', () => {
+      micStream?.getTracks().forEach(t => t.stop());
+      stopStream();
+    });
 
     // 2. Informer Laravel
     await apiClient.post(`/streams/${streamId.value}/start`);
