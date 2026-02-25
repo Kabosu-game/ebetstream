@@ -24,7 +24,7 @@
                 </div>
               </div>
 
-              <!-- ── PHASE 1 : Formulaire de configuration ── -->
+              <!-- ── PHASE 1 : Formulaire ── -->
               <div v-if="phase === 'setup'" class="row justify-content-center">
                 <div class="col-lg-8">
                   <div class="defi_card n11-bg rounded-8 p-4 p-lg-6">
@@ -73,7 +73,6 @@
                           style="max-width:200px;max-height:200px;object-fit:cover;" />
                       </div>
 
-                      <!-- Alertes -->
                       <div v-if="error"
                         class="alert alert-danger mb-4 d-flex align-items-center justify-content-between">
                         <span><i class="fas fa-exclamation-circle me-2"></i>{{ error }}</span>
@@ -102,17 +101,89 @@
                       </div>
                     </form>
 
-                    <!-- Bouton Go Live (si le stream existe déjà) -->
+                    <!-- ── Bouton Go Live ── -->
                     <div v-if="streamId" class="mt-4 pt-4 border-top"
                       style="border-color:rgba(255,255,255,.1) !important;">
-                      <div class="alert alert-info mb-3">
+                      <div class="alert alert-info mb-4">
                         <i class="fas fa-info-circle me-2"></i>
                         Stream ID <strong>#{{ streamId }}</strong> — prêt à démarrer.
-                        Le stream sera diffusé directement depuis votre navigateur via WebRTC.
                       </div>
-                      <button class="btn_primary w-100" @click="goLive" :disabled="startingStream">
-                        <span v-if="startingStream"><i class="fas fa-spinner fa-spin me-2"></i>Starting...</span>
-                        <span v-else><i class="fas fa-play me-2"></i>Go Live — Share Screen</span>
+
+                      <!-- ── Bannière compatibilité ── -->
+                      <div class="compat_banner mb-4">
+                        <div class="compat_row">
+                          <!-- PC / Mac -->
+                          <div class="compat_item" :class="compatibility.desktop ? 'ok' : 'no'">
+                            <i class="fas fa-desktop"></i>
+                            <span>PC / Mac</span>
+                            <small>{{ compatibility.desktop ? 'Compatible' : 'Non supporté' }}</small>
+                          </div>
+                          <!-- Android -->
+                          <div class="compat_item" :class="compatibility.android ? 'ok' : 'partial'">
+                            <i class="fab fa-android"></i>
+                            <span>Android</span>
+                            <small>{{ compatibility.android ? 'Caméra ✓' : 'Limité' }}</small>
+                          </div>
+                          <!-- iOS -->
+                          <div class="compat_item" :class="compatibility.ios ? 'ok' : 'partial'">
+                            <i class="fab fa-apple"></i>
+                            <span>iPhone / iPad</span>
+                            <small>{{ compatibility.ios ? 'Caméra ✓' : 'Caméra seulement' }}</small>
+                          </div>
+                        </div>
+
+                        <!-- Message contextuel selon l'appareil détecté -->
+                        <div v-if="compatMsg" class="compat_msg" :class="compatMsgType">
+                          <i :class="compatMsgIcon" class="me-2"></i>
+                          <span v-html="compatMsg"></span>
+                        </div>
+                      </div>
+
+                      <!-- ── Sélecteur source MOBILE ── -->
+                      <div v-if="isMobile" class="mb-4">
+                        <p class="text-white mb-3 fw-bold">
+                          <i class="fas fa-video me-2" style="color:#FF9F00;"></i>Source vidéo :
+                        </p>
+                        <div class="row g-2 mb-3">
+                          <div class="col-6">
+                            <button class="source_btn w-100" :class="{ active: sourceMode === 'camera-back' }"
+                              @click="sourceMode = 'camera-back'">
+                              <i class="fas fa-camera d-block mb-2" style="font-size:1.4rem;"></i>
+                              Caméra arrière
+                            </button>
+                          </div>
+                          <div class="col-6">
+                            <button class="source_btn w-100" :class="{ active: sourceMode === 'camera-front' }"
+                              @click="sourceMode = 'camera-front'">
+                              <i class="fas fa-user-circle d-block mb-2" style="font-size:1.4rem;"></i>
+                              Caméra avant
+                            </button>
+                          </div>
+                          <div v-if="supportsDisplayMedia" class="col-12">
+                            <button class="source_btn w-100" :class="{ active: sourceMode === 'screen' }"
+                              @click="sourceMode = 'screen'">
+                              <i class="fas fa-mobile-alt me-2"></i>
+                              Partage d'écran (Android Chrome)
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- ── Source DESKTOP ── -->
+                      <div v-else class="mb-4">
+                        <div class="source_btn active" style="cursor:default;text-align:center;padding:.8rem;">
+                          <i class="fas fa-desktop me-2"></i>Partage d'écran (bureau)
+                        </div>
+                      </div>
+
+                      <button class="btn_primary w-100" style="font-size:1.05rem;padding:1rem;" @click="goLive"
+                        :disabled="startingStream">
+                        <span v-if="startingStream">
+                          <i class="fas fa-spinner fa-spin me-2"></i>Démarrage...
+                        </span>
+                        <span v-else>
+                          <i class="fas fa-play me-2"></i>Go Live
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -124,8 +195,7 @@
                 <div class="col-lg-10">
                   <div class="defi_card n11-bg rounded-8 p-4">
 
-                    <!-- Header live -->
-                    <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
                       <div class="d-flex align-items-center gap-3">
                         <span class="badge bg-danger px-3 py-2 fs-6">
                           <i class="fas fa-circle me-2" style="font-size:.6rem;animation:pulse 2s infinite;"></i>LIVE
@@ -134,11 +204,12 @@
                       </div>
                       <div class="d-flex align-items-center gap-3">
                         <span class="badge bg-dark px-3 py-2">
-                          <i class="fas fa-eye me-2"></i>{{ viewerCount }} viewer{{ viewerCount !== 1 ? 's' : '' }}
+                          <i class="fas fa-eye me-2"></i>{{ viewerCount }}
                         </span>
                         <button class="btn btn-outline-danger" @click="stopStream" :disabled="stoppingStream">
-                          <span v-if="stoppingStream"><i class="fas fa-spinner fa-spin me-1"></i>Stopping...</span>
-                          <span v-else><i class="fas fa-stop me-1"></i>Stop Stream</span>
+                          <span v-if="stoppingStream"><i class="fas fa-spinner fa-spin me-1"></i></span>
+                          <span v-else><i class="fas fa-stop me-1"></i></span>
+                          Stop
                         </button>
                       </div>
                     </div>
@@ -149,35 +220,31 @@
                         style="object-fit:contain;"></video>
                     </div>
 
-                    <!-- Status connexions -->
                     <div class="row g-3">
-                      <div class="col-md-4">
+                      <div class="col-4">
                         <div class="defi_card p-3 text-center">
-                          <div class="text-white mb-1" style="opacity:.7;font-size:.85rem;">Signal Server</div>
+                          <div class="text-white mb-1" style="opacity:.7;font-size:.8rem;">Signal</div>
                           <div :class="wsConnected ? 'text-success' : 'text-danger'" class="fw-bold">
-                            <i :class="wsConnected ? 'fas fa-check-circle' : 'fas fa-times-circle'" class="me-1"></i>
-                            {{ wsConnected ? 'Connected' : 'Disconnected' }}
+                            {{ wsConnected ? '✓ OK' : '✗ Off' }}
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-4">
                         <div class="defi_card p-3 text-center">
-                          <div class="text-white mb-1" style="opacity:.7;font-size:.85rem;">Peer Connections</div>
+                          <div class="text-white mb-1" style="opacity:.7;font-size:.8rem;">Peers</div>
                           <div class="text-white fw-bold">{{ peerCount }}</div>
                         </div>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-4">
                         <div class="defi_card p-3 text-center">
-                          <div class="text-white mb-1" style="opacity:.7;font-size:.85rem;">Screen Capture</div>
+                          <div class="text-white mb-1" style="opacity:.7;font-size:.8rem;">Source</div>
                           <div :class="localStream ? 'text-success' : 'text-danger'" class="fw-bold">
-                            <i :class="localStream ? 'fas fa-check-circle' : 'fas fa-times-circle'" class="me-1"></i>
-                            {{ localStream ? 'Active' : 'Stopped' }}
+                            {{ localStream ? '✓ OK' : '✗ Stop' }}
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    <!-- Erreur live -->
                     <div v-if="error" class="alert alert-danger mt-3">
                       <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
                     </div>
@@ -215,16 +282,27 @@ const stoppingStream = ref(false);
 const error = ref('');
 const successMsg = ref('');
 
+// ── Détection device ──────────────────────────────────────────────────────────
+const ua = navigator.userAgent;
+const isIOS = /iPhone|iPad|iPod/i.test(ua);
+const isAndroid = /Android/i.test(ua);
+const isMobile = isIOS || isAndroid;
+const supportsDisplayMedia = typeof (navigator.mediaDevices as any)?.getDisplayMedia === 'function';
+
+// Source par défaut
+const sourceMode = ref<'screen' | 'camera-back' | 'camera-front'>(
+  !isMobile ? 'screen' : 'camera-back'
+);
+
 // ── WebRTC ────────────────────────────────────────────────────────────────────
 const localVideo = ref<HTMLVideoElement | null>(null);
 const localStream = ref<MediaStream | null>(null);
 const wsConnected = ref(false);
 const viewerCount = ref(0);
-const peerCount = ref(0);   // compteur réactif séparé
+const peerCount = ref(0);
 
-// Map brute (non-réactive) pour éviter que Vue ne proxifie les RTCPeerConnection
+// Map brute — ne pas laisser Vue proxifier des RTCPeerConnection
 const peerConnections: Record<string, RTCPeerConnection> = {};
-
 let ws: WebSocket | null = null;
 
 const WS_BASE = (import.meta.env.VITE_STREAM_WS_URL || 'wss://ebetstream.com/ws').replace(/\/$/, '');
@@ -257,7 +335,6 @@ const handleSubmit = async () => {
     fd.append('category', form.value.category || '');
     fd.append('game', form.value.game || '');
     if (thumbnailFile.value) fd.append('thumbnail', thumbnailFile.value);
-
     const res = await apiClient.post('/streams', fd);
     if (res.data.success) {
       streamId.value = res.data.data.id;
@@ -273,9 +350,7 @@ const handleSubmit = async () => {
         ? Object.values(errs).flat().join(', ')
         : (err.response?.data?.message || 'Error creating stream');
     }
-  } finally {
-    loading.value = false;
-  }
+  } finally { loading.value = false; }
 };
 
 // ── Mettre à jour ─────────────────────────────────────────────────────────────
@@ -290,17 +365,14 @@ const updateStream = async () => {
     fd.append('category', form.value.category || '');
     fd.append('game', form.value.game || '');
     if (thumbnailFile.value) fd.append('thumbnail', thumbnailFile.value);
-
     const res = await apiClient.put(`/streams/${streamId.value}`, fd);
     if (res.data.success) successMsg.value = '✅ Stream updated!';
   } catch (err: any) {
     error.value = err.response?.data?.message || 'Error updating stream';
-  } finally {
-    loading.value = false;
-  }
+  } finally { loading.value = false; }
 };
 
-// ── Charger un stream existant ────────────────────────────────────────────────
+// ── Charger stream existant ───────────────────────────────────────────────────
 const loadExistingStream = async () => {
   try {
     const res = await apiClient.get('/stream-key');
@@ -310,15 +382,76 @@ const loadExistingStream = async () => {
         const detail = await apiClient.get(`/streams/${streamId.value}`);
         if (detail.data.success) {
           const s = detail.data.data;
-          form.value.title = s.title || '';
-          form.value.description = s.description || '';
-          form.value.category = s.category || '';
-          form.value.game = s.game || '';
+          form.value = {
+            title: s.title || '', description: s.description || '',
+            category: s.category || '', game: s.game || '',
+          };
           if (s.thumbnail_url) thumbnailPreview.value = s.thumbnail_url;
         }
       }
     }
   } catch { }
+};
+
+// ── Capture média selon la source choisie ─────────────────────────────────────
+// ── Vérification compatibilité ───────────────────────────────────────────────
+const compatibility = {
+  desktop: !isMobile,
+  android: isAndroid,
+  ios: isIOS,
+};
+
+const compatMsg = (() => {
+  if (!isMobile) return ''; // Desktop : tout va bien, pas de message
+  if (isIOS) return 'Sur <strong>iPhone / iPad</strong>, seule la caméra est disponible — le partage d'écran est bloqué par Apple dans les navigateurs web.';
+  if (isAndroid && supportsDisplayMedia) return 'Sur <strong>Android Chrome</strong>, vous pouvez streamer avec votre caméra <em>ou</em> partager votre écran.';
+  if (isAndroid) return 'Sur cet <strong>appareil Android</strong>, seule la caméra est disponible. Pour le partage d'écran, utilisez < strong > Chrome </strong>.';
+  return '';
+})();
+
+const compatMsgType = isIOS ? 'warn' : (isAndroid && !supportsDisplayMedia ? 'warn' : 'info');
+const compatMsgIcon = compatMsgType === 'warn' ? 'fas fa-exclamation-triangle' : 'fas fa-info-circle';
+
+const captureMedia = async (): Promise<MediaStream> => {
+  const mode = sourceMode.value;
+
+  // Vérification explicite avant de tenter
+  if (mode === 'screen' && !supportsDisplayMedia) {
+    throw Object.assign(new Error('COMPAT'), {
+      name: 'CompatError',
+      friendly: isIOS
+        ? 'Le partage d'écran n'est pas disponible sur iPhone/iPad. Utilisez la caméra.'
+        : 'Le partage d'écran n'est pas supporté par ce navigateur. Essayez Chrome sur Android.',
+    });
+  }
+
+  // ── Caméra mobile (avant ou arrière) ────────────────────────────────────────
+  if (mode === 'camera-back' || mode === 'camera-front') {
+    return navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: mode === 'camera-front' ? 'user' : 'environment',
+        width: { ideal: 1280 },
+        height: { ideal: 720 },
+      },
+      audio: true,
+    });
+  }
+
+  // ── Partage d'écran (desktop ou Android Chrome) ──────────────────────────────
+  const screenStream = await (navigator.mediaDevices as any).getDisplayMedia({
+    video: { width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 30 } },
+    audio: true,
+  });
+
+  // Si pas d'audio système → essayer le micro en fallback
+  if (screenStream.getAudioTracks().length === 0) {
+    try {
+      const micStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+      micStream.getAudioTracks().forEach((t: MediaStreamTrack) => screenStream.addTrack(t));
+    } catch { /* micro non disponible */ }
+  }
+
+  return screenStream;
 };
 
 // ── Go Live ───────────────────────────────────────────────────────────────────
@@ -328,165 +461,112 @@ const goLive = async () => {
   startingStream.value = true;
 
   try {
-    // 1. Capturer l'écran (+ audio système si l'utilisateur l'autorise)
-    const screenStream = await navigator.mediaDevices.getDisplayMedia({
-      video: { width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 30 } },
-      audio: true,
-    });
+    const stream = await captureMedia();
+    localStream.value = stream;
 
-    // 2. Capturer le micro en parallèle (silencieux si refusé)
-    let micStream: MediaStream | null = null;
-    try {
-      micStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-    } catch { /* micro non disponible ou refusé */ }
-
-    // 3. Construire un stream combiné :
-    //    - vidéo de l'écran
-    //    - audio système si disponible, sinon micro, sinon rien
-    const combined = new MediaStream();
-    screenStream.getVideoTracks().forEach(t => combined.addTrack(t));
-
-    const systemAudio = screenStream.getAudioTracks();
-    if (systemAudio.length > 0) {
-      // Audio système disponible (Chrome avec "Partager l'audio système" coché)
-      systemAudio.forEach(t => combined.addTrack(t));
-    } else if (micStream) {
-      // Fallback : micro
-      micStream.getAudioTracks().forEach(t => combined.addTrack(t));
-    }
-
-    localStream.value = combined;
-
-    // Arrêt automatique si l'utilisateur ferme le partage depuis le navigateur
-    screenStream.getVideoTracks()[0].addEventListener('ended', () => {
-      micStream?.getTracks().forEach(t => t.stop());
-      stopStream();
-    });
-
-    // 2. Informer Laravel
+    stream.getTracks()[0]?.addEventListener('ended', () => stopStream());
     await apiClient.post(`/streams/${streamId.value}/start`);
 
-    // 3. Passer en phase live et attendre que le DOM soit rendu
     phase.value = 'live';
-    await nextTick();  // ← FIX : le <video ref="localVideo"> n'existe qu'après ce point
+    await nextTick();
 
-    // 4. Afficher la preview locale
     if (localVideo.value) {
-      localVideo.value.srcObject = combined;
+      localVideo.value.srcObject = stream;
       localVideo.value.muted = true;
     }
-
-    // 5. Connecter le WebSocket signaling
     connectSignaling();
 
   } catch (err: any) {
-    if (localStream.value) {
-      localStream.value.getTracks().forEach(t => t.stop());
-      localStream.value = null;
-    }
+    localStream.value?.getTracks().forEach(t => t.stop());
+    localStream.value = null;
     phase.value = 'setup';
-    if (err.name === 'NotAllowedError') {
-      error.value = 'Screen sharing permission denied.';
-    } else {
-      error.value = err.response?.data?.message || err.message || 'Error starting stream';
-    }
+
+    // Messages clairs selon le type d'erreur
+    if (err.name === 'CompatError') {
+      error.value = err.friendly;
+    } else if (err.name === 'NotAllowedError') {
+      error.value = isMobile
+        ? 'Permission refusée. Autorisez l'accès à la caméra dans les paramètres de votre navigateur.'
+        : 'Permission refusée. Autorisez le partage d'écran / micro dans votre navigateur.';
+    } else if (err.name === 'NotFoundError') {
+  error.value = 'Aucune caméra détectée sur cet appareil.';
+} else if (err.name === 'NotSupportedError' || err.name === 'TypeError') {
+  error.value = isIOS
+    ? 'Streaming non disponible sur Safari iOS. Essayez avec Chrome ou Firefox.'
+    : 'Votre navigateur ne supporte pas le streaming. Essayez Chrome ou Edge.';
+} else if (err.name === 'NotReadableError') {
+  error.value = 'La caméra est déjà utilisée par une autre application.';
+} else if (err.name === 'OverconstrainedError') {
+  error.value = 'Résolution non supportée par cette caméra. Essayez l'autre caméra.';
+} else {
+  error.value = err.response?.data?.message || err.message || 'Erreur au démarrage.';
+}
   } finally {
-    startingStream.value = false;
-  }
+  startingStream.value = false;
+}
 };
 
-// ── WebSocket signaling (streamer) ────────────────────────────────────────────
+// ── WebSocket signaling ───────────────────────────────────────────────────────
 const connectSignaling = () => {
   const token = localStorage.getItem('auth_token') || '';
   ws = new WebSocket(`${WS_BASE}/stream/${streamId.value}?token=${encodeURIComponent(token)}`);
 
-  ws.onopen = () => {
-    wsConnected.value = true;
-  };
+  ws.onopen = () => { wsConnected.value = true; };
+  ws.onerror = () => { wsConnected.value = false; error.value = 'WebSocket error.'; };
+  ws.onclose = () => { wsConnected.value = false; };
 
   ws.onmessage = async (evt) => {
     let msg: any;
     try { msg = JSON.parse(evt.data); } catch { return; }
 
     switch (msg.type) {
-
       case 'ready':
         viewerCount.value = msg.viewerCount ?? 0;
         break;
-
       case 'viewer-joined':
         viewerCount.value = msg.count ?? viewerCount.value;
         await createOffer(msg.viewerId);
         break;
-
       case 'answer':
         if (peerConnections[msg.viewerId]) {
-          await peerConnections[msg.viewerId]
-            .setRemoteDescription(new RTCSessionDescription(msg.sdp));
+          await peerConnections[msg.viewerId].setRemoteDescription(new RTCSessionDescription(msg.sdp));
         }
         break;
-
       case 'ice-candidate':
         if (peerConnections[msg.viewerId] && msg.candidate) {
-          try {
-            await peerConnections[msg.viewerId]
-              .addIceCandidate(new RTCIceCandidate(msg.candidate));
-          } catch { }
+          try { await peerConnections[msg.viewerId].addIceCandidate(new RTCIceCandidate(msg.candidate)); } catch { }
         }
         break;
-
       case 'viewer-left':
         viewerCount.value = msg.count ?? viewerCount.value;
         closePeer(msg.viewerId);
         break;
     }
   };
-
-  ws.onerror = () => {
-    wsConnected.value = false;
-    error.value = 'WebSocket connection error.';
-  };
-
-  ws.onclose = () => {
-    wsConnected.value = false;
-  };
 };
 
-// Crée une peer connection et envoie l'offre SDP à un viewer spécifique
 const createOffer = async (viewerId: string) => {
   if (!localStream.value) return;
-
-  // Fermer l'ancienne PC pour ce viewer si elle existe
   if (peerConnections[viewerId]) closePeer(viewerId);
 
   const pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
   peerConnections[viewerId] = pc;
   peerCount.value = Object.keys(peerConnections).length;
 
-  // Ajouter les tracks AVANT de créer l'offre
-  localStream.value.getTracks().forEach(track => {
-    pc.addTrack(track, localStream.value!);
-  });
+  localStream.value.getTracks().forEach(track => pc.addTrack(track, localStream.value!));
 
   pc.onicecandidate = ({ candidate }) => {
     if (candidate && ws?.readyState === WebSocket.OPEN) {
       ws.send(JSON.stringify({ type: 'ice-candidate', viewerId, candidate }));
     }
   };
-
-  pc.oniceconnectionstatechange = () => {
-    if (pc.iceConnectionState === 'failed') pc.restartIce();
-  };
-
+  pc.oniceconnectionstatechange = () => { if (pc.iceConnectionState === 'failed') pc.restartIce(); };
   pc.onconnectionstatechange = () => {
-    if (pc.connectionState === 'failed' || pc.connectionState === 'closed') {
-      closePeer(viewerId);
-    }
+    if (pc.connectionState === 'failed' || pc.connectionState === 'closed') closePeer(viewerId);
   };
 
   const offer = await pc.createOffer();
   await pc.setLocalDescription(offer);
-
   ws?.send(JSON.stringify({ type: 'offer', viewerId, sdp: offer }));
 };
 
@@ -504,23 +584,15 @@ const stopStream = async () => {
   stoppingStream.value = true;
   try {
     Object.keys(peerConnections).forEach(closePeer);
-
     localStream.value?.getTracks().forEach(t => t.stop());
     localStream.value = null;
     if (localVideo.value) localVideo.value.srcObject = null;
-
     if (ws) { ws.close(); ws = null; }
     wsConnected.value = false;
-
-    if (streamId.value) {
-      await apiClient.post(`/streams/${streamId.value}/stop`).catch(() => { });
-    }
-
-    successMsg.value = '✅ Stream stopped successfully!';
+    if (streamId.value) await apiClient.post(`/streams/${streamId.value}/stop`).catch(() => { });
+    successMsg.value = '✅ Stream stopped!';
     setTimeout(() => router.push('/streams'), 2000);
-  } finally {
-    stoppingStream.value = false;
-  }
+  } finally { stoppingStream.value = false; }
 };
 
 // ── Lifecycle ─────────────────────────────────────────────────────────────────
@@ -589,6 +661,32 @@ onBeforeUnmount(() => {
   color: #000;
 }
 
+/* ── Boutons sélection source ── */
+.source_btn {
+  background: rgba(255, 255, 255, .07);
+  border: 2px solid rgba(255, 255, 255, .15);
+  color: rgba(255, 255, 255, .7);
+  padding: 1rem .5rem;
+  border-radius: 12px;
+  font-size: .88rem;
+  font-weight: 600;
+  transition: .2s;
+  cursor: pointer;
+  text-align: center;
+}
+
+.source_btn:hover {
+  border-color: #FF9F00;
+  color: #FF9F00;
+  background: rgba(255, 159, 0, .08);
+}
+
+.source_btn.active {
+  border-color: #FF9F00;
+  color: #FF9F00;
+  background: rgba(255, 159, 0, .15);
+}
+
 .defi_card {
   background: rgba(255, 255, 255, .1);
   backdrop-filter: blur(10px);
@@ -641,6 +739,96 @@ onBeforeUnmount(() => {
   50% {
     opacity: .5;
   }
+}
+
+/* ── Bannière compatibilité ── */
+.compat_banner {
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.compat_row {
+  display: flex;
+  gap: .75rem;
+  margin-bottom: .75rem;
+}
+
+.compat_item {
+  flex: 1;
+  text-align: center;
+  padding: .75rem .5rem;
+  border-radius: 10px;
+  border: 1.5px solid transparent;
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+}
+
+.compat_item i {
+  font-size: 1.3rem;
+}
+
+.compat_item span {
+  font-size: .8rem;
+  font-weight: 700;
+  color: white;
+}
+
+.compat_item small {
+  font-size: .7rem;
+}
+
+.compat_item.ok {
+  border-color: rgba(40, 167, 69, .4);
+  background: rgba(40, 167, 69, .1);
+}
+
+.compat_item.ok i,
+.compat_item.ok small {
+  color: #28a745;
+}
+
+.compat_item.partial {
+  border-color: rgba(255, 193, 7, .4);
+  background: rgba(255, 193, 7, .08);
+}
+
+.compat_item.partial i,
+.compat_item.partial small {
+  color: #ffc107;
+}
+
+.compat_item.no {
+  border-color: rgba(220, 53, 69, .4);
+  background: rgba(220, 53, 69, .08);
+}
+
+.compat_item.no i,
+.compat_item.no small {
+  color: #dc3545;
+}
+
+.compat_msg {
+  font-size: .83rem;
+  padding: .6rem .8rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-start;
+  gap: .4rem;
+}
+
+.compat_msg.info {
+  background: rgba(13, 202, 240, .1);
+  color: #0dcaf0;
+  border: 1px solid rgba(13, 202, 240, .25);
+}
+
+.compat_msg.warn {
+  background: rgba(255, 193, 7, .1);
+  color: #ffc107;
+  border: 1px solid rgba(255, 193, 7, .25);
 }
 
 .page-content-with-space {

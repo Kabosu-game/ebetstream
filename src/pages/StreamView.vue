@@ -275,7 +275,10 @@ const connectWebRTC = () => {
   streamEnded = false;
   wsStatus.value = 'connecting';
   const token = localStorage.getItem('auth_token') || '';
-  const url = `${WS_BASE}/watch/${streamId}?token=${encodeURIComponent(token)}`;
+  // Token optionnel — les viewers non connectés sont acceptés comme guests
+  const url = token
+    ? `${WS_BASE}/watch/${streamId}?token=${encodeURIComponent(token)}`
+    : `${WS_BASE}/watch/${streamId}`;
 
   ws = new WebSocket(url);
 
@@ -306,6 +309,20 @@ const connectWebRTC = () => {
         }
         break;
 
+      // Message chat reçu via WebSocket (temps réel, sans polling)
+      case 'chat-message':
+        chatMessages.value.push({
+          id: msg.ts,
+          message: msg.text,
+          user_id: msg.userId,
+          user: { id: msg.userId, username: msg.username },
+          is_moderator: false,
+          is_subscriber: false,
+          created_at: new Date(msg.ts).toISOString(),
+        });
+        nextTick().then(scrollChat);
+        break;
+
       case 'stream-ended':
         // ── FIX : marquer la fin AVANT de fermer le WS pour bloquer la reconnexion ──
         streamEnded = true;
@@ -329,11 +346,23 @@ const connectWebRTC = () => {
     waitingMsg.value = 'Erreur de connexion WebSocket.';
   };
 
-  ws.onclose = () => {
+  ws.onclose = (evt) => {
     wsStatus.value = 'disconnected';
-    // Ne pas reconnecter si le stream est volontairement terminé
+
+    // Cas 1 : stream terminé volontairement → ne pas reconnecter
     if (streamEnded) return;
-    if (!connected.value && stream.value?.is_live) {
+
+    // Cas 2 : rejeté par le serveur (1008) → pas de boucle
+    if (evt.code === 1008) {
+      waitingMsg.value = 'Connexion refusée.';
+      return;
+    }
+
+    // Cas 3 : stream offline → inutile de reconnecter
+    if (!stream.value?.is_live) return;
+
+    // Cas 4 : déconnexion réseau → tenter une reconnexion
+    if (!connected.value) {
       waitingMsg.value = 'Reconnexion...';
       if (wsReconnectTimer) clearTimeout(wsReconnectTimer);
       wsReconnectTimer = setTimeout(connectWebRTC, 3000);
@@ -464,15 +493,29 @@ const loadChatMessages = async () => {
 const sendMessage = async () => {
   if (!newMessage.value.trim() || !stream.value) return;
   sendingMessage.value = true;
+  const text = newMessage.value.trim();
+  newMessage.value = '';
+
   try {
-    const res = await apiClient.post(`/streams/${stream.value.id}/chat`, { message: newMessage.value.trim() });
+    // Envoyer via HTTP pour persistence en base (Laravel)
+    const res = await apiClient.post(`/streams/${stream.value.id}/chat`, { message: text });
     if (res.data.success) {
-      newMessage.value = '';
+      // Ajouter localement (les autres reçoivent via WS broadcast)
       chatMessages.value.push(res.data.data);
       await nextTick();
       scrollChat();
+      // Broadcaster aux autres viewers via WebSocket
+      if (ws?.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({
+          type: 'chat-message',
+          username: res.data.data.user?.username || 'User',
+          text,
+          ts: Date.now(),
+        }));
+      }
     }
   } catch (e: any) {
+    newMessage.value = text; // remettre le texte si erreur
     alert(e.response?.data?.message || 'Erreur envoi');
   } finally {
     sendingMessage.value = false;
@@ -513,8 +556,8 @@ let streamTimer: ReturnType<typeof setInterval>;
 onMounted(async () => {
   await loadStream();
   loadChatMessages();
-  chatTimer = setInterval(loadChatMessages, 3000);
-  streamTimer = setInterval(() => loadStream(false), 15000);
+  chatTimer = setInterval(loadChatMessages, 8000); // réduit: chat via WS push si dispo
+  streamTimer = setInterval(() => loadStream(false), 60000); // vérif état stream toutes les 60s
 });
 
 onBeforeUnmount(() => {
