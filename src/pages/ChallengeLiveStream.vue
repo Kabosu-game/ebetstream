@@ -32,6 +32,7 @@
                   <div class="col-lg-8">
                     <div class="defi_card n11-bg rounded-8 p-0 mb-4 overflow-hidden">
                       <div class="video_container position-relative" style="background: #000; aspect-ratio: 16/9;">
+
                         <!-- WebRTC Video -->
                         <video v-show="challenge.is_live && hasRemoteStream" ref="videoPlayer" autoplay playsinline
                           controls class="w-100 h-100 position-absolute top-0 start-0"
@@ -184,7 +185,6 @@
 import { ref, computed, onMounted, onUnmounted, nextTick } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import apiClient from "@/utils/axios";
-// ✅ PeerJS supprimé — on utilise notre WS signaling
 
 interface Challenge {
   id: number;
@@ -218,15 +218,19 @@ let ws: WebSocket | null = null;
 let pc: RTCPeerConnection | null = null;
 let wsReconnectTimer: ReturnType<typeof setTimeout> | null = null;
 let retryTimer: ReturnType<typeof setTimeout> | null = null;
+// ✅ FIX — utiliser un flag "destroyed" pour bloquer tout après unmount
+let destroyed = false;
 let streamEnded = false;
 let refreshInterval: ReturnType<typeof setInterval> | null = null;
 
 const wsStatus = ref<'disconnected' | 'connecting' | 'connected'>('disconnected');
+
 const wsStatusColor = computed(() => {
   if (wsStatus.value === 'connected') return 'rgba(40,167,69,.8)';
   if (wsStatus.value === 'connecting') return 'rgba(255,193,7,.8)';
   return 'rgba(220,53,69,.8)';
 });
+
 const wsStatusLabel = computed(() => {
   if (wsStatus.value === 'connected') return '● WS';
   if (wsStatus.value === 'connecting') return '◌ WS';
@@ -242,12 +246,18 @@ const ICE_SERVERS = [
 const startRetryTimer = () => {
   showRetry.value = false;
   if (retryTimer) clearTimeout(retryTimer);
-  retryTimer = setTimeout(() => { if (!hasRemoteStream.value) showRetry.value = true; }, 10000);
+  retryTimer = setTimeout(() => {
+    if (!hasRemoteStream.value && !destroyed) showRetry.value = true;
+  }, 10000);
 };
 
+// ✅ FIX #1 — Vérifier CONNECTING en plus de OPEN + vérifier destroyed
 const connectWebRTC = () => {
   if (!challenge.value) return;
-  if (ws && ws.readyState === WebSocket.OPEN) return;
+  // ✅ Ne rien faire si le composant est démonté
+  if (destroyed) return;
+  // ✅ Bloquer si déjà OPEN ou CONNECTING (évite double connexion)
+  if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) return;
 
   streamEnded = false;
   wsStatus.value = 'connecting';
@@ -262,14 +272,17 @@ const connectWebRTC = () => {
   ws = new WebSocket(url);
 
   ws.onopen = () => {
+    if (destroyed) { ws?.close(); return; }
     wsStatus.value = 'connected';
     waitingMsg.value = 'Connecté — en attente du flux vidéo...';
     startRetryTimer();
   };
 
   ws.onmessage = async (evt) => {
+    if (destroyed) return;
     let msg: any;
     try { msg = JSON.parse(evt.data); } catch { return; }
+
     switch (msg.type) {
       case 'waiting':
         waitingMsg.value = msg.message || 'En attente du streamer...';
@@ -290,7 +303,17 @@ const connectWebRTC = () => {
         waitingMsg.value = 'Le stream est terminé.';
         showRetry.value = false;
         cleanupPeer();
-        if (ws) { ws.onclose = null; ws.close(); ws = null; }
+        if (ws) {
+          // ✅ Neutraliser tous les handlers avant close
+          ws.onclose = null;
+          ws.onerror = null;
+          ws.onmessage = null;
+          ws.onopen = null;
+          if (ws.readyState !== WebSocket.CLOSED && ws.readyState !== WebSocket.CLOSING) {
+            ws.close();
+          }
+          ws = null;
+        }
         wsStatus.value = 'disconnected';
         if (videoPlayer.value) videoPlayer.value.srcObject = null;
         await refreshChallengeData(false);
@@ -299,11 +322,13 @@ const connectWebRTC = () => {
   };
 
   ws.onerror = () => {
+    if (destroyed) return;
     wsStatus.value = 'disconnected';
     streamError.value = 'Erreur de connexion WebSocket.';
   };
 
   ws.onclose = (evt) => {
+    if (destroyed) return;
     wsStatus.value = 'disconnected';
     if (streamEnded) return;
     if (evt.code === 1008) { streamError.value = 'Connexion refusée.'; return; }
@@ -311,16 +336,20 @@ const connectWebRTC = () => {
     if (!hasRemoteStream.value) {
       waitingMsg.value = 'Reconnexion...';
       if (wsReconnectTimer) clearTimeout(wsReconnectTimer);
-      wsReconnectTimer = setTimeout(connectWebRTC, 3000);
+      wsReconnectTimer = setTimeout(() => {
+        if (!destroyed) connectWebRTC();
+      }, 3000);
     }
   };
 };
 
 const handleOffer = async (sdp: RTCSessionDescriptionInit) => {
+  if (destroyed) return;
   cleanupPeer();
   pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
 
   pc.ontrack = (evt) => {
+    if (destroyed) return;
     if (videoPlayer.value && evt.streams[0]) {
       videoPlayer.value.srcObject = evt.streams[0];
       hasRemoteStream.value = true;
@@ -341,11 +370,13 @@ const handleOffer = async (sdp: RTCSessionDescriptionInit) => {
   };
 
   pc.onconnectionstatechange = () => {
+    if (destroyed) return;
     if (pc?.connectionState === 'disconnected' || pc?.connectionState === 'failed') {
       hasRemoteStream.value = false;
       waitingMsg.value = 'Connexion perdue — tentative de reconnexion...';
       startRetryTimer();
-      if (ws?.readyState === WebSocket.OPEN) ws.send(JSON.stringify({ type: 'request-offer' }));
+      if (ws?.readyState === WebSocket.OPEN)
+        ws.send(JSON.stringify({ type: 'request-offer' }));
     }
     if (pc?.connectionState === 'connected') {
       hasRemoteStream.value = true;
@@ -361,31 +392,64 @@ const handleOffer = async (sdp: RTCSessionDescriptionInit) => {
 
 const cleanupPeer = () => {
   if (pc) {
-    pc.ontrack = null; pc.onicecandidate = null;
-    pc.onconnectionstatechange = null; pc.oniceconnectionstatechange = null;
-    pc.close(); pc = null;
+    pc.ontrack = null;
+    pc.onicecandidate = null;
+    pc.onconnectionstatechange = null;
+    pc.oniceconnectionstatechange = null;
+    pc.close();
+    pc = null;
   }
 };
 
+// ✅ FIX #2 — cleanupAll vérifie readyState avant close() + neutralise tous les handlers
 const cleanupAll = () => {
-  streamEnded = true;
+  destroyed = true;
   if (retryTimer) clearTimeout(retryTimer);
   if (wsReconnectTimer) clearTimeout(wsReconnectTimer);
   cleanupPeer();
-  if (ws) { ws.onclose = null; ws.close(); ws = null; }
+  if (ws) {
+    // Neutraliser TOUS les handlers pour éviter tout callback après cleanup
+    ws.onclose = null;
+    ws.onerror = null;
+    ws.onmessage = null;
+    ws.onopen = null;
+    // ✅ Ne fermer que si pas déjà fermé ou en cours de fermeture
+    if (ws.readyState !== WebSocket.CLOSED && ws.readyState !== WebSocket.CLOSING) {
+      ws.close();
+    }
+    ws = null;
+  }
   if (videoPlayer.value) videoPlayer.value.srcObject = null;
   hasRemoteStream.value = false;
   wsStatus.value = 'disconnected';
 };
 
+// ✅ FIX #3 — retryConnection remet destroyed = false et streamEnded = false AVANT setTimeout
 const retryConnection = () => {
   showRetry.value = false;
   hasRemoteStream.value = false;
   streamError.value = '';
   waitingMsg.value = 'Reconnexion...';
-  cleanupAll();
+  // Nettoyer sans poser destroyed définitivement
+  if (retryTimer) clearTimeout(retryTimer);
+  if (wsReconnectTimer) clearTimeout(wsReconnectTimer);
+  cleanupPeer();
+  if (ws) {
+    ws.onclose = null;
+    ws.onerror = null;
+    ws.onmessage = null;
+    ws.onopen = null;
+    if (ws.readyState !== WebSocket.CLOSED && ws.readyState !== WebSocket.CLOSING) {
+      ws.close();
+    }
+    ws = null;
+  }
+  if (videoPlayer.value) videoPlayer.value.srcObject = null;
+  wsStatus.value = 'disconnected';
+  // ✅ Reset des flags bloquants AVANT de reconnecter
+  destroyed = false;
   streamEnded = false;
-  setTimeout(connectWebRTC, 500);
+  setTimeout(connectWebRTC, 800);
 };
 
 // ── API helpers ───────────────────────────────────────────────────────────────
@@ -429,7 +493,8 @@ const loadLiveStream = async () => {
     }
   } catch (err: any) {
     if (err.response?.status === 404) error.value = "Challenge not found";
-    else if (err.response?.status === 400) error.value = err.response.data.message || "This challenge is not currently live";
+    else if (err.response?.status === 400)
+      error.value = err.response.data.message || "This challenge is not currently live";
     else error.value = err.response?.data?.message || "Error loading live stream";
   } finally {
     loading.value = false;
@@ -437,10 +502,10 @@ const loadLiveStream = async () => {
 };
 
 const refreshChallengeData = async (connectIfLive = true) => {
-  if (!challenge.value) return;
+  if (!challenge.value || destroyed) return;
   try {
     const res = await apiClient.get(`/challenges/${challenge.value.id}/live`);
-    if (res.data.success) {
+    if (res.data.success && !destroyed) {
       const data = res.data.data.challenge ?? res.data.data;
       if (challenge.value) {
         challenge.value.viewer_count = data.viewer_count ?? 0;
@@ -450,7 +515,15 @@ const refreshChallengeData = async (connectIfLive = true) => {
         challenge.value.opponent_score = data.opponent_score;
         challenge.value.status = data.status;
       }
-      if (connectIfLive && data.is_live && !streamEnded && !hasRemoteStream.value && wsStatus.value === 'disconnected') {
+      // ✅ Reconnexion uniquement si WS vraiment déconnecté (pas CONNECTING)
+      if (
+        connectIfLive &&
+        data.is_live &&
+        !streamEnded &&
+        !hasRemoteStream.value &&
+        wsStatus.value === 'disconnected' &&
+        (!ws || ws.readyState === WebSocket.CLOSED)
+      ) {
         connectWebRTC();
       }
       if (!data.is_live && !streamEnded) {
@@ -462,8 +535,12 @@ const refreshChallengeData = async (connectIfLive = true) => {
 };
 
 onMounted(async () => {
+  destroyed = false;
+  streamEnded = false;
   await loadLiveStream();
-  refreshInterval = setInterval(() => refreshChallengeData(true), 30000);
+  refreshInterval = setInterval(() => {
+    if (!destroyed) refreshChallengeData(true);
+  }, 30000);
 });
 
 onUnmounted(() => {

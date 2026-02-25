@@ -475,7 +475,6 @@
 import { ref, onMounted, computed, onUnmounted, watch, nextTick } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import apiClient from "@/utils/axios";
-// ✅ PeerJS supprimé — on utilise notre WS signaling (stream-server.js)
 
 interface Challenge {
   id: number;
@@ -547,14 +546,59 @@ const ICE_SERVERS = [
   { urls: 'stun:stun1.l.google.com:19302' },
 ];
 
+// ✅ FIX #4 — cleanupSignaling vérifie readyState avant close()
+const cleanupSignaling = () => {
+  Object.keys(peerConnections).forEach(closePeer);
+  if (signalingWs) {
+    // Neutraliser tous les handlers AVANT de fermer pour éviter les callbacks parasites
+    signalingWs.onclose = null;
+    signalingWs.onerror = null;
+    signalingWs.onmessage = null;
+    signalingWs.onopen = null;
+    // ✅ Ne fermer que si pas déjà fermé ou en cours de fermeture
+    if (
+      signalingWs.readyState !== WebSocket.CLOSED &&
+      signalingWs.readyState !== WebSocket.CLOSING
+    ) {
+      signalingWs.close();
+    }
+    signalingWs = null;
+  }
+  wsStreamerConnected.value = false;
+};
+
 const connectSignaling = (stream: MediaStream) => {
   if (!challenge.value) return;
-  const token = localStorage.getItem('auth_token') || '';
-  signalingWs = new WebSocket(`${WS_BASE}/stream/${challenge.value.id}?token=${encodeURIComponent(token)}`);
 
-  signalingWs.onopen = () => { wsStreamerConnected.value = true; };
-  signalingWs.onerror = () => { wsStreamerConnected.value = false; recordingError.value = 'Erreur WebSocket signal.'; };
-  signalingWs.onclose = () => { wsStreamerConnected.value = false; };
+  // ✅ Éviter double connexion si déjà OPEN ou CONNECTING
+  if (
+    signalingWs &&
+    (signalingWs.readyState === WebSocket.OPEN ||
+      signalingWs.readyState === WebSocket.CONNECTING)
+  ) {
+    return;
+  }
+
+  // Nettoyer proprement avant de recréer
+  cleanupSignaling();
+
+  const token = localStorage.getItem('auth_token') || '';
+  signalingWs = new WebSocket(
+    `${WS_BASE}/stream/${challenge.value.id}?token=${encodeURIComponent(token)}`
+  );
+
+  signalingWs.onopen = () => {
+    wsStreamerConnected.value = true;
+  };
+
+  signalingWs.onerror = () => {
+    wsStreamerConnected.value = false;
+    recordingError.value = 'Erreur WebSocket signal.';
+  };
+
+  signalingWs.onclose = () => {
+    wsStreamerConnected.value = false;
+  };
 
   signalingWs.onmessage = async (evt) => {
     let msg: any;
@@ -569,12 +613,18 @@ const connectSignaling = (stream: MediaStream) => {
         break;
       case 'answer':
         if (peerConnections[msg.viewerId]) {
-          await peerConnections[msg.viewerId].setRemoteDescription(new RTCSessionDescription(msg.sdp));
+          await peerConnections[msg.viewerId].setRemoteDescription(
+            new RTCSessionDescription(msg.sdp)
+          );
         }
         break;
       case 'ice-candidate':
         if (peerConnections[msg.viewerId] && msg.candidate) {
-          try { await peerConnections[msg.viewerId].addIceCandidate(new RTCIceCandidate(msg.candidate)); } catch { }
+          try {
+            await peerConnections[msg.viewerId].addIceCandidate(
+              new RTCIceCandidate(msg.candidate)
+            );
+          } catch { }
         }
         break;
       case 'viewer-left':
@@ -596,9 +646,15 @@ const createOffer = async (viewerId: string, stream: MediaStream) => {
     if (candidate && signalingWs?.readyState === WebSocket.OPEN)
       signalingWs.send(JSON.stringify({ type: 'ice-candidate', viewerId, candidate }));
   };
-  pc.oniceconnectionstatechange = () => { if (pc.iceConnectionState === 'failed') pc.restartIce(); };
+
+  pc.oniceconnectionstatechange = () => {
+    if (pc.iceConnectionState === 'failed') pc.restartIce();
+  };
+
   pc.onconnectionstatechange = () => {
-    if (pc.connectionState === 'failed' || pc.connectionState === 'closed') closePeer(viewerId);
+    if (pc.connectionState === 'failed' || pc.connectionState === 'closed') {
+      closePeer(viewerId);
+    }
   };
 
   const offer = await pc.createOffer();
@@ -613,17 +669,13 @@ const closePeer = (viewerId: string) => {
   }
 };
 
-const cleanupSignaling = () => {
-  Object.keys(peerConnections).forEach(closePeer);
-  if (signalingWs) { signalingWs.close(); signalingWs = null; }
-  wsStreamerConnected.value = false;
-};
-
 // ── Computed ──────────────────────────────────────────────────────────────────
 const isParticipant = computed(() => {
   if (!challenge.value || !currentUserId.value) return false;
-  return challenge.value.creator.id === currentUserId.value ||
-    (challenge.value.opponent && challenge.value.opponent.id === currentUserId.value);
+  return (
+    challenge.value.creator.id === currentUserId.value ||
+    (challenge.value.opponent && challenge.value.opponent.id === currentUserId.value)
+  );
 });
 
 const isCreator = computed(() => {
@@ -648,7 +700,8 @@ const getMySubmittedScore = () => {
 
 const getOtherPlayerName = () => {
   if (!challenge.value || !currentUserId.value) return "the other player";
-  if (challenge.value.creator.id === currentUserId.value) return challenge.value.opponent?.username || "the opponent";
+  if (challenge.value.creator.id === currentUserId.value)
+    return challenge.value.opponent?.username || "the opponent";
   return challenge.value.creator.username;
 };
 
@@ -673,7 +726,7 @@ const getTimeRemaining = (expiresAt: string | null) => {
 
 const formatDate = (dateString: string) =>
   new Date(dateString).toLocaleDateString('en-US', {
-    day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+    day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit',
   });
 
 const formatTime = (dateString: string) => {
@@ -682,9 +735,12 @@ const formatTime = (dateString: string) => {
 };
 
 const getWinner = () => {
-  if (!challenge.value || challenge.value.creator_score === null || challenge.value.opponent_score === null) return "";
-  if (challenge.value.creator_score > challenge.value.opponent_score) return `${challenge.value.creator.username} won!`;
-  if (challenge.value.opponent_score > challenge.value.creator_score) return `${challenge.value.opponent?.username} won!`;
+  if (!challenge.value || challenge.value.creator_score === null || challenge.value.opponent_score === null)
+    return "";
+  if (challenge.value.creator_score > challenge.value.opponent_score)
+    return `${challenge.value.creator.username} won!`;
+  if (challenge.value.opponent_score > challenge.value.creator_score)
+    return `${challenge.value.opponent?.username} won!`;
   return "Draw!";
 };
 
@@ -715,10 +771,14 @@ const refreshViewerCount = async () => {
 };
 
 let viewerCountInterval: ReturnType<typeof setInterval> | null = null;
+
 const startViewerCountPolling = () => {
   if (viewerCountInterval) clearInterval(viewerCountInterval);
-  viewerCountInterval = setInterval(() => { if (challenge.value?.is_live) refreshViewerCount(); }, 30000);
+  viewerCountInterval = setInterval(() => {
+    if (challenge.value?.is_live) refreshViewerCount();
+  }, 30000);
 };
+
 const stopViewerCountPolling = () => {
   if (viewerCountInterval) { clearInterval(viewerCountInterval); viewerCountInterval = null; }
 };
@@ -747,10 +807,15 @@ const startScreenRecording = async () => {
 
     // Preview locale
     await nextTick();
-    if (localVideoEl.value) { localVideoEl.value.srcObject = stream; localVideoEl.value.muted = true; }
+    if (localVideoEl.value) {
+      localVideoEl.value.srcObject = stream;
+      localVideoEl.value.muted = true;
+    }
 
     // Notifier Laravel
-    const response = await apiClient.post(`/challenges/${challenge.value.id}/screen-recording/start`, {});
+    const response = await apiClient.post(
+      `/challenges/${challenge.value.id}/screen-recording/start`, {}
+    );
     if (!response.data.success) throw new Error(response.data.message || "Failed to start recording");
 
     isRecording.value = true;
@@ -768,7 +833,10 @@ const startScreenRecording = async () => {
     startViewerCountPolling();
 
   } catch (err: any) {
-    if (screenStream.value) { screenStream.value.getTracks().forEach(t => t.stop()); screenStream.value = null; }
+    if (screenStream.value) {
+      screenStream.value.getTracks().forEach(t => t.stop());
+      screenStream.value = null;
+    }
     const apiMsg = err.response?.data?.message;
     recordingError.value = apiMsg || (err.name === 'NotAllowedError'
       ? "Partage d'écran refusé. Veuillez autoriser l'accès."
@@ -785,22 +853,31 @@ const stopScreenRecording = async () => {
     stoppingRecording.value = true;
     recordingError.value = "";
 
-    if (screenStream.value) { screenStream.value.getTracks().forEach(t => t.stop()); screenStream.value = null; }
+    if (screenStream.value) {
+      screenStream.value.getTracks().forEach(t => t.stop());
+      screenStream.value = null;
+    }
     if (localVideoEl.value) localVideoEl.value.srcObject = null;
 
-    const response = await apiClient.post(`/challenges/${challenge.value.id}/screen-recording/stop`, {});
+    const response = await apiClient.post(
+      `/challenges/${challenge.value.id}/screen-recording/stop`, {}
+    );
     if (response.data.success) {
       isRecording.value = false;
-      if (challenge.value) { challenge.value.is_live = false; challenge.value.viewer_count = 0; }
+      if (challenge.value) {
+        challenge.value.is_live = false;
+        challenge.value.viewer_count = 0;
+      }
       creatorStreamUrl.value = null;
       stopViewerCountPolling();
-      // ✅ Fermer WS signaling et tous les peers
+      // ✅ Fermer WS signaling et tous les peers proprement
       cleanupSignaling();
     } else {
       throw new Error(response.data.message || "Failed to stop recording");
     }
   } catch (err: any) {
-    recordingError.value = err.response?.data?.message || err.message || "Failed to stop screen recording";
+    recordingError.value =
+      err.response?.data?.message || err.message || "Failed to stop screen recording";
   } finally {
     stoppingRecording.value = false;
   }
@@ -809,7 +886,9 @@ const stopScreenRecording = async () => {
 const pauseScreenRecording = async () => {
   if (!challenge.value?.is_live) return;
   try {
-    const res = await apiClient.post(`/challenges/${challenge.value.id}/screen-recording/pause`, {});
+    const res = await apiClient.post(
+      `/challenges/${challenge.value.id}/screen-recording/pause`, {}
+    );
     if (res.data.success && challenge.value) {
       challenge.value.is_live_paused = true;
       screenStream.value?.getTracks().forEach(t => { t.enabled = false; });
@@ -820,7 +899,9 @@ const pauseScreenRecording = async () => {
 const resumeScreenRecording = async () => {
   if (!challenge.value?.is_live) return;
   try {
-    const res = await apiClient.post(`/challenges/${challenge.value.id}/screen-recording/resume`, {});
+    const res = await apiClient.post(
+      `/challenges/${challenge.value.id}/screen-recording/resume`, {}
+    );
     if (res.data.success && challenge.value) {
       challenge.value.is_live_paused = false;
       screenStream.value?.getTracks().forEach(t => { t.enabled = true; });
@@ -849,14 +930,22 @@ const loadChallenge = async () => {
 
       if (isParticipant.value && challenge.value?.opponent) { loadMessages(); startMessagePolling(); }
       if (isParticipant.value) loadStopRequest();
-      if (challenge.value && isCreator.value && challenge.value.is_live) { isRecording.value = true; startViewerCountPolling(); }
-      else stopViewerCountPolling();
+      if (challenge.value && isCreator.value && challenge.value.is_live) {
+        isRecording.value = true;
+        startViewerCountPolling();
+      } else {
+        stopViewerCountPolling();
+      }
 
-    } else { error.value = response.data.message || "Error loading challenge"; }
+    } else {
+      error.value = response.data.message || "Error loading challenge";
+    }
   } catch (err: any) {
     if (err.response?.status === 404) error.value = "Challenge not found";
     else error.value = err.response?.data?.message || "Error loading challenge";
-  } finally { loading.value = false; }
+  } finally {
+    loading.value = false;
+  }
 };
 
 const loadMessages = async () => {
@@ -866,12 +955,16 @@ const loadMessages = async () => {
     const res = await apiClient.get(`/challenges/${challenge.value.id}/messages`);
     if (res.data.success) {
       messages.value = (res.data.data.data || res.data.data || []).reverse();
-      setTimeout(() => { const c = document.querySelector('.chat-container'); if (c) c.scrollTop = c.scrollHeight; }, 100);
+      setTimeout(() => {
+        const c = document.querySelector('.chat-container');
+        if (c) c.scrollTop = c.scrollHeight;
+      }, 100);
     }
   } catch { } finally { loadingMessages.value = false; }
 };
 
 let messagePollingInterval: ReturnType<typeof setInterval> | null = null;
+
 const startMessagePolling = () => {
   messagePollingInterval = setInterval(() => {
     if (isParticipant.value && challenge.value?.opponent) loadMessages();
@@ -882,7 +975,10 @@ const sendMessage = async () => {
   if (!challenge.value || !newMessage.value.trim()) return;
   try {
     sendingMessage.value = true;
-    const res = await apiClient.post(`/challenges/${challenge.value.id}/messages`, { message: newMessage.value.trim() });
+    const res = await apiClient.post(
+      `/challenges/${challenge.value.id}/messages`,
+      { message: newMessage.value.trim() }
+    );
     if (res.data.success) { newMessage.value = ""; await loadMessages(); }
   } catch { } finally { sendingMessage.value = false; }
 };
@@ -908,10 +1004,14 @@ const requestStopChallenge = async () => {
   if (!challenge.value || !confirm("Are you sure you want to request to stop this challenge?")) return;
   try {
     requestingStop.value = true;
-    const res = await apiClient.post(`/challenges/${challenge.value.id}/request-stop`, { reason: null });
+    const res = await apiClient.post(
+      `/challenges/${challenge.value.id}/request-stop`, { reason: null }
+    );
     if (res.data.success) { await loadStopRequest(); alert(res.data.message || "Stop request created."); }
     else alert(res.data.message || "Error");
-  } catch (err: any) { alert(err.response?.data?.message || "Error"); } finally { requestingStop.value = false; }
+  } catch (err: any) {
+    alert(err.response?.data?.message || "Error");
+  } finally { requestingStop.value = false; }
 };
 
 const confirmStopRequest = async () => {
@@ -920,7 +1020,9 @@ const confirmStopRequest = async () => {
     confirmingStop.value = true;
     const res = await apiClient.post(`/challenges/${challenge.value.id}/request-stop`, {});
     if (res.data.success) { await loadStopRequest(); alert(res.data.message || "Confirmed."); }
-  } catch (err: any) { alert(err.response?.data?.message || "Error"); } finally { confirmingStop.value = false; }
+  } catch (err: any) {
+    alert(err.response?.data?.message || "Error");
+  } finally { confirmingStop.value = false; }
 };
 
 const cancelStopRequest = async () => {
@@ -929,7 +1031,9 @@ const cancelStopRequest = async () => {
     cancellingStop.value = true;
     const res = await apiClient.delete(`/challenges/${challenge.value.id}/stop-request`);
     if (res.data.success) { stopRequest.value = null; alert("Stop request cancelled."); }
-  } catch (err: any) { alert(err.response?.data?.message || "Error"); } finally { cancellingStop.value = false; }
+  } catch (err: any) {
+    alert(err.response?.data?.message || "Error");
+  } finally { cancellingStop.value = false; }
 };
 
 const getCurrentUser = async () => {
@@ -941,13 +1045,20 @@ const getCurrentUser = async () => {
 
 const acceptChallenge = async () => {
   if (!challenge.value) return;
-  if (!localStorage.getItem("auth_token")) { alert("Please log in to accept challenges"); return; }
-  if (!confirm(`Accept this challenge? You will need to bet ${challenge.value.bet_amount.toLocaleString()} EBT.`)) return;
+  if (!localStorage.getItem("auth_token")) {
+    alert("Please log in to accept challenges");
+    return;
+  }
+  if (!confirm(
+    `Accept this challenge? You will need to bet ${challenge.value.bet_amount.toLocaleString()} EBT.`
+  )) return;
   try {
     const res = await apiClient.post(`/challenges/${challenge.value.id}/accept`, {});
     if (res.data.success) { await loadChallenge(); alert("Challenge accepted successfully!"); }
     else alert(res.data.message || "Error accepting challenge");
-  } catch (err: any) { alert(err.response?.data?.message || "Error accepting challenge"); }
+  } catch (err: any) {
+    alert(err.response?.data?.message || "Error accepting challenge");
+  }
 };
 
 const cancelChallenge = async () => {
@@ -955,25 +1066,41 @@ const cancelChallenge = async () => {
   try {
     const res = await apiClient.post(`/challenges/${challenge.value.id}/cancel`, {});
     if (res.data.success) { await loadChallenge(); alert("Challenge cancelled successfully!"); }
-  } catch (err: any) { alert(err.response?.data?.message || "Error cancelling challenge"); }
+  } catch (err: any) {
+    alert(err.response?.data?.message || "Error cancelling challenge");
+  }
 };
 
 const submitScore = async () => {
   if (!challenge.value || myScore.value === null) return;
   try {
-    submittingScore.value = true; scoreError.value = "";
-    const res = await apiClient.post(`/challenges/${challenge.value.id}/scores`, { score: myScore.value });
+    submittingScore.value = true;
+    scoreError.value = "";
+    const res = await apiClient.post(
+      `/challenges/${challenge.value.id}/scores`, { score: myScore.value }
+    );
     if (res.data.success) {
-      const submitted = myScore.value; myScore.value = null;
+      const submitted = myScore.value;
+      myScore.value = null;
       if (challenge.value) {
-        if (challenge.value.creator.id === currentUserId.value) challenge.value.creator_score = submitted;
-        else if (challenge.value.opponent?.id === currentUserId.value) challenge.value.opponent_score = submitted;
-        challenge.value.status = (challenge.value.creator_score !== null && challenge.value.opponent_score !== null) ? 'completed' : 'in_progress';
+        if (challenge.value.creator.id === currentUserId.value)
+          challenge.value.creator_score = submitted;
+        else if (challenge.value.opponent?.id === currentUserId.value)
+          challenge.value.opponent_score = submitted;
+        challenge.value.status =
+          challenge.value.creator_score !== null && challenge.value.opponent_score !== null
+            ? 'completed'
+            : 'in_progress';
       }
       await loadChallenge();
-    } else { scoreError.value = res.data.message || "Error submitting score"; }
-  } catch (err: any) { scoreError.value = err.response?.data?.message || "Error submitting score"; }
-  finally { submittingScore.value = false; }
+    } else {
+      scoreError.value = res.data.message || "Error submitting score";
+    }
+  } catch (err: any) {
+    scoreError.value = err.response?.data?.message || "Error submitting score";
+  } finally {
+    submittingScore.value = false;
+  }
 };
 
 watch(() => challenge.value?.status, (newStatus) => {
@@ -985,9 +1112,12 @@ onMounted(() => { getCurrentUser(); loadChallenge(); });
 onUnmounted(() => {
   if (messagePollingInterval) clearInterval(messagePollingInterval);
   stopViewerCountPolling();
-  // ✅ Fermer WS signaling et tous les peers
+  // ✅ Fermer WS signaling et tous les peers proprement
   cleanupSignaling();
-  if (screenStream.value) { screenStream.value.getTracks().forEach(t => t.stop()); screenStream.value = null; }
+  if (screenStream.value) {
+    screenStream.value.getTracks().forEach(t => t.stop());
+    screenStream.value = null;
+  }
 });
 </script>
 
