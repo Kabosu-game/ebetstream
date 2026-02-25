@@ -73,10 +73,14 @@
                           style="max-width:200px;max-height:200px;object-fit:cover;" />
                       </div>
 
-                      <div v-if="error"
-                        class="alert alert-danger mb-4 d-flex align-items-center justify-content-between">
-                        <span><i class="fas fa-exclamation-circle me-2"></i>{{ error }}</span>
-                        <button class="btn-close btn-close-white" @click="error = ''"></button>
+                      <div v-if="error" class="alert mb-4"
+                        :class="errorType === 'compat' ? 'alert-warning' : 'alert-danger'" style="border-radius:10px;">
+                        <div class="d-flex align-items-start justify-content-between gap-2">
+                          <span v-html="error" style="line-height:1.5;"></span>
+                          <button class="btn-close ms-2 flex-shrink-0"
+                            :class="errorType === 'compat' ? 'btn-close-dark' : 'btn-close-white'"
+                            @click="error = ''"></button>
+                        </div>
                       </div>
                       <div v-if="successMsg"
                         class="alert alert-success mb-4 d-flex align-items-center justify-content-between">
@@ -107,36 +111,6 @@
                       <div class="alert alert-info mb-4">
                         <i class="fas fa-info-circle me-2"></i>
                         Stream ID <strong>#{{ streamId }}</strong> — prêt à démarrer.
-                      </div>
-
-                      <!-- ── Bannière compatibilité ── -->
-                      <div class="compat_banner mb-4">
-                        <div class="compat_row">
-                          <!-- PC / Mac -->
-                          <div class="compat_item" :class="compatibility.desktop ? 'ok' : 'no'">
-                            <i class="fas fa-desktop"></i>
-                            <span>PC / Mac</span>
-                            <small>{{ compatibility.desktop ? 'Compatible' : 'Non supporté' }}</small>
-                          </div>
-                          <!-- Android -->
-                          <div class="compat_item" :class="compatibility.android ? 'ok' : 'partial'">
-                            <i class="fab fa-android"></i>
-                            <span>Android</span>
-                            <small>{{ compatibility.android ? 'Caméra ✓' : 'Limité' }}</small>
-                          </div>
-                          <!-- iOS -->
-                          <div class="compat_item" :class="compatibility.ios ? 'ok' : 'partial'">
-                            <i class="fab fa-apple"></i>
-                            <span>iPhone / iPad</span>
-                            <small>{{ compatibility.ios ? 'Caméra ✓' : 'Caméra seulement' }}</small>
-                          </div>
-                        </div>
-
-                        <!-- Message contextuel selon l'appareil détecté -->
-                        <div v-if="compatMsg" class="compat_msg" :class="compatMsgType">
-                          <i :class="compatMsgIcon" class="me-2"></i>
-                          <span v-html="compatMsg"></span>
-                        </div>
                       </div>
 
                       <!-- ── Sélecteur source MOBILE ── -->
@@ -280,6 +254,7 @@ const loading = ref(false);
 const startingStream = ref(false);
 const stoppingStream = ref(false);
 const error = ref('');
+const errorType = ref<'error' | 'compat'>('error'); // 'compat' = appareil incompatible
 const successMsg = ref('');
 
 // ── Détection device ──────────────────────────────────────────────────────────
@@ -394,23 +369,7 @@ const loadExistingStream = async () => {
 };
 
 // ── Capture média selon la source choisie ─────────────────────────────────────
-// ── Vérification compatibilité ───────────────────────────────────────────────
-const compatibility = {
-  desktop: !isMobile,
-  android: isAndroid,
-  ios: isIOS,
-};
-
-const compatMsg = (() => {
-  if (!isMobile) return ''; // Desktop : tout va bien, pas de message
-  if (isIOS) return 'Sur <strong>iPhone / iPad</strong>, seule la caméra est disponible — le partage d'écran est bloqué par Apple dans les navigateurs web.';
-  if (isAndroid && supportsDisplayMedia) return 'Sur <strong>Android Chrome</strong>, vous pouvez streamer avec votre caméra <em>ou</em> partager votre écran.';
-  if (isAndroid) return 'Sur cet <strong>appareil Android</strong>, seule la caméra est disponible. Pour le partage d'écran, utilisez < strong > Chrome </strong>.';
-  return '';
-})();
-
-const compatMsgType = isIOS ? 'warn' : (isAndroid && !supportsDisplayMedia ? 'warn' : 'info');
-const compatMsgIcon = compatMsgType === 'warn' ? 'fas fa-exclamation-triangle' : 'fas fa-info-circle';
+// ── Vérification compatibilité ──────────────────────────────────────────────
 
 const captureMedia = async (): Promise<MediaStream> => {
   const mode = sourceMode.value;
@@ -457,7 +416,7 @@ const captureMedia = async (): Promise<MediaStream> => {
 // ── Go Live ───────────────────────────────────────────────────────────────────
 const goLive = async () => {
   if (!streamId.value) return;
-  error.value = '';
+  error.value = ''; errorType.value = 'error';
   startingStream.value = true;
 
   try {
@@ -483,22 +442,29 @@ const goLive = async () => {
 
     // Messages clairs selon le type d'erreur
     if (err.name === 'CompatError') {
+      errorType.value = 'compat';
       error.value = err.friendly;
     } else if (err.name === 'NotAllowedError') {
+      errorType.value = 'error';
       error.value = isMobile
-        ? 'Permission refusée. Autorisez l'accès à la caméra dans les paramètres de votre navigateur.'
-        : 'Permission refusée. Autorisez le partage d'écran / micro dans votre navigateur.';
+        ? '🚫 Permission refusée. Allez dans Réglages → Navigateur → Autorisez l'accès à la caméra.'
+        : '🚫 Permission refusée. Cliquez sur l'icône 🔒 dans la barre d'adresse et autorisez le partage d'écran.';
     } else if (err.name === 'NotFoundError') {
-  error.value = 'Aucune caméra détectée sur cet appareil.';
+  errorType.value = 'compat';
+  error.value = '📷 Aucune caméra détectée sur cet appareil.';
 } else if (err.name === 'NotSupportedError' || err.name === 'TypeError') {
+  errorType.value = 'compat';
   error.value = isIOS
-    ? 'Streaming non disponible sur Safari iOS. Essayez avec Chrome ou Firefox.'
-    : 'Votre navigateur ne supporte pas le streaming. Essayez Chrome ou Edge.';
+    ? '🍎 Safari iOS ne supporte pas le streaming. Utilisez <strong>Chrome pour iOS</strong> à la place.'
+    : '🌐 Votre navigateur ne supporte pas le streaming. Utilisez <strong>Chrome</strong> ou <strong>Edge</strong>.';
 } else if (err.name === 'NotReadableError') {
-  error.value = 'La caméra est déjà utilisée par une autre application.';
+  errorType.value = 'error';
+  error.value = '📵 La caméra est déjà utilisée par une autre application. Fermez-la et réessayez.';
 } else if (err.name === 'OverconstrainedError') {
-  error.value = 'Résolution non supportée par cette caméra. Essayez l'autre caméra.';
+  errorType.value = 'error';
+  error.value = '⚙️ Résolution non supportée par cette caméra. Essayez l'autre caméra.';
 } else {
+  errorType.value = 'error';
   error.value = err.response?.data?.message || err.message || 'Erreur au démarrage.';
 }
   } finally {
@@ -739,96 +705,6 @@ onBeforeUnmount(() => {
   50% {
     opacity: .5;
   }
-}
-
-/* ── Bannière compatibilité ── */
-.compat_banner {
-  background: rgba(255, 255, 255, .05);
-  border: 1px solid rgba(255, 255, 255, .1);
-  border-radius: 12px;
-  padding: 1rem;
-}
-
-.compat_row {
-  display: flex;
-  gap: .75rem;
-  margin-bottom: .75rem;
-}
-
-.compat_item {
-  flex: 1;
-  text-align: center;
-  padding: .75rem .5rem;
-  border-radius: 10px;
-  border: 1.5px solid transparent;
-  display: flex;
-  flex-direction: column;
-  gap: .2rem;
-}
-
-.compat_item i {
-  font-size: 1.3rem;
-}
-
-.compat_item span {
-  font-size: .8rem;
-  font-weight: 700;
-  color: white;
-}
-
-.compat_item small {
-  font-size: .7rem;
-}
-
-.compat_item.ok {
-  border-color: rgba(40, 167, 69, .4);
-  background: rgba(40, 167, 69, .1);
-}
-
-.compat_item.ok i,
-.compat_item.ok small {
-  color: #28a745;
-}
-
-.compat_item.partial {
-  border-color: rgba(255, 193, 7, .4);
-  background: rgba(255, 193, 7, .08);
-}
-
-.compat_item.partial i,
-.compat_item.partial small {
-  color: #ffc107;
-}
-
-.compat_item.no {
-  border-color: rgba(220, 53, 69, .4);
-  background: rgba(220, 53, 69, .08);
-}
-
-.compat_item.no i,
-.compat_item.no small {
-  color: #dc3545;
-}
-
-.compat_msg {
-  font-size: .83rem;
-  padding: .6rem .8rem;
-  border-radius: 8px;
-  display: flex;
-  align-items: flex-start;
-  gap: .4rem;
-}
-
-.compat_msg.info {
-  background: rgba(13, 202, 240, .1);
-  color: #0dcaf0;
-  border: 1px solid rgba(13, 202, 240, .25);
-}
-
-.compat_msg.warn {
-  background: rgba(255, 193, 7, .1);
-  color: #ffc107;
-  border: 1px solid rgba(255, 193, 7, .25);
 }
 
 .page-content-with-space {
