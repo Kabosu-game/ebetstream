@@ -32,25 +32,14 @@
 
                       <div class="mb-4">
                         <label class="text-white mb-2 d-block fw-bold">Stream Title *</label>
-                        <input
-                          v-model="form.title"
-                          type="text"
-                          class="form-control n11-bg text-white border-secondary"
-                          placeholder="Ex: My eBetStream"
-                          required
-                          maxlength="255"
-                        />
+                        <input v-model="form.title" type="text" class="form-control n11-bg text-white border-secondary"
+                          placeholder="Ex: My eBetStream" required maxlength="255" />
                       </div>
 
                       <div class="mb-4">
                         <label class="text-white mb-2 d-block fw-bold">Description</label>
-                        <textarea
-                          v-model="form.description"
-                          class="form-control n11-bg text-white border-secondary"
-                          placeholder="Describe your stream..."
-                          rows="3"
-                          maxlength="1000"
-                        ></textarea>
+                        <textarea v-model="form.description" class="form-control n11-bg text-white border-secondary"
+                          placeholder="Describe your stream..." rows="3" maxlength="1000"></textarea>
                       </div>
 
                       <div class="row g-3 mb-4">
@@ -68,41 +57,30 @@
                         </div>
                         <div class="col-md-6">
                           <label class="text-white mb-2 d-block fw-bold">Game</label>
-                          <input
-                            v-model="form.game"
-                            type="text"
-                            class="form-control n11-bg text-white border-secondary"
-                            placeholder="FC Mobile, COD..."
-                            maxlength="100"
-                          />
+                          <input v-model="form.game" type="text" class="form-control n11-bg text-white border-secondary"
+                            placeholder="FC Mobile, COD..." maxlength="100" />
                         </div>
                       </div>
 
                       <div class="mb-4">
                         <label class="text-white mb-2 d-block fw-bold">Thumbnail</label>
-                        <input
-                          ref="thumbnailInput"
-                          type="file"
+                        <input ref="thumbnailInput" type="file"
                           accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"
-                          class="form-control n11-bg text-white border-secondary"
-                          @change="handleThumbnailChange"
-                        />
-                        <small class="text-white d-block mt-2" style="opacity:.7;">JPEG, PNG, GIF, WebP — max 5 MB</small>
-                        <img
-                          v-if="thumbnailPreview"
-                          :src="thumbnailPreview"
-                          alt="preview"
-                          class="img-thumbnail mt-3"
-                          style="max-width:200px;max-height:200px;object-fit:cover;"
-                        />
+                          class="form-control n11-bg text-white border-secondary" @change="handleThumbnailChange" />
+                        <small class="text-white d-block mt-2" style="opacity:.7;">JPEG, PNG, GIF, WebP — max 5
+                          MB</small>
+                        <img v-if="thumbnailPreview" :src="thumbnailPreview" alt="preview" class="img-thumbnail mt-3"
+                          style="max-width:200px;max-height:200px;object-fit:cover;" />
                       </div>
 
                       <!-- Alertes -->
-                      <div v-if="error" class="alert alert-danger mb-4 d-flex align-items-center justify-content-between">
+                      <div v-if="error"
+                        class="alert alert-danger mb-4 d-flex align-items-center justify-content-between">
                         <span><i class="fas fa-exclamation-circle me-2"></i>{{ error }}</span>
                         <button class="btn-close btn-close-white" @click="error = ''"></button>
                       </div>
-                      <div v-if="successMsg" class="alert alert-success mb-4 d-flex align-items-center justify-content-between">
+                      <div v-if="successMsg"
+                        class="alert alert-success mb-4 d-flex align-items-center justify-content-between">
                         <span>{{ successMsg }}</span>
                         <button class="btn-close btn-close-white" @click="successMsg = ''"></button>
                       </div>
@@ -112,18 +90,21 @@
                           <span v-if="loading"><i class="fas fa-spinner fa-spin me-2"></i>Creating...</span>
                           <span v-else><i class="fas fa-video me-2"></i>Create Stream</span>
                         </button>
-                        <button v-else type="button" class="btn_primary flex-fill" @click="updateStream" :disabled="loading">
+                        <button v-else type="button" class="btn_primary flex-fill" @click="updateStream"
+                          :disabled="loading">
                           <span v-if="loading"><i class="fas fa-spinner fa-spin me-2"></i>Saving...</span>
                           <span v-else><i class="fas fa-save me-2"></i>Save Changes</span>
                         </button>
-                        <button type="button" class="btn_secondary" @click="$router.push('/streams')" :disabled="loading">
+                        <button type="button" class="btn_secondary" @click="$router.push('/streams')"
+                          :disabled="loading">
                           Cancel
                         </button>
                       </div>
                     </form>
 
                     <!-- Bouton Go Live (si le stream existe déjà) -->
-                    <div v-if="streamId" class="mt-4 pt-4 border-top" style="border-color:rgba(255,255,255,.1) !important;">
+                    <div v-if="streamId" class="mt-4 pt-4 border-top"
+                      style="border-color:rgba(255,255,255,.1) !important;">
                       <div class="alert alert-info mb-3">
                         <i class="fas fa-info-circle me-2"></i>
                         Stream ID <strong>#{{ streamId }}</strong> — prêt à démarrer.
@@ -164,7 +145,8 @@
 
                     <!-- Preview locale -->
                     <div class="mb-4 rounded overflow-hidden" style="background:#000;aspect-ratio:16/9;">
-                      <video ref="localVideo" autoplay muted playsinline class="w-100 h-100" style="object-fit:contain;"></video>
+                      <video ref="localVideo" autoplay muted playsinline class="w-100 h-100"
+                        style="object-fit:contain;"></video>
                     </div>
 
                     <!-- Status connexions -->
@@ -181,7 +163,7 @@
                       <div class="col-md-4">
                         <div class="defi_card p-3 text-center">
                           <div class="text-white mb-1" style="opacity:.7;font-size:.85rem;">Peer Connections</div>
-                          <div class="text-white fw-bold">{{ Object.keys(peerConnections).length }}</div>
+                          <div class="text-white fw-bold">{{ peerCount }}</div>
                         </div>
                       </div>
                       <div class="col-md-4">
@@ -212,37 +194,40 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient from '@/utils/axios';
 
 const router = useRouter();
 
 // ── Formulaire ────────────────────────────────────────────────────────────────
-const form           = ref({ title: '', description: '', category: '', game: '' });
-const thumbnailFile  = ref<File | null>(null);
+const form = ref({ title: '', description: '', category: '', game: '' });
+const thumbnailFile = ref<File | null>(null);
 const thumbnailPreview = ref<string | null>(null);
 const thumbnailInput = ref<HTMLInputElement | null>(null);
-const streamId       = ref<number | null>(null);
+const streamId = ref<number | null>(null);
 
 // ── UI state ──────────────────────────────────────────────────────────────────
-const phase          = ref<'setup' | 'live'>('setup');
-const loading        = ref(false);
+const phase = ref<'setup' | 'live'>('setup');
+const loading = ref(false);
 const startingStream = ref(false);
 const stoppingStream = ref(false);
-const error          = ref('');
-const successMsg     = ref('');
+const error = ref('');
+const successMsg = ref('');
 
 // ── WebRTC ────────────────────────────────────────────────────────────────────
-const localVideo      = ref<HTMLVideoElement | null>(null);
-const localStream     = ref<MediaStream | null>(null);
-const wsConnected     = ref(false);
-const viewerCount     = ref(0);
-const peerConnections = ref<Record<string, RTCPeerConnection>>({});
+const localVideo = ref<HTMLVideoElement | null>(null);
+const localStream = ref<MediaStream | null>(null);
+const wsConnected = ref(false);
+const viewerCount = ref(0);
+const peerCount = ref(0);   // compteur réactif séparé
+
+// Map brute (non-réactive) pour éviter que Vue ne proxifie les RTCPeerConnection
+const peerConnections: Record<string, RTCPeerConnection> = {};
 
 let ws: WebSocket | null = null;
 
-const WS_BASE    = (import.meta.env.VITE_STREAM_WS_URL || 'wss://ebetstream.com/ws').replace(/\/$/, '');
+const WS_BASE = (import.meta.env.VITE_STREAM_WS_URL || 'wss://ebetstream.com/ws').replace(/\/$/, '');
 const ICE_SERVERS = [
   { urls: 'stun:stun.l.google.com:19302' },
   { urls: 'stun:stun1.l.google.com:19302' },
@@ -325,10 +310,10 @@ const loadExistingStream = async () => {
         const detail = await apiClient.get(`/streams/${streamId.value}`);
         if (detail.data.success) {
           const s = detail.data.data;
-          form.value.title       = s.title || '';
+          form.value.title = s.title || '';
           form.value.description = s.description || '';
-          form.value.category    = s.category || '';
-          form.value.game        = s.game || '';
+          form.value.category = s.category || '';
+          form.value.game = s.game || '';
           if (s.thumbnail_url) thumbnailPreview.value = s.thumbnail_url;
         }
       }
@@ -339,22 +324,16 @@ const loadExistingStream = async () => {
 // ── Go Live ───────────────────────────────────────────────────────────────────
 const goLive = async () => {
   if (!streamId.value) return;
-  error.value      = '';
+  error.value = '';
   startingStream.value = true;
 
   try {
-    // 1. Capturer l'écran (avec audio système si dispo)
+    // 1. Capturer l'écran
     const stream = await navigator.mediaDevices.getDisplayMedia({
       video: { width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 30 } },
       audio: true,
     });
     localStream.value = stream;
-
-    // Preview locale (muté pour éviter l'écho)
-    if (localVideo.value) {
-      localVideo.value.srcObject = stream;
-      localVideo.value.muted     = true;
-    }
 
     // Arrêt automatique si l'utilisateur ferme le partage depuis le navigateur
     stream.getVideoTracks()[0].addEventListener('ended', () => stopStream());
@@ -362,15 +341,25 @@ const goLive = async () => {
     // 2. Informer Laravel
     await apiClient.post(`/streams/${streamId.value}/start`);
 
-    // 3. Connecter le WebSocket signaling
+    // 3. Passer en phase live et attendre que le DOM soit rendu
+    phase.value = 'live';
+    await nextTick();  // ← FIX : le <video ref="localVideo"> n'existe qu'après ce point
+
+    // 4. Afficher la preview locale
+    if (localVideo.value) {
+      localVideo.value.srcObject = stream;
+      localVideo.value.muted = true;
+    }
+
+    // 5. Connecter le WebSocket signaling
     connectSignaling();
 
-    phase.value = 'live';
   } catch (err: any) {
     if (localStream.value) {
       localStream.value.getTracks().forEach(t => t.stop());
       localStream.value = null;
     }
+    phase.value = 'setup';
     if (err.name === 'NotAllowedError') {
       error.value = 'Screen sharing permission denied.';
     } else {
@@ -388,7 +377,6 @@ const connectSignaling = () => {
 
   ws.onopen = () => {
     wsConnected.value = true;
-    console.log('[Streamer WS] ✅ Connecté au serveur de signaling');
   };
 
   ws.onmessage = async (evt) => {
@@ -399,36 +387,29 @@ const connectSignaling = () => {
 
       case 'ready':
         viewerCount.value = msg.viewerCount ?? 0;
-        console.log(`[Streamer] ready, ${viewerCount.value} viewer(s) en attente`);
         break;
 
-      // Un nouveau viewer a rejoint → créer une offre WebRTC pour lui
       case 'viewer-joined':
         viewerCount.value = msg.count ?? viewerCount.value;
-        console.log(`[Streamer] viewer-joined: ${msg.viewerId}, total: ${viewerCount.value}`);
         await createOffer(msg.viewerId);
         break;
 
-      // Le viewer a répondu à notre offre
       case 'answer':
-        if (peerConnections.value[msg.viewerId]) {
-          await peerConnections.value[msg.viewerId]
+        if (peerConnections[msg.viewerId]) {
+          await peerConnections[msg.viewerId]
             .setRemoteDescription(new RTCSessionDescription(msg.sdp));
-          console.log(`[Streamer] answer reçu de viewer ${msg.viewerId}`);
         }
         break;
 
-      // ICE candidate du viewer
       case 'ice-candidate':
-        if (peerConnections.value[msg.viewerId] && msg.candidate) {
+        if (peerConnections[msg.viewerId] && msg.candidate) {
           try {
-            await peerConnections.value[msg.viewerId]
+            await peerConnections[msg.viewerId]
               .addIceCandidate(new RTCIceCandidate(msg.candidate));
           } catch { }
         }
         break;
 
-      // Viewer parti → fermer sa peer connection
       case 'viewer-left':
         viewerCount.value = msg.count ?? viewerCount.value;
         closePeer(msg.viewerId);
@@ -443,29 +424,23 @@ const connectSignaling = () => {
 
   ws.onclose = () => {
     wsConnected.value = false;
-    console.log('[Streamer WS] Déconnecté');
   };
 };
 
 // Crée une peer connection et envoie l'offre SDP à un viewer spécifique
 const createOffer = async (viewerId: string) => {
-  if (!localStream.value) {
-    console.warn('[Streamer] Pas de localStream, impossible de créer l\'offre');
-    return;
-  }
+  if (!localStream.value) return;
 
   // Fermer l'ancienne PC pour ce viewer si elle existe
-  if (peerConnections.value[viewerId]) {
-    closePeer(viewerId);
-  }
+  if (peerConnections[viewerId]) closePeer(viewerId);
 
   const pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
-  peerConnections.value[viewerId] = pc;
+  peerConnections[viewerId] = pc;
+  peerCount.value = Object.keys(peerConnections).length;
 
-  // ⚠️ CRITIQUE : ajouter les tracks du stream local AVANT de créer l'offre
+  // Ajouter les tracks AVANT de créer l'offre
   localStream.value.getTracks().forEach(track => {
     pc.addTrack(track, localStream.value!);
-    console.log(`[Streamer] track ajoutée: ${track.kind} pour viewer ${viewerId}`);
   });
 
   pc.onicecandidate = ({ candidate }) => {
@@ -475,30 +450,26 @@ const createOffer = async (viewerId: string) => {
   };
 
   pc.oniceconnectionstatechange = () => {
-    console.log(`[Streamer] ICE ${viewerId}:`, pc.iceConnectionState);
     if (pc.iceConnectionState === 'failed') pc.restartIce();
   };
 
   pc.onconnectionstatechange = () => {
-    console.log(`[Streamer] PC ${viewerId}:`, pc.connectionState);
     if (pc.connectionState === 'failed' || pc.connectionState === 'closed') {
       closePeer(viewerId);
     }
   };
 
-  // Créer et envoyer l'offre
   const offer = await pc.createOffer();
   await pc.setLocalDescription(offer);
 
   ws?.send(JSON.stringify({ type: 'offer', viewerId, sdp: offer }));
-  console.log(`[Streamer] ✅ Offre envoyée à viewer ${viewerId}`);
 };
 
 const closePeer = (viewerId: string) => {
-  if (peerConnections.value[viewerId]) {
-    peerConnections.value[viewerId].close();
-    delete peerConnections.value[viewerId];
-    console.log(`[Streamer] PC fermée pour viewer ${viewerId}`);
+  if (peerConnections[viewerId]) {
+    peerConnections[viewerId].close();
+    delete peerConnections[viewerId];
+    peerCount.value = Object.keys(peerConnections).length;
   }
 };
 
@@ -507,19 +478,15 @@ const stopStream = async () => {
   if (stoppingStream.value) return;
   stoppingStream.value = true;
   try {
-    // Fermer toutes les peer connections
-    Object.keys(peerConnections.value).forEach(closePeer);
+    Object.keys(peerConnections).forEach(closePeer);
 
-    // Arrêter les tracks
     localStream.value?.getTracks().forEach(t => t.stop());
     localStream.value = null;
     if (localVideo.value) localVideo.value.srcObject = null;
 
-    // Fermer WS
     if (ws) { ws.close(); ws = null; }
     wsConnected.value = false;
 
-    // Notifier Laravel
     if (streamId.value) {
       await apiClient.post(`/streams/${streamId.value}/stop`).catch(() => { });
     }
@@ -538,7 +505,7 @@ onMounted(async () => {
 });
 
 onBeforeUnmount(() => {
-  Object.keys(peerConnections.value).forEach(closePeer);
+  Object.keys(peerConnections).forEach(closePeer);
   localStream.value?.getTracks().forEach(t => t.stop());
   if (ws) ws.close();
 });
@@ -570,8 +537,16 @@ onBeforeUnmount(() => {
   transition: .3s;
   cursor: pointer;
 }
-.btn_primary:hover { transform: translateY(-2px); }
-.btn_primary:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+.btn_primary:hover {
+  transform: translateY(-2px);
+}
+
+.btn_primary:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  transform: none;
+}
 
 .btn_secondary {
   background: transparent;
@@ -583,7 +558,11 @@ onBeforeUnmount(() => {
   transition: .3s;
   cursor: pointer;
 }
-.btn_secondary:hover { background-color: #FF9F00; color: #000; }
+
+.btn_secondary:hover {
+  background-color: #FF9F00;
+  color: #000;
+}
 
 .defi_card {
   background: rgba(255, 255, 255, .1);
@@ -613,8 +592,14 @@ onBeforeUnmount(() => {
   line-height: 1.6;
 }
 
-.form-control { color: white; }
-.form-control::placeholder { color: rgba(255, 255, 255, .5); }
+.form-control {
+  color: white;
+}
+
+.form-control::placeholder {
+  color: rgba(255, 255, 255, .5);
+}
+
 .form-control:focus {
   background-color: rgba(255, 255, 255, .1);
   border-color: #FF9F00;
@@ -622,14 +607,28 @@ onBeforeUnmount(() => {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: .5; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: .5;
+  }
 }
 
-.page-content-with-space { padding-top: 90px; }
+.page-content-with-space {
+  padding-top: 90px;
+}
 
 @media (max-width: 768px) {
-  .page-content-with-space { padding-top: 60px; }
-  .hero_title { font-size: 1.8rem; }
+  .page-content-with-space {
+    padding-top: 60px;
+  }
+
+  .hero_title {
+    font-size: 1.8rem;
+  }
 }
 </style>
