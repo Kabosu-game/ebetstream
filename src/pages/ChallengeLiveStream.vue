@@ -338,6 +338,14 @@ const connectToStream = () => {
     waitingMsg.value = 'Connecté, en attente du flux...';
     console.log('[Viewer] WebSocket ouvert');
     startRetryTimer();
+
+    // Demander une offre après 2 secondes si aucune n'est reçue
+    setTimeout(() => {
+      if (!connected.value && ws?.readyState === WebSocket.OPEN) {
+        console.log('[Viewer] Aucune offre reçue, envoi request-offer');
+        ws.send(JSON.stringify({ type: 'request-offer' }));
+      }
+    }, 2000);
   };
 
   ws.onmessage = async (evt) => {
