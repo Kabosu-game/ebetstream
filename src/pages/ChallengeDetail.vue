@@ -166,8 +166,7 @@
                         v-if="challenge.status === 'open' && challenge.creator.id !== currentUserId && !challenge.opponent"
                         class="mb-4">
                         <button class="btn_primary w-100 py-3" @click="acceptChallenge">
-                          <i class="fas fa-check-circle me-2"></i>
-                          Accept Challenge
+                          <i class="fas fa-check-circle me-2"></i>Accept Challenge
                         </button>
                         <p class="text-white small mt-2 text-center" style="opacity: 0.8;">
                           You will need to bet {{ challenge.bet_amount.toLocaleString() }} EBT to accept
@@ -178,12 +177,9 @@
                       <div v-if="challenge.status === 'open' && challenge.creator.id === currentUserId" class="mb-4">
                         <button class="btn_see_details w-100 py-3" style="background-color: #991b1b; color: white;"
                           @click="cancelChallenge">
-                          <i class="fas fa-times-circle me-2"></i>
-                          Cancel Challenge
+                          <i class="fas fa-times-circle me-2"></i>Cancel Challenge
                         </button>
-                        <p class="text-white small mt-2 text-center" style="opacity: 0.8;">
-                          Your bet will be refunded
-                        </p>
+                        <p class="text-white small mt-2 text-center" style="opacity: 0.8;">Your bet will be refunded</p>
                       </div>
 
                       <!-- Live Streaming (Creator Only) -->
@@ -193,10 +189,10 @@
                           <i class="fas fa-broadcast-tower me-2"></i>Live Streaming Control
                         </h6>
 
-                        <!-- Phase 1 : Pas encore live -->
-                        <div v-if="!challenge.is_live && !liveActive" class="mb-3">
+                        <!-- Not Live -->
+                        <div v-if="!challenge.is_live && !recordingError" class="mb-3">
                           <button class="btn_primary w-100 py-3" @click="startScreenRecording"
-                            :disabled="startingRecording">
+                            :disabled="startingRecording || !isCreator">
                             <span v-if="startingRecording">
                               <i class="fas fa-spinner fa-spin me-2"></i>Starting Live...
                             </span>
@@ -204,106 +200,80 @@
                               <i class="fas fa-video me-2"></i>Start Live Stream
                             </span>
                           </button>
-                          <p class="text-white-50 small mt-2 text-center">
+                          <p class="text-white-50 small mt-2 text-center" style="opacity: 0.8;">
                             Start a live stream of your challenge gameplay
                           </p>
-                          <div v-if="recordingError" class="alert alert-danger mt-3 small">{{ recordingError }}</div>
                         </div>
 
-                        <!-- Phase 2 : Live en cours (affiché après démarrage ou si challenge.is_live) -->
-                        <div v-else-if="challenge.is_live || liveActive" class="mb-3">
-                          <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
-                            <div class="d-flex align-items-center gap-3">
-                              <span class="badge bg-danger px-3 py-2 fs-6">
-                                <i class="fas fa-circle me-2"
-                                  style="font-size:.6rem;animation:pulse 2s infinite;"></i>LIVE
-                              </span>
-                              <h6 class="mb-0 text-white">{{ challenge.game }}</h6>
+                        <!-- Live State -->
+                        <div v-else-if="challenge.is_live" class="mb-3">
+                          <div class="alert d-flex align-items-center justify-content-between mb-3"
+                            :class="challenge.is_live_paused ? 'alert-warning' : 'alert-danger'">
+                            <span>
+                              <i v-if="!challenge.is_live_paused" class="fas fa-circle me-2"
+                                style="animation: pulse 2s infinite;"></i>
+                              <i v-else class="fas fa-pause me-2"></i>
+                              <strong>{{ challenge.is_live_paused ? 'EN PAUSE' : 'LIVE' }}</strong>
+                              — {{ challenge.viewer_count || 0 }} viewers
+                            </span>
+                            <!-- Statut signal WS -->
+                            <span class="badge ms-2" :style="{ background: wsStreamerStatusColor, fontSize: '.7rem' }">
+                              {{ wsStreamerStatusLabel }}
+                            </span>
+                          </div>
+
+                          <!-- Preview locale -->
+                          <div class="mb-3 rounded overflow-hidden" style="background:#000; aspect-ratio:16/9;">
+                            <video ref="localVideoEl" autoplay muted playsinline class="w-100 h-100"
+                              style="object-fit:contain;"></video>
+                          </div>
+
+                          <!-- Lien spectateurs -->
+                          <div class="defi_card n11-bg rounded-8 p-3 mb-3">
+                            <div class="mb-3">
+                              <label class="text-white small d-block mb-1">Lien public pour les spectateurs</label>
+                              <div class="input-group">
+                                <input type="text" :value="getPublicStreamUrl()"
+                                  class="form-control n11-bg text-white border-secondary small" readonly />
+                                <button class="btn btn-sm btn-secondary" @click="copyStreamUrl" title="Copy URL">
+                                  <i class="fas fa-copy"></i>
+                                </button>
+                              </div>
                             </div>
-                            <div class="d-flex align-items-center gap-3">
-                              <span class="badge bg-dark px-3 py-2">
-                                <i class="fas fa-eye me-2"></i>{{ challenge.viewer_count || 0 }}
-                              </span>
-                              <button class="btn btn-outline-danger btn-sm" @click="stopScreenRecording"
-                                :disabled="stoppingRecording">
-                                <span v-if="stoppingRecording"><i class="fas fa-spinner fa-spin me-1"></i></span>
-                                <span v-else><i class="fas fa-stop me-1"></i></span>
-                                Stop
+                            <div class="d-flex gap-2 mb-2">
+                              <button class="btn btn-sm btn-success flex-fill" @click="openStreamInNewTab">
+                                <i class="fas fa-external-link-alt me-1"></i>Voir sur /streams
+                              </button>
+                              <button class="btn btn-sm btn-info flex-fill" @click="refreshViewerCount">
+                                <i class="fas fa-sync-alt me-1"></i>Stats
+                              </button>
+                            </div>
+                            <div class="d-flex gap-2">
+                              <button v-if="!challenge.is_live_paused" class="btn btn-sm btn-warning flex-fill"
+                                @click="pauseScreenRecording">
+                                <i class="fas fa-pause me-1"></i>Pause
+                              </button>
+                              <button v-else class="btn btn-sm btn-success flex-fill" @click="resumeScreenRecording">
+                                <i class="fas fa-play me-1"></i>Reprendre
                               </button>
                             </div>
                           </div>
 
-                          <!-- Preview locale -->
-                          <div class="mb-4 rounded overflow-hidden" style="background:#000;aspect-ratio:16/9;">
-                            <video ref="localVideo" autoplay muted playsinline class="w-100 h-100"
-                              style="object-fit:contain;"></video>
-                          </div>
-
-                          <div class="row g-3 mb-3">
-                            <div class="col-4">
-                              <div class="defi_card p-3 text-center">
-                                <div class="text-white mb-1" style="opacity:.7;font-size:.8rem;">Signal</div>
-                                <div :class="wsConnected ? 'text-success' : 'text-danger'" class="fw-bold">
-                                  {{ wsConnected ? '✓ OK' : '✗ Off' }}
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-4">
-                              <div class="defi_card p-3 text-center">
-                                <div class="text-white mb-1" style="opacity:.7;font-size:.8rem;">Peers</div>
-                                <div class="text-white fw-bold">{{ peerCount }}</div>
-                              </div>
-                            </div>
-                            <div class="col-4">
-                              <div class="defi_card p-3 text-center">
-                                <div class="text-white mb-1" style="opacity:.7;font-size:.8rem;">Source</div>
-                                <div :class="localStream ? 'text-success' : 'text-danger'" class="fw-bold">
-                                  {{ localStream ? '✓ OK' : '✗ Stop' }}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <!-- Infos RTMP (si besoin) -->
-                          <div class="defi_card n11-bg rounded-8 p-3 mb-3">
-                            <h6 class="fw-bold mb-3 text-white">
-                              <i class="fas fa-sliders-h me-2"></i>Stream Settings
-                            </h6>
-                            <div class="mb-3">
-                              <label class="text-white small d-block mb-1">RTMP URL (for OBS)</label>
-                              <div class="input-group">
-                                <input type="text" :value="challenge.rtmp_url || ''"
-                                  class="form-control n11-bg text-white border-secondary small" readonly />
-                                <button class="btn btn-sm btn-secondary" @click="copyRtmpUrl"><i
-                                    class="fas fa-copy"></i></button>
-                              </div>
-                            </div>
-                            <div class="mb-3">
-                              <label class="text-white small d-block mb-1">Stream Key</label>
-                              <div class="input-group">
-                                <input :type="showStreamKey ? 'text' : 'password'" :value="challenge.stream_key || ''"
-                                  class="form-control n11-bg text-white border-secondary small" readonly />
-                                <button class="btn btn-sm btn-secondary" @click="showStreamKey = !showStreamKey">
-                                  <i class="fas" :class="showStreamKey ? 'fa-eye-slash' : 'fa-eye'"></i>
-                                </button>
-                                <button class="btn btn-sm btn-secondary" @click="copyStreamKey"><i
-                                    class="fas fa-copy"></i></button>
-                              </div>
-                            </div>
-                          </div>
-
-                          <!-- Pause / Resume -->
-                          <div class="d-flex gap-2 mb-2">
-                            <button v-if="!challenge.is_live_paused" class="btn btn-sm btn-warning flex-fill"
-                              @click="pauseScreenRecording">
-                              <i class="fas fa-pause me-1"></i>Pause
-                            </button>
-                            <button v-else class="btn btn-sm btn-success flex-fill" @click="resumeScreenRecording">
-                              <i class="fas fa-play me-1"></i>Resume
-                            </button>
-                          </div>
+                          <!-- Stop -->
+                          <button class="btn_see_details w-100 py-3" style="background-color: #991b1b; color: white;"
+                            @click="stopScreenRecording" :disabled="stoppingRecording">
+                            <span v-if="stoppingRecording">
+                              <i class="fas fa-spinner fa-spin me-2"></i>Stopping...
+                            </span>
+                            <span v-else>
+                              <i class="fas fa-stop me-2"></i>Stop Live Stream
+                            </span>
+                          </button>
                         </div>
+
+                        <div v-if="recordingError" class="alert alert-danger mt-3 small">{{ recordingError }}</div>
                       </div>
+
                       <!-- View Live Stream (For Opponent and Viewers) -->
                       <div v-if="challenge.is_live && !isCreator" class="mb-4">
                         <div class="alert alert-danger mb-3">
@@ -328,26 +298,17 @@
                         <button class="btn_primary w-100 py-3" @click="submitScore"
                           :disabled="submittingScore || !myScore">
                           <span v-if="submittingScore">Submitting...</span>
-                          <span v-else>
-                            <i class="fas fa-paper-plane me-2"></i>
-                            Submit score
-                          </span>
+                          <span v-else><i class="fas fa-paper-plane me-2"></i>Submit score</span>
                         </button>
-                        <div v-if="scoreError" class="alert alert-danger mt-3 small">
-                          {{ scoreError }}
-                        </div>
+                        <div v-if="scoreError" class="alert alert-danger mt-3 small">{{ scoreError }}</div>
                       </div>
 
-                      <!-- Score Submitted Confirmation -->
+                      <!-- Score Submitted -->
                       <div v-if="hasSubmittedScore && challenge.status !== 'completed'" class="mb-4">
                         <div class="alert alert-success text-center">
                           <i class="fas fa-check-circle me-2"></i>
                           <strong>Your score has been submitted!</strong>
-                          <div class="mt-2">
-                            <span class="fs-4 fw-bold">
-                              {{ getMySubmittedScore() }}
-                            </span>
-                          </div>
+                          <div class="mt-2"><span class="fs-4 fw-bold">{{ getMySubmittedScore() }}</span></div>
                           <p class="mb-0 small mt-2" style="opacity: 0.8;">
                             Waiting for {{ getOtherPlayerName() }} to submit their score...
                           </p>
@@ -361,9 +322,7 @@
                           <strong>Challenge completed!</strong>
                           <div v-if="challenge.creator_score !== null && challenge.opponent_score !== null"
                             class="mt-3">
-                            <div class="fs-4 fw-bold">
-                              {{ getWinner() }}
-                            </div>
+                            <div class="fs-4 fw-bold">{{ getWinner() }}</div>
                           </div>
                         </div>
                       </div>
@@ -376,13 +335,13 @@
                         </div>
                       </div>
 
-                      <!-- Not Participant Message -->
+                      <!-- Not Participant -->
                       <div v-if="!isParticipant && challenge.status !== 'open'" class="alert alert-info">
                         <i class="fas fa-info-circle me-2"></i>
                         You are not a participant in this challenge
                       </div>
 
-                      <!-- Stop Challenge Request (only visible to participants) -->
+                      <!-- Stop Challenge Request -->
                       <div
                         v-if="isParticipant && challenge.opponent && (challenge.status === 'accepted' || challenge.status === 'in_progress')"
                         class="mt-4">
@@ -390,11 +349,9 @@
                           <h5 class="text-white mb-3">
                             <i class="fas fa-stop-circle me-2"></i>Stop Challenge
                           </h5>
-
                           <div v-if="stopRequestLoading" class="text-center py-3">
                             <div class="spinner-border spinner-border-sm text-primary"></div>
                           </div>
-
                           <div v-else-if="stopRequest">
                             <div v-if="stopRequest.status === 'pending'" class="alert alert-warning">
                               <div class="d-flex justify-content-between align-items-center">
@@ -424,20 +381,17 @@
                                 </div>
                               </div>
                             </div>
-
                             <div v-else-if="stopRequest.status === 'confirmed'" class="alert alert-info">
                               <i class="fas fa-check-circle me-2"></i>
                               <strong>Stop Request Confirmed</strong>
                               <p class="mb-0 small">Both players have confirmed. Waiting for admin approval to complete
                                 the challenge and distribute winnings.</p>
                             </div>
-
                             <div v-else-if="stopRequest.status === 'approved'" class="alert alert-success">
                               <i class="fas fa-check-double me-2"></i>
                               <strong>Challenge Stopped</strong>
                               <p class="mb-0 small">The challenge has been stopped and completed by admin.</p>
                             </div>
-
                             <div v-else-if="stopRequest.status === 'rejected'" class="alert alert-danger">
                               <i class="fas fa-times-circle me-2"></i>
                               <strong>Stop Request Rejected</strong>
@@ -445,7 +399,6 @@
                               </p>
                             </div>
                           </div>
-
                           <div v-else>
                             <p class="text-white-50 mb-3">
                               If both players agree to stop the challenge, click the button below. The admin will review
@@ -454,15 +407,13 @@
                             <button class="btn_secondary w-100" @click="requestStopChallenge"
                               :disabled="requestingStop">
                               <span v-if="requestingStop">Requesting...</span>
-                              <span v-else>
-                                <i class="fas fa-stop-circle me-2"></i>Request to Stop Challenge
-                              </span>
+                              <span v-else><i class="fas fa-stop-circle me-2"></i>Request to Stop Challenge</span>
                             </button>
                           </div>
                         </div>
                       </div>
 
-                      <!-- Challenge Chat (only visible to creator and opponent) -->
+                      <!-- Challenge Chat -->
                       <div v-if="isParticipant && challenge.opponent" class="mt-5">
                         <h5 class="text-white mb-3">
                           <i class="fas fa-comments me-2"></i>Challenge Discussion
@@ -521,11 +472,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, onUnmounted, watch } from "vue";
+import { ref, onMounted, computed, onUnmounted, watch, nextTick } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import apiClient from "@/utils/axios";
-import Peer from "peerjs";
-import { getPeerOptions } from "@/utils/peerConfig";
+// ✅ PeerJS supprimé — on utilise notre WS signaling (stream-server.js)
 
 interface Challenge {
   id: number;
@@ -560,41 +510,116 @@ const myScore = ref<number | null>(null);
 const submittingScore = ref(false);
 const scoreError = ref("");
 
-// Chat related
 const messages = ref<any[]>([]);
 const loadingMessages = ref(false);
 const sendingMessage = ref(false);
 const newMessage = ref("");
 
-// Stop request related
 const stopRequest = ref<any>(null);
 const stopRequestLoading = ref(false);
 const requestingStop = ref(false);
 const confirmingStop = ref(false);
 const cancellingStop = ref(false);
 
-// Screen recording related
 const isRecording = ref(false);
-const liveActive = ref(false);
-const recordingStreamUrl = ref<string | null>(null);
 const recordingError = ref("");
 const startingRecording = ref(false);
 const stoppingRecording = ref(false);
-const mediaRecorder = ref<MediaRecorder | null>(null);
 const screenStream = ref<MediaStream | null>(null);
-const recordingVideoElement = ref<HTMLVideoElement | null>(null);
+const localVideoEl = ref<HTMLVideoElement | null>(null);
 const creatorStreamUrl = ref<string | null>(null);
-const opponentStreamUrl = ref<string | null>(null);
-const showStreamKey = ref(false);
-const streamKeyInput = ref<HTMLInputElement | null>(null);
-const peerCount = ref(0);
-const wsConnected = ref(false);
-const localStream = ref<MediaStream | null>(null);
-let peerInstance: Peer | null = null;
 
-let messagePollingInterval: any = null;
-let viewerCountInterval: any = null;
+// ── WebRTC Streamer via WS signaling ─────────────────────────────────────────
+const peerConnections: Record<string, RTCPeerConnection> = {};
+let signalingWs: WebSocket | null = null;
+const wsStreamerConnected = ref(false);
 
+const wsStreamerStatusColor = computed(() =>
+  wsStreamerConnected.value ? 'rgba(40,167,69,.8)' : 'rgba(220,53,69,.8)'
+);
+const wsStreamerStatusLabel = computed(() =>
+  wsStreamerConnected.value ? '● Signal' : '○ Signal'
+);
+
+const WS_BASE = (import.meta.env.VITE_STREAM_WS_URL || 'wss://ebetstream.com/ws').replace(/\/$/, '');
+const ICE_SERVERS = [
+  { urls: 'stun:stun.l.google.com:19302' },
+  { urls: 'stun:stun1.l.google.com:19302' },
+];
+
+const connectSignaling = (stream: MediaStream) => {
+  if (!challenge.value) return;
+  const token = localStorage.getItem('auth_token') || '';
+  signalingWs = new WebSocket(`${WS_BASE}/stream/${challenge.value.id}?token=${encodeURIComponent(token)}`);
+
+  signalingWs.onopen = () => { wsStreamerConnected.value = true; };
+  signalingWs.onerror = () => { wsStreamerConnected.value = false; recordingError.value = 'Erreur WebSocket signal.'; };
+  signalingWs.onclose = () => { wsStreamerConnected.value = false; };
+
+  signalingWs.onmessage = async (evt) => {
+    let msg: any;
+    try { msg = JSON.parse(evt.data); } catch { return; }
+    switch (msg.type) {
+      case 'ready':
+        if (challenge.value) challenge.value.viewer_count = msg.viewerCount ?? 0;
+        break;
+      case 'viewer-joined':
+        if (challenge.value) challenge.value.viewer_count = msg.count ?? challenge.value.viewer_count;
+        await createOffer(msg.viewerId, stream);
+        break;
+      case 'answer':
+        if (peerConnections[msg.viewerId]) {
+          await peerConnections[msg.viewerId].setRemoteDescription(new RTCSessionDescription(msg.sdp));
+        }
+        break;
+      case 'ice-candidate':
+        if (peerConnections[msg.viewerId] && msg.candidate) {
+          try { await peerConnections[msg.viewerId].addIceCandidate(new RTCIceCandidate(msg.candidate)); } catch { }
+        }
+        break;
+      case 'viewer-left':
+        if (challenge.value) challenge.value.viewer_count = msg.count ?? challenge.value.viewer_count;
+        closePeer(msg.viewerId);
+        break;
+    }
+  };
+};
+
+const createOffer = async (viewerId: string, stream: MediaStream) => {
+  if (peerConnections[viewerId]) closePeer(viewerId);
+  const pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
+  peerConnections[viewerId] = pc;
+
+  stream.getTracks().forEach(track => pc.addTrack(track, stream));
+
+  pc.onicecandidate = ({ candidate }) => {
+    if (candidate && signalingWs?.readyState === WebSocket.OPEN)
+      signalingWs.send(JSON.stringify({ type: 'ice-candidate', viewerId, candidate }));
+  };
+  pc.oniceconnectionstatechange = () => { if (pc.iceConnectionState === 'failed') pc.restartIce(); };
+  pc.onconnectionstatechange = () => {
+    if (pc.connectionState === 'failed' || pc.connectionState === 'closed') closePeer(viewerId);
+  };
+
+  const offer = await pc.createOffer();
+  await pc.setLocalDescription(offer);
+  signalingWs?.send(JSON.stringify({ type: 'offer', viewerId, sdp: offer }));
+};
+
+const closePeer = (viewerId: string) => {
+  if (peerConnections[viewerId]) {
+    peerConnections[viewerId].close();
+    delete peerConnections[viewerId];
+  }
+};
+
+const cleanupSignaling = () => {
+  Object.keys(peerConnections).forEach(closePeer);
+  if (signalingWs) { signalingWs.close(); signalingWs = null; }
+  wsStreamerConnected.value = false;
+};
+
+// ── Computed ──────────────────────────────────────────────────────────────────
 const isParticipant = computed(() => {
   if (!challenge.value || !currentUserId.value) return false;
   return challenge.value.creator.id === currentUserId.value ||
@@ -608,804 +633,361 @@ const isCreator = computed(() => {
 
 const hasSubmittedScore = computed(() => {
   if (!challenge.value || !currentUserId.value) return false;
-  if (challenge.value.creator.id === currentUserId.value) {
-    return challenge.value.creator_score !== null;
-  } else if (challenge.value.opponent && challenge.value.opponent.id === currentUserId.value) {
-    return challenge.value.opponent_score !== null;
-  }
+  if (challenge.value.creator.id === currentUserId.value) return challenge.value.creator_score !== null;
+  if (challenge.value.opponent?.id === currentUserId.value) return challenge.value.opponent_score !== null;
   return false;
 });
 
+// ── Helpers ───────────────────────────────────────────────────────────────────
 const getMySubmittedScore = () => {
   if (!challenge.value || !currentUserId.value) return "";
-  if (challenge.value.creator.id === currentUserId.value) {
-    return challenge.value.creator_score;
-  } else if (challenge.value.opponent && challenge.value.opponent.id === currentUserId.value) {
-    return challenge.value.opponent_score;
-  }
+  if (challenge.value.creator.id === currentUserId.value) return challenge.value.creator_score;
+  if (challenge.value.opponent?.id === currentUserId.value) return challenge.value.opponent_score;
   return "";
 };
 
 const getOtherPlayerName = () => {
   if (!challenge.value || !currentUserId.value) return "the other player";
-  if (challenge.value.creator.id === currentUserId.value) {
-    return challenge.value.opponent?.username || "the opponent";
-  } else {
-    return challenge.value.creator.username;
-  }
+  if (challenge.value.creator.id === currentUserId.value) return challenge.value.opponent?.username || "the opponent";
+  return challenge.value.creator.username;
 };
 
 const getStatusLabel = (status: string) => {
   const labels: Record<string, string> = {
-    open: "Open",
-    accepted: "Accepted",
-    in_progress: "In Progress",
-    completed: "Completed",
-    cancelled: "Cancelled",
+    open: "Open", accepted: "Accepted", in_progress: "In Progress",
+    completed: "Completed", cancelled: "Cancelled",
   };
   return labels[status] || status;
 };
 
 const getTimeRemaining = (expiresAt: string | null) => {
   if (!expiresAt) return "⏱️ No expiration";
-  const now = new Date();
-  const expires = new Date(expiresAt);
-  const diff = expires.getTime() - now.getTime();
+  const diff = new Date(expiresAt).getTime() - Date.now();
   if (diff <= 0) return "⏱️ Expired";
-  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const hours = Math.floor(diff / 3600000);
   const days = Math.floor(hours / 24);
   if (days > 0) return `⏱️ ${days} day${days > 1 ? 's' : ''} remaining`;
   if (hours > 0) return `⏱️ ${hours}h remaining`;
-  const minutes = Math.floor(diff / (1000 * 60));
-  return `⏱️ ${minutes}min remaining`;
+  return `⏱️ ${Math.floor(diff / 60000)}min remaining`;
 };
 
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
+const formatDate = (dateString: string) =>
+  new Date(dateString).toLocaleDateString('en-US', {
+    day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
   });
-};
-
-const getWinner = () => {
-  if (!challenge.value) return "";
-  if (challenge.value.creator_score === null || challenge.value.opponent_score === null) return "";
-
-  if (challenge.value.creator_score > challenge.value.opponent_score) {
-    return `${challenge.value.creator.username} won!`;
-  } else if (challenge.value.opponent_score > challenge.value.creator_score) {
-    return `${challenge.value.opponent?.username} won!`;
-  } else {
-    return "Draw!";
-  }
-};
-
-const loadChallenge = async () => {
-  try {
-    loading.value = true;
-    error.value = "";
-    const token = localStorage.getItem("auth_token");
-    const challengeId = route.params.id;
-
-    const response = await apiClient.get(`/challenges/${challengeId}`);
-
-    if (response.data.success) {
-      challenge.value = response.data.data;
-
-      // S'assurer que is_live est défini (peut être null dans la réponse)
-      if (challenge.value && challenge.value.is_live === undefined) {
-        challenge.value.is_live = false;
-      }
-      if (challenge.value && challenge.value.viewer_count === undefined) {
-        challenge.value.viewer_count = 0;
-      }
-
-      // Get current user if logged in
-      if (token) {
-        try {
-          const userResponse = await apiClient.get(`/user`);
-          if (userResponse.data && userResponse.data.id) {
-            currentUserId.value = userResponse.data.id;
-
-            // Ne pas pré-remplir myScore si le score a déjà été soumis
-            // Le formulaire doit rester vide pour permettre de voir que le score a été soumis
-            if (challenge.value) {
-              if (challenge.value.creator.id === currentUserId.value) {
-                // Si le score n'a pas encore été soumis, pré-remplir avec null pour afficher le formulaire vide
-                myScore.value = null;
-              } else if (challenge.value.opponent && challenge.value.opponent.id === currentUserId.value) {
-                // Si le score n'a pas encore été soumis, pré-remplir avec null pour afficher le formulaire vide
-                myScore.value = null;
-              }
-            }
-          }
-        } catch (err) {
-          console.error("Error fetching user:", err);
-        }
-      }
-
-      // Load messages if user is participant and challenge has opponent
-      if (isParticipant.value && challenge.value && challenge.value.opponent) {
-        loadMessages();
-        startMessagePolling();
-      }
-
-      // Load stop request if user is participant
-      if (isParticipant.value) {
-        loadStopRequest();
-      }
-
-      // Update stream URLs if recording is active
-      if (challenge.value && (challenge.value as any).creator_screen_recording && (challenge.value as any).creator_screen_stream_url) {
-        creatorStreamUrl.value = (challenge.value as any).creator_screen_stream_url;
-      }
-      if (challenge.value && (challenge.value as any).opponent_screen_recording && (challenge.value as any).opponent_screen_stream_url) {
-        opponentStreamUrl.value = (challenge.value as any).opponent_screen_stream_url;
-      }
-
-      // Sync isRecording si créateur et challenge déjà en live (ex. après refresh)
-      if (challenge.value && isCreator.value && challenge.value.is_live) {
-        isRecording.value = true;
-      }
-
-      // Start polling viewer count if live
-      if (challenge.value && challenge.value.is_live) {
-        startViewerCountPolling();
-      } else {
-        stopViewerCountPolling();
-      }
-    } else {
-      error.value = response.data.message || "Error loading challenge";
-    }
-  } catch (err: any) {
-    console.error("Error loading challenge:", err);
-    if (err.response?.status === 404) {
-      error.value = "Challenge not found";
-    } else {
-      error.value = err.response?.data?.message || "Error loading challenge";
-    }
-  } finally {
-    loading.value = false;
-  }
-};
-
-const loadMessages = async () => {
-  if (!challenge.value || !isParticipant.value) return;
-
-  try {
-    loadingMessages.value = true;
-    const response = await apiClient.get(`/challenges/${challenge.value.id}/messages`);
-
-    if (response.data.success) {
-      const messageData = response.data.data.data || response.data.data || [];
-      messages.value = messageData.reverse(); // Reverse to show oldest first
-      // Scroll to bottom
-      setTimeout(() => {
-        const chatContainer = document.querySelector('.chat-container');
-        if (chatContainer) {
-          chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-      }, 100);
-    }
-  } catch (err: any) {
-    console.error("Error loading messages:", err);
-  } finally {
-    loadingMessages.value = false;
-  }
-};
-
-const startMessagePolling = () => {
-  // Poll for new messages every 3 seconds
-  messagePollingInterval = setInterval(() => {
-    if (isParticipant.value && challenge.value?.opponent) {
-      loadMessages();
-    }
-  }, 3000);
-};
-
-const sendMessage = async () => {
-  if (!challenge.value || !newMessage.value.trim()) return;
-
-  try {
-    sendingMessage.value = true;
-    const response = await apiClient.post(`/challenges/${challenge.value.id}/messages`, {
-      message: newMessage.value.trim(),
-    });
-
-    if (response.data.success) {
-      newMessage.value = "";
-      await loadMessages();
-    } else {
-      error.value = response.data.message || "Error sending message";
-    }
-  } catch (err: any) {
-    console.error("Error sending message:", err);
-    error.value = err.response?.data?.message || "Error sending message";
-  } finally {
-    sendingMessage.value = false;
-  }
-};
-
-const deleteMessage = async (messageId: number) => {
-  if (!challenge.value) return;
-
-  if (!confirm("Are you sure you want to delete this message?")) {
-    return;
-  }
-
-  try {
-    const response = await apiClient.delete(`/challenges/${challenge.value.id}/messages/${messageId}`);
-
-    if (response.data.success) {
-      await loadMessages();
-    } else {
-      alert('Error deleting message: ' + (response.data.message || 'Unknown error'));
-    }
-  } catch (err: any) {
-    console.error("Error deleting message:", err);
-    alert('Error deleting message: ' + (err.response?.data?.message || err.message));
-  }
-};
 
 const formatTime = (dateString: string) => {
   if (!dateString) return "";
-  const date = new Date(dateString);
-  return date.toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  return new Date(dateString).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
 };
 
-const loadStopRequest = async () => {
-  if (!challenge.value || !isParticipant.value) return;
-
-  try {
-    stopRequestLoading.value = true;
-    const response = await apiClient.get(`/challenges/${challenge.value.id}/stop-request`);
-
-    if (response.data.success) {
-      stopRequest.value = response.data.data;
-    }
-  } catch (err: any) {
-    console.error("Error loading stop request:", err);
-  } finally {
-    stopRequestLoading.value = false;
-  }
+const getWinner = () => {
+  if (!challenge.value || challenge.value.creator_score === null || challenge.value.opponent_score === null) return "";
+  if (challenge.value.creator_score > challenge.value.opponent_score) return `${challenge.value.creator.username} won!`;
+  if (challenge.value.opponent_score > challenge.value.creator_score) return `${challenge.value.opponent?.username} won!`;
+  return "Draw!";
 };
 
-const requestStopChallenge = async () => {
-  if (!challenge.value) return;
-
-  if (!confirm("Are you sure you want to request to stop this challenge? The other player must confirm.")) {
-    return;
-  }
-
-  try {
-    requestingStop.value = true;
-    const response = await apiClient.post(`/challenges/${challenge.value.id}/request-stop`, {
-      reason: null, // Can be extended later
-    });
-
-    if (response.data.success) {
-      await loadStopRequest();
-      alert(response.data.message || "Stop request created. Waiting for opponent confirmation.");
-    } else {
-      alert(response.data.message || "Error creating stop request");
-    }
-  } catch (err: any) {
-    console.error("Error requesting stop:", err);
-    alert(err.response?.data?.message || "Error requesting to stop challenge");
-  } finally {
-    requestingStop.value = false;
-  }
-};
-
-const confirmStopRequest = async () => {
-  if (!challenge.value) return;
-
-  if (!confirm("Are you sure you want to confirm stopping this challenge? The admin will review and complete it.")) {
-    return;
-  }
-
-  try {
-    confirmingStop.value = true;
-    const response = await apiClient.post(`/challenges/${challenge.value.id}/request-stop`, {});
-
-    if (response.data.success) {
-      await loadStopRequest();
-      alert(response.data.message || "Stop request confirmed. Waiting for admin approval.");
-    } else {
-      alert(response.data.message || "Error confirming stop request");
-    }
-  } catch (err: any) {
-    console.error("Error confirming stop:", err);
-    alert(err.response?.data?.message || "Error confirming stop request");
-  } finally {
-    confirmingStop.value = false;
-  }
-};
-
-const cancelStopRequest = async () => {
-  if (!challenge.value) return;
-
-  if (!confirm("Are you sure you want to cancel the stop request?")) {
-    return;
-  }
-
-  try {
-    cancellingStop.value = true;
-    const response = await apiClient.delete(`/challenges/${challenge.value.id}/stop-request`);
-
-    if (response.data.success) {
-      stopRequest.value = null;
-      alert("Stop request cancelled successfully");
-    } else {
-      alert(response.data.message || "Error cancelling stop request");
-    }
-  } catch (err: any) {
-    console.error("Error cancelling stop:", err);
-    alert(err.response?.data?.message || "Error cancelling stop request");
-  } finally {
-    cancellingStop.value = false;
-  }
-};
-
-const getCurrentUser = async () => {
-  try {
-    const response = await apiClient.get("/user");
-    if (response.data && response.data.id) {
-      currentUserId.value = response.data.id;
-    }
-  } catch (error) {
-    console.error("Error getting current user:", error);
-  }
-};
-
-const startScreenRecording = async () => {
-  if (!challenge.value || !isCreator.value) return;
-
-  try {
-    startingRecording.value = true;
-    recordingError.value = "";
-
-    // Request screen capture permission
-    const displayMediaOptions = {
-      video: {
-        displaySurface: "monitor" as const,
-        cursor: "always" as const,
-        width: { ideal: 1920 },
-        height: { ideal: 1080 }
-      },
-      audio: {
-        echoCancellation: true,
-        noiseSuppression: true,
-        sampleRate: 44100
-      },
-      preferCurrentTab: false
-    };
-
-    // Get screen stream
-    const stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
-    screenStream.value = stream;
-    localStream.value = stream;
-
-    // Create blob URL for local preview
-    recordingStreamUrl.value = URL.createObjectURL(new Blob([], { type: 'video/webm' }));
-
-    // Set up video element to display the stream
-    if (recordingVideoElement.value) {
-      recordingVideoElement.value.srcObject = stream;
-    }
-
-    // Notify backend that recording has started
-    const response = await apiClient.post(
-      `/challenges/${challenge.value.id}/screen-recording/start`,
-      {}
-    );
-
-    if (response.data.success) {
-      isRecording.value = true;
-
-      // Update challenge with live stream info
-      if (challenge.value) {
-        challenge.value.is_live = true;
-        challenge.value.stream_key = response.data.data.stream_key;
-        challenge.value.rtmp_url = response.data.data.rtmp_url;
-        challenge.value.stream_url = response.data.data.stream_url;
-        challenge.value.viewer_count = 0;
-      }
-
-      // Monitor for stop events (user stops sharing from browser)
-      stream.getVideoTracks()[0].addEventListener('ended', () => {
-        stopScreenRecording();
-      });
-
-      // PeerJS - permettre aux spectateurs de se connecter en WebRTC (utilise serveur local si localhost)
-      const peerId = 'challenge_' + challenge.value!.id;
-      try {
-        peerInstance = new Peer(peerId, getPeerOptions());
-        wsConnected.value = true;
-        peerInstance.on('call', (call) => {
-          call.answer(stream);
-        });
-        peerInstance.on('error', (err) => {
-          console.warn('PeerJS error:', err);
-          wsConnected.value = false;
-        });
-      } catch (e) {
-        console.warn('PeerJS init failed:', e);
-        wsConnected.value = false;
-      }
-
-      // Store stream URLs
-      creatorStreamUrl.value = recordingStreamUrl.value;
-
-      // Start polling viewer count
-      startViewerCountPolling();
-    } else {
-      throw new Error(response.data.message || "Failed to start recording");
-    }
-  } catch (err: any) {
-    console.error("Error starting screen recording:", err);
-    const apiMsg = err.response?.data?.message;
-    const errMsg = err.message || "Failed to start screen recording.";
-    recordingError.value = apiMsg || (err.name === 'NotAllowedError' ? "Partage d'écran refusé. Veuillez autoriser l'accès." : errMsg);
-
-    // Clean up if error occurred
-    if (screenStream.value) {
-      screenStream.value.getTracks().forEach(track => track.stop());
-      screenStream.value = null;
-    }
-    if (recordingStreamUrl.value) {
-      URL.revokeObjectURL(recordingStreamUrl.value);
-      recordingStreamUrl.value = null;
-    }
-  } finally {
-    startingRecording.value = false;
-  }
-};
-
-const stopScreenRecording = async () => {
-  // Autoriser l'arrêt si : enregistrement local OU (créateur et live selon l'API, ex. après refresh)
-  if (!challenge.value) return;
-  if (!isRecording.value && !(isCreator.value && challenge.value.is_live)) return;
-
-  try {
-    stoppingRecording.value = true;
-    recordingError.value = "";
-
-    // Stop media tracks
-    if (screenStream.value) {
-      screenStream.value.getTracks().forEach(track => track.stop());
-      screenStream.value = null;
-    }
-    localStream.value = null;
-
-    // Clear video element
-    if (recordingVideoElement.value) {
-      recordingVideoElement.value.srcObject = null;
-    }
-
-    // Notify backend that recording has stopped
-    const response = await apiClient.post(
-      `/challenges/${challenge.value.id}/screen-recording/stop`,
-      {}
-    );
-
-    if (response.data.success) {
-      isRecording.value = false;
-
-      // Update challenge
-      if (challenge.value) {
-        challenge.value.is_live = false;
-        challenge.value.viewer_count = 0;
-      }
-
-      // Clean up blob URL
-      if (recordingStreamUrl.value) {
-        URL.revokeObjectURL(recordingStreamUrl.value);
-        recordingStreamUrl.value = null;
-      }
-
-      // Clear stream URLs
-      creatorStreamUrl.value = null;
-
-      // Stop polling viewer count
-      stopViewerCountPolling();
-
-      // Destroy PeerJS
-      if (peerInstance) {
-        peerInstance.destroy();
-        peerInstance = null;
-      }
-      wsConnected.value = false;
-    } else {
-      throw new Error(response.data.message || "Failed to stop recording");
-    }
-  } catch (err: any) {
-    console.error("Error stopping screen recording:", err);
-    recordingError.value = err.response?.data?.message || err.message || "Failed to stop screen recording";
-  } finally {
-    stoppingRecording.value = false;
-  }
-};
-
-const acceptChallenge = async () => {
-  if (!challenge.value) return;
-
-  // Check if user is logged in
-  const token = localStorage.getItem("auth_token");
-  if (!token) {
-    alert("Please log in to accept challenges");
-    return;
-  }
-
-  if (!confirm(`Are you sure you want to accept this challenge? You will need to bet ${challenge.value.bet_amount.toLocaleString()} EBT.`)) {
-    return;
-  }
-
-  try {
-    const response = await apiClient.post(
-      `/challenges/${challenge.value.id}/accept`,
-      {}
-    );
-
-    if (response.data.success) {
-      await loadChallenge();
-      alert("Challenge accepted successfully!");
-    } else {
-      const errorMsg = response.data.message || response.data.errors || "Error accepting challenge";
-      alert(typeof errorMsg === 'string' ? errorMsg : JSON.stringify(errorMsg));
-    }
-  } catch (error: any) {
-    console.error("Error accepting challenge:", error);
-
-    let errorMessage = "Error accepting challenge";
-
-    if (error.response) {
-      // Server responded with error
-      if (error.response.data) {
-        if (error.response.data.message) {
-          errorMessage = error.response.data.message;
-        } else if (error.response.data.errors) {
-          const errors = error.response.data.errors;
-          if (typeof errors === 'object') {
-            errorMessage = Object.values(errors).flat().join(', ');
-          } else {
-            errorMessage = String(errors);
-          }
-        } else if (error.response.data.error) {
-          errorMessage = error.response.data.error;
-        }
-      }
-
-      // Add status code info for debugging
-      if (error.response.status === 401) {
-        errorMessage = "Please log in to accept challenges";
-      } else if (error.response.status === 403) {
-        errorMessage = errorMessage || "You don't have permission to accept this challenge";
-      } else if (error.response.status === 404) {
-        errorMessage = "Challenge not found";
-      } else if (error.response.status === 400) {
-        errorMessage = errorMessage || "Invalid request";
-      }
-    } else if (error.request) {
-      // Request was made but no response received
-      errorMessage = "Network error. Please check your connection.";
-    } else if (error.message) {
-      errorMessage = error.message;
-    }
-
-    alert(errorMessage);
-  }
-};
-
-const cancelChallenge = async () => {
-  if (!challenge.value) return;
-
-  if (!confirm("Are you sure you want to cancel this challenge? Your bet will be refunded.")) {
-    return;
-  }
-
-  try {
-    const response = await apiClient.post(
-      `/challenges/${challenge.value.id}/cancel`,
-      {}
-    );
-
-    if (response.data.success) {
-      await loadChallenge();
-      alert("Challenge cancelled successfully!");
-    } else {
-      alert(response.data.message || "Error cancelling challenge");
-    }
-  } catch (error: any) {
-    console.error("Error cancelling challenge:", error);
-    alert(error.response?.data?.message || "Error cancelling challenge");
-  }
-};
-
-const submitScore = async () => {
-  if (!challenge.value || myScore.value === null) return;
-
-  try {
-    submittingScore.value = true;
-    scoreError.value = "";
-
-    const response = await apiClient.post(
-      `/challenges/${challenge.value.id}/scores`,
-      { score: myScore.value }
-    );
-
-    if (response.data.success) {
-      // Réinitialiser le formulaire immédiatement
-      const submittedScore = myScore.value;
-      myScore.value = null;
-
-      // Mettre à jour le challenge localement pour afficher le score immédiatement
-      if (challenge.value) {
-        if (challenge.value.creator.id === currentUserId.value) {
-          challenge.value.creator_score = submittedScore;
-        } else if (challenge.value.opponent && challenge.value.opponent.id === currentUserId.value) {
-          challenge.value.opponent_score = submittedScore;
-        }
-        // Mettre à jour le statut si nécessaire
-        if (challenge.value.creator_score !== null && challenge.value.opponent_score !== null) {
-          challenge.value.status = 'completed';
-        } else {
-          challenge.value.status = 'in_progress';
-        }
-      }
-
-      // Recharger le challenge pour avoir les données à jour
-      await loadChallenge();
-
-      // Ne pas afficher d'alerte pour une meilleure UX
-      // alert("Score submitted successfully!");
-    } else {
-      scoreError.value = response.data.message || "Error submitting score";
-    }
-  } catch (error: any) {
-    console.error("Error submitting score:", error);
-    scoreError.value = error.response?.data?.message || "Error submitting score";
-  } finally {
-    submittingScore.value = false;
-  }
-};
-
-onMounted(() => {
-  getCurrentUser();
-  loadChallenge();
-});
-
-// Live streaming helper functions
+// ── Stream helpers ────────────────────────────────────────────────────────────
 const getPublicStreamUrl = () => {
   if (!challenge.value?.id) return '';
   return `${window.location.origin}/challenges/${challenge.value.id}/live`;
 };
 
 const copyStreamUrl = () => {
-  const url = getPublicStreamUrl();
-  if (url) {
-    navigator.clipboard.writeText(url);
-    alert('Lien copié ! Les spectateurs peuvent regarder sur /streams ou via ce lien.');
-  }
+  navigator.clipboard.writeText(getPublicStreamUrl());
+  alert('Lien copié ! Les spectateurs peuvent regarder via ce lien.');
 };
 
-const copyRtmpUrl = () => {
-  if (challenge.value?.rtmp_url) {
-    navigator.clipboard.writeText(challenge.value.rtmp_url);
-    alert('RTMP URL copied to clipboard!');
-  }
-};
-
-const copyStreamKey = () => {
-  if (challenge.value?.stream_key) {
-    navigator.clipboard.writeText(challenge.value.stream_key);
-    alert('Stream key copied to clipboard!');
-  }
-};
-
-const toggleStreamKeyVisibility = () => {
-  showStreamKey.value = !showStreamKey.value;
-  if (streamKeyInput.value) {
-    streamKeyInput.value.type = showStreamKey.value ? 'text' : 'password';
-  }
-};
-
-const openStreamInNewTab = () => {
-  // Ouvrir la page streams où les lives des challenges sont affichés
-  window.open('/streams', '_blank');
-};
+const openStreamInNewTab = () => window.open('/streams', '_blank');
 
 const viewLiveStream = () => {
-  if (challenge.value?.id) {
-    router.push(`/challenges/${challenge.value.id}/live`);
-  }
+  if (challenge.value?.id) router.push(`/challenges/${challenge.value.id}/live`);
 };
 
 const refreshViewerCount = async () => {
   if (!challenge.value) return;
-
   try {
-    const response = await apiClient.get(`/challenges/${challenge.value.id}/live`);
-    if (response.data.success && challenge.value) {
-      challenge.value.viewer_count = response.data.data.viewer_count || 0;
+    const res = await apiClient.get(`/challenges/${challenge.value.id}/live`);
+    if (res.data.success && challenge.value)
+      challenge.value.viewer_count = res.data.data.viewer_count || 0;
+  } catch { }
+};
+
+let viewerCountInterval: ReturnType<typeof setInterval> | null = null;
+const startViewerCountPolling = () => {
+  if (viewerCountInterval) clearInterval(viewerCountInterval);
+  viewerCountInterval = setInterval(() => { if (challenge.value?.is_live) refreshViewerCount(); }, 30000);
+};
+const stopViewerCountPolling = () => {
+  if (viewerCountInterval) { clearInterval(viewerCountInterval); viewerCountInterval = null; }
+};
+
+// ── Screen Recording (streamer) ───────────────────────────────────────────────
+const startScreenRecording = async () => {
+  if (!challenge.value || !isCreator.value) return;
+  try {
+    startingRecording.value = true;
+    recordingError.value = "";
+
+    const stream = await navigator.mediaDevices.getDisplayMedia({
+      video: { width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 30 } } as any,
+      audio: true,
+    });
+
+    // Fallback micro si pas d'audio système
+    if (stream.getAudioTracks().length === 0) {
+      try {
+        const mic = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+        mic.getAudioTracks().forEach((t: MediaStreamTrack) => stream.addTrack(t));
+      } catch { }
+    }
+
+    screenStream.value = stream;
+
+    // Preview locale
+    await nextTick();
+    if (localVideoEl.value) { localVideoEl.value.srcObject = stream; localVideoEl.value.muted = true; }
+
+    // Notifier Laravel
+    const response = await apiClient.post(`/challenges/${challenge.value.id}/screen-recording/start`, {});
+    if (!response.data.success) throw new Error(response.data.message || "Failed to start recording");
+
+    isRecording.value = true;
+    if (challenge.value) {
+      challenge.value.is_live = true;
+      challenge.value.viewer_count = 0;
+    }
+
+    // Arrêt auto si l'utilisateur ferme le partage d'écran
+    stream.getVideoTracks()[0].addEventListener('ended', () => stopScreenRecording());
+
+    // ✅ WS signaling — connecte le serveur pour relayer l'offre aux viewers
+    connectSignaling(stream);
+
+    startViewerCountPolling();
+
+  } catch (err: any) {
+    if (screenStream.value) { screenStream.value.getTracks().forEach(t => t.stop()); screenStream.value = null; }
+    const apiMsg = err.response?.data?.message;
+    recordingError.value = apiMsg || (err.name === 'NotAllowedError'
+      ? "Partage d'écran refusé. Veuillez autoriser l'accès."
+      : (err.message || "Failed to start screen recording."));
+  } finally {
+    startingRecording.value = false;
+  }
+};
+
+const stopScreenRecording = async () => {
+  if (!challenge.value) return;
+  if (!isRecording.value && !(isCreator.value && challenge.value.is_live)) return;
+  try {
+    stoppingRecording.value = true;
+    recordingError.value = "";
+
+    if (screenStream.value) { screenStream.value.getTracks().forEach(t => t.stop()); screenStream.value = null; }
+    if (localVideoEl.value) localVideoEl.value.srcObject = null;
+
+    const response = await apiClient.post(`/challenges/${challenge.value.id}/screen-recording/stop`, {});
+    if (response.data.success) {
+      isRecording.value = false;
+      if (challenge.value) { challenge.value.is_live = false; challenge.value.viewer_count = 0; }
+      creatorStreamUrl.value = null;
+      stopViewerCountPolling();
+      // ✅ Fermer WS signaling et tous les peers
+      cleanupSignaling();
+    } else {
+      throw new Error(response.data.message || "Failed to stop recording");
     }
   } catch (err: any) {
-    console.error('Error refreshing viewer count:', err);
-  }
-};
-
-const startViewerCountPolling = () => {
-  if (viewerCountInterval) {
-    clearInterval(viewerCountInterval);
-  }
-
-  viewerCountInterval = setInterval(() => {
-    if (challenge.value?.is_live) {
-      refreshViewerCount();
-    }
-  }, 5000); // Poll every 5 seconds
-};
-
-const stopViewerCountPolling = () => {
-  if (viewerCountInterval) {
-    clearInterval(viewerCountInterval);
-    viewerCountInterval = null;
+    recordingError.value = err.response?.data?.message || err.message || "Failed to stop screen recording";
+  } finally {
+    stoppingRecording.value = false;
   }
 };
 
 const pauseScreenRecording = async () => {
-  if (!challenge.value || !challenge.value.is_live) return;
+  if (!challenge.value?.is_live) return;
   try {
-    const response = await apiClient.post(`/challenges/${challenge.value.id}/screen-recording/pause`, {});
-    if (response.data.success && challenge.value) {
+    const res = await apiClient.post(`/challenges/${challenge.value.id}/screen-recording/pause`, {});
+    if (res.data.success && challenge.value) {
       challenge.value.is_live_paused = true;
-      if (screenStream.value) {
-        screenStream.value.getTracks().forEach(t => { t.enabled = false; });
-      }
+      screenStream.value?.getTracks().forEach(t => { t.enabled = false; });
     }
-  } catch (err: any) {
-    console.error('Error pausing:', err);
-  }
+  } catch { }
 };
 
 const resumeScreenRecording = async () => {
-  if (!challenge.value || !challenge.value.is_live) return;
+  if (!challenge.value?.is_live) return;
   try {
-    const response = await apiClient.post(`/challenges/${challenge.value.id}/screen-recording/resume`, {});
-    if (response.data.success && challenge.value) {
+    const res = await apiClient.post(`/challenges/${challenge.value.id}/screen-recording/resume`, {});
+    if (res.data.success && challenge.value) {
       challenge.value.is_live_paused = false;
-      if (screenStream.value) {
-        screenStream.value.getTracks().forEach(t => { t.enabled = true; });
-      }
+      screenStream.value?.getTracks().forEach(t => { t.enabled = true; });
     }
-  } catch (err: any) {
-    console.error('Error resuming:', err);
-  }
+  } catch { }
 };
 
-// Arrêter le live automatiquement quand le challenge est terminé
+// ── API ───────────────────────────────────────────────────────────────────────
+const loadChallenge = async () => {
+  try {
+    loading.value = true;
+    error.value = "";
+    const response = await apiClient.get(`/challenges/${route.params.id}`);
+    if (response.data.success) {
+      challenge.value = response.data.data;
+      if (challenge.value && challenge.value.is_live === undefined) challenge.value.is_live = false;
+      if (challenge.value && challenge.value.viewer_count === undefined) challenge.value.viewer_count = 0;
+
+      const token = localStorage.getItem("auth_token");
+      if (token) {
+        try {
+          const userRes = await apiClient.get(`/user`);
+          if (userRes.data?.id) { currentUserId.value = userRes.data.id; myScore.value = null; }
+        } catch { }
+      }
+
+      if (isParticipant.value && challenge.value?.opponent) { loadMessages(); startMessagePolling(); }
+      if (isParticipant.value) loadStopRequest();
+      if (challenge.value && isCreator.value && challenge.value.is_live) { isRecording.value = true; startViewerCountPolling(); }
+      else stopViewerCountPolling();
+
+    } else { error.value = response.data.message || "Error loading challenge"; }
+  } catch (err: any) {
+    if (err.response?.status === 404) error.value = "Challenge not found";
+    else error.value = err.response?.data?.message || "Error loading challenge";
+  } finally { loading.value = false; }
+};
+
+const loadMessages = async () => {
+  if (!challenge.value || !isParticipant.value) return;
+  try {
+    loadingMessages.value = true;
+    const res = await apiClient.get(`/challenges/${challenge.value.id}/messages`);
+    if (res.data.success) {
+      messages.value = (res.data.data.data || res.data.data || []).reverse();
+      setTimeout(() => { const c = document.querySelector('.chat-container'); if (c) c.scrollTop = c.scrollHeight; }, 100);
+    }
+  } catch { } finally { loadingMessages.value = false; }
+};
+
+let messagePollingInterval: ReturnType<typeof setInterval> | null = null;
+const startMessagePolling = () => {
+  messagePollingInterval = setInterval(() => {
+    if (isParticipant.value && challenge.value?.opponent) loadMessages();
+  }, 8000);
+};
+
+const sendMessage = async () => {
+  if (!challenge.value || !newMessage.value.trim()) return;
+  try {
+    sendingMessage.value = true;
+    const res = await apiClient.post(`/challenges/${challenge.value.id}/messages`, { message: newMessage.value.trim() });
+    if (res.data.success) { newMessage.value = ""; await loadMessages(); }
+  } catch { } finally { sendingMessage.value = false; }
+};
+
+const deleteMessage = async (messageId: number) => {
+  if (!challenge.value || !confirm("Are you sure you want to delete this message?")) return;
+  try {
+    await apiClient.delete(`/challenges/${challenge.value.id}/messages/${messageId}`);
+    await loadMessages();
+  } catch { }
+};
+
+const loadStopRequest = async () => {
+  if (!challenge.value || !isParticipant.value) return;
+  try {
+    stopRequestLoading.value = true;
+    const res = await apiClient.get(`/challenges/${challenge.value.id}/stop-request`);
+    if (res.data.success) stopRequest.value = res.data.data;
+  } catch { } finally { stopRequestLoading.value = false; }
+};
+
+const requestStopChallenge = async () => {
+  if (!challenge.value || !confirm("Are you sure you want to request to stop this challenge?")) return;
+  try {
+    requestingStop.value = true;
+    const res = await apiClient.post(`/challenges/${challenge.value.id}/request-stop`, { reason: null });
+    if (res.data.success) { await loadStopRequest(); alert(res.data.message || "Stop request created."); }
+    else alert(res.data.message || "Error");
+  } catch (err: any) { alert(err.response?.data?.message || "Error"); } finally { requestingStop.value = false; }
+};
+
+const confirmStopRequest = async () => {
+  if (!challenge.value || !confirm("Confirm stopping this challenge?")) return;
+  try {
+    confirmingStop.value = true;
+    const res = await apiClient.post(`/challenges/${challenge.value.id}/request-stop`, {});
+    if (res.data.success) { await loadStopRequest(); alert(res.data.message || "Confirmed."); }
+  } catch (err: any) { alert(err.response?.data?.message || "Error"); } finally { confirmingStop.value = false; }
+};
+
+const cancelStopRequest = async () => {
+  if (!challenge.value || !confirm("Cancel the stop request?")) return;
+  try {
+    cancellingStop.value = true;
+    const res = await apiClient.delete(`/challenges/${challenge.value.id}/stop-request`);
+    if (res.data.success) { stopRequest.value = null; alert("Stop request cancelled."); }
+  } catch (err: any) { alert(err.response?.data?.message || "Error"); } finally { cancellingStop.value = false; }
+};
+
+const getCurrentUser = async () => {
+  try {
+    const res = await apiClient.get("/user");
+    if (res.data?.id) currentUserId.value = res.data.id;
+  } catch { }
+};
+
+const acceptChallenge = async () => {
+  if (!challenge.value) return;
+  if (!localStorage.getItem("auth_token")) { alert("Please log in to accept challenges"); return; }
+  if (!confirm(`Accept this challenge? You will need to bet ${challenge.value.bet_amount.toLocaleString()} EBT.`)) return;
+  try {
+    const res = await apiClient.post(`/challenges/${challenge.value.id}/accept`, {});
+    if (res.data.success) { await loadChallenge(); alert("Challenge accepted successfully!"); }
+    else alert(res.data.message || "Error accepting challenge");
+  } catch (err: any) { alert(err.response?.data?.message || "Error accepting challenge"); }
+};
+
+const cancelChallenge = async () => {
+  if (!challenge.value || !confirm("Cancel this challenge? Your bet will be refunded.")) return;
+  try {
+    const res = await apiClient.post(`/challenges/${challenge.value.id}/cancel`, {});
+    if (res.data.success) { await loadChallenge(); alert("Challenge cancelled successfully!"); }
+  } catch (err: any) { alert(err.response?.data?.message || "Error cancelling challenge"); }
+};
+
+const submitScore = async () => {
+  if (!challenge.value || myScore.value === null) return;
+  try {
+    submittingScore.value = true; scoreError.value = "";
+    const res = await apiClient.post(`/challenges/${challenge.value.id}/scores`, { score: myScore.value });
+    if (res.data.success) {
+      const submitted = myScore.value; myScore.value = null;
+      if (challenge.value) {
+        if (challenge.value.creator.id === currentUserId.value) challenge.value.creator_score = submitted;
+        else if (challenge.value.opponent?.id === currentUserId.value) challenge.value.opponent_score = submitted;
+        challenge.value.status = (challenge.value.creator_score !== null && challenge.value.opponent_score !== null) ? 'completed' : 'in_progress';
+      }
+      await loadChallenge();
+    } else { scoreError.value = res.data.message || "Error submitting score"; }
+  } catch (err: any) { scoreError.value = err.response?.data?.message || "Error submitting score"; }
+  finally { submittingScore.value = false; }
+};
+
 watch(() => challenge.value?.status, (newStatus) => {
-  if (newStatus === 'completed' && isRecording.value && challenge.value) {
-    stopScreenRecording();
-  }
+  if (newStatus === 'completed' && isRecording.value && challenge.value) stopScreenRecording();
 });
 
+onMounted(() => { getCurrentUser(); loadChallenge(); });
+
 onUnmounted(() => {
-  if (messagePollingInterval) {
-    clearInterval(messagePollingInterval);
-  }
+  if (messagePollingInterval) clearInterval(messagePollingInterval);
   stopViewerCountPolling();
-  if (peerInstance) {
-    peerInstance.destroy();
-    peerInstance = null;
-  }
+  // ✅ Fermer WS signaling et tous les peers
+  cleanupSignaling();
+  if (screenStream.value) { screenStream.value.getTracks().forEach(t => t.stop()); screenStream.value = null; }
 });
 </script>
 
@@ -1437,7 +1019,6 @@ onUnmounted(() => {
 }
 
 .btn_primary:hover {
-  background-color: #FF9F00;
   transform: translateY(-2px);
 }
 
@@ -1455,6 +1036,14 @@ onUnmounted(() => {
 .btn_secondary:hover {
   background-color: #FF9F00;
   color: #000;
+}
+
+.btn_see_details {
+  background-color: #FF9F00;
+  color: #000;
+  border: none;
+  transition: 0.3s;
+  cursor: pointer;
 }
 
 .defi_card {
@@ -1484,19 +1073,6 @@ onUnmounted(() => {
   color: #fff;
 }
 
-.btn_see_details {
-  background-color: #FF9F00;
-  color: #000;
-  border: none;
-  transition: 0.3s;
-  cursor: pointer;
-}
-
-.btn_see_details:hover {
-  background-color: #FF9F00;
-  transform: translateY(-2px);
-}
-
 .hero_badge {
   background: rgba(255, 159, 0, 0.2);
   color: #FF9F00;
@@ -1515,6 +1091,10 @@ onUnmounted(() => {
 
 .n10-color {
   color: #FF9F00;
+}
+
+.n11-bg {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .player_card {
@@ -1571,25 +1151,15 @@ onUnmounted(() => {
   padding-top: 90px;
 }
 
-@media (max-width: 768px) {
-  .page-content-with-space {
-    padding-top: 60px;
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
   }
 
-  .vs_section {
-    padding: 1rem 0;
-  }
-
-  .hero_title {
-    font-size: 1.8rem;
-  }
-
-  .container-fluid {
-    margin-left: 0 !important;
-  }
-
-  .defis__main {
-    margin-left: 0 !important;
+  50% {
+    opacity: 0.5;
   }
 }
 
@@ -1610,5 +1180,19 @@ onUnmounted(() => {
 .chat-container::-webkit-scrollbar-thumb {
   background: rgba(255, 159, 0, 0.5);
   border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+  .page-content-with-space {
+    padding-top: 60px;
+  }
+
+  .vs_section {
+    padding: 1rem 0;
+  }
+
+  .hero_title {
+    font-size: 1.8rem;
+  }
 }
 </style>
