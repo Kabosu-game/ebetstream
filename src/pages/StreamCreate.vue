@@ -372,7 +372,7 @@ const goLive = async () => {
 
     // 4. Afficher la preview locale
     if (localVideo.value) {
-      localVideo.value.srcObject = stream;
+      localVideo.value.srcObject = combined;
       localVideo.value.muted = true;
     }
 
