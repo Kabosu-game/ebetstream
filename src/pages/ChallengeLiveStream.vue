@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-12 gx-0 gx-lg-4">
             <div class="defis__main">
-              
+
               <!-- Loading State -->
               <div v-if="loading" class="text-center py-5">
                 <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
@@ -38,37 +38,38 @@
                     <!-- Video Player -->
                     <div class="defi_card n11-bg rounded-8 p-0 mb-4 overflow-hidden">
                       <div class="video_container position-relative" style="background: #000; aspect-ratio: 16/9;">
-                        <!-- WebRTC Video (PeerJS) - video toujours rendu quand live pour recevoir le stream -->
-                        <video 
-                          v-show="challenge.is_live"
-                          ref="videoPlayer"
-                          autoplay
-                          playsinline
-                          class="w-100 h-100 position-absolute top-0 start-0"
-                          style="object-fit: contain;"
-                        ></video>
-                        <div v-if="challenge.is_live && challenge.is_live_paused" class="w-100 h-100 position-absolute top-0 start-0 d-flex align-items-center justify-content-center flex-column bg-dark" style="z-index: 2;">
+                        <!-- WebRTC Video -->
+                        <video v-show="challenge.is_live" ref="videoPlayer" autoplay playsinline
+                          class="w-100 h-100 position-absolute top-0 start-0" style="object-fit: contain;"></video>
+                        <div v-if="challenge.is_live && challenge.is_live_paused"
+                          class="w-100 h-100 position-absolute top-0 start-0 d-flex align-items-center justify-content-center flex-column bg-dark"
+                          style="z-index: 2;">
                           <i class="fas fa-pause-circle fs-1 text-warning mb-3" style="opacity: 0.8;"></i>
                           <p class="mb-0 text-white">Stream en pause</p>
                         </div>
-                        <div v-else-if="challenge.is_live && !hasRemoteStream && !streamError" class="w-100 h-100 position-absolute top-0 start-0 d-flex align-items-center justify-content-center flex-column bg-dark" style="z-index: 2;">
+                        <div v-else-if="challenge.is_live && !hasRemoteStream && !streamError"
+                          class="w-100 h-100 position-absolute top-0 start-0 d-flex align-items-center justify-content-center flex-column bg-dark"
+                          style="z-index: 2;">
                           <i class="fas fa-spinner fa-spin fs-1 text-white mb-3" style="opacity: 0.7;"></i>
                           <p class="mb-0 text-white">Connexion au stream...</p>
                         </div>
-                        <div v-else-if="challenge.is_live && streamError" class="w-100 h-100 position-absolute top-0 start-0 d-flex align-items-center justify-content-center flex-column bg-dark" style="z-index: 2;">
+                        <div v-else-if="challenge.is_live && streamError"
+                          class="w-100 h-100 position-absolute top-0 start-0 d-flex align-items-center justify-content-center flex-column bg-dark"
+                          style="z-index: 2;">
                           <i class="fas fa-exclamation-triangle fs-1 text-warning mb-3"></i>
                           <p class="mb-3 text-white">{{ streamError }}</p>
-                          <button class="btn btn-outline-light btn-sm" @click="streamError = ''; connectToPeerStream()">
+                          <button class="btn btn-outline-light btn-sm" @click="connectToStream">
                             Réessayer
                           </button>
                         </div>
-                        <div v-if="!challenge.is_live" class="w-100 h-100 d-flex align-items-center justify-content-center">
+                        <div v-if="!challenge.is_live"
+                          class="w-100 h-100 d-flex align-items-center justify-content-center">
                           <div class="text-center text-white">
                             <i class="fas fa-video-slash fs-1 mb-3" style="opacity: 0.5;"></i>
                             <p class="mb-0">Stream is offline</p>
                           </div>
                         </div>
-                        
+
                         <!-- Live Badge -->
                         <div v-if="challenge.is_live" class="position-absolute top-0 start-0 m-3">
                           <span class="badge bg-danger px-3 py-2">
@@ -76,7 +77,7 @@
                             LIVE
                           </span>
                         </div>
-                        
+
                         <!-- Viewer Count -->
                         <div v-if="challenge.is_live" class="position-absolute top-0 end-0 m-3">
                           <span class="badge n11-bg text-white px-3 py-2">
@@ -145,7 +146,8 @@
                     </div>
 
                     <!-- Scores -->
-                    <div v-if="challenge.creator_score !== null || challenge.opponent_score !== null" class="defi_card n11-bg rounded-8 p-4 mb-4">
+                    <div v-if="challenge.creator_score !== null || challenge.opponent_score !== null"
+                      class="defi_card n11-bg rounded-8 p-4 mb-4">
                       <h5 class="fw-bold mb-3 text-white">Scores</h5>
                       <div class="d-flex justify-content-between align-items-center mb-3">
                         <div class="text-center">
@@ -171,11 +173,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed, watch, nextTick } from "vue";
+import { ref, onMounted, onUnmounted, nextTick } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import apiClient from "@/utils/axios";
-import Peer from "peerjs";
-import { getPeerOptions } from "@/utils/peerConfig";
 
 interface Challenge {
   id: number;
@@ -191,6 +191,7 @@ interface Challenge {
   stream_url: string | null;
   viewer_count: number;
   live_started_at: string | null;
+  stream_id?: number; // Ajout pour lier le stream au challenge
 }
 
 const route = useRoute();
@@ -201,10 +202,20 @@ const error = ref("");
 const videoPlayer = ref<HTMLVideoElement | null>(null);
 const hasRemoteStream = ref(false);
 const streamError = ref("");
-let peerInstance: Peer | null = null;
+
+// WebRTC / WebSocket
+const ws = ref<WebSocket | null>(null);
+const pc = ref<RTCPeerConnection | null>(null);
 let connectionTimeoutId: ReturnType<typeof setTimeout> | null = null;
 let refreshInterval: any = null;
 let wasLive = false;
+
+const ICE_SERVERS = [
+  { urls: 'stun:stun.l.google.com:19302' },
+  { urls: 'stun:stun1.l.google.com:19302' },
+];
+
+const WS_BASE = (import.meta.env.VITE_STREAM_WS_URL || 'wss://ebetstream.com/ws').replace(/\/$/, '');
 
 const getStatusLabel = (status: string) => {
   const labels: Record<string, string> = {
@@ -234,7 +245,7 @@ const getLiveDuration = () => {
   const hours = Math.floor(diff / 3600);
   const minutes = Math.floor((diff % 3600) / 60);
   const seconds = diff % 60;
-  
+
   if (hours > 0) {
     return `${hours}h ${minutes}m`;
   } else if (minutes > 0) {
@@ -257,7 +268,7 @@ const loadLiveStream = async () => {
       if (challenge.value?.is_live && !challenge.value?.is_live_paused) {
         wasLive = true;
         await nextTick();
-        connectToPeerStream();
+        connectToStream();
       }
     } else {
       error.value = response.data.message || "Error loading live stream";
@@ -276,99 +287,155 @@ const loadLiveStream = async () => {
   }
 };
 
-const connectToPeerStream = () => {
-  if (!challenge.value?.id || !videoPlayer.value) return;
-  
-  // Détruire l'ancien peer avant d'en créer un nouveau
-  if (peerInstance) {
-    peerInstance.destroy();
-    peerInstance = null;
+const connectToStream = () => {
+  // Nettoyage des connexions précédentes
+  if (ws.value) {
+    ws.value.close();
+    ws.value = null;
+  }
+  if (pc.value) {
+    pc.value.close();
+    pc.value = null;
   }
   if (connectionTimeoutId) {
     clearTimeout(connectionTimeoutId);
     connectionTimeoutId = null;
   }
-  
+
+  if (!challenge.value?.id || !videoPlayer.value) return;
+
   streamError.value = "";
-  const peerId = 'challenge_' + challenge.value.id;
-  
-  // Timeout: après 15s sans stream, afficher un message
+  hasRemoteStream.value = false;
+
+  // Timeout de connexion
   connectionTimeoutId = setTimeout(() => {
     if (!hasRemoteStream.value && !streamError.value && challenge.value?.is_live) {
-      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      streamError.value = isLocal
-        ? "Impossible de se connecter. Vérifiez que : 1) Le streamer a bien démarré le partage d'écran sur la page du challenge ; 2) Le serveur Peer est lancé (npm run peer-server)."
-        : "Le streamer ne semble pas connecté. Assurez-vous qu'il a bien démarré le partage d'écran sur la page du challenge.";
-      setTimeout(() => { streamError.value = ""; connectToPeerStream(); }, 5000);
+      streamError.value = "Impossible de se connecter au stream. Vérifiez que le streamer est bien en direct.";
+      setTimeout(() => {
+        streamError.value = "";
+        connectToStream();
+      }, 5000);
     }
     connectionTimeoutId = null;
   }, 15000);
-  
-  try {
-    const peer = new Peer(getPeerOptions());
-    peerInstance = peer;
-    peer.on('open', () => {
-      // PeerJS requiert un MediaStream avec au moins une piste - canvas 2x2 noir (sans permission caméra)
-      const canvas = document.createElement('canvas');
-      canvas.width = 2;
-      canvas.height = 2;
-      canvas.getContext('2d')?.fillRect(0, 0, 2, 2);
-      const callStream = canvas.captureStream(1);
-      const call = peer.call(peerId, callStream);
-      if (call) {
-        call.on('stream', (remoteStream) => {
-          if (connectionTimeoutId) {
-            clearTimeout(connectionTimeoutId);
-            connectionTimeoutId = null;
-          }
-          callStream.getTracks().forEach((t) => t.stop()); // Libérer le stream local
-          if (videoPlayer.value) {
-            videoPlayer.value.srcObject = remoteStream;
-            hasRemoteStream.value = true;
-            streamError.value = "";
-          }
-        });
-        call.on('close', () => {
-          hasRemoteStream.value = false;
-        });
-        call.on('error', () => {
-          if (!streamError.value) {
-            streamError.value = "Erreur lors de la réception du stream.";
-            setTimeout(connectToPeerStream, 3000);
-          }
-        });
-      }
-    });
-    peer.on('error', (err) => {
-      if (connectionTimeoutId) {
-        clearTimeout(connectionTimeoutId);
-        connectionTimeoutId = null;
-      }
-      if (err.type === 'peer-unavailable') {
-        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-        streamError.value = isLocal
-          ? "Streamer non connecté. Lancez 'npm run peer-server' dans un terminal, puis le streamer doit démarrer le partage sur la page du challenge."
-          : "Le streamer n'est pas encore connecté. Réessayez dans quelques secondes.";
-      } else if (err.type === 'server-error' || err.message?.includes('Could not connect')) {
-        streamError.value = "Serveur Peer injoignable. En local : lancez 'npm run peer-server' dans un terminal.";
-      } else {
-        streamError.value = "Erreur de connexion au stream : " + (err.message || err.type || "inconnue");
-      }
-      setTimeout(connectToPeerStream, 3000);
-    });
-  } catch (e: any) {
+
+  const token = localStorage.getItem('auth_token') || '';
+  // Utiliser stream_id s'il existe, sinon fallback sur l'ID du challenge (à adapter selon l'API)
+  const streamId = challenge.value.stream_id || challenge.value.id;
+  const wsUrl = `${WS_BASE}/stream/${streamId}?token=${encodeURIComponent(token)}`;
+
+  ws.value = new WebSocket(wsUrl);
+
+  ws.value.onopen = () => {
+    console.log('WebSocket connected for viewing');
+  };
+
+  ws.value.onerror = (err) => {
+    console.error('WebSocket error', err);
+    streamError.value = 'Erreur de connexion au serveur.';
     if (connectionTimeoutId) {
       clearTimeout(connectionTimeoutId);
       connectionTimeoutId = null;
     }
-    streamError.value = "Impossible de se connecter au stream.";
-    setTimeout(connectToPeerStream, 3000);
-  }
+  };
+
+  ws.value.onclose = () => {
+    console.log('WebSocket closed');
+    // Tentative de reconnexion si le challenge est toujours live
+    if (challenge.value?.is_live) {
+      setTimeout(connectToStream, 3000);
+    }
+  };
+
+  ws.value.onmessage = async (event) => {
+    let msg;
+    try {
+      msg = JSON.parse(event.data);
+    } catch {
+      return;
+    }
+
+    switch (msg.type) {
+      case 'offer':
+        // Créer la connexion peer si elle n'existe pas
+        if (!pc.value) {
+          pc.value = new RTCPeerConnection({ iceServers: ICE_SERVERS });
+
+          pc.value.ontrack = (event) => {
+            if (videoPlayer.value && event.streams[0]) {
+              videoPlayer.value.srcObject = event.streams[0];
+              hasRemoteStream.value = true;
+              streamError.value = "";
+              if (connectionTimeoutId) {
+                clearTimeout(connectionTimeoutId);
+                connectionTimeoutId = null;
+              }
+            }
+          };
+
+          pc.value.onicecandidate = (event) => {
+            if (event.candidate && ws.value?.readyState === WebSocket.OPEN) {
+              ws.value?.send(JSON.stringify({
+                type: 'ice-candidate',
+                candidate: event.candidate
+              }));
+            }
+          };
+
+          pc.value.oniceconnectionstatechange = () => {
+            if (pc.value?.iceConnectionState === 'failed') {
+              pc.value.restartIce();
+            }
+          };
+
+          pc.value.onconnectionstatechange = () => {
+            if (pc.value?.connectionState === 'failed' || pc.value?.connectionState === 'closed') {
+              hasRemoteStream.value = false;
+              // Reconnexion
+              setTimeout(connectToStream, 3000);
+            }
+          };
+        }
+
+        // Appliquer l'offre
+        await pc.value.setRemoteDescription(new RTCSessionDescription(msg.sdp));
+
+        // Créer la réponse
+        const answer = await pc.value.createAnswer();
+        await pc.value.setLocalDescription(answer);
+
+        // Envoyer la réponse
+        ws.value?.send(JSON.stringify({
+          type: 'answer',
+          sdp: answer
+        }));
+        break;
+
+      case 'ice-candidate':
+        if (pc.value && msg.candidate) {
+          try {
+            await pc.value.addIceCandidate(new RTCIceCandidate(msg.candidate));
+          } catch (e) {
+            console.error('Error adding ICE candidate', e);
+          }
+        }
+        break;
+
+      case 'viewer-count':
+        if (challenge.value) {
+          challenge.value.viewer_count = msg.count || 0;
+        }
+        break;
+
+      default:
+        console.log('Unknown message type', msg.type);
+    }
+  };
 };
 
 const refreshLiveData = async () => {
   if (!challenge.value) return;
-  
+
   try {
     const response = await apiClient.get(`/challenges/${challenge.value.id}/live`);
     if (response.data.success) {
@@ -376,20 +443,23 @@ const refreshLiveData = async () => {
       challenge.value.viewer_count = data.viewer_count || 0;
       challenge.value.is_live = data.is_live;
       challenge.value.is_live_paused = data.is_live_paused ?? false;
-      
+
       if (data.is_live && !wasLive && !hasRemoteStream.value) {
         wasLive = true;
-        connectToPeerStream();
+        connectToStream();
       } else if (!data.is_live) {
         wasLive = false;
-      }
-      
-      if (!challenge.value.is_live) {
-        if (peerInstance) {
-          peerInstance.destroy();
-          peerInstance = null;
+        // Nettoyer les connexions
+        if (ws.value) {
+          ws.value.close();
+          ws.value = null;
+        }
+        if (pc.value) {
+          pc.value.close();
+          pc.value = null;
         }
         hasRemoteStream.value = false;
+        // Rediriger vers la page du challenge
         router.push(`/challenges/${challenge.value.id}`);
       }
     }
@@ -402,12 +472,12 @@ const startPolling = () => {
   if (refreshInterval) {
     clearInterval(refreshInterval);
   }
-  
+
   refreshInterval = setInterval(() => {
     if (challenge.value?.is_live) {
       refreshLiveData();
     }
-  }, 5000); // Poll every 5 seconds
+  }, 5000);
 };
 
 onMounted(() => {
@@ -422,9 +492,11 @@ onUnmounted(() => {
   if (connectionTimeoutId) {
     clearTimeout(connectionTimeoutId);
   }
-  if (peerInstance) {
-    peerInstance.destroy();
-    peerInstance = null;
+  if (ws.value) {
+    ws.value.close();
+  }
+  if (pc.value) {
+    pc.value.close();
   }
 });
 </script>
@@ -495,4 +567,3 @@ onUnmounted(() => {
   }
 }
 </style>
-
