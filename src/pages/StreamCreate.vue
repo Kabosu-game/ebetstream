@@ -379,8 +379,8 @@ const captureMedia = async (): Promise<MediaStream> => {
     throw Object.assign(new Error('COMPAT'), {
       name: 'CompatError',
       friendly: isIOS
-        ? 'Le partage d'écran n'est pas disponible sur iPhone/iPad. Utilisez la caméra.'
-        : 'Le partage d'écran n'est pas supporté par ce navigateur. Essayez Chrome sur Android.',
+        ? 'Le partage d\'écran n\'est pas disponible sur iPhone/iPad. Utilisez la caméra.'
+        : 'Le partage d\'écran n\'est pas supporté par ce navigateur. Essayez Chrome sur Android.',
     });
   }
 
@@ -447,8 +447,8 @@ const goLive = async () => {
     } else if (err.name === 'NotAllowedError') {
       errorType.value = 'error';
       error.value = isMobile
-        ? '🚫 Permission refusée. Allez dans Réglages → Navigateur → Autorisez l'accès à la caméra.'
-        : '🚫 Permission refusée. Cliquez sur l'icône 🔒 dans la barre d'adresse et autorisez le partage d'écran.';
+        ? '🚫 Permission refusée. Allez dans Réglages → Navigateur → Autorisez l\'accès à la caméra.'
+        : '🚫 Permission refusée. Cliquez sur l\'icône 🔒 dans la barre d\'adresse et autorisez le partage d\'écran.';
     } else if (err.name === 'NotFoundError') {
   errorType.value = 'compat';
   error.value = '📷 Aucune caméra détectée sur cet appareil.';
@@ -462,7 +462,7 @@ const goLive = async () => {
   error.value = '📵 La caméra est déjà utilisée par une autre application. Fermez-la et réessayez.';
 } else if (err.name === 'OverconstrainedError') {
   errorType.value = 'error';
-  error.value = '⚙️ Résolution non supportée par cette caméra. Essayez l'autre caméra.';
+  error.value = '⚙️ Résolution non supportée par cette caméra. Essayez l\'autre caméra.';
 } else {
   errorType.value = 'error';
   error.value = err.response?.data?.message || err.message || 'Erreur au démarrage.';
