@@ -1,6 +1,7 @@
 // default font family
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-@import url('https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.36.0/tabler-icons.min.css');
+// Tabler Icons webfont : chargé depuis le même domaine (index.html) pour éviter le blocage "Tracking Prevention"
+// @import CDN supprimé → voir <link href="/css/tabler-icons.min.css"> dans index.html
 
 // default root
 :root {

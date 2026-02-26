@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import "./style.css";
 import { router } from "./route";
+import "@tabler/icons-webfont/dist/tabler-icons.min.css";
 import "./assets/scss/style.scss";
 import i18n from "./i18n";
 import { MAINTENANCE_MODE } from "./config/maintenance";
