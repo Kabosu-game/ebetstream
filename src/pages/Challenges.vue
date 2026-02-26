@@ -87,6 +87,15 @@
               >
                 My Challenges
               </button>
+              <button 
+                class="btn_secondary"
+                @click="loadChallenges()"
+                :disabled="loading"
+                title="Actualiser la liste"
+              >
+                <i class="fas fa-sync-alt me-1" :class="{ 'fa-spin': loading }"></i>
+                Actualiser
+              </button>
             </div>
 
             <!-- Liste des défis -->
@@ -316,7 +325,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, onUnmounted, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import apiClient from "@/utils/axios";
 
@@ -395,9 +404,9 @@ const getTimeRemaining = (expiresAt: string | null) => {
   return `${minutes}min remaining`;
 };
 
-const loadChallenges = async () => {
+const loadChallenges = async (silent = false) => {
   try {
-    loading.value = true;
+    if (!silent) loading.value = true;
     const token = localStorage.getItem("auth_token");
     if (!token) {
       router.push("/login");
@@ -408,18 +417,25 @@ const loadChallenges = async () => {
     if (filterStatus.value) params.status = filterStatus.value;
     if (showMyChallenges.value) params.my_challenges = true;
 
-    const response = await apiClient.get("/challenges", { params });
+    const response = await apiClient.get("/challenges", {
+      params,
+      headers: { "Cache-Control": "no-cache", Pragma: "no-cache" },
+    });
 
     if (response.data.success) {
       challenges.value = response.data.data.data || response.data.data || [];
     }
   } catch (error: any) {
-    console.error("Error loading challenges:", error);
-    challenges.value = [];
+    if (!silent) {
+      console.error("Error loading challenges:", error);
+      challenges.value = [];
+    }
   } finally {
-    loading.value = false;
+    if (!silent) loading.value = false;
   }
 };
+
+let refreshInterval: ReturnType<typeof setInterval> | null = null;
 
 const searchUsers = async () => {
   if (searchQuery.value.length < 2) {
@@ -592,11 +608,15 @@ onMounted(() => {
   getCurrentUser();
   loadChallenges();
   loadGames();
-  
-  // Check if action=create is in URL
-  if (route?.query?.action === 'create') {
+  // Rafraîchir la liste toutes les 20 s pour que les autres users voient les nouveaux challenges
+  refreshInterval = setInterval(() => loadChallenges(true), 20000);
+  if (route?.query?.action === "create") {
     showCreateModal.value = true;
   }
+});
+
+onUnmounted(() => {
+  if (refreshInterval) clearInterval(refreshInterval);
 });
 </script>
 
