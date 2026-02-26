@@ -29,6 +29,11 @@ export default defineConfig({
     // If port 5173 is busy, you'll need to update CORS on the server
     port: 5173,
     strictPort: false, // Allow fallback to next available port if 5173 is busy
+    // Désactiver le cache en dev pour éviter les anciennes versions
+    headers: {
+      'Cache-Control': 'no-store, no-cache, must-revalidate',
+      'Pragma': 'no-cache',
+    },
     // Proxy API requests to avoid CORS issues in development
     proxy: {
       '/api': {

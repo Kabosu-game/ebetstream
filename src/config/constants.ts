@@ -3,20 +3,30 @@
 // UNE SEULE CONSTANTE À MODIFIER POUR TOUT CHANGER
 // ========================================
 
-// API de production - utilisée partout sauf localhost
+// API de production - utilisée quand aucune URL n'est forcée via .env
 export const PRODUCTION_API_URL = 'https://acmpt.online/api';
 export const PRODUCTION_BASE_URL = 'https://acmpt.online';
 
-// Détection: localhost uniquement = dev, sinon = production (ebetstream.com, acmpt.online, etc.)
+// Priorité au .env : si VITE_API_BASE_URL est défini, on l'utilise (même en dev → afficher les données acmpt.online)
+const envApiUrl = import.meta.env.VITE_API_BASE_URL as string | undefined;
+const envStorageUrl = import.meta.env.VITE_STORAGE_BASE_URL as string | undefined;
+
 const isDevHost = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 const isDevelopment = import.meta.env.DEV || isDevHost;
 
-// URL UNIQUE de l'API - En prod TOUJOURS https://acmpt.online/api
-export const API_URL = isDevelopment ? '' : PRODUCTION_BASE_URL;
-export const API_BASE_URL = isDevelopment ? '/api' : PRODUCTION_API_URL;
+// URL UNIQUE de l'API : .env > sinon en dev = proxy local (/api), en prod = acmpt.online
+export const API_BASE_URL = envApiUrl && envApiUrl.trim() !== ''
+  ? envApiUrl.replace(/\/+$/, '')
+  : (isDevelopment ? '/api' : PRODUCTION_API_URL);
 
-// URLs automatiquement dérivées (NE PAS MODIFIER)
-export const STORAGE_BASE_URL = isDevelopment ? '/api' : PRODUCTION_BASE_URL;
+// Base pour storage (images, etc.) : .env > sinon cohérent avec l'API
+const storageFromApi = API_BASE_URL.startsWith('http') ? API_BASE_URL.replace(/\/api\/?$/, '') : '';
+export const API_URL = envStorageUrl && envStorageUrl.trim() !== ''
+  ? envStorageUrl.replace(/\/+$/, '')
+  : (envApiUrl ? storageFromApi : (isDevelopment ? '' : PRODUCTION_BASE_URL));
+export const STORAGE_BASE_URL = envStorageUrl && envStorageUrl.trim() !== ''
+  ? envStorageUrl.replace(/\/+$/, '')
+  : (API_BASE_URL.startsWith('http') ? API_BASE_URL.replace(/\/api\/?$/, '') : (isDevelopment ? '/api' : PRODUCTION_BASE_URL));
 export const API_TIMEOUT = 60000;
 
 // Helper pour obtenir les URLs complètes
