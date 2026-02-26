@@ -551,8 +551,10 @@ const getCurrentUser = async () => {
   try {
     const response = await apiClient.get("/user");
     currentUserId.value = response.data.id;
-  } catch (error) {
-    console.error("Error getting current user:", error);
+  } catch (error: any) {
+    if (error.response?.status !== 401) {
+      console.error("Error getting current user:", error);
+    }
   }
 };
 

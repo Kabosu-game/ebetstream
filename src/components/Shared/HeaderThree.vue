@@ -134,7 +134,9 @@ const loadBonuses = async () => {
       bonuses.value = response.data.data || [];
     }
   } catch (error: any) {
-    console.error("Error loading bonuses:", error);
+    if (error.response?.status !== 401 && error.response?.status !== 404) {
+      console.error("Error loading bonuses:", error);
+    }
     bonuses.value = [];
   } finally {
     loadingBonuses.value = false;

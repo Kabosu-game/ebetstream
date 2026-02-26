@@ -36,7 +36,7 @@
                         <!-- WebRTC Video -->
                         <video v-show="challenge.is_live && hasRemoteStream" ref="videoPlayer" autoplay playsinline
                           controls class="w-100 h-100 position-absolute top-0 start-0"
-                          style="object-fit: contain;"></video>
+                          style="object-fit: contain; z-index: 1; background: #000;"></video>
 
                         <!-- Paused -->
                         <div v-if="challenge.is_live && challenge.is_live_paused"
@@ -350,14 +350,18 @@ const handleOffer = async (sdp: RTCSessionDescriptionInit) => {
 
   pc.ontrack = (evt) => {
     if (destroyed) return;
-    if (videoPlayer.value && evt.streams[0]) {
-      videoPlayer.value.srcObject = evt.streams[0];
-      hasRemoteStream.value = true;
-      showRetry.value = false;
-      streamError.value = '';
-      waitingMsg.value = '';
-      if (retryTimer) clearTimeout(retryTimer);
-    }
+    if (!videoPlayer.value) return;
+    const stream = evt.streams?.[0] || new MediaStream([evt.track]);
+    videoPlayer.value.srcObject = stream;
+    hasRemoteStream.value = true;
+    showRetry.value = false;
+    streamError.value = '';
+    waitingMsg.value = '';
+    if (retryTimer) clearTimeout(retryTimer);
+    nextTick(() => {
+      const v = videoPlayer.value;
+      if (v && v.srcObject) v.play().catch(() => {});
+    });
   };
 
   pc.onicecandidate = ({ candidate }) => {

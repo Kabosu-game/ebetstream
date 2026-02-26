@@ -376,13 +376,17 @@ const handleOffer = async (sdp: RTCSessionDescriptionInit) => {
   pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
 
   pc.ontrack = (evt) => {
-    if (remoteVideo.value && evt.streams[0]) {
-      remoteVideo.value.srcObject = evt.streams[0];
-      connected.value = true;
-      showRetry.value = false;
-      waitingMsg.value = '';
-      if (retryTimer) clearTimeout(retryTimer);
-    }
+    if (!remoteVideo.value) return;
+    const stream = evt.streams?.[0] || new MediaStream([evt.track]);
+    remoteVideo.value.srcObject = stream;
+    connected.value = true;
+    showRetry.value = false;
+    waitingMsg.value = '';
+    if (retryTimer) clearTimeout(retryTimer);
+    nextTick(() => {
+      const v = remoteVideo.value;
+      if (v && v.srcObject) v.play().catch(() => {});
+    });
   };
 
   pc.onicecandidate = ({ candidate }) => {

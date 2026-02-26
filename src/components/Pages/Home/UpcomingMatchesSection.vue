@@ -589,11 +589,13 @@ const loadUpcomingMatches = async () => {
       matchesByDivision.value = { '1': [], '2': [], '3': [] };
     }
   } catch (err: any) {
-    console.error('Error loading upcoming matches:', err);
-    console.error('Error details:', err.response?.data);
-    const errorMessage = err.response?.data?.message || err.message || 'Error loading scheduled matches';
-    error.value = errorMessage;
-    // Set empty arrays on error
+    const status = err.response?.status;
+    if (status !== 404) {
+      console.warn('Upcoming matches:', err.response?.data?.message || err.message);
+    }
+    if (status !== 404) {
+      error.value = err.response?.data?.message || err.message || 'Error loading scheduled matches';
+    }
     matchesByDivision.value = { '1': [], '2': [], '3': [] };
   } finally {
     loading.value = false;
