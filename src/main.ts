@@ -24,11 +24,11 @@ router.beforeEach((to) => {
   } else {
     document.title = "Default Title";
   }
-  window.scrollTo(0, 0);
+  window.scrollTo(0, 0);  
 });
 
 const app = createApp(App);
-
+ 
 app.use(router);
 app.use(i18n);
 
