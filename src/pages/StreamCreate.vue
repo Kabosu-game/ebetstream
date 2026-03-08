@@ -491,7 +491,7 @@ const connectSignaling = () => {
         break;
       case 'viewer-joined':
         viewerCount.value = msg.count ?? viewerCount.value;
-        await createOffer(msg.viewerId);
+        await createOffer(msg.viewerId);     
         break;
       case 'answer':
         if (peerConnections[msg.viewerId]) {
