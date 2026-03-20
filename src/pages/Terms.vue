@@ -15,12 +15,12 @@
                     <h1 class="hero_title mb-4">
                       Terms & <span class="text_gradient">Conditions</span>
                     </h1>
-                    <p class="hero_subtitle mb-5">
+                    <p class="hero_subtitle mb-5"> 
                       Last updated: {{ lastUpdated }}
                     </p>
                   </div>
                 </div>
-              </div>
+              </div>        
 
               <!-- Content -->
               <div class="row w-100">
