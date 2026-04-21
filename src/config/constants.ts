@@ -37,14 +37,20 @@ export const getApiUrl = (endpoint: string): string => {
 
 export const getStorageUrl = (path: string): string => {
   if (!path) return '';
-  
-  // Si c'est déjà une URL complète, la retourner
+
+  // Si c'est déjà une URL complète, la retourner telle quelle
   if (path.startsWith('http://') || path.startsWith('https://')) {
     return path;
   }
-  
-  // Nettoyer le chemin
+
+  // Nettoyer les slashes de début
   const cleanPath = path.replace(/^\/+/, '');
+
+  // Éviter le doublement si le chemin contient déjà api/storage
+  if (cleanPath.startsWith('api/storage/')) {
+    return `${STORAGE_BASE_URL}/${cleanPath}`;
+  }
+
   return `${STORAGE_BASE_URL}/api/storage/${cleanPath}`;
 };
 

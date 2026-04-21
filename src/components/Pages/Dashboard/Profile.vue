@@ -712,40 +712,9 @@ const loadProfile = async () => {
 
     if (response.data.success) {
       profileData.value = response.data.data;
-      
-      // Construire l'URL complète de la photo de profil
-      // Priorité : profile_photo_url de l'API > profile_photo > avatar
-      if (profileData.value.profile_photo_url) {
-        // Si l'API retourne déjà l'URL complète, on l'utilise
-        if (!profileData.value.profile_photo_url.startsWith('http')) {
-          // Si c'est un chemin relatif, on le complète
-          profileData.value.profile_photo_url = getStorageUrl(profileData.value.profile_photo_url);
-        } else {
-          // Convertir /storage/ en /api/storage/ si nécessaire
-          if (profileData.value.profile_photo_url.includes('/storage/') && 
-              !profileData.value.profile_photo_url.includes('/api/storage/')) {
-            profileData.value.profile_photo_url = profileData.value.profile_photo_url.replace('/storage/', '/api/storage/');
-          }
-        }
-      } else if (profileData.value.profile_photo) {
-        // Construire l'URL à partir du chemin profile_photo
-        const photoPath = profileData.value.profile_photo.replace(/^\/+/, '');
-        profileData.value.profile_photo_url = getStorageUrl(photoPath);
-      } else if (profileData.value.avatar) {
-        // Fallback sur avatar
-        const avatarPath = profileData.value.avatar.replace(/^\/+/, '');
-        profileData.value.profile_photo_url = getStorageUrl(avatarPath);
-      } else {
-        profileData.value.profile_photo_url = null;
-      }
-      
-      console.log('Profile data:', {
-        profile_photo_url: profileData.value.profile_photo_url,
-        profile_photo: profileData.value.profile_photo,
-        avatar: profileData.value.avatar
-      });
-      
-      // Initialiser les valeurs d'édition
+      // profile_photo_url est déjà une URL absolue construite par l'API
+      // Le computed profilePhotoUrl gère le fallback si null
+
       phoneInput.value = profileData.value.user?.phone || '';
       fullNameInput.value = profileData.value.full_name || '';
       emailInput.value = profileData.value.user?.email || '';
@@ -846,53 +815,11 @@ const handlePhotoUpload = async (event: Event) => {
     // L'intercepteur axios gère automatiquement le Content-Type pour FormData
     const response = await apiClient.post("/profile", formData);
 
-    if (response.data.success && response.data.data) {
-      const updatedData = response.data.data;
-      
-      console.log('✅ API Response after upload:', updatedData);
-      
-      // Mettre à jour TOUS les champs du profil avec les données de l'API
-      Object.assign(profileData.value, updatedData);
-      
-      // Construire l'URL de la photo de profil de manière systématique
-      if (updatedData.profile_photo_url) {
-        // Si l'API retourne déjà une URL complète
-        if (updatedData.profile_photo_url.startsWith('http://') || updatedData.profile_photo_url.startsWith('https://')) {
-          let photoUrl = updatedData.profile_photo_url;
-          // Convertir /storage/ en /api/storage/ si nécessaire
-          if (photoUrl.includes('/storage/') && !photoUrl.includes('/api/storage/')) {
-            photoUrl = photoUrl.replace('/storage/', '/api/storage/');
-          }
-          profileData.value.profile_photo_url = photoUrl;
-        } else {
-          // Si c'est un chemin relatif, construire l'URL complète
-          profileData.value.profile_photo_url = getStorageUrl(updatedData.profile_photo_url);
-        }
-      } else if (updatedData.profile_photo) {
-        // Construire l'URL à partir du chemin profile_photo
-        const photoPath = updatedData.profile_photo.replace(/^\/+/, '');
-        profileData.value.profile_photo_url = getStorageUrl(photoPath);
-      } else if (updatedData.avatar) {
-        // Fallback sur avatar
-        const avatarPath = updatedData.avatar.replace(/^\/+/, '');
-        profileData.value.profile_photo_url = getStorageUrl(avatarPath);
-      }
-      
-      // Forcer le rechargement de l'image en mettant à jour le timestamp
-      photoTimestamp.value = Date.now();
-      
-      console.log('📸 Photo uploaded - Final data:', {
-        profile_photo_url: profileData.value.profile_photo_url,
-        profile_photo: profileData.value.profile_photo,
-        avatar: profileData.value.avatar,
-        computedUrl: profilePhotoUrl.value
-      });
-      
-      // Attendre un peu pour que Vue mette à jour le DOM
-      await new Promise(resolve => setTimeout(resolve, 200));
-      
-      // Recharger le profil complet pour s'assurer que tout est synchronisé
+    if (response.data.success) {
+      // Recharger le profil complet depuis l'API (source de vérité)
       await loadProfile();
+      // Cache-buster pour forcer l'affichage de la nouvelle image
+      photoTimestamp.value = Date.now();
     }
   } catch (error: any) {
     console.error("Error uploading photo:", error);
@@ -1131,44 +1058,20 @@ const cancelEditBio = () => {
   editingBio.value = false;
 };
 
-// Computed property pour l'URL de la photo de profil
+// Computed property pour l'URL de la photo de profil (pas de side effect)
 const profilePhotoUrl = computed(() => {
-  // Réinitialiser l'erreur d'image si on a une nouvelle URL
-  imageLoadError.value = false;
-  
-  // Priorité : profile_photo_url > profile_photo > avatar
-  let url = '';
-  
-  if (profileData.value.profile_photo_url) {
-    url = profileData.value.profile_photo_url;
-  } else if (profileData.value.profile_photo) {
-    const photoPath = profileData.value.profile_photo.replace(/^\/+/, '');
-    try {
-      url = getStorageUrl(photoPath);
-    } catch (error) {
-      console.warn('Error getting storage URL for profile_photo:', error);
-      url = `${STORAGE_BASE_URL}/api/storage/${photoPath}`;
-    }
-  } else if (profileData.value.avatar) {
-    const avatarPath = profileData.value.avatar.replace(/^\/+/, '');
-    try {
-      url = getStorageUrl(avatarPath);
-    } catch (error) {
-      console.warn('Error getting storage URL for avatar:', error);
-      url = `${STORAGE_BASE_URL}/api/storage/${avatarPath}`;
-    }
-  }
-  
-  // Utiliser le helper global pour corriger l'URL
-  const correctedUrl = fixImageUrl(url);
-  
-  // Ajouter timestamp pour éviter le cache
-  if (correctedUrl) {
-    const separator = correctedUrl.includes('?') ? '&' : '?';
-    return `${correctedUrl}${separator}t=${photoTimestamp.value}`;
-  }
-  
-  return correctedUrl;
+  // Priorité : profile_photo_url (déjà construit par l'API) > profile_photo > avatar
+  const raw =
+    profileData.value.profile_photo_url ||
+    (profileData.value.profile_photo ? getStorageUrl(profileData.value.profile_photo.replace(/^\/+/, '')) : '') ||
+    (profileData.value.avatar ? getStorageUrl(profileData.value.avatar.replace(/^\/+/, '')) : '');
+
+  const url = fixImageUrl(raw);
+  if (!url) return '';
+
+  // Cache-buster pour forcer le rechargement après upload
+  const sep = url.includes('?') ? '&' : '?';
+  return `${url}${sep}t=${photoTimestamp.value}`;
 });
 
 const onImageLoad = () => {
