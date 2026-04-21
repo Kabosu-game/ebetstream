@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "vite",
     "peer-server": "peerjs --port 9000 --path /peerjs",
-    "build": "vue-tsc -b && vite build && npm run copy-htaccess",
+    "build": "vue-tsc -b && vite build && npm run copy-htaccess && npm run route-fallbacks",
     "copy-htaccess": "node copy-htaccess.js",
+    "route-fallbacks": "node generate-route-fallbacks.js",
     "preview": "vite preview",
     "test:api": "node test-api.js",
     "test:api:complete": "node test-api-complete.js",
