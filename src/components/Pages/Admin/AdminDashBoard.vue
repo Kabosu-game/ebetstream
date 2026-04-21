@@ -197,6 +197,14 @@
             <i class="fas fa-ticket"></i>
             <span>Promo Codes</span>
           </button>
+          <button
+            class="menu-item"
+            :class="{ 'active': activeTab === 'monetization' }"
+            @click="activeTab = 'monetization'"
+          >
+            <i class="fas fa-coins"></i>
+            <span>Monetization</span>
+          </button>
         </div>
 
         <!-- Verification Section -->
@@ -333,6 +341,9 @@
         <div v-if="activeTab === 'promo-codes'">
           <AdminPromoCodes />
         </div>
+        <div v-if="activeTab === 'monetization'">
+          <AdminMonetization />
+        </div>
         <div v-if="activeTab === 'bets'">
           <AdminBets />
         </div>
@@ -372,6 +383,7 @@ import AdminRechargeAgents from './AdminRechargeAgents.vue';
 import AdminWithdrawalCodes from './AdminWithdrawalCodes.vue';
 import AdminPaymentMethods from "./AdminPaymentMethods.vue";
 import AdminPromoCodes from "./AdminPromoCodes.vue";
+import AdminMonetization from "./AdminMonetization.vue";
 import AdminBets from "./AdminBets.vue";
 import AdminFederations from "./AdminFederations.vue";
 import AdminBallonDor from "./AdminBallonDor.vue";

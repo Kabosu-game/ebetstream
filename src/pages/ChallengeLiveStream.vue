@@ -33,8 +33,8 @@
                     <div class="defi_card n11-bg rounded-8 p-0 mb-4 overflow-hidden">
                       <div class="video_container position-relative" style="background: #000; aspect-ratio: 16/9;">
 
-                        <!-- WebRTC Video -->
-                        <video v-show="challenge.is_live && hasRemoteStream" ref="videoPlayer" autoplay playsinline
+                        <!-- WebRTC Video : muted requis pour autoplay (politique navigateur) -->
+                        <video v-show="challenge.is_live && hasRemoteStream" ref="videoPlayer" autoplay playsinline muted
                           controls class="w-100 h-100 position-absolute top-0 start-0"
                           style="object-fit: contain; z-index: 1; background: #000;"></video>
 
@@ -352,16 +352,19 @@ const handleOffer = async (sdp: RTCSessionDescriptionInit) => {
     if (destroyed) return;
     if (!videoPlayer.value) return;
     const stream = evt.streams?.[0] || new MediaStream([evt.track]);
-    videoPlayer.value.srcObject = stream;
+    const v = videoPlayer.value;
+    v.srcObject = stream;
+    v.muted = true;
     hasRemoteStream.value = true;
     showRetry.value = false;
     streamError.value = '';
     waitingMsg.value = '';
     if (retryTimer) clearTimeout(retryTimer);
-    nextTick(() => {
-      const v = videoPlayer.value;
-      if (v && v.srcObject) v.play().catch(() => {});
-    });
+    const tryPlay = (attempt = 0) => {
+      if (attempt > 5) return;
+      v.play().then(() => {}).catch(() => setTimeout(() => tryPlay(attempt + 1), 150));
+    };
+    nextTick(() => tryPlay());
   };
 
   pc.onicecandidate = ({ candidate }) => {

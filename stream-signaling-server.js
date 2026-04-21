@@ -21,13 +21,17 @@ function getOrCreateRoom(streamId) {
 }
 
 wss.on('connection', (ws, req) => {
-  const fullPath = (req.url || '').split('?')[0];
+  let fullPath = (req.url || '').split('?')[0];
+  // Si le proxy transmet /ws/stream/27, on garde stream/27
+  if (fullPath.startsWith('/ws/')) fullPath = fullPath.slice(4) || '/';
   const pathParts = fullPath.replace(/^\/+/, '').split('/').filter(Boolean);
-  const role = pathParts[0];
+  const rawRole = pathParts[0];
   const streamId = pathParts[1];
+  // Accepter /stream/ ET /broadcast/ pour le broadcaster (aligné app mobile / StreamCreate)
+  const role = rawRole === 'stream' ? 'broadcast' : rawRole;
 
   if (!streamId || !['broadcast', 'watch'].includes(role)) {
-    ws.close(1008, 'Invalid path: use /broadcast/{streamId} or /watch/{streamId}');
+    ws.close(1008, 'Invalid path: use /stream/{id} or /broadcast/{id} for broadcaster, /watch/{id} for viewer');
     return;
   }
 
@@ -107,5 +111,5 @@ wss.on('connection', (ws, req) => {
 });
 
 console.log(`\n✅ Stream signaling server running on ws://localhost:${PORT}`);
-console.log('   Broadcaster: ws://localhost:' + PORT + '/broadcast/{streamId}');
+console.log('   Broadcaster: ws://localhost:' + PORT + '/stream/{streamId} (ou /broadcast/{id})');
 console.log('   Viewer:      ws://localhost:' + PORT + '/watch/{streamId}\n');
