@@ -547,7 +547,7 @@ onUnmounted(() => {
 }
 
 /* ── Mobile landscape: player fills the full viewport ── */
-@media (orientation: landscape) and (max-height: 500px) {
+@media (orientation: landscape) and (hover: none) and (pointer: coarse) {
   .tw-detail-back {
     position: fixed;
     top: 10px;

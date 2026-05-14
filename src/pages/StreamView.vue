@@ -1406,7 +1406,7 @@ onBeforeUnmount(() => {
 }
 
 /* ── Mobile landscape: player fills the full viewport ── */
-@media (orientation: landscape) and (max-height: 500px) {
+@media (orientation: landscape) and (hover: none) and (pointer: coarse) {
   .sv-page {
     padding: 0;
     overflow: hidden;
