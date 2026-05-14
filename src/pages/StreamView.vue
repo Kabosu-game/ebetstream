@@ -26,7 +26,7 @@
           <i class="fas fa-arrow-left"></i>{{ $t('ui.retour') }}</button>
 
         <!-- Video player -->
-        <div class="sv-player">
+        <div class="sv-player" :style="{ aspectRatio: playerAspect }">
           <video
             ref="remoteVideo"
             v-show="connected"
@@ -295,6 +295,7 @@ const stream = ref<Stream | null>(null);
 const loading = ref(false);
 const pageError = ref('');
 const remoteVideo = ref<HTMLVideoElement | null>(null);
+const playerAspect = ref('16 / 9');
 const connected = ref(false);
 const waitingMsg = ref('Connexion au stream...');
 const showRetry = ref(false);
@@ -515,6 +516,12 @@ const handleOffer = async (sdp: RTCSessionDescriptionInit) => {
     showRetry.value = false;
     waitingMsg.value = '';
     if (retryTimer) clearTimeout(retryTimer);
+    remoteVideo.value.onloadedmetadata = () => {
+      const v = remoteVideo.value;
+      if (v && v.videoWidth && v.videoHeight) {
+        playerAspect.value = `${v.videoWidth} / ${v.videoHeight}`;
+      }
+    };
     nextTick(() => {
       const v = remoteVideo.value;
       if (v && v.srcObject) v.play().catch(() => {});
