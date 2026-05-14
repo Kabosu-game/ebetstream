@@ -33,3 +33,4 @@ ebetstream_api
 .env
 .env.*
 !.env.example
+.env
