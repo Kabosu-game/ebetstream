@@ -1,79 +1,53 @@
 <template>
-  <div class="page-content-with-space">
-    <section class="content_section py-6 position-relative overflow-hidden pb-120">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12 gx-0 gx-lg-4">
-            <div class="top10__main">
-              <!-- Header Section -->
-              <div class="row w-100 h-100 align-items-center mb-8">
-                <div class="col-lg-8">
-                  <div class="content_header" data-aos="fade-right">
-                    <span class="hero_badge mb-3 d-inline-block">
-                      <i class="fas fa-list-alt me-2"></i>FAQ
-                    </span>
-                    <h1 class="hero_title mb-4">
-                      Frequently Asked <span class="text_gradient">Questions</span>
-                    </h1>
-                    <p class="hero_subtitle mb-5">
-                      Quickly find answers to the most common questions about eBetStream.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- FAQ Items -->
-              <div class="row w-100">
-                <div class="col-lg-10">
-                  <div class="faq_list">
-                    <div 
-                      v-for="(faq, index) in faqs" 
-                      :key="index"
-                      class="faq_item n11-bg rounded-8 p-4 mb-3"
-                    >
-                      <div 
-                        class="faq_question d-flex justify-content-between align-items-center"
-                        @click="toggleFaq(index)"
-                        style="cursor: pointer;"
-                      >
-                        <h4 class="text-white mb-0">{{ faq.question }}</h4>
-                        <i 
-                          :class="`fas fa-chevron-${activeFaq === index ? 'up' : 'down'} text_gradient`"
-                        ></i>
-                      </div>
-                      <div 
-                        v-show="activeFaq === index"
-                        class="faq_answer mt-3"
-                      >
-                        <p class="text-white" style="opacity: 0.9; line-height: 1.8;">
-                          {{ faq.answer }}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Still Need Help -->
-              <div class="row w-100 mt-8">
-                <div class="col-12">
-                  <div class="cta_card n11-bg rounded-8 p-5 text-center">
-                    <h3 class="text-white mb-3">Can't Find the Answer?</h3>
-                    <p class="text-white mb-4" style="opacity: 0.9;">
-                      Our support team is here to help you.
-                    </p>
-                    <router-link to="/contact" class="btn_primary text-decoration-none">
-                      <span>Contact Us</span>
-                      <i class="fas fa-arrow-right ms-2"></i>
-                    </router-link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+  <div class="tw-page">
+    <!-- Hero -->
+    <section class="tw-page-hero">
+      <div class="hero-inner">
+        <p class="tw-page-hero__sub"><i class="fas fa-list-alt me-2"></i>FAQ</p>
+        <h1 class="tw-page-hero__title">Frequently Asked <span class="accent">Questions</span></h1>
+        <p class="hero-desc">Quickly find answers to the most common questions about eBetStream.</p>
       </div>
     </section>
+
+    <div class="tw-page-body">
+      <!-- Accordion FAQ -->
+      <section class="faq-section">
+        <div
+          v-for="(faq, index) in faqs"
+          :key="index"
+          class="tw-accordion-item"
+          :class="{ open: activeFaq === index }"
+        >
+          <button
+            class="tw-accordion-btn"
+            @click="toggleFaq(index)"
+            :aria-expanded="activeFaq === index"
+          >
+            <span class="tw-accordion-btn__text">{{ faq.question }}</span>
+            <span class="tw-accordion-btn__icon">
+              <i :class="activeFaq === index ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"></i>
+            </span>
+          </button>
+          <div class="tw-accordion-body" v-show="activeFaq === index">
+            <p class="faq-answer">{{ faq.answer }}</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="tw-divider"></div>
+
+      <!-- CTA -->
+      <section class="cta-section">
+        <div class="tw-card cta-card">
+          <div class="cta-icon"><i class="fas fa-headset"></i></div>
+          <h3 class="cta-title">Can't Find the Answer?</h3>
+          <p class="cta-desc">Our support team is here to help you around the clock.</p>
+          <router-link to="/contact" class="tw-btn tw-btn--primary">
+            Contact Us <i class="fas fa-arrow-right ms-2"></i>
+          </router-link>
+        </div>
+      </section>
+    </div>
   </div>
 </template>
 
@@ -139,93 +113,95 @@ const toggleFaq = (index: number) => {
 </script>
 
 <style scoped>
-.content_section {
-  width: 100%;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-  color: white;
-  position: relative;
-  overflow: hidden;
-  border-radius: 24px;
-}
-
-.faq_item {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-}
-
-.faq_item:hover {
-  border: 1px solid rgba(255, 159, 0, 0.3);
-}
-
-.faq_answer {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: 1rem;
-}
-
-.cta_card {
-  background: rgba(255, 159, 0, 0.1);
-  border: 2px solid rgba(255, 159, 0, 0.3);
-}
-
-.text_gradient {
-  background: linear-gradient(90deg, #FF9F00, #FF9F00);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.hero_badge {
-  background: rgba(255, 159, 0, 0.2);
-  color: #FF9F00;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-.hero_title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: white;
-  line-height: 1.2;
-}
-
-.hero_subtitle {
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.6;
-}
-
-.btn_primary {
-  background: linear-gradient(135deg, #FFD700, #FF9F00);
-  color: #000;
-  border: none;
-  padding: 0.75rem 2rem;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: 0.3s;
-  cursor: pointer;
-  display: inline-flex;
+/* Hero */
+.tw-page-hero {
+  display: flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 1.5rem 3rem;
+  background: linear-gradient(180deg, rgba(37,150,190,0.12) 0%, transparent 100%);
+  border-bottom: 1px solid rgba(37,150,190,0.15);
 }
 
-.btn_primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(255, 159, 0, 0.4);
+.hero-inner {
+  max-width: 620px;
 }
 
-.page-content-with-space {
-  padding-top: 90px;
+.hero-desc {
+  color: rgb(var(--n3));
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.accent {
+  color: rgb(var(--g1));
+}
+
+/* Body */
+.tw-page-body {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+/* FAQ section */
+.faq-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.faq-answer {
+  color: rgb(var(--n3));
+  font-size: 0.9rem;
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* CTA */
+.cta-section {
+  margin-top: 2.5rem;
+}
+
+.cta-card {
+  text-align: center;
+  padding: 3rem 2rem;
+  border: 1px solid rgba(37,150,190,0.25);
+  background: rgba(37,150,190,0.06);
+}
+
+.cta-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: rgba(37,150,190,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: rgb(var(--g1));
+  margin: 0 auto 1.25rem;
+}
+
+.cta-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  margin-bottom: 0.5rem;
+}
+
+.cta-desc {
+  color: rgb(var(--n3));
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
 }
 
 @media (max-width: 768px) {
-  .page-content-with-space {
-    padding-top: 60px;
-  }
-  
-  .hero_title {
-    font-size: 1.8rem;
+  .tw-page-hero {
+    padding: 2.5rem 1rem 2rem;
   }
 }
 </style>
-

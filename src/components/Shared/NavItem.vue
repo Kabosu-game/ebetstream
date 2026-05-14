@@ -60,7 +60,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from "vue";
-import { IconChevronDown, IconChevronUp } from "@tabler/icons-vue";
 import { navItemData } from "../../assets/data/navData";
 import { useRoute } from "vue-router";
 

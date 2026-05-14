@@ -125,7 +125,6 @@
 </template>
 
 <script setup lang="ts">
-import { IconArrowBadgeUp, IconCalendarEvent } from "@tabler/icons-vue";
 import specials2 from "@/assets/images/icon/specials2.png";
 </script>
 

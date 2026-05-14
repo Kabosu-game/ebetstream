@@ -44,7 +44,7 @@
                     @click="viewPartner(partner.id)"
                   >
                     <div class="rank_badge">
-                      <span v-if="index === 0" class="medal gold">🥇</span>
+                      <span v-if="index === 0" class="medal gold"><i class="fas fa-medal" style="color:#ffd700"></i></span>
                       <span v-else-if="index === 1" class="medal silver">🥈</span>
                       <span v-else-if="index === 2" class="medal bronze">🥉</span>
                       <span v-else class="rank_number">#{{ index + 1 }}</span>
@@ -81,7 +81,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import apiClient from '@/utils/axios';
+import apiClient, { getApiErrorMessage } from '@/utils/axios';
 
 interface Partner {
   id: number;
@@ -116,13 +116,7 @@ const loadPartners = async () => {
     }
   } catch (err: any) {
     console.error('Error loading partners:', err);
-    if (err.response?.data?.message) {
-      error.value = err.response.data.message;
-    } else if (err.isNetworkError) {
-      error.value = 'Connection error. Please check your internet connection.';
-    } else {
-      error.value = 'Error loading partners';
-    }
+    error.value = getApiErrorMessage(err);
   } finally {
     loading.value = false;
   }

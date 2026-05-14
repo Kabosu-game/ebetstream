@@ -123,7 +123,6 @@
 </template>
 
 <script setup lang="ts">
-import { IconArrowBadgeUp, IconCalendarEvent } from "@tabler/icons-vue";
 import hugary from "@/assets/images/icon/outrights-hugary.png";
 </script>
 

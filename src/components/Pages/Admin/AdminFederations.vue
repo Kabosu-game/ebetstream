@@ -110,7 +110,7 @@
                     title="View Details"
                     style="min-width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"
                   >
-                    <IconEye :size="16" />
+                    <i class="fas fa-eye"></i>
                   </button>
                   <button 
                     v-if="federation.status === 'pending'"
@@ -120,7 +120,7 @@
                     :disabled="processing"
                     style="min-width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"
                   >
-                    <IconCheck :size="16" />
+                    <i class="fas fa-check"></i>
                   </button>
                   <button 
                     v-if="federation.status === 'pending' || federation.status === 'approved'"
@@ -130,7 +130,7 @@
                     :disabled="processing"
                     style="min-width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"
                   >
-                    <IconX :size="16" />
+                    <i class="fas fa-times"></i>
                   </button>
                   <button 
                     v-if="federation.status === 'approved'"
@@ -140,7 +140,7 @@
                     :disabled="processing"
                     style="min-width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"
                   >
-                    <IconAlertTriangle :size="16" />
+                    <i class="fas fa-exclamation-triangle"></i>
                   </button>
                   <button 
                     class="btn btn-sm btn-primary" 
@@ -149,7 +149,7 @@
                     :disabled="processing"
                     style="min-width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"
                   >
-                    <IconPencil :size="16" />
+                    <IconPencil />
                   </button>
                 </div>
               </td>
@@ -187,7 +187,7 @@
               <div 
                 v-else
                 class="rounded-circle d-inline-flex align-items-center justify-content-center"
-                style="width: 100px; height: 100px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"
+                style="width: 100px; height: 100px; background: linear-gradient(135deg, #febd56 0%, #d98f25 100%);"
               >
                 <i class="fas fa-building fa-3x text-white"></i>
               </div>
@@ -295,7 +295,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
-import { IconEye, IconCheck, IconX, IconPencil, IconAlertTriangle } from "@tabler/icons-vue";
 import apiClient from "@/utils/axios";
 
 const federations = ref<any[]>([]);

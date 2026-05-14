@@ -7,18 +7,18 @@
             <div class="d-flex align-items-center gap-3">
               <router-link to="/admin" class="text-decoration-none">
                 <h4 class="text-white mb-0 fw-bold d-flex align-items-center">
-                  <IconShield :size="24" class="me-2 text-warning" />
+                  <i class="fas fa-shield-alt me-2 text-warning"  ></i>
                   Admin Dashboard
                 </h4>
               </router-link>
             </div>
             <div class="d-flex align-items-center gap-3">
               <router-link to="/" class="btn btn-sm btn-outline-light d-flex align-items-center">
-                <IconHome :size="16" class="me-1" />
+                <i class="fas fa-home me-1"  ></i>
                 Site
               </router-link>
               <button class="btn btn-sm btn-outline-danger d-flex align-items-center" @click="logout">
-                <IconLogout :size="16" class="me-1" />
+                <i class="fas fa-sign-out-alt me-1"  ></i>
                 Déconnexion
               </button>
             </div>
@@ -31,7 +31,6 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import { IconShield, IconHome, IconLogout } from '@tabler/icons-vue';
 
 const router = useRouter();
 

@@ -12,7 +12,7 @@
                   Retour aux fédérations
                 </button>
                 <span class="hero_badge mb-3 d-inline-block">
-                  🏆 Inscrivez votre fédération
+                  <i class="fas fa-trophy"></i> Inscrivez votre fédération
                 </span>
                 <h1 class="text-white fw-bold mb-3">Rejoignez EBETSTREAM</h1>
                 <p class="text-white-50">

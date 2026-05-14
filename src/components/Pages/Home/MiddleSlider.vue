@@ -261,7 +261,7 @@
           <div class="col-lg-6 col-md-5 d-none d-md-block">
             <div class="hero_image" data-aos="fade-left">
                   <div class="floating_card card_4">
-                    <div class="card_icon">💰</div>
+                    <div class="card_icon"><i class="fas fa-coins"></i></div>
                     <div class="card_content">
                       <span class="card_label">Cash Out</span>
                       <span class="card_value">Instantané</span>
@@ -405,7 +405,7 @@ import manUtd from "@/assets/images/icon/man-utd.png";
 
 /* Slide Backgrounds */
 .hero_slide_1 {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #febd56 0%, #d98f25 100%);
 }
 
 .hero_slide_2 {

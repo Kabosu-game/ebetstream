@@ -11,7 +11,7 @@
                 <div class="col-lg-6 col-md-7">
                   <div class="defis_content" data-aos="fade-right">
                     <span class="hero_badge mb-3 d-inline-block">
-                      🏆 Fédérations Esport & Gaming
+                      <i class="fas fa-trophy"></i> Fédérations Esport & Gaming
                     </span>
                     <h2 class="hero_title mb-4">
                       Discover <span class="text_gradient">Federations</span><br />
@@ -34,7 +34,7 @@
                 <div class="col-lg-6 col-md-5 d-none d-md-block">
                   <div class="defis_image" data-aos="fade-left">
                     <div class="floating_card card_defis">
-                      <div class="card_icon">🏆</div>
+                      <div class="card_icon"><i class="fas fa-trophy"></i></div>
                       <div class="card_content">
                         <span class="card_label">Total</span>
                         <span class="card_value">{{ federations.length }} Federations</span>
@@ -82,7 +82,7 @@
                       <div 
                         v-else
                         class="rounded-circle d-inline-flex align-items-center justify-content-center"
-                        style="width: 100px; height: 100px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"
+                        style="width: 100px; height: 100px; background: linear-gradient(135deg, #febd56 0%, #d98f25 100%);"
                       >
                         <i class="fas fa-building fa-3x text-white"></i>
                       </div>

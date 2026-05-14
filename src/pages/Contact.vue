@@ -1,157 +1,168 @@
 <template>
-  <div class="page-content-with-space">
-    <section class="content_section py-6 position-relative overflow-hidden pb-120">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12 gx-0 gx-lg-4">
-            <div class="top10__main">
-              <!-- Header Section -->
-              <div class="row w-100 h-100 align-items-center mb-8">
-                <div class="col-lg-8">
-                  <div class="content_header" data-aos="fade-right">
-                    <span class="hero_badge mb-3 d-inline-block">
-                      <i class="fas fa-envelope me-2"></i>Contact
-                    </span>
-                    <h1 class="hero_title mb-4">
-                      Contact <span class="text_gradient">eBetStream</span>
-                    </h1>
-                    <p class="hero_subtitle mb-5">
-                      We are here to help you. Feel free to contact us for any questions, 
-                      suggestions, or issues. Our team will respond as soon as possible.
-                    </p>
-                  </div>
-                </div>
-              </div>
+  <div class="tw-page">
+    <!-- Hero -->
+    <div class="tw-page-hero">
+      <div class="contact-eyebrow">
+        <i class="fas fa-envelope"></i> Contact
+      </div>
+      <h1 class="tw-page-hero__title">Contact Us</h1>
+      <p class="tw-page-hero__sub">
+        We are here to help you. Feel free to reach out for any questions, suggestions, or issues.
+        Our team will respond as soon as possible.
+      </p>
+    </div>
 
-              <div class="row w-100 g-5">
-                <!-- Contact Form -->
-                <div class="col-lg-7">
-                  <div class="contact_form_card n11-bg rounded-8 p-5">
-                    <h3 class="text-white mb-4">Send us a Message</h3>
-                    <form @submit.prevent="handleSubmit">
-                      <div class="form-group mb-4">
-                        <label class="text-white mb-2 d-block">Full Name</label>
-                        <input 
-                          v-model="form.name"
-                          type="text" 
-                          class="form-control n11-bg text-white border-secondary" 
-                          placeholder="Your name"
-                          required
-                        />
-                      </div>
-                      <div class="form-group mb-4">
-                        <label class="text-white mb-2 d-block">Email</label>
-                        <input 
-                          v-model="form.email"
-                          type="email" 
-                          class="form-control n11-bg text-white border-secondary" 
-                          placeholder="your@email.com"
-                          required
-                        />
-                      </div>
-                      <div class="form-group mb-4">
-                        <label class="text-white mb-2 d-block">Subject</label>
-                        <select 
-                          v-model="form.subject"
-                          class="form-select n11-bg text-white border-secondary"
-                          required
-                        >
-                          <option value="">Select a subject</option>
-                          <option value="support">Technical Support</option>
-                          <option value="account">Account Issue</option>
-                          <option value="payment">Payment Question</option>
-                          <option value="challenge">Challenge Question</option>
-                          <option value="event">Event Question</option>
-                          <option value="other">Other</option>
-                        </select>
-                      </div>
-                      <div class="form-group mb-4">
-                        <label class="text-white mb-2 d-block">Message</label>
-                        <textarea 
-                          v-model="form.message"
-                          class="form-control n11-bg text-white border-secondary" 
-                          rows="6"
-                          placeholder="Your message..."
-                          required
-                        ></textarea>
-                      </div>
-                      <button type="submit" class="btn_primary w-100" :disabled="submitting">
-                        <span v-if="!submitting">Send Message</span>
-                        <span v-else>
-                          <i class="fas fa-spinner fa-spin me-2"></i>Sending...
-                        </span>
-                      </button>
-                      <div v-if="submitSuccess" class="alert alert-success mt-3">
-                        <i class="fas fa-check-circle me-2"></i>Message sent successfully! We will respond soon.
-                      </div>
-                      <div v-if="submitError" class="alert alert-danger mt-3">
-                        <i class="fas fa-exclamation-circle me-2"></i>{{ submitError }}
-                      </div>
-                    </form>
-                  </div>
-                </div>
+    <!-- Two-column layout -->
+    <div class="contact-layout">
+      <!-- Form column -->
+      <div class="contact-form-col">
+        <div class="tw-card contact-form-card">
+          <h3 class="contact-form-card__heading">Send us a Message</h3>
 
-                <!-- Contact Info -->
-                <div class="col-lg-5">
-                  <div class="contact_info">
-                    <div class="info_card n11-bg rounded-8 p-4 mb-4">
-                      <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="info_icon">
-                          <i class="fas fa-envelope text_gradient fs-3"></i>
-                        </div>
-                        <div>
-                          <h5 class="text-white mb-1">Email</h5>
-                          <p class="text-white mb-0" style="opacity: 0.8;">support@acmpt.online</p>
-                        </div>
-                      </div>
-                    </div>
+          <form @submit.prevent="handleSubmit" class="contact-form">
+            <!-- Name -->
+            <div class="contact-form__field">
+              <label class="tw-label">Full Name</label>
+              <input
+                v-model="form.name"
+                type="text"
+                class="tw-input"
+                placeholder="Your name"
+                required
+              />
+            </div>
 
-                    <div class="info_card n11-bg rounded-8 p-4 mb-4">
-                      <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="info_icon">
-                          <i class="fas fa-headset text_gradient fs-3"></i>
-                        </div>
-                        <div>
-                          <h5 class="text-white mb-1">Support</h5>
-                          <p class="text-white mb-0" style="opacity: 0.8;">Available 24/7</p>
-                        </div>
-                      </div>
-                    </div>
+            <!-- Email -->
+            <div class="contact-form__field">
+              <label class="tw-label">Email</label>
+              <input
+                v-model="form.email"
+                type="email"
+                class="tw-input"
+                placeholder="your@email.com"
+                required
+              />
+            </div>
 
-                    <div class="info_card n11-bg rounded-8 p-4 mb-4">
-                      <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="info_icon">
-                          <i class="fas fa-clock text_gradient fs-3"></i>
-                        </div>
-                        <div>
-                          <h5 class="text-white mb-1">Response Time</h5>
-                          <p class="text-white mb-0" style="opacity: 0.8;">Within 24 hours</p>
-                        </div>
-                      </div>
-                    </div>
+            <!-- Subject -->
+            <div class="contact-form__field">
+              <label class="tw-label">Subject</label>
+              <select
+                v-model="form.subject"
+                class="tw-input tw-select"
+                required
+              >
+                <option value="">Select a subject</option>
+                <option value="support">Technical Support</option>
+                <option value="account">Account Issue</option>
+                <option value="payment">Payment Question</option>
+                <option value="challenge">Challenge Question</option>
+                <option value="event">Event Question</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
 
-                    <div class="info_card n11-bg rounded-8 p-4">
-                      <h5 class="text-white mb-3">Other Resources</h5>
-                      <div class="d-flex flex-column gap-2">
-                        <router-link to="/help" class="text-white text-decoration-none" style="opacity: 0.8;">
-                          <i class="fas fa-question-circle me-2 text_gradient"></i>Help Center
-                        </router-link>
-                        <router-link to="/faq" class="text-white text-decoration-none" style="opacity: 0.8;">
-                          <i class="fas fa-list-alt me-2 text_gradient"></i>FAQ
-                        </router-link>
-                        <router-link to="/privacy" class="text-white text-decoration-none" style="opacity: 0.8;">
-                          <i class="fas fa-shield-alt me-2 text_gradient"></i>Privacy Policy
-                        </router-link>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <!-- Message -->
+            <div class="contact-form__field">
+              <label class="tw-label">Message</label>
+              <textarea
+                v-model="form.message"
+                class="tw-textarea"
+                rows="6"
+                placeholder="Your message..."
+                required
+              ></textarea>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="tw-btn tw-btn--primary contact-form__submit" :disabled="submitting">
+              <span v-if="!submitting">
+                <i class="fas fa-paper-plane"></i>
+                Send Message
+              </span>
+              <span v-else>
+                <i class="fas fa-spinner fa-spin"></i>
+                Sending...
+              </span>
+            </button>
+
+            <!-- Success -->
+            <div v-if="submitSuccess" class="contact-alert contact-alert--success">
+              <i class="fas fa-check-circle"></i>
+              Message sent successfully! We will respond soon.
+            </div>
+
+            <!-- Error -->
+            <div v-if="submitError" class="contact-alert contact-alert--error">
+              <i class="fas fa-exclamation-circle"></i>
+              {{ submitError }}
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Sidebar column -->
+      <div class="contact-sidebar">
+        <!-- Email card -->
+        <div class="tw-card contact-info-card">
+          <div class="contact-info-card__inner">
+            <span class="contact-info-card__icon">
+              <i class="fas fa-envelope"></i>
+            </span>
+            <div>
+              <h5 class="contact-info-card__title">Email</h5>
+              <p class="contact-info-card__value">support@acmpt.online</p>
             </div>
           </div>
         </div>
+
+        <!-- Support card -->
+        <div class="tw-card contact-info-card">
+          <div class="contact-info-card__inner">
+            <span class="contact-info-card__icon">
+              <i class="fas fa-headset"></i>
+            </span>
+            <div>
+              <h5 class="contact-info-card__title">Support</h5>
+              <p class="contact-info-card__value">Available 24/7</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Response time card -->
+        <div class="tw-card contact-info-card">
+          <div class="contact-info-card__inner">
+            <span class="contact-info-card__icon">
+              <i class="fas fa-clock"></i>
+            </span>
+            <div>
+              <h5 class="contact-info-card__title">Response Time</h5>
+              <p class="contact-info-card__value">Within 24 hours</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resources card -->
+        <div class="tw-card contact-resources">
+          <h5 class="contact-resources__heading">Other Resources</h5>
+          <div class="tw-divider"></div>
+          <nav class="contact-resources__links">
+            <router-link to="/help" class="contact-resource-link">
+              <i class="fas fa-question-circle"></i>
+              Help Center
+            </router-link>
+            <router-link to="/faq" class="contact-resource-link">
+              <i class="fas fa-list-alt"></i>
+              FAQ
+            </router-link>
+            <router-link to="/privacy" class="contact-resource-link">
+              <i class="fas fa-shield-alt"></i>
+              Privacy Policy
+            </router-link>
+          </nav>
+        </div>
       </div>
-    </section>
+    </div>
   </div>
 </template>
 
@@ -179,7 +190,7 @@ const handleSubmit = async () => {
     submitting.value = false;
     submitSuccess.value = true;
     form.value = { name: '', email: '', subject: '', message: '' };
-    
+
     setTimeout(() => {
       submitSuccess.value = false;
     }, 5000);
@@ -188,94 +199,231 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped>
-.content_section {
-  width: 100%;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-  color: white;
-  position: relative;
-  overflow: hidden;
-  border-radius: 24px;
-}
-
-.contact_form_card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-}
-
-.info_card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  transition: transform 0.3s ease;
-}
-
-.info_card:hover {
-  transform: translateY(-5px);
-}
-
-.text_gradient {
-  background: linear-gradient(90deg, #FF9F00, #FF9F00);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.hero_badge {
-  background: rgba(255, 159, 0, 0.2);
-  color: #FF9F00;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-.hero_title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: white;
-  line-height: 1.2;
-}
-
-.hero_subtitle {
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.6;
-}
-
-.btn_primary {
-  background: linear-gradient(135deg, #FFD700, #FF9F00);
-  color: #000;
-  border: none;
-  padding: 0.75rem 2rem;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: 0.3s;
-  cursor: pointer;
+/* Eyebrow */
+.contact-eyebrow {
   display: inline-flex;
   align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(var(--g1));
+  background: rgba(var(--g1), 0.12);
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+}
+
+/* Two-column layout */
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+@media (max-width: 900px) {
+  .contact-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Form card */
+.contact-form-card {
+  padding: 1.75rem;
+}
+
+.contact-form-card__heading {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  margin: 0 0 1.5rem;
+}
+
+/* Form fields */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.contact-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+/* Shared input/select/textarea baseline */
+.tw-input,
+.tw-select,
+.tw-textarea {
+  width: 100%;
+  background: rgb(var(--p3));
+  border: 1px solid rgb(var(--n2));
+  border-radius: 8px;
+  color: rgb(var(--n8));
+  font-size: 0.875rem;
+  padding: 0.6rem 0.875rem;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.tw-input::placeholder,
+.tw-textarea::placeholder {
+  color: rgb(var(--n3));
+}
+
+.tw-input:focus,
+.tw-select:focus,
+.tw-textarea:focus {
+  border-color: rgb(var(--g1));
+  box-shadow: 0 0 0 3px rgba(var(--g1), 0.15);
+}
+
+.tw-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23adadb8' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
+  padding-right: 2.25rem;
+  cursor: pointer;
+}
+
+.tw-select option {
+  background: rgb(var(--p2));
+  color: rgb(var(--n8));
+}
+
+.tw-textarea {
+  resize: vertical;
+  min-height: 130px;
+}
+
+.tw-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgb(var(--n3));
+  letter-spacing: 0.03em;
+}
+
+/* Submit button */
+.contact-form__submit {
+  width: 100%;
   justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
 }
 
-.btn_primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(255, 159, 0, 0.4);
-}
-
-.btn_primary:disabled {
-  opacity: 0.6;
+.contact-form__submit:disabled {
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
-.page-content-with-space {
-  padding-top: 90px;
+/* Alerts */
+.contact-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
 }
 
-@media (max-width: 768px) {
-  .page-content-with-space {
-    padding-top: 60px;
-  }
-  
-  .hero_title {
-    font-size: 1.8rem;
-  }
+.contact-alert--success {
+  background: rgba(0, 185, 84, 0.12);
+  border: 1px solid rgba(0, 185, 84, 0.3);
+  color: #00b954;
+}
+
+.contact-alert--error {
+  background: rgba(var(--r1), 0.1);
+  border: 1px solid rgba(var(--r1), 0.3);
+  color: rgb(var(--r1));
+}
+
+/* Sidebar */
+.contact-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Info cards */
+.contact-info-card {
+  padding: 1rem 1.25rem;
+}
+
+.contact-info-card__inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.contact-info-card__icon {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(var(--g1), 0.12);
+  color: rgb(var(--g1));
+  font-size: 1.1rem;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.contact-info-card__title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  margin: 0 0 0.2rem;
+}
+
+.contact-info-card__value {
+  font-size: 0.82rem;
+  color: rgb(var(--n3));
+  margin: 0;
+}
+
+/* Resources card */
+.contact-resources {
+  padding: 1.25rem;
+}
+
+.contact-resources__heading {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  margin: 0 0 0.75rem;
+}
+
+.contact-resources__links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding-top: 0.75rem;
+}
+
+.contact-resource-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  color: rgb(var(--n3));
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.contact-resource-link i {
+  color: rgb(var(--g1));
+  width: 16px;
+  text-align: center;
+}
+
+.contact-resource-link:hover {
+  color: rgb(var(--n8));
 }
 </style>
-

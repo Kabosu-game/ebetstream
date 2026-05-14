@@ -1,246 +1,158 @@
 <template>
-  <!-- Section Clans -->
-  <section class="defis_section py-6 position-relative overflow-hidden pb-120">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-12 gx-0 gx-lg-4">
-          <div class="defis__main">
-            <!-- Header Section -->
-            <div class="row h-100 align-items-center mb-5">
-              <div class="col-lg-6 col-md-7">
-                <div class="defis_content" data-aos="fade-right">
-                  <span class="hero_badge mb-3 d-inline-block">
-                    ⚔️ Clans eBetStream
-                  </span>
-                  <h2 class="hero_title mb-4">
-                    Discover the <span class="text_gradient">Most Powerful Clans</span><br />
-                    and their statistics!
-                  </h2>
-                  <p class="hero_subtitle mb-5">
-                    Join clans, participate in collective challenges, and compete with the best teams to dominate the arena.
-                  </p>
-                  <div class="hero_actions d-flex flex-wrap gap-3">
-                    <button 
-                      v-if="isAuthenticated"
-                      class="btn_secondary" 
-                      @click="showCreateModal = true"
-                    >
-                      <i class="fas fa-plus-circle me-2"></i>
-                      <span>Create a Clan</span>
-                    </button>
-                    <router-link 
-                      v-else
-                      to="/login"
-                      class="btn_secondary text-decoration-none"
-                    >
-                      <i class="fas fa-sign-in-alt me-2"></i>
-                      <span>Login to Create Clan</span>
-                    </router-link>
-                  </div>
-                </div>
-              </div>
+  <div>
+    <!-- Hero -->
+    <div class="tw-page-hero">
+      <p class="tw-page-hero__eyebrow">
+        <i class="fas fa-shield-alt"></i> eBetStream Clans
+      </p>
+      <h1 class="tw-page-hero__title">Discover the Most Powerful Clans</h1>
+      <p class="tw-page-hero__sub">
+        Join clans, participate in collective challenges, and compete with the best teams to dominate the arena.
+      </p>
+      <div class="tw-page-hero__actions">
+        <button v-if="isAuthenticated" class="tw-btn tw-btn--primary" @click="showCreateModal = true">
+          <i class="fas fa-plus"></i> Create a Clan
+        </button>
+        <router-link v-else to="/login" class="tw-btn tw-btn--primary">
+          <i class="fas fa-sign-in-alt"></i> Login to Create Clan
+        </router-link>
+      </div>
+    </div>
 
-              <!-- Colonne image / carte -->
-              <div class="col-lg-6 col-md-5 d-none d-md-block">
-                <div class="defis_image" data-aos="fade-left">
-                  <div class="floating_card card_defis">
-                    <div class="card_icon">🛡️</div>
-                    <div class="card_content">
-                      <span class="card_label">Elite Clan</span>
-                      <span class="card_value">Statistics</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+    <!-- Loading -->
+    <div v-if="loading" class="tw-grid-3">
+      <div v-for="n in 6" :key="n" class="clan-skeleton">
+        <div class="clan-skeleton__header tw-skeleton"></div>
+        <div class="clan-skeleton__line tw-skeleton mt-2"></div>
+        <div class="clan-skeleton__line tw-skeleton mt-2" style="width:60%"></div>
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div v-else-if="error" class="tw-alert tw-alert--error">
+      <i class="fas fa-exclamation-circle"></i> {{ error }}
+    </div>
+
+    <!-- Clans grid -->
+    <div v-else-if="clans.length > 0" class="tw-grid-3">
+      <div v-for="clan in clans" :key="clan.id" class="tw-card tw-card--clickable clan-card">
+        <!-- Header bar -->
+        <div class="clan-card__header">
+          <div class="clan-card__avatar">
+            <img v-if="clan.logo" :src="clan.logo" :alt="clan.name" />
+            <i v-else class="fas fa-shield-alt"></i>
+          </div>
+          <div class="clan-card__title-block">
+            <p class="clan-card__name">{{ clan.name }}</p>
+            <p class="clan-card__leader" v-if="clan.leader">
+              <i class="fas fa-crown"></i> {{ clan.leader.username }}
+            </p>
+          </div>
+          <span class="tw-badge tw-badge--open" v-if="clan.status === 'active'">Active</span>
+        </div>
+
+        <!-- Description -->
+        <div class="tw-card__body">
+          <p class="clan-card__desc" v-if="clan.description">
+            {{ clan.description.length > 100 ? clan.description.substring(0, 100) + '…' : clan.description }}
+          </p>
+
+          <!-- Stats -->
+          <div class="clan-card__stats">
+            <div class="clan-stat">
+              <i class="fas fa-users"></i>
+              <span>{{ clan.members_count || 0 }}/{{ clan.max_members || 50 }} members</span>
             </div>
-
-            <!-- Loading State -->
-            <div v-if="loading" class="row mt-5">
-              <div class="col-12 text-center py-5">
-                <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Error State -->
-            <div v-else-if="error" class="row mt-5">
-              <div class="col-12">
-                <div class="alert alert-danger text-center">
-                  <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
-                </div>
-              </div>
-            </div>
-
-            <!-- Liste des clans -->
-            <div v-else-if="clans.length > 0" class="row mt-5 g-4">
-              <div v-for="clan in clans" :key="clan.id" class="col-12 col-md-6 col-lg-4">
-                <div class="defi_card n11-bg rounded-8 p-4 h-100 d-flex flex-column justify-content-between">
-                  <div class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="fs-eight fw-bold text-white">
-                      <i class="fas fa-shield-alt me-2 text-warning"></i>{{ clan.name }}
-                    </span>
-                    <span v-if="clan.leader" class="fs-eight n10-color fw-semibold">
-                      <i class="fas fa-crown me-1"></i>{{ clan.leader.username }}
-                    </span>
-                  </div>
-
-                  <p v-if="clan.description" class="text-white-50 small mb-3" style="min-height: 40px;">
-                    {{ clan.description.substring(0, 100) }}{{ clan.description.length > 100 ? '...' : '' }}
-                  </p>
-
-                  <ul class="list-unstyled mb-3 fs-eight text-white">
-                    <li class="mb-1">
-                      <i class="fas fa-users text-primary me-2"></i>
-                      Members: <strong>{{ clan.members_count || 0 }}/{{ clan.max_members || 50 }}</strong>
-                    </li>
-                    <li class="mb-1">
-                      <i class="fas fa-calendar text-info me-2"></i>
-                      Created: <strong>{{ formatDate(clan.created_at) }}</strong>
-                    </li>
-                    <li v-if="clan.status === 'active'" class="mb-1">
-                      <i class="fas fa-check-circle text-success me-2"></i>
-                      Status: <strong>Active</strong>
-                    </li>
-                  </ul>
-
-                  <div class="text-end mt-auto">
-                    <router-link 
-                      :to="`/clans/${clan.id}`"
-                      class="btn_see_details rounded-4 fw-semibold px-4 py-2 text-decoration-none"
-                    >
-                      View Clan <i class="fas fa-arrow-right ms-2"></i>
-                    </router-link>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Empty State -->
-            <div v-else class="row mt-5">
-              <div class="col-12 text-center py-5">
-                <i class="fas fa-shield-alt fs-1 text-white-50 mb-3"></i>
-                <p class="text-white-50">No clans found. Be the first to create one!</p>
-                <button 
-                  v-if="isAuthenticated"
-                  class="btn_primary mt-3"
-                  @click="showCreateModal = true"
-                >
-                  <i class="fas fa-plus-circle me-2"></i>Create First Clan
-                </button>
-              </div>
-            </div>
-
-            <!-- Pagination -->
-            <div v-if="pagination && pagination.total > pagination.per_page" class="row mt-5">
-              <div class="col-12 d-flex justify-content-center">
-                <nav>
-                  <ul class="pagination">
-                    <li class="page-item" :class="{ disabled: !pagination.prev_page_url }">
-                      <button class="page-link" @click="loadPage(pagination.current_page - 1)" :disabled="!pagination.prev_page_url">
-                        Previous
-                      </button>
-                    </li>
-                    <li class="page-item" :class="{ active: page === pagination.current_page }" v-for="page in pagination.last_page" :key="page">
-                      <button class="page-link" @click="loadPage(page)">{{ page }}</button>
-                    </li>
-                    <li class="page-item" :class="{ disabled: !pagination.next_page_url }">
-                      <button class="page-link" @click="loadPage(pagination.current_page + 1)" :disabled="!pagination.next_page_url">
-                        Next
-                      </button>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
+            <div class="clan-stat">
+              <i class="fas fa-calendar-alt"></i>
+              <span>{{ formatDate(clan.created_at) }}</span>
             </div>
           </div>
+
+          <!-- CTA -->
+          <router-link :to="`/clans/${clan.id}`" class="tw-btn tw-btn--ghost tw-btn--sm clan-card__cta">
+            View Clan <i class="fas fa-arrow-right"></i>
+          </router-link>
         </div>
       </div>
     </div>
 
-    <!-- Modal Création Clan -->
-    <div v-if="showCreateModal" class="popup-overlay" @click.self="showCreateModal = false">
-      <div class="popup-box p-5 rounded-4 shadow-lg n11-bg">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 class="fw-bold text-white mb-0">Create a New Clan</h3>
-          <button class="btn-close btn-close-white" @click="showCreateModal = false"></button>
+    <!-- Empty -->
+    <div v-else class="tw-empty">
+      <i class="ti ti-shield-off tw-empty__icon"></i>
+      <p class="tw-empty__title">No clans yet</p>
+      <p class="tw-empty__sub">Be the first to create a clan!</p>
+      <button v-if="isAuthenticated" class="tw-btn tw-btn--primary" @click="showCreateModal = true">
+        <i class="fas fa-plus"></i> Create First Clan
+      </button>
+    </div>
+
+    <!-- Pagination -->
+    <div v-if="pagination && pagination.total > pagination.per_page" class="tw-pagination">
+      <button
+        class="tw-page-btn"
+        :disabled="!pagination.prev_page_url"
+        @click="loadPage(pagination.current_page - 1)"
+      >
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button
+        v-for="page in pagination.last_page"
+        :key="page"
+        class="tw-page-btn"
+        :class="{ active: page === pagination.current_page }"
+        @click="loadPage(page)"
+      >{{ page }}</button>
+      <button
+        class="tw-page-btn"
+        :disabled="!pagination.next_page_url"
+        @click="loadPage(pagination.current_page + 1)"
+      >
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+
+    <!-- Create Clan Modal -->
+    <div v-if="showCreateModal" class="tw-modal-overlay" @click.self="showCreateModal = false">
+      <div class="tw-modal">
+        <div class="tw-modal__header">
+          <h3 class="tw-modal__title">Create a New Clan</h3>
+          <button class="tw-modal__close" @click="showCreateModal = false">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
-        
-        <form @submit.prevent="createClan">
-          <div class="form-group mb-3">
-            <label class="text-white mb-2 d-block fw-bold">Clan Name *</label>
-            <input 
-              v-model="createForm.name"
-              type="text" 
-              class="form-control n11-bg text-white border-secondary" 
-              placeholder="Enter clan name"
-              required
-              maxlength="100"
-            />
-          </div>
-          
-          <div class="form-group mb-3">
-            <label class="text-white mb-2 d-block fw-bold">Logo URL (Optional)</label>
-            <input 
-              v-model="createForm.logo"
-              type="url" 
-              class="form-control n11-bg text-white border-secondary" 
-              placeholder="https://example.com/logo.png"
-              maxlength="255"
-            />
-          </div>
-          
-          <div class="form-group mb-3">
-            <label class="text-white mb-2 d-block fw-bold">Max Members</label>
-            <input 
-              v-model.number="createForm.max_members"
-              type="number" 
-              class="form-control n11-bg text-white border-secondary" 
-              placeholder="50"
-              min="5"
-              max="100"
-            />
-            <small class="text-white-50">Default: 50 members</small>
-          </div>
-          
-          <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block fw-bold">Description</label>
-            <textarea 
-              v-model="createForm.description"
-              class="form-control n11-bg text-white border-secondary" 
-              rows="4"
-              placeholder="Describe your clan..."
-              maxlength="1000"
-            ></textarea>
-          </div>
-
-          <div v-if="createError" class="alert alert-danger mb-3">{{ createError }}</div>
-          <div v-if="createSuccess" class="alert alert-success mb-3">{{ createSuccess }}</div>
-
-          <div class="d-flex gap-3">
-            <button 
-              type="submit" 
-              class="btn_primary flex-fill" 
-              :disabled="creating"
-            >
-              <span v-if="creating">Creating...</span>
-              <span v-else>
-                <i class="fas fa-check me-2"></i>Create Clan
-              </span>
-            </button>
-            <button 
-              type="button" 
-              class="btn_secondary" 
-              @click="showCreateModal = false"
-              :disabled="creating"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
+        <div class="tw-modal__body">
+          <form @submit.prevent="createClan">
+            <div class="tw-form-group">
+              <label class="tw-label">Clan Name *</label>
+              <input v-model="createForm.name" type="text" class="tw-input" placeholder="Enter clan name" required maxlength="100" />
+            </div>
+            <div class="tw-form-group">
+              <label class="tw-label">Logo URL (Optional)</label>
+              <input v-model="createForm.logo" type="url" class="tw-input" placeholder="https://example.com/logo.png" maxlength="255" />
+            </div>
+            <div class="tw-form-group">
+              <label class="tw-label">Max Members</label>
+              <input v-model.number="createForm.max_members" type="number" class="tw-input" placeholder="50" min="5" max="100" />
+              <p style="font-size:12px;color:rgb(var(--n3));margin-top:4px;">Default: 50 members</p>
+            </div>
+            <div class="tw-form-group">
+              <label class="tw-label">Description</label>
+              <textarea v-model="createForm.description" class="tw-input" rows="4" placeholder="Describe your clan…" maxlength="1000" style="height:auto;padding:10px 14px;resize:vertical;"></textarea>
+            </div>
+            <div v-if="createError" class="tw-alert tw-alert--error">{{ createError }}</div>
+            <div v-if="createSuccess" class="tw-alert tw-alert--success">{{ createSuccess }}</div>
+          </form>
+        </div>
+        <div class="tw-modal__footer">
+          <button class="tw-btn tw-btn--secondary" @click="showCreateModal = false" :disabled="creating">Cancel</button>
+          <button class="tw-btn tw-btn--primary" @click="createClan" :disabled="creating">
+            <i class="fas fa-check"></i> {{ creating ? 'Creating…' : 'Create Clan' }}
+          </button>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -380,157 +292,103 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.defis_section {
-  width: 100%;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-  color: white;
-  position: relative;
-  overflow: hidden;
-  border-radius: 24px;
-}
+/* Clan card */
+.clan-card { overflow: hidden; }
 
-.text_gradient {
-  background: linear-gradient(90deg, #FF9F00, #FF9F00);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.btn_primary {
-  background-color: #FF9F00;
-  color: #000;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: 0.3s;
-  cursor: pointer;
-}
-.btn_primary:hover {
-  background-color: #FF9F00;
-  transform: translateY(-2px);
-}
-
-.btn_secondary {
-  background: transparent;
-  border: 2px solid #FF9F00;
-  color: #FF9F00;
-  padding: 0.75rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: 0.3s;
-  cursor: pointer;
-}
-.btn_secondary:hover {
-  background-color: #FF9F00;
-  color: #000;
-}
-
-.floating_card {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(20px);
-  border-radius: 24px;
-  padding: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+.clan-card__header {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  gap: 12px;
+  padding: 14px 14px 0;
 }
 
-.card_icon {
-  font-size: 3rem;
+.clan-card__avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(var(--g1), 0.15);
+  border: 2px solid rgba(var(--g1), 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+
+  img { width: 100%; height: 100%; object-fit: cover; }
+  i { font-size: 20px; color: rgb(var(--g1)); }
 }
 
-.card_content {
+.clan-card__title-block { flex: 1; min-width: 0; }
+
+.clan-card__name {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.clan-card__leader {
+  font-size: 12px;
+  color: rgb(var(--n3));
+  margin: 2px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  i { font-size: 11px; color: #ffb400; }
+}
+
+.clan-card__desc {
+  font-size: 13px;
+  color: rgb(var(--n3));
+  line-height: 1.5;
+  margin: 0 0 12px;
+  min-height: 38px;
+}
+
+.clan-card__stats {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 6px;
+  margin-bottom: 14px;
 }
 
-.card_label {
-  font-size: 0.9rem;
-  opacity: 0.9;
-  font-weight: 500;
-}
-
-.card_value {
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: white;
-}
-
-.defi_card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.defi_card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-}
-
-.fs-eight {
-  font-size: 0.85rem;
-}
-
-.n10-color {
-  color: #FF9F00;
-}
-
-.btn_see_details {
-  background-color: #FF9F00;
-  color: #000;
-  border: none;
-  transition: 0.3s;
-}
-.btn_see_details:hover {
-  background-color: #FF9F00;
-  transform: translateY(-2px);
-}
-
-.popup-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.65);
+.clan-stat {
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 9999;
-}
-.popup-box {
-  width: 95%;
-  max-width: 500px;
-  border-radius: 24px;
-  padding: 2rem;
-  max-height: 90vh;
-  overflow-y: auto;
+  gap: 6px;
+  font-size: 12px;
+  color: rgb(var(--n3));
+
+  i { font-size: 13px; color: rgb(var(--g1)); }
 }
 
-.form-control {
-  border-radius: 10px;
+.clan-card__cta {
+  width: 100%;
+  justify-content: center;
+  border-radius: 4px;
 }
 
-.pagination .page-link {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
-  color: white;
-}
-.pagination .page-item.active .page-link {
-  background-color: #FF9F00;
-  border-color: #FF9F00;
-}
-.pagination .page-item.disabled .page-link {
-  opacity: 0.5;
-  cursor: not-allowed;
+/* Skeleton */
+.clan-skeleton {
+  background: rgb(var(--p2));
+  border: 1px solid rgb(var(--n2));
+  border-radius: 8px;
+  padding: 14px;
+  height: 160px;
 }
 
-@media (max-width: 768px) {
-  .container-fluid {
-    margin-left: 0 !important;
-  }
-  .defis__main {
-    margin-left: 0 !important;
-  }
+.clan-skeleton__header {
+  height: 44px;
+  border-radius: 4px;
+}
+
+.clan-skeleton__line {
+  height: 12px;
+  border-radius: 4px;
+  width: 80%;
 }
 </style>

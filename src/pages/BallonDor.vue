@@ -11,7 +11,7 @@
                 <div class="col-lg-6 col-md-7">
                   <div class="defis_content" data-aos="fade-right">
                     <span class="hero_badge mb-3 d-inline-block">
-                      🏆 Ballon d'Or EBETSTREAM
+                      <i class="fas fa-trophy"></i> Ballon d'Or EBETSTREAM
                     </span>
                     <h2 class="hero_title mb-4">
                       Vote for <span class="text_gradient">Season Awards</span><br />
@@ -56,7 +56,7 @@
                 <div class="col-lg-6 col-md-5 d-none d-md-block">
                   <div class="defis_image" data-aos="fade-left">
                     <div class="floating_card card_defis">
-                      <div class="card_icon">🏆</div>
+                      <div class="card_icon"><i class="fas fa-trophy"></i></div>
                       <div class="card_content">
                         <span class="card_label">Awards</span>
                         <span class="card_value">Season End</span>
@@ -114,7 +114,7 @@
                           }"
                         >
                           <div class="d-flex align-items-center gap-3 mb-3">
-                            <div class="rank_badge" style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                            <div class="rank_badge" style="width: 40px; height: 40px; background: linear-gradient(135deg, #febd56 0%, #d98f25 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
                               {{ index + 1 }}
                             </div>
                             <div class="flex-grow-1">
@@ -185,7 +185,7 @@
                           }"
                         >
                           <div class="d-flex align-items-center gap-3 mb-3">
-                            <div class="rank_badge" style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                            <div class="rank_badge" style="width: 40px; height: 40px; background: linear-gradient(135deg, #febd56 0%, #d98f25 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
                               {{ index + 1 }}
                             </div>
                             <div class="flex-grow-1">
@@ -256,7 +256,7 @@
                           }"
                         >
                           <div class="d-flex align-items-center gap-3 mb-3">
-                            <div class="rank_badge" style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                            <div class="rank_badge" style="width: 40px; height: 40px; background: linear-gradient(135deg, #febd56 0%, #d98f25 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
                               {{ index + 1 }}
                             </div>
                             <div class="flex-grow-1">

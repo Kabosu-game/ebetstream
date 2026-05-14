@@ -19,7 +19,7 @@
       <div class="d-flex align-items-center gap-3 mb-3">
         <div 
           class="game_icon rounded-circle overflow-hidden d-flex align-items-center justify-content-center"
-          style="width: 60px; height: 60px; flex-shrink: 0; border: 2px solid #FFD700; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"
+          style="width: 60px; height: 60px; flex-shrink: 0; border: 2px solid #FFD700; background: linear-gradient(135deg, #febd56 0%, #d98f25 100%);"
         >
           <i :class="getGameIcon(championship.game)" class="text-white fs-four"></i>
         </div>
@@ -144,15 +144,15 @@ const getStatusClass = (status: string) => {
 
 const getGameIcon = (gameName: string) => {
   const lower = gameName.toLowerCase();
-  if (lower.includes('pubg')) return 'ti ti-device-gamepad-2';
-  if (lower.includes('free fire') || lower.includes('garena')) return 'ti ti-flame';
-  if (lower.includes('mobile legends') || lower.includes('mlbb')) return 'ti ti-swords';
-  if (lower.includes('cod') || lower.includes('call of duty')) return 'ti ti-gun';
-  if (lower.includes('efootball') || lower.includes('fc') || lower.includes('dls') || lower.includes('football')) return 'ti ti-ball-football';
-  if (lower.includes('clash royale')) return 'ti ti-crown';
-  if (lower.includes('brawl stars')) return 'ti ti-star';
-  if (lower.includes('stumble guys')) return 'ti ti-users';
-  return 'ti ti-gamepad';
+  if (lower.includes('pubg')) return 'fas fa-gamepad';
+  if (lower.includes('free fire') || lower.includes('garena')) return 'fas fa-fire';
+  if (lower.includes('mobile legends') || lower.includes('mlbb')) return 'fas fa-fist-raised';
+  if (lower.includes('cod') || lower.includes('call of duty')) return 'fas fa-crosshairs';
+  if (lower.includes('efootball') || lower.includes('fc') || lower.includes('dls') || lower.includes('football')) return 'fas fa-futbol';
+  if (lower.includes('clash royale')) return 'fas fa-crown';
+  if (lower.includes('brawl stars')) return 'fas fa-star';
+  if (lower.includes('stumble guys')) return 'fas fa-users';
+  return 'fas fa-gamepad';
 };
 </script>
 

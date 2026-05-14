@@ -7,10 +7,10 @@
       </div>
       <div class="d-flex gap-2">
         <button class="btn_primary" @click="showCreateModal = true; paymentMethodType = 'deposit'">
-          <IconPlus :size="18" class="me-2" />Add Deposit
+          <i class="fas fa-plus me-2"  ></i>Add Deposit
         </button>
         <button class="btn_secondary" @click="showCreateModal = true; paymentMethodType = 'withdrawal'">
-          <IconPlus :size="18" class="me-2" />Add Withdrawal
+          <i class="fas fa-plus me-2"  ></i>Add Withdrawal
         </button>
       </div>
     </div>
@@ -22,14 +22,14 @@
         :class="{ 'active': activeTab === 'deposits' }"
         @click="activeTab = 'deposits'"
       >
-        <IconWallet :size="18" class="me-2" />Deposit Methods
+        <i class="fas fa-wallet me-2"  ></i>Deposit Methods
       </button>
       <button 
         class="btn_tab" 
         :class="{ 'active': activeTab === 'withdrawals' }"
         @click="activeTab = 'withdrawals'"
       >
-        <IconCreditCard :size="18" class="me-2" />Withdrawal Methods
+        <i class="fas fa-credit-card me-2"  ></i>Withdrawal Methods
       </button>
     </div>
 
@@ -58,14 +58,14 @@
                 @click="editMethod(method)"
                 title="Edit"
               >
-                <IconPencil :size="16" />
+                <IconPencil />
               </button>
               <button 
                 class="btn btn-sm btn-outline-danger p-1"
                 @click="deleteMethod(method.id)"
                 title="Delete"
               >
-                <IconTrash :size="16" />
+                <i class="fas fa-trash"></i>
               </button>
             </div>
           </div>
@@ -319,14 +319,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import apiClient from '@/utils/axios';
-import {
-  IconPlus,
-  IconPencil,
-  IconTrash,
-  IconWallet,
-  IconCreditCard,
-} from '@tabler/icons-vue';
-
 interface PaymentMethod {
   id: number;
   name: string;

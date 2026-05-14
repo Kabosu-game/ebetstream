@@ -71,7 +71,6 @@ import {
   ListboxOptions,
   ListboxOption,
 } from "@headlessui/vue";
-import { IconArrowBadgeDownFilled } from "@tabler/icons-vue";
 import { useI18n } from "vue-i18n";
 import english from "@/assets/images/icon/lang-usa.png";
 import france from "@/assets/images/icon/lang-france.png";

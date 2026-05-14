@@ -1,165 +1,143 @@
 <template>
-  <div class="page-content-with-space">
-    <!-- Section Events -->
-    <section class="events_section py-6 position-relative overflow-hidden pb-120">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12 gx-0 gx-lg-4">
-            <div class="top10__main">
-              <!-- Header Section -->
-              <div class="row w-100 h-100 align-items-center mb-5">
-                <div class="col-lg-6 col-md-7">
-                  <div class="events_content" data-aos="fade-right">
-                    <span class="hero_badge mb-3 d-inline-block">
-                      <i class="fas fa-calendar-alt me-2"></i>Events
-                    </span>
-                    <h2 class="hero_title mb-4">
-                      All <span class="text_gradient">Events</span>
-                    </h2>
-                    <p class="hero_subtitle mb-5">
-                      Discover all our events, tournaments and competitions. Don't miss any opportunity to participate and win.
-                    </p>
-                  </div>
-                </div>
+  <div class="tw-page">
 
-                <!-- Colonne image / carte -->
-                <div class="col-lg-6 col-md-5 d-none d-md-block">
-                  <div class="events_image" data-aos="fade-left">
-                    <div class="floating_card card_events">
-                      <div class="card_icon">🎮</div>
-                      <div class="card_content">
-                        <span class="card_label">Total</span>
-                        <span class="card_value">{{ totalEvents }} Events</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+    <!-- Hero -->
+    <div class="tw-page-hero">
+      <div>
+        <h1 class="tw-page-hero__title">Upcoming Events</h1>
+        <p class="tw-page-hero__sub">
+          Tournaments, competitions &amp; more — don't miss your chance to compete
+        </p>
+      </div>
+      <div class="tw-page-hero__actions">
+        <span class="events-count-chip">
+          <i class="fas fa-calendar-alt me-2"></i>{{ totalEvents }} Events
+        </span>
+      </div>
+    </div>
 
-              <!-- Filtres -->
-              <div class="row w-100 mb-4">
-                <div class="col-12">
-                  <div class="d-flex flex-wrap gap-3">
-                    <button 
-                      class="btn_filter" 
-                      :class="{ active: filterStatus === null }"
-                      @click="filterStatus = null; loadEvents()"
-                    >
-                      All
-                    </button>
-                    <button 
-                      class="btn_filter" 
-                      :class="{ active: filterStatus === 'upcoming' }"
-                      @click="filterStatus = 'upcoming'; loadEvents()"
-                    >
-                      Upcoming
-                    </button>
-                    <button 
-                      class="btn_filter" 
-                      :class="{ active: filterStatus === 'ongoing' }"
-                      @click="filterStatus = 'ongoing'; loadEvents()"
-                    >
-                      Ongoing
-                    </button>
-                    <button 
-                      class="btn_filter" 
-                      :class="{ active: filterStatus === 'past' }"
-                      @click="filterStatus = 'past'; loadEvents()"
-                    >
-                      Past
-                    </button>
-                  </div>
-                </div>
-              </div>
+    <!-- Filters -->
+    <div class="tw-filters">
+      <button
+        class="tw-filter-btn"
+        :class="{ active: filterStatus === null }"
+        @click="filterStatus = null; loadEvents()"
+      >All</button>
+      <button
+        class="tw-filter-btn"
+        :class="{ active: filterStatus === 'upcoming' }"
+        @click="filterStatus = 'upcoming'; loadEvents()"
+      >Upcoming</button>
+      <button
+        class="tw-filter-btn"
+        :class="{ active: filterStatus === 'ongoing' }"
+        @click="filterStatus = 'ongoing'; loadEvents()"
+      >Ongoing</button>
+      <button
+        class="tw-filter-btn"
+        :class="{ active: filterStatus === 'past' }"
+        @click="filterStatus = 'past'; loadEvents()"
+      >Past</button>
+    </div>
 
-              <!-- Liste des événements -->
-              <div v-if="loading" class="row w-100 mt-5">
-                <div class="col-12 text-center py-5">
-                  <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-                    <span class="visually-hidden">Loading...</span>
-                  </div>
-                </div>
-              </div>
-              <div v-else-if="error" class="row w-100 mt-5">
-                <div class="col-12">
-                  <div class="alert alert-warning" role="alert">
-                    {{ error }}
-                  </div>
-                </div>
-              </div>
-              <div v-else-if="events.length > 0" class="row w-100 mt-5 g-4">
-                <div v-for="event in events" :key="event.id" class="col-12 col-md-6 col-lg-4">
-                  <div class="event_card n11-bg rounded-8 p-4 h-100 d-flex flex-column" 
-                       style="cursor: pointer;" 
-                       @click="viewEvent(event.id)">
-                    <div v-if="event.image_url" class="event_image mb-3 rounded overflow-hidden" style="height: 200px;">
-                      <img 
-                        :src="event.image_url" 
-                        :alt="event.title"
-                        class="w-100 h-100"
-                        style="object-fit: cover;"
-                        @error="handleImageError($event)"
-                      />
-                    </div>
-                    <div v-else class="event_placeholder mb-3 rounded d-flex align-items-center justify-content-center" 
-                         style="height: 200px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                      <i class="fas fa-calendar-alt text-white" style="font-size: 3rem;"></i>
-                    </div>
-                    
-                    <div class="event_info flex-grow-1 d-flex flex-column">
-                      <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
-                        <span class="badge bg-warning text-dark px-2 py-1">
-                          <i class="fas fa-clock me-1"></i>
-                          {{ formatDate(event.start_at) }}
-                        </span>
-                        <span v-if="event.is_ongoing" class="badge bg-success px-2 py-1">
-                          Ongoing
-                        </span>
-                        <span v-else-if="event.is_upcoming" class="badge bg-primary px-2 py-1">
-                          Upcoming
-                        </span>
-                        <span v-else-if="event.is_past" class="badge bg-secondary px-2 py-1">
-                          Finished
-                        </span>
-                      </div>
-                      <h3 class="event_title mb-2 text-white">{{ event.title }}</h3>
-                      <p v-if="event.description" class="event_description text-white small mb-3 flex-grow-1" 
-                         style="opacity: 0.8; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
-                        {{ event.description }}
-                      </p>
-                      <div v-if="event.location" class="event_location small text-white mb-2" style="opacity: 0.7;">
-                        <i class="fas fa-map-marker-alt me-1"></i>{{ event.location }}
-                      </div>
-                      <div class="d-flex align-items-center justify-content-between mt-3">
-                        <span v-if="event.type" class="badge bg-info">
-                          {{ event.type }}
-                        </span>
-                        <span class="text-warning">
-                          <i class="fas fa-arrow-right"></i>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div v-else class="row w-100 mt-5">
-                <div class="col-12 text-center py-5">
-                  <p class="text-white" style="opacity: 0.7;">No events available at the moment.</p>
-                </div>
-              </div>
-              <!-- /Liste des événements -->
-            </div>
+    <!-- Loading -->
+    <div v-if="loading" class="tw-empty">
+      <div class="spinner"></div>
+    </div>
+
+    <!-- Error state -->
+    <div v-else-if="error" class="tw-empty">
+      <div class="tw-empty__icon"><i class="fas fa-exclamation-triangle"></i></div>
+      <p class="tw-empty__title">Could not load events</p>
+      <p class="tw-empty__sub">{{ error }}</p>
+    </div>
+
+    <!-- Events grid -->
+    <div v-else-if="events.length > 0" class="tw-grid-3">
+      <div
+        v-for="event in events"
+        :key="event.id"
+        class="tw-card tw-card--clickable"
+        @click="viewEvent(event.id)"
+      >
+        <!-- Thumbnail -->
+        <div class="tw-card__thumb event-thumb">
+          <img
+            v-if="event.image_url"
+            :src="event.image_url"
+            :alt="event.title"
+            class="thumb-img"
+            @error="handleImageError($event)"
+          />
+          <div v-else class="event-thumb__gradient">
+            <i class="fas fa-calendar-alt thumb-icon"></i>
+          </div>
+
+          <!-- Status badge over thumb -->
+          <span
+            v-if="event.is_ongoing"
+            class="tw-badge tw-badge--ongoing thumb-badge"
+          >
+            <span class="tw-live-dot"></span>Ongoing
+          </span>
+          <span
+            v-else-if="event.is_upcoming"
+            class="tw-badge tw-badge--open thumb-badge"
+          >Upcoming</span>
+          <span
+            v-else-if="event.is_past"
+            class="tw-badge tw-badge--closed thumb-badge"
+          >Finished</span>
+
+          <!-- Type badge -->
+          <span v-if="event.type" class="event-type-badge">{{ event.type }}</span>
+        </div>
+
+        <!-- Card body -->
+        <div class="tw-card__body">
+          <p class="tw-card__title">{{ event.title }}</p>
+
+          <!-- Date -->
+          <p class="tw-card__sub event-date">
+            <i class="fas fa-clock"></i> {{ formatDate(event.start_at) }}
+          </p>
+
+          <!-- Description -->
+          <p
+            v-if="event.description"
+            class="event-description"
+          >{{ event.description }}</p>
+
+          <!-- Location -->
+          <div v-if="event.location" class="event-location">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>{{ event.location }}</span>
+          </div>
+
+          <!-- Footer arrow -->
+          <div class="event-footer">
+            <span class="event-cta">
+              View Event <i class="fas fa-arrow-right ms-1"></i>
+            </span>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+
+    <!-- Empty state -->
+    <div v-else class="tw-empty">
+      <div class="tw-empty__icon"><i class="fas fa-calendar-times"></i></div>
+      <p class="tw-empty__title">No Events Available</p>
+      <p class="tw-empty__sub">Check back soon for upcoming events and tournaments.</p>
+    </div>
+
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import apiClient from '@/utils/axios';
+import apiClient, { getApiErrorMessage } from '@/utils/axios';
 
 interface Event {
   id: number;
@@ -188,7 +166,7 @@ const loadEvents = async () => {
   try {
     loading.value = true;
     error.value = '';
-    
+
     const params: any = {
       limit: 50,
       sort_by: 'start_at',
@@ -215,13 +193,7 @@ const loadEvents = async () => {
     }
   } catch (err: any) {
     console.error('Error loading events:', err);
-    if (err.response?.data?.message) {
-      error.value = err.response.data.message;
-    } else if (err.isNetworkError) {
-      error.value = 'Connection error. Check your internet connection.';
-    } else {
-      error.value = 'Error loading events';
-    }
+    error.value = getApiErrorMessage(err);
   } finally {
     loading.value = false;
   }
@@ -234,8 +206,8 @@ const viewEvent = (id: number) => {
 const formatDate = (dateString: string) => {
   if (!dateString) return '';
   const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', { 
-    day: 'numeric', 
+  return date.toLocaleDateString('en-US', {
+    day: 'numeric',
     month: 'short',
     year: 'numeric',
     hour: '2-digit',
@@ -256,130 +228,147 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.events_section {
-  width: 100%;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-  color: white;
+/* Thumbnail */
+.tw-card__thumb.event-thumb {
   position: relative;
+  height: 180px;
   overflow: hidden;
-  border-radius: 24px;
+  border-radius: 6px 6px 0 0;
 }
 
-.text_gradient {
-  background: linear-gradient(90deg, #FF9F00, #FF9F00);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.btn_filter {
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  color: white;
-  padding: 0.5rem 1.5rem;
-  border-radius: 25px;
-  font-weight: 600;
-  transition: 0.3s;
-  cursor: pointer;
-}
-
-.btn_filter:hover {
-  background: rgba(255, 159, 0, 0.2);
-  border-color: #FF9F00;
-  color: #FF9F00;
-}
-
-.btn_filter.active {
-  background: #FF9F00;
-  border-color: #FF9F00;
-  color: #000;
-}
-
-.floating_card {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(20px);
-  border-radius: 24px;
-  padding: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+.event-thumb__gradient {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgb(40, 20, 80) 0%, rgb(20, 10, 50) 100%);
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  justify-content: center;
 }
 
-.card_icon {
+.thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.thumb-icon {
   font-size: 3rem;
+  color: rgba(254, 189, 86, 0.4);
 }
 
-.card_content {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+/* Badges over thumb */
+.thumb-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
 }
 
-.card_label {
-  font-size: 0.9rem;
-  opacity: 0.9;
-  font-weight: 500;
-}
-
-.card_value {
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: white;
-}
-
-.event_card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.event_card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 159, 0, 0.3);
-}
-
-.event_title {
+.event-type-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  font-size: 0.7rem;
   font-weight: 700;
-  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 3px 10px;
+  border-radius: 4px;
+  background: rgba(var(--g1), 0.2);
+  color: rgb(var(--g1));
 }
 
-.hero_badge {
-  background: rgba(255, 159, 0, 0.2);
-  color: #FF9F00;
+/* Card body elements */
+.event-date {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: rgb(var(--n3));
+}
+
+.event-date i {
+  font-size: 0.75rem;
+}
+
+.event-description {
+  font-size: 0.82rem;
+  color: rgb(var(--n3));
+  line-height: 1.5;
+  margin-top: 0.4rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.event-location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 0.5rem;
+  font-size: 0.78rem;
+  color: rgb(var(--n3));
+}
+
+.event-location i {
+  font-size: 0.75rem;
+  color: rgb(var(--g1));
+}
+
+.event-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.75rem;
+}
+
+.event-cta {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgb(var(--g1));
+  transition: opacity 0.15s;
+}
+
+.tw-card--clickable:hover .event-cta {
+  opacity: 0.7;
+}
+
+/* Hero chip */
+.events-count-chip {
+  display: inline-flex;
+  align-items: center;
   padding: 0.5rem 1rem;
-  border-radius: 20px;
+  background: rgb(var(--p3));
+  border: 1px solid rgb(var(--n2));
+  border-radius: 8px;
   font-size: 0.9rem;
   font-weight: 600;
+  color: rgb(var(--n8));
 }
 
-.hero_title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: white;
-  line-height: 1.2;
+/* Loading spinner */
+.spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 3px solid rgb(var(--n2));
+  border-top-color: rgb(var(--g1));
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto;
 }
 
-.hero_subtitle {
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.6;
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
-.page-content-with-space {
-  padding-top: 90px;
+.tw-empty__sub {
+  font-size: 0.9rem;
+  color: rgb(var(--n3));
+  margin-top: 0.4rem;
 }
 
-@media (max-width: 768px) {
-  .page-content-with-space {
-    padding-top: 60px;
-  }
-  
-  .hero_title {
-    font-size: 1.8rem;
-  }
-}
+.me-2 { margin-right: 0.5rem; }
+.ms-1 { margin-left: 0.25rem; }
 </style>
-

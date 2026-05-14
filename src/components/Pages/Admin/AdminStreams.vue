@@ -133,7 +133,7 @@
                     @click="viewStreamDetails(stream)" 
                     title="View Details"
                   >
-                    <IconEye :size="16" />
+                    <i class="fas fa-eye"></i>
                   </button>
                   <button 
                     v-if="stream.is_live"
@@ -148,14 +148,14 @@
                     @click="editStream(stream)" 
                     title="Edit"
                   >
-                    <IconPencil :size="16" />
+                    <IconPencil />
                   </button>
                   <button 
                     class="btn btn-sm btn-danger" 
                     @click="deleteStream(stream.id)" 
                     title="Delete"
                   >
-                    <IconTrash :size="16" />
+                    <i class="fas fa-trash"></i>
                   </button>
                 </div>
               </td>
@@ -426,7 +426,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
 import apiClient from '@/utils/axios';
-import { IconEye, IconPencil, IconTrash } from '@tabler/icons-vue';
 
 interface Stream {
   id: number;

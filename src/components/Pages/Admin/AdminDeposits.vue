@@ -49,10 +49,10 @@
               <td class="p-3">
                 <div v-if="deposit.status === 'pending'" class="d-flex gap-2 justify-content-center">
                   <button class="btn btn-sm btn-success d-flex align-items-center justify-content-center" @click="approveDeposit(deposit.id)" title="Approve">
-                    <IconCheck :size="16" />
+                    <i class="fas fa-check"></i>
                   </button>
                   <button class="btn btn-sm btn-danger d-flex align-items-center justify-content-center" @click="rejectDeposit(deposit.id)" title="Reject">
-                    <IconX :size="16" />
+                    <i class="fas fa-times"></i>
                   </button>
                 </div>
                 <span v-else class="text-white-50">-</span>
@@ -71,7 +71,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import apiClient from '@/utils/axios';
-import { IconCheck, IconX } from '@tabler/icons-vue';
 
 interface Deposit {
   id: number;

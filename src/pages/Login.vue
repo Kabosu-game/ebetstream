@@ -1,128 +1,119 @@
 <template>
-  <section class="login_section pt-120 p3-bg">
-    <div class="container-fluid">
-      <div class="row justify-content-between align-items-center">
+  <div class="tw-auth-page">
+    <div class="tw-auth-card">
 
-        <!-- Image -->
-        <div class="col-6 d-none d-lg-block">
-          <div class="login_section__thumb">
-            <img class="w-100" width="720" height="900" :src="login" alt="Image" />
-          </div>
-        </div>
-
-        <!-- Form -->
-        <div class="col-lg-6 col-xl-5">
-          <div class="login_section__loginarea">
-            <div class="row justify-content-start">
-              <div class="col-xxl-10">
-                <div class="pb-10 pt-8 mb-7 mt-12 mt-lg-0 px-4 px-sm-10">
-
-                  <h3 class="mb-6 mb-md-8">{{ $t('auth.loginTitle') }}</h3>
-                  <p class="mb-10 mb-md-15">
-                    {{ $t('auth.loginDescription') }}
-                  </p>
-
-                  <!-- SUCCESS MESSAGE -->
-                  <div v-if="successMessage" class="alert alert-success mb-4">
-                    <span>{{ successMessage }}</span>
-                    <button class="close-btn" @click="successMessage = ''">✖</button>
-                  </div>
-
-                  <!-- ERROR MESSAGE -->
-                  <div v-if="errorMessage" class="alert alert-danger mb-4">
-                    <div style="white-space: pre-line;">{{ errorMessage }}</div>
-                    <button class="close-btn" @click="errorMessage = ''">✖</button>
-                  </div>
-
-                  <form @submit.prevent="loginUser" class="login_section__form">
-
-                    <!-- Email -->
-                    <div class="mb-5 mb-md-6">
-                      <input
-                        class="n11-bg"
-                        type="email"
-                        :placeholder="$t('auth.email')"
-                        v-model="form.email"
-                        required
-                      />
-                    </div>
-
-                    <!-- Password with eye -->
-                    <div class="mb-3 mb-md-4 password-field">
-                      <input
-                        :type="showPassword ? 'text' : 'password'"
-                        class="n11-bg"
-                        :placeholder="$t('auth.password')"
-                        v-model="form.password"
-                        required
-                      />
-                      <button type="button" class="eye-btn" @click="showPassword = !showPassword">
-                        {{ showPassword ? '🙈' : '👁️' }}
-                      </button>
-                    </div>
-
-                    <!-- Forgot Password Link -->
-                    <div class="mb-5 mb-md-6 text-end">
-                      <router-link to="/forgot-password" class="text-white-50" style="text-decoration: none; font-size: 0.9rem;">
-                        {{ $t('auth.forgotPassword') }}
-                      </router-link>
-                    </div>
-
-                    <button
-                      class="cmn-btn px-5 py-3 mb-6 w-100"
-                      type="submit"
-                      :disabled="loading"
-                    >
-                      <span v-if="loading">{{ $t('common.pleaseWait') }}</span>
-                      <span v-else>{{ $t('auth.loginButton') }}</span>
-                    </button>
-
-                  </form>
-
-                  <!-- Social -->
-                  <div class="login_section__socialmedia text-center mb-6">
-                    <span class="mb-6">{{ $t('auth.orContinueWith') }}</span>
-                    <div class="login_section__social d-center gap-3">
-                      <router-link to="#" class="n11-bg px-3 py-2 rounded-5">
-                        <IconBrandFacebookFilled :size="24" />
-                      </router-link>
-                      <router-link to="#" class="n11-bg px-3 py-2 rounded-5">
-                        <IconBrandTwitterFilled :size="24" />
-                      </router-link>
-                      <router-link to="#" class="n11-bg px-3 py-2 rounded-5">
-                        <IconBrandGoogle :size="24" />
-                      </router-link>
-                    </div>
-                  </div>
-
-                  <span class="d-center gap-1">
-                    {{ $t('auth.createYourAccount') }}
-                    <router-link class="g1-color" to="/create-account">{{ $t('auth.signUpNowLink') }}</router-link>
-                  </span>
-
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
+      <!-- Logo -->
+      <div class="tw-auth-logo">
+        <router-link to="/">eBetStream</router-link>
       </div>
+
+      <!-- Title & subtitle -->
+      <h2 class="tw-auth-title">{{ $t('auth.loginTitle') }}</h2>
+      <p class="tw-auth-sub">{{ $t('auth.loginDescription') }}</p>
+
+      <!-- Success alert -->
+      <div v-if="successMessage" class="tw-alert tw-alert--success">
+        <span>{{ successMessage }}</span>
+        <button class="tw-alert__close" @click="successMessage = ''">✕</button>
+      </div>
+
+      <!-- Error alert -->
+      <div v-if="errorMessage" class="tw-alert tw-alert--error">
+        <div style="white-space: pre-line;">{{ errorMessage }}</div>
+        <button class="tw-alert__close" @click="errorMessage = ''">✕</button>
+      </div>
+
+      <!-- Form -->
+      <form @submit.prevent="loginUser" class="tw-auth-form">
+
+        <!-- Email -->
+        <div class="tw-field">
+          <label class="tw-label" for="login-email">{{ $t('auth.email') }}</label>
+          <input
+            id="login-email"
+            class="tw-input"
+            type="email"
+            :placeholder="$t('auth.email')"
+            v-model="form.email"
+            required
+            autocomplete="email"
+          />
+        </div>
+
+        <!-- Password -->
+        <div class="tw-field">
+          <label class="tw-label" for="login-password">{{ $t('auth.password') }}</label>
+          <div class="tw-password-wrap">
+            <input
+              id="login-password"
+              class="tw-input"
+              :type="showPassword ? 'text' : 'password'"
+              :placeholder="$t('auth.password')"
+              v-model="form.password"
+              required
+              autocomplete="current-password"
+            />
+            <button type="button" class="tw-eye-btn" @click="showPassword = !showPassword" :aria-label="showPassword ? 'Hide password' : 'Show password'">
+              <svg v-if="showPassword" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+                <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+              <svg v-else xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Forgot password -->
+        <div class="tw-forgot">
+          <router-link to="/forgot-password">{{ $t('auth.forgotPassword') }}</router-link>
+        </div>
+
+        <!-- Submit -->
+        <button class="tw-btn tw-btn--primary w-100" type="submit" :disabled="loading">
+          <span v-if="loading">{{ $t('common.pleaseWait') }}</span>
+          <span v-else>{{ $t('auth.loginButton') }}</span>
+        </button>
+
+      </form>
+
+      <!-- Divider -->
+      <div class="tw-divider">
+        <span>{{ $t('auth.orContinueWith') }}</span>
+      </div>
+
+      <!-- Social buttons -->
+      <div class="tw-social-row">
+        <router-link to="#" class="tw-social-btn">
+          <i class="fab fa-facebook-f"></i>
+        </router-link>
+        <router-link to="#" class="tw-social-btn">
+          <i class="fab fa-twitter"></i>
+        </router-link>
+        <router-link to="#" class="tw-social-btn">
+          <i class="fab fa-google"></i>
+        </router-link>
+      </div>
+
+      <!-- Footer link -->
+      <p class="tw-auth-footer">
+        {{ $t('auth.createYourAccount') }}
+        <router-link to="/create-account">{{ $t('auth.signUpNowLink') }}</router-link>
+      </p>
+
     </div>
-  </section>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-import apiClient from "@/utils/axios";
+import apiClient, { getApiErrorMessage } from "@/utils/axios";
 import login from "@/assets/images/1234.jpeg";
-import {
-  IconBrandFacebookFilled,
-  IconBrandGoogle,
-  IconBrandTwitterFilled,
-} from "@tabler/icons-vue";
-
 const { t } = useI18n();
 
 const router = useRouter();
@@ -148,48 +139,26 @@ const loginUser = async () => {
     successMessage.value = t('auth.loginSuccessful');
     localStorage.setItem("auth_token", response.data.token);
     localStorage.setItem("user_role", response.data.role || 'player');
+    if (response.data.user?.username) {
+      localStorage.setItem("username", response.data.user.username);
+    }
 
-    console.log('Login successful:', {
-      token: response.data.token,
-      role: response.data.role,
-      userRole: response.data.role || 'player'
-    });
+    const role = response.data.role || 'player';
 
-    // Redirection après 1s selon le rôle
+    // Redirection selon le rôle
     setTimeout(() => {
-      console.log('Attempting redirect...');
-      if (response.data.role === 'admin') {
-        console.log('Redirecting to admin...');
+      if (role === 'admin') {
         router.push("/admin");
+      } else if (role === 'agent') {
+        router.push("/agent-dashboard");
       } else {
-        console.log('Redirecting to dashboard...');
         router.push("/dashboard");
       }
     }, 1000);
 
   } catch (error: any) {
     console.error("Login error:", error);
-    
-    // Handle different error types
-    if (error.response) {
-      // Server responded with error status
-      errorMessage.value = error.response.data?.message || `Server error (${error.response.status})`;
-    } else if (error.request) {
-      // Request was made but no response received
-      if (error.code === 'ERR_NETWORK' || error.message?.includes('ERR_FAILED')) {
-        errorMessage.value = "Cannot connect to the server. Please check:\n- Your internet connection\n- The API server is running\n- CORS configuration is correct";
-      } else if (error.code === 'ECONNABORTED' || error.isTimeout) {
-        errorMessage.value = "Request timeout. The server is taking too long to respond.";
-      } else {
-        errorMessage.value = `Network error: ${error.message || 'Unable to reach the server'}`;
-      }
-    } else if (error.isNetworkError) {
-      errorMessage.value = "Network error. Please check your internet connection.";
-    } else if (error.isCorsError) {
-      errorMessage.value = "CORS error. Please check API configuration on the server.";
-    } else {
-      errorMessage.value = `Error: ${error.message || 'An unexpected error occurred'}`;
-    }
+    errorMessage.value = getApiErrorMessage(error);
   } finally {
     loading.value = false;
   }
@@ -199,7 +168,7 @@ const loginUser = async () => {
 const testApiConnection = async () => {
   try {
     // Try a simple GET request to check if API is reachable
-    await apiClient.get("/game-categories", { timeout: 5000 });
+    await apiClient.get("/streams", { params: { per_page: 1 }, timeout: 5000 });
     console.log("API connection test: OK");
   } catch (error: any) {
     console.warn("API connection test failed:", error.message);
@@ -214,6 +183,8 @@ onMounted(async () => {
   if (token) {
     if (userRole === 'admin') {
       router.push("/admin");
+    } else if (userRole === 'agent') {
+      router.push("/agent-dashboard");
     } else {
       router.push("/dashboard");
     }
@@ -225,34 +196,110 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.alert {
-  padding: 12px 16px;
-  border-radius: 6px;
-  position: relative;
-}
-.alert-success { background: #0f6f1a; color: #0f6f1a; }
-.alert-danger { background: #a70f0f; color: #a70f0f; }
-.close-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: transparent;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.password-field {
+/* Password field wrapper */
+.tw-password-wrap {
   position: relative;
 }
 
-.eye-btn {
+.tw-password-wrap .tw-input {
+  padding-right: 44px;
+}
+
+.tw-eye-btn {
   position: absolute;
   top: 50%;
-  right: 10px;
+  right: 12px;
   transform: translateY(-50%);
   background: transparent;
   border: none;
   cursor: pointer;
+  color: rgb(var(--n3));
+  display: flex;
+  align-items: center;
+  padding: 0;
+  transition: color 0.15s;
+}
+
+.tw-eye-btn:hover {
+  color: rgb(var(--n8));
+}
+
+/* Field spacing */
+.tw-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+/* Forgot password */
+.tw-forgot {
+  text-align: right;
+  margin-bottom: 20px;
+  margin-top: -8px;
+}
+
+.tw-forgot a {
+  font-size: 0.85rem;
+  color: rgb(var(--n3));
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.tw-forgot a:hover {
+  color: rgb(var(--g1));
+}
+
+/* Divider */
+.tw-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 20px;
+  color: rgb(var(--n3));
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.tw-divider::before,
+.tw-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgb(var(--n2));
+}
+
+/* Social buttons */
+.tw-social-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.tw-social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: rgb(var(--p3));
+  border: 1px solid rgb(var(--n2));
+  color: rgb(var(--n8));
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.tw-social-btn:hover {
+  background: rgb(var(--n2));
+  border-color: rgb(var(--g1));
+  color: rgb(var(--g1));
+}
+
+/* Form */
+.tw-auth-form {
+  width: 100%;
 }
 </style>

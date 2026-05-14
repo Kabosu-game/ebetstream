@@ -11,7 +11,7 @@
             </button>
             <div class="defis_content text-center mb-4">
               <span class="hero_badge mb-3 d-inline-block" style="font-size: 1.2rem;">
-                🏆 Résultats Ballon d'Or EBETSTREAM
+                <i class="fas fa-trophy"></i> Résultats Ballon d'Or EBETSTREAM
               </span>
               <h2 class="hero_title mb-4">
                 <span class="text_gradient">Les Gagnants de la Saison</span>
@@ -264,7 +264,7 @@ onMounted(() => {
 }
 
 .text_gradient {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #febd56 0%, #d98f25 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

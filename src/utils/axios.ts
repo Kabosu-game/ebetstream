@@ -19,6 +19,62 @@ const apiClient = axios.create({
   withCredentials: false,
 });
 
+const getRequestUrl = (error: any): string => {
+  const baseURL = error.config?.baseURL || '';
+  const url = error.config?.url || '';
+  if (!baseURL) return url;
+  if (/^https?:\/\//i.test(url)) return url;
+  return `${baseURL.replace(/\/+$/, '')}/${String(url).replace(/^\/+/, '')}`;
+};
+
+const getValidationMessage = (errors: Record<string, string[] | string> | undefined): string | null => {
+  if (!errors) return null;
+
+  const messages = Object.values(errors)
+    .flatMap((value) => Array.isArray(value) ? value : [value])
+    .filter(Boolean);
+
+  return messages.length ? messages.join('\n') : null;
+};
+
+export const getApiErrorMessage = (error: any): string => {
+  const status = error.response?.status;
+  const data = error.response?.data;
+  const serverMessage = data?.message || data?.error;
+  const validationMessage = getValidationMessage(data?.errors);
+
+  if (validationMessage) return validationMessage;
+  if (serverMessage) return serverMessage;
+
+  if (error.isTimeout || error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+    return "La requête a pris trop de temps. Vérifiez que l'API locale est démarrée puis réessayez.";
+  }
+
+  if (error.isCorsError) {
+    return "Le navigateur bloque la requête API. Vérifiez la configuration CORS du backend ou utilisez le proxy local Vite.";
+  }
+
+  if (error.isNetworkError || error.code === 'ERR_NETWORK' || error.code === 'ERR_FAILED' || !error.response) {
+    const target = getRequestUrl(error);
+    const localHint = target.includes('127.0.0.1:8000') || target.includes('localhost:8000') || API_BASE_URL === '/api'
+      ? " Assurez-vous que l'API Laravel est lancée sur http://127.0.0.1:8000."
+      : '';
+
+    return `Impossible de joindre le serveur API.${localHint}`;
+  }
+
+  if (status === 400) return "La demande envoyée à l'API est invalide.";
+  if (status === 401) return "Votre session a expiré. Connectez-vous à nouveau.";
+  if (status === 403) return "Vous n'avez pas l'autorisation d'effectuer cette action.";
+  if (status === 404) return "La ressource demandée est introuvable.";
+  if (status === 419) return "La session de sécurité a expiré. Rechargez la page puis réessayez.";
+  if (status === 422) return "Certaines informations sont invalides. Vérifiez le formulaire.";
+  if (status === 429) return "Trop de requêtes envoyées. Patientez un moment puis réessayez.";
+  if (status >= 500) return "Le serveur a rencontré une erreur. Consultez les logs Laravel pour le détail.";
+
+  return error.message || "Une erreur inattendue est survenue.";
+};
+
 // Pages publiques (pas besoin d'être connecté)
 const publicPages = [
   '/login',
@@ -42,8 +98,9 @@ const publicPages = [
   '/players',
   '/partners',
   '/ambassadors',
-  '/games',
   '/about',
+  '/arena',
+  '/agents-crypto',
   '/contact',
   '/careers',
   '/help',
@@ -69,7 +126,7 @@ const isPublicPath: IsPublicPathFunction = (path: string): boolean => {
     path.startsWith('/players/') ||
     path.startsWith('/partners/') ||
     path.startsWith('/ambassadors/') ||
-    path.startsWith('/games/');
+    path.startsWith('/arena/');
 };
 
 // ─── Request interceptor ───────────────────────────────────────────────────
@@ -104,7 +161,7 @@ apiClient.interceptors.response.use(
       });
       return Promise.reject({
         ...error,
-        message: 'Request timeout. Please check your connection and try again.',
+        message: getApiErrorMessage({ ...error, isTimeout: true }),
         isTimeout: true,
       });
     }
@@ -120,16 +177,9 @@ apiClient.interceptors.response.use(
         fullURL: `${error.config?.baseURL}${error.config?.url}`,
       });
 
-      let errorMessage = 'Network error. Please check your internet connection.';
-      if (error.code === 'ERR_FAILED') {
-        errorMessage = 'Failed to connect to the server. The API may be down or unreachable.';
-      } else if (error.code === 'ERR_NETWORK') {
-        errorMessage = 'Network error. Please check your internet connection.';
-      }
-
       return Promise.reject({
         ...error,
-        message: errorMessage,
+        message: getApiErrorMessage({ ...error, isNetworkError: true }),
         isNetworkError: true,
       });
     }
@@ -167,12 +217,15 @@ apiClient.interceptors.response.use(
       console.error('CORS Error:', error.message);
       return Promise.reject({
         ...error,
-        message: 'CORS error. Please check API configuration.',
+        message: getApiErrorMessage({ ...error, isCorsError: true }),
         isCorsError: true,
       });
     }
 
-    return Promise.reject(error);
+    return Promise.reject({
+      ...error,
+      message: getApiErrorMessage(error),
+    });
   }
 );
 

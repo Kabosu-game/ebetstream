@@ -6,7 +6,7 @@
         <p class="text-white-50">Manage welcome codes and promo codes</p>
       </div>
       <button class="btn_primary" @click="showCreateModal = true; resetForm()">
-        <IconPlus :size="18" class="me-2" />New Code
+        <i class="fas fa-plus me-2"  ></i>New Code
       </button>
     </div>
 
@@ -67,14 +67,14 @@
                 @click="editCode(code)"
                 title="Edit"
               >
-                <IconPencil :size="16" />
+                <IconPencil />
               </button>
               <button 
                 class="btn btn-sm btn-outline-danger p-1"
                 @click="deleteCode(Number(code.id))"
                 title="Delete"
               >
-                <IconTrash :size="16" />
+                <i class="fas fa-trash"></i>
               </button>
             </div>
           </div>
@@ -271,12 +271,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import apiClient from '@/utils/axios';
-import {
-  IconPlus,
-  IconPencil,
-  IconTrash,
-} from '@tabler/icons-vue';
-
 interface PromoCode {
   id: number | string;
   code: string;

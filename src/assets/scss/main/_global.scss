@@ -32,8 +32,7 @@ body {
 
 section,
 footer {
-  overflow: hidden;
-  overflow-x: hidden !important;
+  overflow-x: hidden;
 }
 
 a,
@@ -236,9 +235,9 @@ select {
   
   &:focus {
     background-color: rgba(255, 255, 255, 0.15) !important;
-    border-color: rgba(255, 159, 0, 0.5) !important;
+    border-color: rgba(var(--g1), 0.5) !important;
     color: rgba(255, 255, 255, 1) !important;
-    box-shadow: 0 0 0 0.2rem rgba(255, 159, 0, 0.25) !important;
+    box-shadow: 0 0 0 0.2rem rgba(var(--g1), 0.25) !important;
   }
   
   &::placeholder {
@@ -333,11 +332,7 @@ select {
 }
 
 .ml-316 {
-  margin-left: 316px;
-
-  @include maxQuery(991) {
-    margin-left: 12px;
-  }
+  margin-left: 0;
 }
 
 // color with class
@@ -487,11 +482,11 @@ select {
 }
 
 .border-one {
-  border: 1px solid #ffd700 !important;
+  border: 1px solid rgb(var(--g1)) !important;
 }
 
 .border-two {
-  border: 1px solid #ffd700;
+  border: 1px solid rgb(var(--g1));
 }
 
 .border-three {
@@ -610,31 +605,34 @@ select {
   // 	transform: scale(0.9);
   // }
 
-  padding: 10px 20px;
-  background-color: #ffd700;
-  border: 3px solid #ffd700 !important;
-  // outline-offset: -3px;
-  border-radius: 5px;
-  border: none;
+  padding: 8px 18px;
+  background-color: rgb(var(--g1));
+  border: 2px solid rgb(var(--g1)) !important;
+  border-radius: 4px;
   cursor: pointer;
-  transition: 0.5s linear;
+  transition: 0.2s ease;
   color: white;
   font-weight: 600;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 
   &:hover {
-    background-color: transparent;
-    color: rgba(var(--n8), 1);
-    transition: 0.5s linear;
-    border: 3px solid #ffd700;
+    background-color: rgba(var(--g1), 0.85);
+    color: white;
+    border-color: rgba(var(--g1), 0.85) !important;
   }
 
   &.second-alt {
-    background-color: rgb(var(--p1));
-    border: 3px solid #ffd700;
+    background-color: rgba(var(--n8), 0.1);
+    border: 2px solid rgba(var(--n8), 0.2) !important;
+    color: rgb(var(--n8));
+
     &:hover {
-      color: rgba(var(--n8), 1);
-      background: #ffd700;
-      border: 3px solid #ffd700;
+      background-color: rgba(var(--n8), 0.18);
+      color: rgb(var(--n8));
     }
   }
 
@@ -644,7 +642,7 @@ select {
 
     &:hover {
       color: rgba(var(--n8), 1);
-      outline: 2px #ffd700 solid;
+      outline: 2px rgb(var(--g1)) solid;
     }
   }
 
@@ -1366,7 +1364,7 @@ $margin-left: -(math.div($width, 2)) + px;
       right: 5px;
       bottom: 5px;
       border: 3px solid transparent;
-      border-top-color: #ffd700;
+      border-top-color: rgb(var(--g1));
       @include animation(2s);
     }
     &:after {
@@ -1701,12 +1699,12 @@ $margin-left: -(math.div($width, 2)) + px;
     &:hover,
     &:focus,
     &.selected.focus {
-      background-color: rgba(255, 159, 0, 0.2) !important;
+      background-color: rgba(var(--g1), 0.2) !important;
       color: rgba(255, 255, 255, 1) !important;
     }
     
     &.selected {
-      background-color: rgba(255, 159, 0, 0.3) !important;
+      background-color: rgba(var(--g1), 0.3) !important;
       color: rgba(255, 255, 255, 1) !important;
     }
   }
@@ -1930,12 +1928,12 @@ input[type="radio"] {
       &:hover,
       &:focus,
       &.selected.focus {
-        background-color: rgba(255, 159, 0, 0.2) !important;
+        background-color: rgba(var(--g1), 0.2) !important;
         color: rgba(255, 255, 255, 1) !important;
       }
       
       &.selected {
-        background-color: rgba(255, 159, 0, 0.3) !important;
+        background-color: rgba(var(--g1), 0.3) !important;
         color: rgba(255, 255, 255, 1) !important;
       }
     }

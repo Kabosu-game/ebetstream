@@ -1,94 +1,122 @@
 <template>
-  <div class="page-content-with-space">
-    <section class="defis_section py-6 position-relative overflow-hidden pb-120">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12 gx-0 gx-lg-4">
-            <div class="defis__main">
-              <!-- Header -->
-              <div class="row mb-5">
-                <div class="col-12">
-                  <button class="btn_secondary mb-4" @click="$router.push('/')">
-                    <i class="fas fa-arrow-left me-2"></i>
-                    Back
-                  </button>
-                  
-                  <div class="defis_content">
-                    <span class="hero_badge mb-3 d-inline-block">
-                      <i class="fas fa-trophy me-2"></i>EBETSTREAM Championship
-                    </span>
-                    <h2 class="hero_title mb-4">
-                      All <span class="text_gradient">Championships</span>
-                    </h2>
-                    <p class="hero_subtitle">
-                      Browse all available championships and register to compete.
-                    </p>
-                  </div>
-                </div>
-              </div>
+  <div class="tw-page">
 
-              <!-- Filters -->
-              <div class="row mb-4">
-                <div class="col-12">
-                  <div class="d-flex gap-3 flex-wrap">
-                    <select v-model="selectedDivision" @change="loadChampionships" class="form-select n11-bg text-white border-secondary" style="max-width: 200px;">
-                      <option value="">All Divisions</option>
-                      <option value="1">Division 1</option>
-                      <option value="2">Division 2</option>
-                      <option value="3">Division 3</option>
-                    </select>
-                    <select v-model="selectedGame" @change="loadChampionships" class="form-select n11-bg text-white border-secondary" style="max-width: 250px;">
-                      <option value="">All Games</option>
-                      <option value="COD Mobile">COD Mobile</option>
-                      <option value="Free Fire">Free Fire</option>
-                      <option value="PUBG Mobile">PUBG Mobile</option>
-                      <option value="Mobile Legends">Mobile Legends</option>
-                      <option value="eFootball / FC / DLS">eFootball / FC / DLS</option>
-                      <option value="Clash Royale">Clash Royale</option>
-                      <option value="Brawl Stars">Brawl Stars</option>
-                      <option value="Stumble Guys">Stumble Guys</option>
-                    </select>
-                    <select v-model="selectedStatus" @change="loadChampionships" class="form-select n11-bg text-white border-secondary" style="max-width: 200px;">
-                      <option value="">All Status</option>
-                      <option value="registration_open">Registration Open</option>
-                      <option value="validated">Validated</option>
-                      <option value="started">Live</option>
-                      <option value="finished">Finished</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
+    <!-- Hero -->
+    <div class="tw-page-hero">
+      <div>
+        <h1 class="tw-page-hero__title">Championships</h1>
+        <p class="tw-page-hero__sub">Browse all available championships and register to compete</p>
+      </div>
+      <div class="tw-page-hero__actions">
+        <button class="tw-btn tw-btn--secondary" @click="$router.push('/')">
+          <i class="fas fa-arrow-left me-2"></i>Back
+        </button>
+      </div>
+    </div>
 
-              <!-- Loading State -->
-              <div v-if="loading" class="text-center py-5">
-                <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </div>
+    <!-- Filter Bar -->
+    <div class="tw-filters">
+      <select v-model="selectedDivision" @change="loadChampionships" class="tw-select">
+        <option value="">All Divisions</option>
+        <option value="1">Division 1</option>
+        <option value="2">Division 2</option>
+        <option value="3">Division 3</option>
+      </select>
 
-              <!-- Championships Grid -->
-              <div v-else-if="championships.length > 0" class="row g-4">
-                <div 
-                  v-for="championship in championships" 
-                  :key="championship.id"
-                  class="col-12 col-md-6 col-lg-4"
-                >
-                  <ChampionshipCard 
-                    :championship="championship" 
-                    @click="viewChampionship(championship.id)"
-                  />
-                </div>
-              </div>
+      <select v-model="selectedGame" @change="loadChampionships" class="tw-select">
+        <option value="">All Games</option>
+        <option value="COD Mobile">COD Mobile</option>
+        <option value="Free Fire">Free Fire</option>
+        <option value="PUBG Mobile">PUBG Mobile</option>
+        <option value="Mobile Legends">Mobile Legends</option>
+        <option value="eFootball / FC / DLS">eFootball / FC / DLS</option>
+        <option value="Clash Royale">Clash Royale</option>
+        <option value="Brawl Stars">Brawl Stars</option>
+        <option value="Stumble Guys">Stumble Guys</option>
+      </select>
 
-              <!-- Empty State -->
-              <div v-else class="text-center py-5">
-                <p class="text-white-50">No championships found matching your criteria.</p>
-              </div>
-            </div>
-          </div>
+      <select v-model="selectedStatus" @change="loadChampionships" class="tw-select">
+        <option value="">All Status</option>
+        <option value="registration_open">Registration Open</option>
+        <option value="validated">Validated</option>
+        <option value="started">Live</option>
+        <option value="finished">Finished</option>
+      </select>
+    </div>
+
+    <!-- Loading skeleton -->
+    <div v-if="loading" class="tw-grid-3">
+      <div v-for="n in 6" :key="n" class="champ-skeleton">
+        <div class="skel-thumb"></div>
+        <div class="skel-body">
+          <div class="skel-line skel-line--title"></div>
+          <div class="skel-line skel-line--sub"></div>
+          <div class="skel-line skel-line--short"></div>
         </div>
       </div>
-    </section>
+    </div>
+
+    <!-- Championships Grid -->
+    <div v-else-if="championships.length > 0" class="tw-grid-3">
+      <div
+        v-for="championship in championships"
+        :key="championship.id"
+        class="tw-card tw-card--clickable"
+        @click="viewChampionship(championship.id)"
+      >
+        <!-- Thumb / cover -->
+        <div class="tw-card__thumb champ-thumb">
+          <div class="champ-thumb__gradient"></div>
+          <!-- Division badge -->
+          <span class="champ-division-badge">Div {{ championship.division }}</span>
+          <!-- Status badge -->
+          <span
+            class="tw-badge"
+            :class="{
+              'tw-badge--live': championship.status === 'started',
+              'tw-badge--open': championship.status === 'registration_open',
+              'tw-badge--closed': championship.status === 'finished',
+              'tw-badge--ongoing': championship.status === 'validated',
+            }"
+          >
+            <span v-if="championship.status === 'started'" class="tw-live-dot"></span>
+            {{ statusLabel(championship.status) }}
+          </span>
+          <i class="fas fa-trophy champ-trophy-icon"></i>
+        </div>
+
+        <!-- Body -->
+        <div class="tw-card__body">
+          <p class="tw-card__title">{{ championship.name }}</p>
+          <p class="tw-card__sub">{{ championship.game }}</p>
+
+          <div class="champ-stats">
+            <div class="champ-stat">
+              <i class="fas fa-users"></i>
+              <span>{{ championship.validated_registrations_count ?? 0 }} / {{ championship.max_participants }}</span>
+            </div>
+            <div v-if="championship.total_prize_pool" class="champ-stat champ-stat--prize">
+              <i class="fas fa-coins"></i>
+              <span>{{ championship.total_prize_pool.toLocaleString() }} EBT</span>
+            </div>
+          </div>
+
+          <div class="tw-divider"></div>
+
+          <button class="tw-btn tw-btn--primary champ-cta" @click.stop="viewChampionship(championship.id)">
+            View Championship
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <div v-else class="tw-empty">
+      <div class="tw-empty__icon"><i class="fas fa-trophy"></i></div>
+      <p class="tw-empty__title">No Championships Found</p>
+      <p class="tw-empty__sub">Try adjusting your filters to find championships.</p>
+    </div>
+
   </div>
 </template>
 
@@ -124,7 +152,7 @@ const selectedStatus = ref('');
 const loadChampionships = async () => {
   try {
     loading.value = true;
-    
+
     const params: any = {};
     if (selectedDivision.value) {
       params.division = selectedDivision.value;
@@ -152,54 +180,146 @@ const viewChampionship = (id: number) => {
   router.push(`/championships/${id}`);
 };
 
+const statusLabel = (status: string) => {
+  const map: Record<string, string> = {
+    registration_open: 'Open',
+    validated: 'Validated',
+    started: 'Live',
+    finished: 'Finished',
+  };
+  return map[status] || status;
+};
+
 onMounted(() => {
   loadChampionships();
 });
 </script>
 
 <style scoped>
-.page-content-with-space {
-  padding-top: 90px;
-}
-
-.defis_section {
-  width: 100%;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-  color: white;
+/* Thumb */
+.tw-card__thumb.champ-thumb {
   position: relative;
+  height: 160px;
   overflow: hidden;
-  border-radius: 24px;
+  border-radius: 6px 6px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.btn_secondary {
-  background: transparent;
-  border: 2px solid #FF9F00;
-  color: #FF9F00;
-  padding: 0.75rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: 0.3s;
-  cursor: pointer;
+.champ-thumb__gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgb(40, 20, 80) 0%, rgb(20, 10, 40) 100%);
 }
 
-.btn_secondary:hover {
-  background-color: #FF9F00;
-  color: #000;
+.champ-trophy-icon {
+  position: relative;
+  z-index: 1;
+  font-size: 3rem;
+  color: rgba(var(--g1), 0.4);
+  color: rgba(254, 189, 86, 0.4);
 }
 
-@media (max-width: 768px) {
-  .page-content-with-space {
-    padding-top: 60px;
-  }
-  
-  .hero_title {
-    font-size: 1.8rem;
-  }
-  
-  .container-fluid {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
+.champ-division-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(255, 255, 255, 0.12);
+  color: rgb(var(--n8));
+  padding: 3px 10px;
+  border-radius: 4px;
 }
+
+.tw-card__thumb .tw-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+}
+
+/* Stats row */
+.champ-stats {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.champ-stat {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+  color: rgb(var(--n3));
+}
+
+.champ-stat i {
+  font-size: 0.75rem;
+  color: rgb(var(--n3));
+}
+
+.champ-stat--prize {
+  color: rgb(var(--g1));
+}
+
+.champ-stat--prize i {
+  color: rgb(var(--g1));
+}
+
+/* CTA button */
+.champ-cta {
+  width: 100%;
+  justify-content: center;
+  margin-top: 0.25rem;
+}
+
+/* Skeleton */
+.champ-skeleton {
+  background: rgb(var(--p2));
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.skel-thumb {
+  height: 160px;
+  background: rgb(var(--p3));
+  animation: shimmer 1.4s infinite ease-in-out;
+}
+
+.skel-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.skel-line {
+  height: 12px;
+  border-radius: 4px;
+  background: rgb(var(--p3));
+  animation: shimmer 1.4s infinite ease-in-out;
+}
+
+.skel-line--title { width: 70%; height: 16px; }
+.skel-line--sub   { width: 50%; }
+.skel-line--short { width: 40%; }
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+
+.tw-empty__sub {
+  font-size: 0.9rem;
+  color: rgb(var(--n3));
+  margin-top: 0.4rem;
+}
+
+.me-2 { margin-right: 0.5rem; }
 </style>
-

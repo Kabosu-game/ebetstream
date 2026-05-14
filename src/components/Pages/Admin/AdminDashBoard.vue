@@ -8,7 +8,7 @@
       <!-- Brand -->
       <div class="sb-brand">
         <div class="sb-logo">
-          <i class="ti ti-layout-grid"></i>
+          <i class="fas fa-th"></i>
         </div>
         <transition name="fade-slide">
           <div v-if="sidebarOpen" class="sb-brand-text">
@@ -21,7 +21,7 @@
       <!-- Admin mini profile -->
       <div class="sb-profile" v-if="sidebarOpen">
         <div class="sb-avatar">
-          <i class="ti ti-user"></i>
+          <i class="fas fa-user"></i>
         </div>
         <div class="sb-profile-info">
           <span class="sb-admin-name">{{ adminName }}</span>
@@ -55,7 +55,7 @@
       <!-- Sidebar footer -->
       <div class="sb-footer">
         <button class="sb-item sb-logout" @click="handleLogout" :title="!sidebarOpen ? 'Déconnexion' : ''">
-          <span class="sb-item-icon icon-red"><i class="ti ti-logout"></i></span>
+          <span class="sb-item-icon icon-red"><i class="fas fa-sign-out-alt"></i></span>
           <span class="sb-item-label" v-if="sidebarOpen">Déconnexion</span>
         </button>
       </div>
@@ -67,7 +67,7 @@
       <header class="dash-topbar">
         <div class="topbar-left">
           <button class="topbar-toggle" @click="sidebarOpen = !sidebarOpen">
-            <i class="ti" :class="sidebarOpen ? 'ti-layout-sidebar-left-collapse' : 'ti-layout-sidebar-left-expand'"></i>
+            <i :class="['ti', sidebarOpen ? 'ti-layout-sidebar-left-collapse' : 'ti-layout-sidebar-left-expand']"></i>
           </button>
           <div class="topbar-breadcrumb">
             <span class="breadcrumb-parent">Admin</span>
@@ -78,7 +78,7 @@
 
         <div class="topbar-right">
           <div class="topbar-search">
-            <i class="ti ti-search"></i>
+            <i class="fas fa-search"></i>
             <input type="text" placeholder="Rechercher…" v-model="searchQuery" />
           </div>
 
@@ -91,7 +91,7 @@
 
           <div class="topbar-user">
             <div class="topbar-avatar">
-              <i class="ti ti-user"></i>
+              <i class="fas fa-user"></i>
             </div>
             <div class="topbar-user-info">
               <span class="topbar-user-name">{{ adminName }}</span>
@@ -105,7 +105,7 @@
       <div class="dash-page-header">
         <div class="page-header-left">
           <div class="page-icon" :class="currentPageItem?.colorClass">
-            <i :class="['ti', currentPageItem?.icon || 'ti-dashboard']"></i>
+            <i :class="['ti', currentPageItem?.icon || 'ti-layout-dashboard']"></i>
           </div>
           <div>
             <h1 class="page-title">{{ currentPageLabel }}</h1>
@@ -129,8 +129,6 @@
         <AdminClans v-if="activeTab === 'clans'" />
         <AdminDeposits v-if="activeTab === 'deposits'" />
         <AdminWithdrawals v-if="activeTab === 'withdrawals'" />
-        <AdminGameCategories v-if="activeTab === 'categories'" />
-        <AdminGameMatches v-if="activeTab === 'matches'" />
         <AdminCertifications v-if="activeTab === 'certifications'" />
         <AdminCertificationRequests v-if="activeTab === 'certification-requests'" />
         <AdminAgentRequests v-if="activeTab === 'agent-requests'" />
@@ -143,6 +141,7 @@
         <AdminFederations v-if="activeTab === 'federations'" />
         <AdminBallonDor v-if="activeTab === 'ballon-dor'" />
         <AdminChampionships v-if="activeTab === 'championships'" />
+        <AdminArena v-if="activeTab === 'arena'" />
       </div>
     </div>
   </div>
@@ -162,8 +161,6 @@ import AdminStreams from "./AdminStreams.vue";
 import AdminClans from "./AdminClans.vue";
 import AdminDeposits from "./AdminDeposits.vue";
 import AdminWithdrawals from "./AdminWithdrawals.vue";
-import AdminGameCategories from "./AdminGameCategories.vue";
-import AdminGameMatches from "./AdminGameMatches.vue";
 import AdminCertifications from "./AdminCertifications.vue";
 import AdminCertificationRequests from "./AdminCertificationRequests.vue";
 import AdminAgentRequests from './AdminAgentRequests.vue';
@@ -176,6 +173,7 @@ import AdminBets from "./AdminBets.vue";
 import AdminFederations from "./AdminFederations.vue";
 import AdminBallonDor from "./AdminBallonDor.vue";
 import AdminChampionships from "./AdminChampionships.vue";
+import AdminArena from './AdminArena.vue';
 
 const router = useRouter();
 const activeTab = ref('overview');
@@ -221,8 +219,7 @@ const menuSections: MenuSection[] = [
       { tab: 'events', label: 'Événements', icon: 'ti-calendar-event', colorClass: 'icon-orange', desc: 'Gestion des événements' },
       { tab: 'streams', label: 'Streams', icon: 'ti-video', colorClass: 'icon-pink', desc: 'Gestion des streams live' },
       { tab: 'championships', label: 'Championnats', icon: 'ti-trophy', colorClass: 'icon-yellow', desc: 'Gestion des championnats' },
-      { tab: 'categories', label: 'Catégories', icon: 'ti-folder', colorClass: 'icon-blue', desc: 'Catégories de jeux' },
-      { tab: 'matches', label: 'Matchs', icon: 'ti-ball-football', colorClass: 'icon-green', desc: 'Gestion des matchs' },
+      { tab: 'arena', label: 'Arena', icon: 'ti-device-gamepad-2', colorClass: 'icon-pink', desc: 'EBETSTREAM ARENA — matchs et résultats' },
       { tab: 'bets', label: 'Paris', icon: 'ti-currency-dollar', colorClass: 'icon-gold', desc: 'Gestion des paris' },
     ],
   },
@@ -308,6 +305,9 @@ onUnmounted(() => window.removeEventListener('resize', checkMobile));
   background: #060b1e;
   font-family: 'Inter', sans-serif;
   position: relative;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 /* ── Overlay mobile ── */
@@ -404,7 +404,7 @@ onUnmounted(() => window.removeEventListener('resize', checkMobile));
   width: 36px;
   height: 36px;
   min-width: 36px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #febd56 0%, #d98f25 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -566,11 +566,14 @@ onUnmounted(() => window.removeEventListener('resize', checkMobile));
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  min-width: 0;
+  width: calc(100% - 64px);
   transition: margin-left .3s cubic-bezier(.4,0,.2,1);
 }
 
 .dash-main.sidebar-expanded {
   margin-left: 260px;
+  width: calc(100% - 260px);
 }
 
 /* ── TOPBAR ── */
@@ -787,7 +790,63 @@ onUnmounted(() => window.removeEventListener('resize', checkMobile));
   flex: 1;
   padding: 1.5rem 2rem 2rem;
   overflow-y: auto;
+  overflow-x: hidden;
   min-height: 0;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Tables admin : défilement horizontal + colonne Actions fixée à droite */
+.dash-content :deep(.pay_method__paymethod) {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.dash-content :deep(.pay_method__table) {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.dash-content :deep(.pay_method__table-scrollbar) {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-color: rgba(255, 159, 0, 0.45) rgba(255, 255, 255, 0.06);
+  scrollbar-width: thin;
+}
+
+.dash-content :deep(.pay_method__table-scrollbar::-webkit-scrollbar) {
+  height: 8px;
+}
+
+.dash-content :deep(.pay_method__table-scrollbar::-webkit-scrollbar-thumb) {
+  background: rgba(255, 159, 0, 0.45);
+  border-radius: 999px;
+}
+
+.dash-content :deep(.pay_method__table-scrollbar::-webkit-scrollbar-track) {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+}
+
+.dash-content :deep(.pay_method__table-scrollbar table) {
+  min-width: 1100px;
+  width: max-content;
+}
+
+.dash-content :deep(.pay_method__table-scrollbar th:last-child),
+.dash-content :deep(.pay_method__table-scrollbar td:last-child) {
+  position: sticky;
+  right: 0;
+  z-index: 2;
+  background: rgb(24, 24, 27);
+  box-shadow: -6px 0 12px rgba(0, 0, 0, 0.35);
+}
+
+.dash-content :deep(.pay_method__table-scrollbar thead th:last-child) {
+  z-index: 3;
 }
 
 /* ── Fade-slide transition ── */
@@ -812,6 +871,7 @@ onUnmounted(() => window.removeEventListener('resize', checkMobile));
   }
   .dash-main {
     margin-left: 0 !important;
+    width: 100%;
   }
   .page-date { display: none; }
 }

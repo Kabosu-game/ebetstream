@@ -100,7 +100,6 @@
 </template>
 
 <script setup lang="ts">
-import { IconBellRinging } from "@tabler/icons-vue";
 </script>
 
 <style scoped></style>

@@ -68,7 +68,7 @@
                               @error="handleImageError($event)"
                             />
                             <div v-else class="w-100 h-100 d-flex align-items-center justify-content-center" 
-                                 style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                 style="background: linear-gradient(135deg, #febd56 0%, #d98f25 100%);">
                               <i class="fas fa-building text-white" style="font-size: 3rem;"></i>
                             </div>
                           </div>
@@ -353,6 +353,4 @@ onMounted(() => {
   }
 }
 </style>
-
-
 

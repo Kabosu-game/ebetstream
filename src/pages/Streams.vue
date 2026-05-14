@@ -1,144 +1,250 @@
 <template>
-  <div class="page-content-with-space">
-    <section class="defis_section py-6 position-relative overflow-hidden pb-120">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12 gx-0 gx-lg-4">
-            <div class="defis__main">
+  <div class="streams-page">
 
-              <!-- Header -->
-              <div class="row h-100 align-items-center mb-5">
-                <div class="col-lg-6 col-md-7">
-                  <div class="defis_content" data-aos="fade-right">
-                    <span class="hero_badge mb-3 d-inline-block">📺 Live Streaming</span>
-                    <h2 class="hero_title mb-4">
-                      Watch <span class="text_gradient">Streams</span><br />
-                      from your favorite players!
-                    </h2>
-                    <p class="hero_subtitle mb-5">
-                      Regardez les lives des challenges en direct et découvrez les streamers eBetStream.
-                    </p>
-                    <div class="hero_actions d-flex flex-wrap gap-3">
-                      <button v-if="isAuthenticated" class="btn_secondary" @click="$router.push('/streams/create')">
-                        <i class="fas fa-video me-2"></i>Create a stream
-                      </button>
-                      <button v-else class="btn_secondary" @click="$router.push('/login')">
-                        <i class="fas fa-sign-in-alt me-2"></i>Login to stream
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6 col-md-5 d-none d-md-block">
-                  <div class="defis_image" data-aos="fade-left">
-                    <div class="floating_card">
-                      <div class="card_icon">📹</div>
-                      <div class="card_content">
-                        <span class="card_label">Streaming</span>
-                        <span class="card_value">Live</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+    <!-- Top bar -->
+    <div class="streams-topbar">
+      <div class="streams-topbar__left">
+        <h1 class="streams-topbar__title">Browse Streams</h1>
+        <span v-if="liveStreams.length > 0" class="st-live-pill">
+          <span class="st-dot"></span>{{ liveStreams.length }} Live
+        </span>
+        <span v-if="liveChallenges.length > 0" class="st-challenge-pill">
+          <i class="fas fa-fist-raised"></i>{{ liveChallenges.length }} Challenges
+        </span>
+      </div>
+      <button v-if="isAuthenticated" class="st-stream-btn" @click="$router.push('/streams/create')">
+        <i class="fas fa-video"></i><span class="btn-text"> Go Live</span>
+      </button>
+      <button v-else class="st-stream-btn st-stream-btn--ghost" @click="$router.push('/login')">
+        <i class="fas fa-sign-in-alt"></i><span class="btn-text"> Login to Stream</span>
+      </button>
+    </div>
+
+    <!-- Controls: tabs + search -->
+    <div class="streams-controls">
+      <div class="st-tabs">
+        <button class="st-tab" :class="{ active: activeTab === 'all' }"        @click="activeTab = 'all'">
+          All<span class="st-tab-count">{{ allStreams.length + liveChallenges.length }}</span>
+        </button>
+        <button class="st-tab" :class="{ active: activeTab === 'live' }"       @click="activeTab = 'live'">
+          <span class="st-dot"></span>Live
+          <span class="st-tab-count" v-if="liveStreams.length">{{ liveStreams.length }}</span>
+        </button>
+        <button class="st-tab" :class="{ active: activeTab === 'challenges' }" @click="activeTab = 'challenges'">
+          <i class="fas fa-fist-raised"></i>Challenges
+          <span class="st-tab-count" v-if="liveChallenges.length">{{ liveChallenges.length }}</span>
+        </button>
+        <button class="st-tab" :class="{ active: activeTab === 'offline' }"    @click="activeTab = 'offline'">
+          Recent<span class="st-tab-count" v-if="offlineStreams.length">{{ offlineStreams.length }}</span>
+        </button>
+      </div>
+
+      <div class="st-search">
+        <i class="ti ti-search st-search__icon"></i>
+        <input
+          v-model="searchQuery"
+          type="text"
+          class="st-search__input"
+          placeholder="Search streams…"
+          @input="debouncedSearch"
+        />
+        <button v-if="searchQuery" class="st-search__clear" @click="searchQuery = ''; loadStreams()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading skeleton -->
+    <div v-if="loading" class="st-grid">
+      <div v-for="n in 8" :key="n" class="st-skeleton">
+        <div class="st-skeleton__thumb"></div>
+        <div class="st-skeleton__info">
+          <div class="st-skeleton__avatar"></div>
+          <div class="st-skeleton__lines">
+            <div class="st-skeleton__line st-l70"></div>
+            <div class="st-skeleton__line st-l50"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <template v-else>
+
+      <!-- Challenges (shown in 'all' and 'challenges' tabs) -->
+      <div
+        v-if="liveChallenges.length > 0 && (activeTab === 'all' || activeTab === 'challenges')"
+        class="st-section"
+      >
+        <div class="st-section-header">
+          <span class="st-section-dot st-section-dot--red"></span>
+          <h2 class="st-section-title">Live Challenges</h2>
+          <span class="st-section-count">{{ liveChallenges.length }}</span>
+        </div>
+        <div class="st-grid">
+          <div
+            v-for="ch in liveChallenges"
+            :key="ch.id"
+            class="st-card"
+            @click="$router.push(`/challenges/${ch.id}/live`)"
+          >
+            <div class="st-card__thumb">
+              <div class="st-card__thumb-bg st-card__thumb-bg--challenge">
+                <i class="ti ti-swords st-card__thumb-icon"></i>
               </div>
-
-              <!-- ── Challenges en direct ── -->
-              <div v-if="liveChallenges.length > 0" class="mb-5">
-                <h4 class="fw-bold mb-4 text-white">
-                  <i class="fas fa-circle text-danger me-2" style="font-size:.6rem;animation:pulse 2s infinite;"></i>
-                  Challenges en direct
-                </h4>
-                <div class="row g-4">
-                  <div v-for="challenge in liveChallenges" :key="challenge.id" class="col-12 col-md-6 col-lg-4">
-                    <div
-                      class="stream_card defi_card n11-bg rounded-8 p-0 h-100 d-flex flex-column overflow-hidden position-relative"
-                      @click="$router.push(`/challenges/${challenge.id}/live`)">
-                      <span class="badge bg-danger position-absolute top-0 start-0 m-2 z-1 px-2 py-1">
-                        <i class="fas fa-circle me-1" style="font-size:.5rem;animation:pulse 2s infinite;"></i>LIVE
-                      </span>
-                      <div class="w-100 d-flex align-items-center justify-content-center"
-                        style="height:200px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);">
-                        <i class="fas fa-gamepad fs-1 text-white" style="opacity:.7;"></i>
-                      </div>
-                      <div class="p-4 flex-grow-1 d-flex flex-column">
-                        <h5 class="fw-bold mb-2 text-white">{{ challenge.game }} Challenge</h5>
-                        <p class="text-white small mb-3" style="opacity:.8;">
-                          {{ challenge.creator?.username }} vs {{ challenge.opponent?.username || '?' }}
-                        </p>
-                        <div class="d-flex justify-content-between align-items-center mt-auto">
-                          <span class="badge n10-color">{{ (challenge.bet_amount * 2).toLocaleString() }} EBT</span>
-                          <span class="text-white small">
-                            <i class="fas fa-eye me-1 text-danger"></i>{{ challenge.viewer_count || 0 }}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <span class="st-badge-live"><span class="st-dot"></span>LIVE</span>
+              <span class="st-badge-viewers"><i class="fas fa-eye"></i> {{ ch.viewer_count || 0 }}</span>
+              <div class="st-card__thumb-overlay"></div>
+            </div>
+            <div class="st-card__info">
+              <div class="st-card__avatar st-card__avatar--challenge">
+                <i class="fas fa-fist-raised"></i>
               </div>
-
-              <!-- ── Streams LIVE ── -->
-              <div v-if="liveStreams.length > 0" class="mb-5">
-                <h4 class="fw-bold mb-4 text-white">
-                  <i class="fas fa-circle text-danger me-2" style="font-size:.6rem;animation:pulse 2s infinite;"></i>
-                  Streams en direct ({{ liveStreams.length }})
-                </h4>
-                <div class="row g-4">
-                  <div v-for="stream in liveStreams" :key="stream.id" class="col-12 col-md-6 col-lg-4">
-                    <StreamCard :stream="stream" @click="$router.push(`/streams/${stream.id}`)" />
-                  </div>
-                </div>
+              <div class="st-card__meta">
+                <p class="st-card__title">{{ ch.game }} Challenge</p>
+                <p class="st-card__channel">
+                  {{ ch.creator?.username }}<span class="st-vs"> VS </span>{{ ch.opponent?.username || '?' }}
+                </p>
+                <span class="st-tag st-tag--ebt">
+                  <i class="fas fa-coins"></i> {{ (ch.bet_amount * 2).toLocaleString() }} EBT
+                </span>
               </div>
-
-              <!-- ── Barre de recherche ── -->
-              <div class="mb-4">
-                <div class="row justify-content-center">
-                  <div class="col-md-6">
-                    <div class="input-group">
-                      <input v-model="searchQuery" type="text" class="form-control n11-bg text-white border-secondary"
-                        placeholder="Search for a stream..." @input="debouncedSearch" />
-                      <button class="btn btn-outline-secondary" type="button"
-                        style="border-color:#FF9F00;color:#FF9F00;">
-                        <i class="fas fa-search"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- ── Streams offline ── -->
-              <div v-if="loading" class="text-center py-5">
-                <div class="spinner-border text-primary" role="status" style="width:3rem;height:3rem;">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </div>
-
-              <template v-else>
-                <h4 v-if="offlineStreams.length > 0" class="fw-bold mb-4 text-white">
-                  Tous les streams
-                </h4>
-                <div v-if="offlineStreams.length > 0" class="row g-4">
-                  <div v-for="stream in offlineStreams" :key="stream.id" class="col-12 col-md-6 col-lg-4">
-                    <StreamCard :stream="stream" @click="$router.push(`/streams/${stream.id}`)" />
-                  </div>
-                </div>
-
-                <!-- Vide -->
-                <div v-if="liveStreams.length === 0 && offlineStreams.length === 0 && liveChallenges.length === 0"
-                  class="text-center py-5">
-                  <i class="fas fa-video-slash fs-1 text-white mb-4" style="opacity:.7;"></i>
-                  <h5 class="mb-2 text-white">No streams available</h5>
-                  <p class="text-white" style="opacity:.7;">There are no streams at the moment.</p>
-                  <button v-if="isAuthenticated" class="btn_primary mt-3" @click="$router.push('/streams/create')">
-                    <i class="fas fa-video me-2"></i>Create the first stream
-                  </button>
-                </div>
-              </template>
-
             </div>
           </div>
         </div>
       </div>
-    </section>
+
+      <!-- Live streams -->
+      <div
+        v-if="liveStreams.length > 0 && (activeTab === 'all' || activeTab === 'live')"
+        class="st-section"
+      >
+        <div class="st-section-header">
+          <span class="st-section-dot st-section-dot--red"></span>
+          <h2 class="st-section-title">Live Now</h2>
+          <span class="st-section-count">{{ liveStreams.length }}</span>
+        </div>
+        <div class="st-grid">
+          <div
+            v-for="stream in liveStreams"
+            :key="stream.id"
+            class="st-card"
+            @click="$router.push(`/streams/${stream.id}`)"
+          >
+            <div class="st-card__thumb">
+              <img
+                v-if="stream.thumbnail_url"
+                :src="stream.thumbnail_url"
+                :alt="stream.title"
+                class="st-card__thumb-img"
+              />
+              <div v-else class="st-card__thumb-bg" :style="gradientFor(stream.id)">
+                <i class="ti ti-video st-card__thumb-icon"></i>
+              </div>
+              <span class="st-badge-live"><span class="st-dot"></span>LIVE</span>
+              <span class="st-badge-viewers"><i class="fas fa-eye"></i> {{ formatViewers(stream.viewer_count) }}</span>
+              <div class="st-card__thumb-overlay"></div>
+            </div>
+            <div class="st-card__info">
+              <div class="st-card__avatar" :style="gradientFor(stream.id)">
+                {{ initials(stream.user?.username || stream.title) }}
+              </div>
+              <div class="st-card__meta">
+                <p class="st-card__title">{{ stream.title || 'Untitled Stream' }}</p>
+                <p class="st-card__channel">{{ stream.user?.username || '—' }}</p>
+                <span v-if="stream.game" class="st-tag">{{ stream.game }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Offline / recent streams -->
+      <div
+        v-if="offlineStreams.length > 0 && (activeTab === 'all' || activeTab === 'offline')"
+        class="st-section"
+      >
+        <div class="st-section-header">
+          <span class="st-section-dot"></span>
+          <h2 class="st-section-title">Recent Streams</h2>
+          <span class="st-section-count">{{ offlineStreams.length }}</span>
+        </div>
+        <div class="st-grid">
+          <div
+            v-for="stream in offlineStreams"
+            :key="stream.id"
+            class="st-card"
+            @click="$router.push(`/streams/${stream.id}`)"
+          >
+            <div class="st-card__thumb">
+              <img
+                v-if="stream.thumbnail_url"
+                :src="stream.thumbnail_url"
+                :alt="stream.title"
+                class="st-card__thumb-img"
+              />
+              <div v-else class="st-card__thumb-bg" :style="gradientFor(stream.id)">
+                <i class="ti ti-video st-card__thumb-icon"></i>
+              </div>
+              <div class="st-card__thumb-overlay"></div>
+            </div>
+            <div class="st-card__info">
+              <div class="st-card__avatar" :style="gradientFor(stream.id)">
+                {{ initials(stream.user?.username || stream.title) }}
+              </div>
+              <div class="st-card__meta">
+                <p class="st-card__title">{{ stream.title || 'Untitled Stream' }}</p>
+                <p class="st-card__channel">{{ stream.user?.username || '—' }}</p>
+                <div class="st-card__tags">
+                  <span v-if="stream.game" class="st-tag">{{ stream.game }}</span>
+                  <span class="st-card__viewers">
+                    <i class="far fa-heart"></i> {{ stream.follower_count ?? 0 }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty states per tab -->
+      <div v-if="activeTab === 'live' && liveStreams.length === 0" class="st-empty">
+        <i class="ti ti-broadcast-off st-empty__icon"></i>
+        <h3 class="st-empty__title">No live streams right now</h3>
+        <p class="st-empty__sub">Be the first to go live!</p>
+        <button v-if="isAuthenticated" class="st-btn-primary" @click="$router.push('/streams/create')">
+          <i class="fas fa-video"></i> Start Streaming
+        </button>
+      </div>
+
+      <div v-if="activeTab === 'challenges' && liveChallenges.length === 0" class="st-empty">
+        <i class="ti ti-swords st-empty__icon"></i>
+        <h3 class="st-empty__title">No live challenges</h3>
+        <p class="st-empty__sub">Start a challenge to see it here.</p>
+        <router-link to="/challenges" class="st-btn-primary">Browse Challenges</router-link>
+      </div>
+
+      <div v-if="activeTab === 'offline' && offlineStreams.length === 0" class="st-empty">
+        <i class="ti ti-video-off st-empty__icon"></i>
+        <h3 class="st-empty__title">No streams found</h3>
+        <p class="st-empty__sub">Try adjusting your search.</p>
+      </div>
+
+      <!-- Global empty (all tabs, nothing at all) -->
+      <div
+        v-if="activeTab === 'all' && allStreams.length === 0 && liveChallenges.length === 0"
+        class="st-empty"
+      >
+        <i class="ti ti-video-off st-empty__icon"></i>
+        <h3 class="st-empty__title">No streams available</h3>
+        <p class="st-empty__sub">Be the first to stream on eBetStream!</p>
+        <button v-if="isAuthenticated" class="st-btn-primary" @click="$router.push('/streams/create')">
+          <i class="fas fa-video"></i> Create a Stream
+        </button>
+        <router-link v-else to="/login" class="st-btn-primary">Login to Start</router-link>
+      </div>
+
+    </template>
   </div>
 </template>
 
@@ -146,74 +252,34 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient from '@/utils/axios';
-
-// ── Mini composant interne StreamCard ────────────────────────────────────────
-// (Défini ici pour ne pas créer de fichier supplémentaire)
-import { defineComponent, h } from 'vue';
-const StreamCard = defineComponent({
-  props: { stream: Object },
-  emits: ['click'],
-  setup(props, { emit }) {
-    return () => h('div', {
-      class: 'stream_card defi_card n11-bg rounded-8 p-0 h-100 d-flex flex-column overflow-hidden position-relative',
-      onClick: () => emit('click'),
-    }, [
-      // Badge LIVE
-      props.stream?.is_live ? h('span', {
-        class: 'badge bg-danger position-absolute top-0 start-0 m-2 z-1 px-2 py-1'
-      }, [
-        h('i', { class: 'fas fa-circle me-1', style: 'font-size:.5rem;animation:pulse 2s infinite;' }),
-        'LIVE'
-      ]) : null,
-      // Thumbnail
-      props.stream?.thumbnail_url
-        ? h('img', { src: props.stream.thumbnail_url, alt: props.stream.title, class: 'w-100', style: 'height:200px;object-fit:cover;' })
-        : h('div', { class: 'w-100 d-flex align-items-center justify-content-center', style: 'height:200px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);' },
-          [h('i', { class: 'fas fa-video fs-1 text-white', style: 'opacity:.5;' })]),
-      // Body
-      h('div', { class: 'p-4 flex-grow-1 d-flex flex-column' }, [
-        h('h5', { class: 'fw-bold mb-2 text-white' }, props.stream?.title || 'No title'),
-        h('p', { class: 'text-white small mb-3', style: 'opacity:.8;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;' },
-          props.stream?.description || 'No description'),
-        h('div', { class: 'd-flex align-items-center gap-2 mb-3' }, [
-          h('div', { class: 'rounded-circle d-flex align-items-center justify-content-center', style: 'width:32px;height:32px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);' },
-            [h('i', { class: 'fas fa-user text-white' })]),
-          h('span', { class: 'text-white small' }, props.stream?.user?.username || 'User'),
-        ]),
-        h('div', { class: 'd-flex justify-content-between align-items-center mt-auto' }, [
-          h('div', {}, [
-            props.stream?.category ? h('span', { class: 'badge bg-secondary me-2' }, props.stream.category) : null,
-            props.stream?.game ? h('span', { class: 'badge bg-info' }, props.stream.game) : null,
-          ]),
-          h('div', { class: 'text-white small' }, [
-            h('i', { class: 'fas fa-heart me-1 text-danger' }),
-            String(props.stream?.follower_count ?? 0),
-          ]),
-        ]),
-      ]),
-    ]);
-  },
-});
+import { STREAM_GRADIENTS, gradientFor, initials, formatViewers } from '@/utils/formatters';
 
 const router = useRouter();
 
 interface Stream {
-  id: number; title: string; description: string;
-  thumbnail_url?: string; category?: string; game?: string;
-  is_live: boolean; viewer_count: number; follower_count: number;
-  user: { id: number; username: string; };
+  id: number;
+  title: string;
+  description: string;
+  thumbnail_url?: string;
+  category?: string;
+  game?: string;
+  is_live: boolean;
+  viewer_count: number;
+  follower_count: number;
+  user: { id: number; username: string };
 }
 
-const allStreams = ref<Stream[]>([]);
+const allStreams     = ref<Stream[]>([]);
 const liveChallenges = ref<any[]>([]);
-const loading = ref(false);
-const searchQuery = ref('');
+const loading        = ref(false);
+const searchQuery    = ref('');
+const activeTab      = ref<'all' | 'live' | 'challenges' | 'offline'>('all');
 
 const isAuthenticated = computed(() => !!localStorage.getItem('auth_token'));
-// Streams live VS offline — le filtre était inversé dans l'ancienne version !
-const liveStreams = computed(() => allStreams.value.filter(s => s.is_live));
-const offlineStreams = computed(() => allStreams.value.filter(s => !s.is_live));
+const liveStreams      = computed(() => allStreams.value.filter(s => s.is_live));
+const offlineStreams   = computed(() => allStreams.value.filter(s => !s.is_live));
 
+// ── Data loading ──────────────────────────────────────────────────────────────
 let searchTimer: ReturnType<typeof setTimeout> | null = null;
 const debouncedSearch = () => {
   if (searchTimer) clearTimeout(searchTimer);
@@ -230,193 +296,516 @@ const loadLiveChallenges = async () => {
 const loadStreams = async () => {
   loading.value = true;
   try {
-    const params: Record<string, any> = { per_page: 20 };
+    const params: Record<string, unknown> = { per_page: 20 };
     if (searchQuery.value) params.search = searchQuery.value;
-
     const res = await apiClient.get('/streams', { params });
     if (res.data.success) {
-      allStreams.value = res.data.data.data ?? res.data.data ?? [];
+      const fresh: Stream[] = res.data.data.data ?? res.data.data ?? [];
+      // Only update if data actually changed (avoids spurious re-renders on polls)
+      if (JSON.stringify(fresh) !== JSON.stringify(allStreams.value))
+        allStreams.value = fresh;
     }
-  } catch (err: any) {
-    console.error('Error loading streams:', err);
+  } catch {
     allStreams.value = [];
   } finally {
     loading.value = false;
   }
 };
 
-let timers: ReturnType<typeof setInterval>[] = [];
+const timers: ReturnType<typeof setInterval>[] = [];
 
 onMounted(() => {
   loadStreams();
   loadLiveChallenges();
-  timers.push(setInterval(loadStreams, 30000));
-  timers.push(setInterval(loadLiveChallenges, 10000));
+  timers.push(setInterval(loadStreams, 30_000));
+  timers.push(setInterval(loadLiveChallenges, 10_000));
 });
 
-onBeforeUnmount(() => timers.forEach(clearInterval));
+onBeforeUnmount(() => {
+  timers.forEach(clearInterval);
+  if (searchTimer) clearTimeout(searchTimer);
+});
 </script>
 
 <style scoped>
-.defis_section {
-  width: 100%;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-  color: white;
-  position: relative;
-  overflow: hidden;
-  border-radius: 24px;
-}
+/* ── Page ── */
+.streams-page { padding: 20px 0 48px; }
 
-.text_gradient {
-  background: linear-gradient(90deg, #FF9F00, #e67e00);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.btn_primary {
-  background-color: #FF9F00;
-  color: #000;
-  border: none;
-  padding: .75rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: .3s;
-  cursor: pointer;
-}
-
-.btn_primary:hover {
-  transform: translateY(-2px);
-}
-
-.btn_secondary {
-  background: transparent;
-  border: 2px solid #FF9F00;
-  color: #FF9F00;
-  padding: .75rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: .3s;
-  cursor: pointer;
-}
-
-.btn_secondary:hover {
-  background-color: #FF9F00;
-  color: #000;
-}
-
-.stream_card {
-  cursor: pointer;
-  transition: transform .3s ease, box-shadow .3s ease;
-}
-
-.stream_card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, .4);
-}
-
-.floating_card {
-  background: rgba(255, 255, 255, .15);
-  backdrop-filter: blur(20px);
-  border-radius: 24px;
-  padding: 2rem;
-  border: 1px solid rgba(255, 255, 255, .3);
+/* ── Top bar ── */
+.streams-topbar {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, .3);
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
-.card_icon {
-  font-size: 3rem;
-}
-
-.card_content {
+.streams-topbar__left {
   display: flex;
-  flex-direction: column;
-  gap: .5rem;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  flex-wrap: wrap;
+  min-width: 0;
 }
 
-.card_label {
-  font-size: .9rem;
-  opacity: .9;
-  font-weight: 500;
-}
-
-.card_value {
-  font-size: 1.8rem;
+.streams-topbar__title {
+  font-size: 22px;
   font-weight: 800;
-  color: white;
+  color: rgb(var(--n8));
+  margin: 0;
+  letter-spacing: -.3px;
+  white-space: nowrap;
 }
 
-.defi_card {
-  background: rgba(255, 255, 255, .1);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
+.st-live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(var(--r1), .1);
+  border: 1px solid rgba(var(--r1), .28);
+  color: rgb(var(--r1));
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  white-space: nowrap;
 }
 
-.hero_badge {
-  background: rgba(255, 159, 0, .2);
-  color: #FF9F00;
-  padding: .5rem 1rem;
-  border-radius: 20px;
-  font-size: .9rem;
+.st-challenge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(var(--g1), .1);
+  border: 1px solid rgba(var(--g1), .28);
+  color: rgb(var(--g1));
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  white-space: nowrap;
+  i { font-size: 12px; }
+}
+
+/* ── Go Live button ── */
+.st-stream-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 18px;
+  background: rgb(var(--g1));
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 3px 14px rgba(var(--g1), .28);
+  transition: all .2s;
+  i { font-size: 16px; }
+  &:hover { background: rgba(var(--g1), .84); transform: translateY(-1px); }
+
+  &--ghost {
+    background: rgba(var(--n8), .08);
+    border: 1px solid rgba(var(--n8), .15);
+    color: rgb(var(--n8));
+    box-shadow: none;
+    &:hover { background: rgba(var(--n8), .14); transform: translateY(-1px); }
+  }
+}
+
+@media (max-width: 400px) {
+  .btn-text { display: none; }
+  .st-stream-btn { padding: 0 12px; }
+}
+
+/* ── Controls ── */
+.streams-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+/* Tabs */
+.st-tabs {
+  display: flex;
+  gap: 2px;
+  background: rgb(var(--p2));
+  border: 1px solid rgb(var(--n2));
+  border-radius: 7px;
+  padding: 4px;
+  flex-wrap: wrap;
+}
+
+.st-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 32px;
+  padding: 0 13px;
+  background: none;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
   font-weight: 600;
+  color: rgb(var(--n3));
+  cursor: pointer;
+  transition: background .15s, color .15s;
+  white-space: nowrap;
+  i { font-size: 13px; }
+  &:hover { background: rgba(var(--n8), .06); color: rgb(var(--n8)); }
+  &.active { background: rgb(var(--p3)); color: rgb(var(--n8)); }
 }
 
-.hero_title {
-  font-size: 2.5rem;
+.st-tab-count {
+  background: rgba(var(--n8), .1);
+  color: rgb(var(--n3));
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 8px;
+  .st-tab.active & { background: rgba(var(--g1), .18); color: rgb(var(--g1)); }
+}
+
+/* Live dot */
+.st-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgb(var(--r1));
+  display: inline-block;
+  flex-shrink: 0;
+  animation: pulse-dot 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: .4; transform: scale(1.4); }
+}
+
+/* Search */
+.st-search {
+  position: relative;
+  width: 260px;
+  flex-shrink: 0;
+  @media (max-width: 640px) { width: 100%; }
+}
+
+.st-search__icon {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: rgb(var(--n3));
+  pointer-events: none;
+}
+
+.st-search__input {
+  width: 100%;
+  height: 38px;
+  background: rgb(var(--p2));
+  border: 1px solid rgb(var(--n2));
+  border-radius: 6px;
+  color: rgb(var(--n8));
+  font-size: 13px;
+  padding: 0 34px;
+  outline: none;
+  font-family: var(--body-font);
+  transition: border-color .2s;
+  &::placeholder { color: rgb(var(--n3)); }
+  &:focus { border-color: rgb(var(--g1)); }
+}
+
+.st-search__clear {
+  position: absolute;
+  right: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: rgb(var(--n3));
+  cursor: pointer;
+  padding: 2px;
+  font-size: 14px;
+  line-height: 1;
+  &:hover { color: rgb(var(--n8)); }
+}
+
+/* ── Section ── */
+.st-section { margin-bottom: 32px; }
+
+.st-section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.st-section-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(var(--n8), .25);
+  flex-shrink: 0;
+  &--red { background: rgb(var(--r1)); animation: pulse-dot 1.6s ease-in-out infinite; }
+}
+
+.st-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  margin: 0;
+}
+
+.st-section-count {
+  font-size: 12px;
+  color: rgb(var(--n3));
+}
+
+/* ── Grid ── */
+.st-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  @media (max-width: 1200px) { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 768px)  { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  @media (max-width: 400px)  { grid-template-columns: 1fr; }
+}
+
+/* ── Card ── */
+.st-card {
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform .22s ease;
+  &:hover { transform: translateY(-4px); }
+  &:hover .st-card__thumb-img { transform: scale(1.04); }
+}
+
+.st-card__thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 6px;
+  background: rgb(var(--p3));
+}
+
+.st-card__thumb-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .35s ease;
+}
+
+.st-card__thumb-bg {
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &--challenge { background: linear-gradient(135deg,#b87820,#d4962e) !important; }
+}
+
+.st-card__thumb-icon { font-size: 2.2rem; color: rgba(255,255,255,.22); }
+
+.st-card__thumb-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,.55) 100%);
+  pointer-events: none;
+}
+
+.st-badge-live {
+  position: absolute;
+  top: 8px; left: 8px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgb(var(--r1));
+  color: #fff;
+  font-size: 9px;
   font-weight: 800;
-  color: white;
-  line-height: 1.2;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 3px;
+  box-shadow: 0 2px 8px rgba(var(--r1), .45);
 }
 
-.hero_subtitle {
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, .8);
-  line-height: 1.6;
+.st-badge-viewers {
+  position: absolute;
+  bottom: 8px; left: 8px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(0,0,0,.65);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 3px;
+  backdrop-filter: blur(4px);
+  i { font-size: 11px; }
 }
 
-.n10-color {
-  color: #FF9F00;
+/* Card info */
+.st-card__info {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 9px 2px 4px;
 }
 
-.form-control {
-  color: white;
-}
-
-.form-control::placeholder {
-  color: rgba(255, 255, 255, .5);
-}
-
-.form-control:focus {
-  background-color: rgba(255, 255, 255, .1);
-  border-color: #FF9F00;
-  color: white;
-}
-
-@keyframes pulse {
-
-  0%,
-  100% {
-    opacity: 1;
+.st-card__avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+  margin-top: 1px;
+  &--challenge {
+    background: rgba(var(--g1), .18) !important;
+    color: rgb(var(--g1));
+    i { font-size: 14px; }
   }
-
-  50% {
-    opacity: .5;
-  }
 }
 
-.page-content-with-space {
-  padding-top: 90px;
+.st-card__meta { flex: 1; min-width: 0; }
+
+.st-card__title {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  margin: 0 0 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
 }
 
-@media (max-width:768px) {
-  .page-content-with-space {
-    padding-top: 60px;
-  }
+.st-card__channel {
+  font-size: 12px;
+  color: rgb(var(--n3));
+  margin: 0 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-  .hero_title {
-    font-size: 1.8rem;
-  }
+.st-vs { color: rgb(var(--r1)); font-weight: 800; font-size: 10px; }
+
+.st-card__tags { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+
+.st-tag {
+  font-size: 10px;
+  font-weight: 600;
+  background: rgba(var(--n8), .08);
+  color: rgb(var(--n3));
+  padding: 2px 6px;
+  border-radius: 3px;
+  &--ebt { background: rgba(var(--g1), .14); color: rgb(var(--g1)); i { font-size: 10px; } }
+}
+
+.st-card__viewers {
+  font-size: 11px;
+  color: rgb(var(--n3));
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: auto;
+  i { font-size: 11px; }
+}
+
+/* ── Skeleton ── */
+.st-skeleton { border-radius: 8px; overflow: hidden; }
+
+.st-skeleton__thumb {
+  aspect-ratio: 16/9;
+  border-radius: 6px;
+  background: linear-gradient(90deg, rgb(var(--p2)) 25%, rgb(var(--p3)) 50%, rgb(var(--p2)) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+.st-skeleton__info { display: flex; gap: 8px; padding: 9px 2px 4px; }
+
+.st-skeleton__avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: linear-gradient(90deg, rgb(var(--p2)) 25%, rgb(var(--p3)) 50%, rgb(var(--p2)) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+.st-skeleton__lines { flex: 1; display: flex; flex-direction: column; gap: 6px; padding-top: 4px; }
+
+.st-skeleton__line {
+  height: 12px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, rgb(var(--p2)) 25%, rgb(var(--p3)) 50%, rgb(var(--p2)) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+.st-l70 { width: 70%; }
+.st-l50 { width: 50%; }
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Empty state ── */
+.st-empty {
+  text-align: center;
+  padding: 64px 20px;
+  color: rgb(var(--n3));
+}
+
+.st-empty__icon {
+  font-size: 52px;
+  display: block;
+  margin-bottom: 16px;
+  opacity: .3;
+}
+
+.st-empty__title { font-size: 18px; font-weight: 700; color: rgb(var(--n5)); margin: 0 0 8px; }
+.st-empty__sub   { font-size: 14px; color: rgb(var(--n3)); margin: 0 0 24px; }
+
+/* ── Primary button ── */
+.st-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 20px;
+  background: rgb(var(--g1));
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 3px 14px rgba(var(--g1), .28);
+  transition: all .2s;
+  &:hover { background: rgba(var(--g1), .83); color: #fff; transform: translateY(-1px); }
 }
 </style>

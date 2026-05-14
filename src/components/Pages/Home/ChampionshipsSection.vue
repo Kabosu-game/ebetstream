@@ -34,7 +34,7 @@
                   <div class="col-lg-6 col-md-5 d-none d-md-block">
                     <div class="top10_image" data-aos="fade-left">
                       <div class="floating_card card_top10">
-                        <div class="card_icon">🏆</div>
+                        <div class="card_icon"><i class="fas fa-trophy"></i></div>
                         <div class="card_content">
                           <span class="card_label">Championships</span>
                           <span class="card_value">Divisions</span>

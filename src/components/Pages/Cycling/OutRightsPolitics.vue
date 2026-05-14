@@ -123,7 +123,6 @@
 </template>
 
 <script setup lang="ts">
-import { IconArrowBadgeUp, IconCalendarEvent } from "@tabler/icons-vue";
 import cyclingBig from "@/assets/images/icon/cycling-big.png";
 </script>
 

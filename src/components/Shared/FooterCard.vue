@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
-import { IconSettings, IconTrash } from "@tabler/icons-vue";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import { Switch } from "@headlessui/vue";
 import salzburg from "@/assets/images/icon/sports-salzburg.png";

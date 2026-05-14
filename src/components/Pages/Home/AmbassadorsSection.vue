@@ -43,7 +43,7 @@
                     :class="{ 'top_3': index < 3 }"
                   >
                     <div class="rank_badge">
-                      <span v-if="index === 0" class="medal gold">🥇</span>
+                      <span v-if="index === 0" class="medal gold"><i class="fas fa-medal" style="color:#ffd700"></i></span>
                       <span v-else-if="index === 1" class="medal silver">🥈</span>
                       <span v-else-if="index === 2" class="medal bronze">🥉</span>
                       <span v-else class="rank_number">#{{ index + 1 }}</span>

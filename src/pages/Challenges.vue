@@ -1,326 +1,286 @@
 <template>
-  <div class="page-content-with-space">
-    <!-- Section Challenges P2P Cyber -->
-    <section class="defis_section py-6 position-relative overflow-hidden pb-120">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-12 gx-0 gx-lg-4">
-          <div class="defis__main">
-            <!-- Header Section -->
-            <div class="row h-100 align-items-center mb-5">
-              <div class="col-lg-6 col-md-7">
-                <div class="defis_content" data-aos="fade-right">
-                  <span class="hero_badge mb-3 d-inline-block">
-                    ⚔️ Challenges P2P Cyber
-                  </span>
-                  <h2 class="hero_title mb-4">
-                    Participate in <span class="text_gradient">Player Challenges</span><br />
-                    and win your duels!
-                  </h2>
-                  <p class="hero_subtitle mb-5">
-                    Discover recent challenges between eBetStream players and compete against the best to prove your dominance.
-                  </p>
-                  <div class="hero_actions d-flex flex-wrap gap-3">
-                    <button class="btn_secondary" @click="showCreateModal = true">
-                      <i class="fas fa-plus-circle me-2"></i>
-                      <span>Create a Challenge</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
+  <div class="tw-page">
 
-              <!-- Colonne image / carte -->
-              <div class="col-lg-6 col-md-5 d-none d-md-block">
-                <div class="defis_image" data-aos="fade-left">
-                  <div class="floating_card card_defis">
-                    <div class="card_icon">🎮</div>
-                    <div class="card_content">
-                      <span class="card_label">Duel Mode</span>
-                      <span class="card_value">P2P Challenge</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+    <!-- Hero -->
+    <div class="tw-page-hero">
+      <div>
+        <h1 class="tw-page-hero__title">P2P Challenges</h1>
+        <p class="tw-page-hero__sub">Compete against other players, wager EBT, and prove your dominance</p>
+      </div>
+      <div class="tw-page-hero__actions">
+        <button class="tw-btn tw-btn--primary" @click="showCreateModal = true">
+          <i class="fas fa-plus-circle me-2"></i>Create a Challenge
+        </button>
+      </div>
+    </div>
 
-            <!-- Filters -->
-            <div class="d-flex gap-3 mb-5 flex-wrap justify-content-center">
-              <button 
-                class="btn_primary"
-                :class="{ 'active': filterStatus === null }"
-                @click="filterStatus = null"
-              >
-                All
-              </button>
-              <button 
-                class="btn_secondary"
-                :class="{ 'active': filterStatus === 'open' }"
-                @click="filterStatus = 'open'"
-              >
-                Open
-              </button>
-              <button 
-                class="btn_secondary"
-                :class="{ 'active': filterStatus === 'accepted' }"
-                @click="filterStatus = 'accepted'"
-              >
-                Accepted
-              </button>
-              <button 
-                class="btn_secondary"
-                :class="{ 'active': filterStatus === 'in_progress' }"
-                @click="filterStatus = 'in_progress'"
-              >
-                In Progress
-              </button>
-              <button 
-                class="btn_secondary"
-                :class="{ 'active': filterStatus === 'completed' }"
-                @click="filterStatus = 'completed'"
-              >
-                Completed
-              </button>
-              <button 
-                class="btn_secondary"
-                :class="{ 'active': showMyChallenges }"
-                @click="showMyChallenges = !showMyChallenges"
-              >
-                My Challenges
-              </button>
-              <button 
-                class="btn_secondary"
-                @click="loadChallenges()"
-                :disabled="loading"
-                title="Actualiser la liste"
-              >
-                <i class="fas fa-sync-alt me-1" :class="{ 'fa-spin': loading }"></i>
-                Actualiser
-              </button>
-            </div>
+    <!-- Filters -->
+    <div class="tw-filters">
+      <button
+        class="tw-filter-btn"
+        :class="{ active: filterStatus === null && !showMyChallenges }"
+        @click="filterStatus = null; showMyChallenges = false"
+      >All</button>
+      <button
+        class="tw-filter-btn"
+        :class="{ active: filterStatus === 'open' }"
+        @click="filterStatus = 'open'; showMyChallenges = false"
+      >Open</button>
+      <button
+        class="tw-filter-btn"
+        :class="{ active: filterStatus === 'accepted' }"
+        @click="filterStatus = 'accepted'; showMyChallenges = false"
+      >Accepted</button>
+      <button
+        class="tw-filter-btn"
+        :class="{ active: filterStatus === 'in_progress' }"
+        @click="filterStatus = 'in_progress'; showMyChallenges = false"
+      >In Progress</button>
+      <button
+        class="tw-filter-btn"
+        :class="{ active: filterStatus === 'completed' }"
+        @click="filterStatus = 'completed'; showMyChallenges = false"
+      >Completed</button>
+      <button
+        class="tw-filter-btn"
+        :class="{ active: showMyChallenges }"
+        @click="showMyChallenges = !showMyChallenges"
+      >My Challenges</button>
+      <button
+        class="tw-filter-btn refresh-btn"
+        @click="loadChallenges()"
+        :disabled="loading"
+        title="Refresh list"
+      >
+        <i class="fas fa-sync-alt" :class="{ 'fa-spin': loading }"></i>
+      </button>
+    </div>
 
-            <!-- Liste des défis -->
-            <div v-if="loading" class="row mt-5">
-              <div class="col-12 text-center py-5">
-                <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </div>
+    <!-- Loading -->
+    <div v-if="loading" class="tw-empty">
+      <div class="spinner"></div>
+    </div>
+
+    <!-- Challenge grid -->
+    <div v-else-if="challenges.length > 0" class="tw-grid-3">
+      <div v-for="challenge in challenges" :key="challenge.id" class="tw-card challenge-card">
+
+        <!-- Card top bar: status + timer -->
+        <div class="challenge-topbar">
+          <span
+            class="tw-badge"
+            :class="{
+              'tw-badge--open':    challenge.status === 'open',
+              'tw-badge--ongoing': challenge.status === 'accepted' || challenge.status === 'in_progress',
+              'tw-badge--closed':  challenge.status === 'completed' || challenge.status === 'cancelled',
+              'tw-badge--pending': challenge.status === 'pending',
+            }"
+          >
+            <span v-if="challenge.status === 'in_progress'" class="tw-live-dot"></span>
+            {{ getStatusLabel(challenge.status) }}
+          </span>
+          <span class="challenge-timer">{{ getTimeRemaining(challenge.expires_at) }}</span>
+        </div>
+
+        <div class="tw-card__body challenge-body">
+          <!-- Game name -->
+          <p class="tw-card__title">{{ challenge.game }}</p>
+
+          <!-- Creator VS Opponent -->
+          <div class="matchup">
+            <span class="matchup__player">{{ challenge.creator.username }}</span>
+            <span class="matchup__vs">VS</span>
+            <span class="matchup__player">{{ challenge.opponent ? challenge.opponent.username : 'Pending...' }}</span>
+          </div>
+
+          <div class="tw-divider"></div>
+
+          <!-- Bet amount + actions -->
+          <div class="challenge-footer">
+            <span class="bet-amount">
+              <i class="fas fa-coins"></i> {{ challenge.bet_amount.toLocaleString() }} EBT
+            </span>
+            <div class="challenge-actions">
+              <button class="tw-btn tw-btn--secondary btn-sm" @click="viewDetails(challenge.id)">
+                Details
+              </button>
+              <button
+                v-if="challenge.status === 'open' && challenge.creator.id !== currentUserId"
+                class="tw-btn btn-accept btn-sm"
+                @click="acceptChallenge(challenge.id)"
+              >
+                Accept
+              </button>
+              <button
+                v-if="challenge.status === 'open' && challenge.creator.id === currentUserId"
+                class="tw-btn btn-cancel btn-sm"
+                @click="cancelChallenge(challenge.id)"
+              >
+                Cancel
+              </button>
             </div>
-            <div v-else-if="challenges.length > 0" class="row mt-5 g-4">
-              <div v-for="challenge in challenges" :key="challenge.id" class="col-12 col-md-6 col-lg-4">
-                <div class="defi_card n11-bg rounded-8 p-4 h-100 d-flex flex-column justify-content-between">
-                  <div class="d-flex justify-content-between align-items-center mb-3">
-                    <span :class="['status', challenge.status === 'open' ? 'status-open' : 'status-closed', 'px-3', 'py-1', 'rounded-pill', 'text-uppercase', 'fw-bold']">
-                      {{ getStatusLabel(challenge.status) }}
-                    </span>
-                    <span class="delai n10-color fw-semibold">{{ getTimeRemaining(challenge.expires_at) }}</span>
-                  </div>
-                  <div class="game_area mb-3">
-                    <h5 class="fw-bold mb-2">{{ challenge.game }}</h5>
-                    <div class="d-flex justify-content-between align-items-center">
-                      <span class="player">{{ challenge.creator.username }}</span>
-                      <span class="vs text-danger fw-bold">VS</span>
-                      <span class="player">{{ challenge.opponent ? challenge.opponent.username : 'Pending...' }}</span>
-                    </div>
-                  </div>
-                  <div class="d-flex justify-content-between align-items-center mt-auto">
-                    <span class="montant fw-bold n10-color">💰 {{ challenge.bet_amount.toLocaleString() }} EBT</span>
-                    <div class="d-flex gap-2">
-                      <button 
-                        class="btn_see_details rounded-4 fw-semibold px-3 py-2"
-                        @click="viewDetails(challenge.id)"
-                      >
-                        Details
-                      </button>
-                      <button 
-                        v-if="challenge.status === 'open' && challenge.creator.id !== currentUserId"
-                        class="btn_see_details rounded-4 fw-semibold px-3 py-2"
-                        style="background-color: #1f9d55; color: white;"
-                        @click="acceptChallenge(challenge.id)"
-                      >
-                        Accept
-                      </button>
-                      <button 
-                        v-if="challenge.status === 'open' && challenge.creator.id === currentUserId"
-                        class="btn_see_details rounded-4 fw-semibold px-3 py-2"
-                        style="background-color: #991b1b; color: white;"
-                        @click="cancelChallenge(challenge.id)"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div v-else class="row mt-5">
-              <div class="col-12 text-center py-5">
-                <p class="text-white" style="opacity: 0.7;">No challenges available at the moment.</p>
-                <button class="btn_primary mt-3" @click="showCreateModal = true">
-                  <i class="fas fa-plus-circle me-2"></i>
-                  <span>Create the first challenge</span>
-                </button>
-              </div>
-            </div>
-            <!-- /Liste des défis -->
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Popup Création Challenge -->
-    <div v-if="showCreateModal" class="popup-overlay" @click.self="showCreateModal = false">
-      <div class="popup-box p-5 rounded-4 shadow-lg n11-bg" style="max-width: 600px;">
-        <h3 class="fw-bold mb-4 text-center text-white">Create a New Challenge</h3>
-        <form @submit.prevent="createChallenge">
-          <!-- Type de défi -->
-          <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Challenge Type</label>
-            <div class="d-flex gap-3">
-              <button 
-                type="button"
-                class="btn flex-fill"
-                :class="challengeType === 'free' ? 'btn-warning' : 'btn-secondary'"
-                @click="challengeType = 'free'; selectedOpponent = null; searchQuery = ''"
-              >
-                <i class="fas fa-globe me-2"></i>Open Challenge
-              </button>
-              <button 
-                type="button"
-                class="btn flex-fill"
-                :class="challengeType === 'direct' ? 'btn-warning' : 'btn-secondary'"
-                @click="challengeType = 'direct'"
-              >
-                <i class="fas fa-user me-2"></i>Direct Challenge
-              </button>
-            </div>
-          </div>
+    <!-- Empty state -->
+    <div v-else class="tw-empty">
+      <div class="tw-empty__icon"><i class="fas fa-fist-raised"></i></div>
+      <p class="tw-empty__title">No Challenges Available</p>
+      <p class="tw-empty__sub">Be the first to create a challenge!</p>
+      <button class="tw-btn tw-btn--primary mt-4" @click="showCreateModal = true">
+        <i class="fas fa-plus-circle me-2"></i>Create the First Challenge
+      </button>
+    </div>
 
-          <!-- Recherche d'utilisateur (si défi direct) -->
-          <div v-if="challengeType === 'direct'" class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Username</label>
-            <div class="position-relative">
-              <input 
-                v-model="searchQuery"
-                type="text" 
-                class="form-control n11-bg text-white border-secondary" 
-                placeholder="Type username..."
-                @input="searchUsers"
-                @focus="showUserSuggestions = true"
-                autocomplete="off"
-              />
-              <!-- Suggestions d'utilisateurs -->
-              <div 
-                v-if="showUserSuggestions && userSuggestions.length > 0" 
-                class="user-suggestions position-absolute w-100 mt-1 rounded"
-                style="background: #1a1f3a; border: 1px solid rgba(255,255,255,0.2); z-index: 1000; max-height: 200px; overflow-y: auto;"
-              >
-                <div 
-                  v-for="user in userSuggestions" 
-                  :key="user.id"
-                  class="suggestion-item p-3 cursor-pointer"
-                  style="border-bottom: 1px solid rgba(255,255,255,0.1);"
-                  @click="selectOpponent(user)"
-                  @mouseenter="(e: MouseEvent) => { const el = e.target as HTMLElement; if (el) el.style.background='rgba(255,159,0,0.2)'; }"
-                  @mouseleave="(e: MouseEvent) => { const el = e.target as HTMLElement; if (el) el.style.background='transparent'; }"
+    <!-- ── Create Challenge Modal ── -->
+    <div v-if="showCreateModal" class="tw-modal-overlay" @click.self="showCreateModal = false">
+      <div class="tw-modal">
+
+        <div class="tw-modal__header">
+          <h3 class="tw-modal__title">Create a New Challenge</h3>
+          <button class="tw-modal__close" @click="closeCreateModal">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <div class="tw-modal__body">
+          <form @submit.prevent="createChallenge" id="challenge-form">
+
+            <!-- Challenge type -->
+            <div class="tw-form-group">
+              <label class="tw-label">Challenge Type</label>
+              <div class="type-toggle">
+                <button
+                  type="button"
+                  class="tw-btn type-btn"
+                  :class="challengeType === 'free' ? 'tw-btn--primary' : 'tw-btn--secondary'"
+                  @click="challengeType = 'free'; selectedOpponent = null; searchQuery = ''"
                 >
-                  <div class="d-flex align-items-center gap-2">
-                    <i class="fas fa-user text-warning"></i>
+                  <i class="fas fa-globe me-2"></i>Open Challenge
+                </button>
+                <button
+                  type="button"
+                  class="tw-btn type-btn"
+                  :class="challengeType === 'direct' ? 'tw-btn--primary' : 'tw-btn--secondary'"
+                  @click="challengeType = 'direct'"
+                >
+                  <i class="fas fa-user me-2"></i>Direct Challenge
+                </button>
+              </div>
+            </div>
+
+            <!-- Opponent search (direct only) -->
+            <div v-if="challengeType === 'direct'" class="tw-form-group">
+              <label class="tw-label">Username</label>
+              <div class="search-wrap">
+                <input
+                  v-model="searchQuery"
+                  type="text"
+                  class="tw-input"
+                  placeholder="Type username..."
+                  @input="searchUsers"
+                  @focus="showUserSuggestions = true"
+                  autocomplete="off"
+                />
+                <!-- Suggestions dropdown -->
+                <div
+                  v-if="showUserSuggestions && userSuggestions.length > 0"
+                  class="suggestions-dropdown"
+                >
+                  <div
+                    v-for="user in userSuggestions"
+                    :key="user.id"
+                    class="suggestion-item"
+                    @click="selectOpponent(user)"
+                  >
+                    <i class="fas fa-user suggestion-icon"></i>
                     <div>
-                      <div class="text-white fw-bold">{{ user.username }}</div>
-                      <small class="text-white-50">{{ user.email }}</small>
+                      <div class="suggestion-name">{{ user.username }}</div>
+                      <div class="suggestion-email">{{ user.email }}</div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div v-if="selectedOpponent" class="mt-2 p-2 rounded" style="background: rgba(255,159,0,0.1); border: 1px solid rgba(255,159,0,0.3);">
-              <div class="d-flex align-items-center justify-content-between">
-                <div>
-                  <i class="fas fa-check-circle text-warning me-2"></i>
-                  <span class="text-white">Challenge sent to: <strong>{{ selectedOpponent.username }}</strong></span>
+              <!-- Selected opponent confirmation -->
+              <div v-if="selectedOpponent" class="selected-opponent">
+                <div class="selected-opponent__info">
+                  <i class="fas fa-check-circle"></i>
+                  Challenge to: <strong>{{ selectedOpponent.username }}</strong>
                 </div>
-                <button 
-                  type="button" 
-                  class="btn btn-sm btn-link text-danger p-0"
+                <button
+                  type="button"
+                  class="selected-opponent__clear"
                   @click="selectedOpponent = null; searchQuery = ''"
                 >
                   <i class="fas fa-times"></i>
                 </button>
               </div>
+              <small class="form-hint">Leave empty to create an open challenge</small>
             </div>
-            <small class="text-white d-block mt-2" style="opacity: 0.7;">Leave empty to create an open challenge</small>
-          </div>
 
-          <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Select Game</label>
-            <select 
-              v-model="selectedGame"
-              class="form-select n11-bg text-white border-secondary" 
-              @change="onGameSelect"
-            >
-              <option value="">Select a game...</option>
-              <option 
-                v-for="game in allGames" 
-                :key="game.id" 
-                :value="game.name"
-              >
-                {{ game.name }}
-              </option>
-            </select>
-            <small v-if="selectedGame" class="text-white-50 d-block mt-2">
-              Selected: {{ selectedGame }}
-            </small>
-          </div>
-          
-          <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Game Subcategory (Optional)</label>
-            <input 
-              v-model="customGameName"
-              type="text" 
-              class="form-control n11-bg text-white border-secondary" 
-              placeholder="Enter specific game name or subcategory (e.g., Call of Duty Mobile, Free Fire, etc.)"
-              @input="onCustomGameInput"
-            />
-            <small class="text-white-50 d-block mt-2" style="opacity: 0.7;">
-              Complementary field to specify a precise game name or subcategory
-            </small>
-          </div>
-          <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Bet (EBT)</label>
-            <input 
-              v-model.number="newChallenge.bet_amount"
-              type="number" 
-              class="form-control n11-bg text-white border-secondary" 
-              min="500"
-              max="1000000"
-              step="1"
-              required
-            />
-            <small class="text-white d-block mt-2" style="opacity: 0.7;">Minimum: 500 EBT (5$) - Maximum: 1,000,000 EBT (10,000$)</small>
-          </div>
-          <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Expiration Date (optional)</label>
-            <input 
-              v-model="newChallenge.expires_at"
-              type="datetime-local" 
-              class="form-control n11-bg text-white border-secondary"
-            />
-          </div>
-          <div v-if="createError" class="alert alert-danger mb-4">
-            {{ createError }}
-          </div>
-          <div class="d-flex gap-3">
-            <button type="submit" class="btn_primary flex-fill" :disabled="creating || (challengeType === 'direct' && !selectedOpponent) || !newChallenge.game">
-              <span v-if="creating">Creating...</span>
-              <span v-else>{{ challengeType === 'direct' ? 'Send Challenge' : 'Create Challenge' }}</span>
-            </button>
-            <button type="button" class="btn_secondary" @click="closeCreateModal">Cancel</button>
-          </div>
-        </form>
+            <!-- Game name -->
+            <div class="tw-form-group">
+              <label class="tw-label">Jeu</label>
+              <input
+                v-model="newChallenge.game"
+                type="text"
+                class="tw-input"
+                placeholder="Ex. Call of Duty Mobile, Free Fire..."
+                required
+              />
+            </div>
+
+            <!-- Bet amount -->
+            <div class="tw-form-group">
+              <label class="tw-label">Bet Amount (EBT)</label>
+              <input
+                v-model.number="newChallenge.bet_amount"
+                type="number"
+                class="tw-input"
+                min="500"
+                max="1000000"
+                step="1"
+                required
+              />
+              <small class="form-hint">Minimum: 500 EBT — Maximum: 1,000,000 EBT</small>
+            </div>
+
+            <!-- Expiry -->
+            <div class="tw-form-group">
+              <label class="tw-label">Expiration Date <span class="label-optional">(Optional)</span></label>
+              <input
+                v-model="newChallenge.expires_at"
+                type="datetime-local"
+                class="tw-input"
+              />
+            </div>
+
+            <!-- Error -->
+            <div v-if="createError" class="form-error">
+              <i class="fas fa-exclamation-circle me-2"></i>{{ createError }}
+            </div>
+
+          </form>
+        </div>
+
+        <div class="tw-modal__footer">
+          <button type="button" class="tw-btn tw-btn--secondary" @click="closeCreateModal">Cancel</button>
+          <button
+            type="submit"
+            form="challenge-form"
+            class="tw-btn tw-btn--primary"
+            :disabled="creating || (challengeType === 'direct' && !selectedOpponent) || !newChallenge.game"
+          >
+            <span v-if="creating"><i class="fas fa-spinner fa-spin me-2"></i>Creating...</span>
+            <span v-else>{{ challengeType === 'direct' ? 'Send Challenge' : 'Create Challenge' }}</span>
+          </button>
+        </div>
+
       </div>
     </div>
-    </section>
+
   </div>
 </template>
 
@@ -355,11 +315,6 @@ const searchQuery = ref('');
 const userSuggestions = ref<any[]>([]);
 const showUserSuggestions = ref(false);
 const selectedOpponent = ref<any | null>(null);
-
-const allGames = ref<any[]>([]);
-const selectedGame = ref<string>("");
-const customGameName = ref<string>("");
-const loadingGames = ref(false);
 
 const newChallenge = ref({
   game: "",
@@ -472,8 +427,6 @@ const closeCreateModal = () => {
   selectedOpponent.value = null;
   userSuggestions.value = [];
   showUserSuggestions.value = false;
-  selectedGame.value = "";
-  customGameName.value = "";
   newChallenge.value = { game: "", bet_amount: 10, expires_at: "" };
   createError.value = '';
 };
@@ -562,54 +515,9 @@ watch([filterStatus, showMyChallenges], () => {
   loadChallenges();
 });
 
-const loadGames = async () => {
-  try {
-    loadingGames.value = true;
-    const response = await apiClient.get('/games?active_only=true');
-    if (response.data.success) {
-      // Sort games by position then by name (same as sidebar)
-      allGames.value = (response.data.data || [])
-        .sort((a: any, b: any) => {
-          if (a.position !== b.position) {
-            return a.position - b.position;
-          }
-          return a.name.localeCompare(b.name);
-        });
-      console.log('Games loaded:', allGames.value.length, 'games');
-    } else {
-      console.error('Failed to load games:', response.data);
-      allGames.value = [];
-    }
-  } catch (error: any) {
-    console.error('Error loading games:', error);
-    allGames.value = [];
-  } finally {
-    loadingGames.value = false;
-  }
-};
-
-const onGameSelect = () => {
-  if (selectedGame.value) {
-    newChallenge.value.game = selectedGame.value;
-    customGameName.value = ""; // Clear custom name when selecting from list
-  } else {
-    newChallenge.value.game = customGameName.value || "";
-  }
-};
-
-const onCustomGameInput = () => {
-  if (customGameName.value) {
-    newChallenge.value.game = customGameName.value;
-    selectedGame.value = ""; // Clear selected game when entering custom name
-  } else {
-    newChallenge.value.game = selectedGame.value || "";
-  }
-};
-
 onMounted(() => {
   getCurrentUser();
   loadChallenges();
-  loadGames();
   // Rafraîchir la liste toutes les 20 s pour que les autres users voient les nouveaux challenges
   refreshInterval = setInterval(() => loadChallenges(true), 20000);
   if (route?.query?.action === "create") {
@@ -623,235 +531,258 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.defis_section {
-  width: 100%;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-  color: white;
-  position: relative;
-  overflow: hidden;
-  border-radius: 24px;
-}
-
-.text_gradient {
-  background: linear-gradient(90deg, #FF9F00, #FF9F00);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.btn_primary {
-  background-color: #FF9F00;
-  color: #000;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: 0.3s;
-  cursor: pointer;
-}
-.btn_primary:hover {
-  background-color: #FF9F00;
-  transform: translateY(-2px);
-}
-.btn_primary.active {
-  background-color: #FF9F00;
-  box-shadow: 0 4px 15px rgba(255, 159, 0, 0.4);
-}
-
-.btn_secondary {
-  background: transparent;
-  border: 2px solid #FF9F00;
-  color: #FF9F00;
-  padding: 0.75rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: 0.3s;
-  cursor: pointer;
-}
-.btn_secondary:hover {
-  background-color: #FF9F00;
-  color: #000;
-}
-.btn_secondary.active {
-  background-color: #FF9F00;
-  color: #000;
-}
-
-.floating_card {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(20px);
-  border-radius: 24px;
-  padding: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-}
-
-.card_icon {
-  font-size: 3rem;
-}
-
-.card_content {
+/* Challenge card layout */
+.challenge-card {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  padding: 0;
+  overflow: hidden;
 }
 
-.card_label {
-  font-size: 0.9rem;
-  opacity: 0.9;
-  font-weight: 500;
+.challenge-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: rgb(var(--p3));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.card_value {
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: white;
+.challenge-timer {
+  font-size: 0.75rem;
+  color: rgb(var(--n3));
 }
 
-.defi_card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.defi_card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+.challenge-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.status {
+/* Matchup row */
+.matchup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0;
+}
+
+.matchup__player {
   font-size: 0.85rem;
-  letter-spacing: 0.5px;
-}
-.status-open {
-  background-color: #1f9d55;
-  color: #fff;
-}
-.status-closed {
-  background-color: #991b1b;
-  color: #fff;
+  color: rgb(var(--n8));
+  font-weight: 500;
+  max-width: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.btn_see_details {
-  background-color: #FF9F00;
-  color: #000;
-  border: none;
-  transition: 0.3s;
-  cursor: pointer;
-}
-.btn_see_details:hover {
-  background-color: #FF9F00;
-  transform: translateY(-2px);
-}
-
-.hero_badge {
-  background: rgba(255, 159, 0, 0.2);
-  color: #FF9F00;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
+.matchup__vs {
   font-size: 0.9rem;
-  font-weight: 600;
-}
-
-.hero_title {
-  font-size: 2.5rem;
   font-weight: 800;
-  color: white;
-  line-height: 1.2;
+  color: rgb(var(--r1));
+  letter-spacing: 0.05em;
 }
 
-.hero_subtitle {
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.6;
+/* Footer */
+.challenge-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
-.player {
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.9);
+.bet-amount {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: rgb(var(--g1));
 }
 
-.vs {
-  font-size: 1.2rem;
+.bet-amount i {
+  margin-right: 4px;
 }
 
-.montant {
-  font-size: 1.1rem;
+.challenge-actions {
+  display: flex;
+  gap: 0.4rem;
 }
 
-/* Popup styles */
-.popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(5px);
+.btn-sm {
+  padding: 0.3rem 0.8rem;
+  font-size: 0.8rem;
+}
+
+.btn-accept {
+  background: rgb(31, 157, 85);
+  color: #fff;
+  border: none;
+}
+
+.btn-accept:hover {
+  background: rgb(25, 130, 70);
+}
+
+.btn-cancel {
+  background: rgb(153, 27, 27);
+  color: #fff;
+  border: none;
+}
+
+.btn-cancel:hover {
+  background: rgb(130, 20, 20);
+}
+
+/* Refresh button */
+.refresh-btn {
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  padding: 0;
 }
 
-.popup-box {
-  max-width: 500px;
-  width: 90%;
-  max-height: 90vh;
-  overflow-y: auto;
-  background: rgba(26, 31, 58, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+/* Loading spinner */
+.spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 3px solid rgb(var(--n2));
+  border-top-color: rgb(var(--g1));
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto;
 }
 
-.popup-box .form-control {
-  color: white;
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
-.popup-box .form-control::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+.tw-empty__sub {
+  font-size: 0.9rem;
+  color: rgb(var(--n3));
+  margin-top: 0.4rem;
 }
 
-.popup-box .form-control:focus {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: #FF9F00;
-  color: white;
+.mt-4 { margin-top: 1.5rem; }
+.me-2 { margin-right: 0.5rem; }
+
+/* Modal form elements */
+.type-toggle {
+  display: flex;
+  gap: 0.75rem;
 }
 
-/* User suggestions dropdown */
-.user-suggestions {
-  background: #1a1f3a !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  z-index: 1000;
+.type-btn {
+  flex: 1;
+  justify-content: center;
+}
+
+/* Opponent search */
+.search-wrap {
+  position: relative;
+}
+
+.suggestions-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: rgb(var(--p2));
+  border: 1px solid rgb(var(--n2));
+  border-radius: 6px;
+  z-index: 200;
   max-height: 200px;
   overflow-y: auto;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
 .suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.suggestion-item:hover {
-  background-color: rgba(255, 159, 0, 0.2) !important;
+  border-bottom: 1px solid rgb(var(--n2));
+  transition: background 0.15s;
 }
 
 .suggestion-item:last-child {
   border-bottom: none;
 }
 
-/* Espace visible en haut de la page */
-.page-content-with-space {
-  padding-top: 90px; /* ajuste selon la hauteur réelle du header */
+.suggestion-item:hover {
+  background: rgba(var(--g1), 0.1);
 }
-/* responsive */
-@media (max-width: 768px) {
-  .page-content-with-space {
-    padding-top: 60px;
-  }
+
+.suggestion-icon {
+  color: rgb(var(--g1));
+  font-size: 0.9rem;
+}
+
+.suggestion-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgb(var(--n8));
+}
+
+.suggestion-email {
+  font-size: 0.75rem;
+  color: rgb(var(--n3));
+}
+
+/* Selected opponent chip */
+.selected-opponent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(var(--g1), 0.1);
+  border: 1px solid rgba(var(--g1), 0.3);
+  border-radius: 6px;
+}
+
+.selected-opponent__info {
+  font-size: 0.85rem;
+  color: rgb(var(--n8));
+}
+
+.selected-opponent__info i {
+  color: rgb(var(--g1));
+  margin-right: 6px;
+}
+
+.selected-opponent__clear {
+  background: none;
+  border: none;
+  color: rgb(var(--r1));
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.85rem;
+}
+
+/* Form helpers */
+.form-hint {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  color: rgb(var(--n3));
+}
+
+.label-optional {
+  font-weight: 400;
+  color: rgb(var(--n3));
+  font-size: 0.8rem;
+}
+
+.form-error {
+  padding: 0.6rem 0.9rem;
+  background: rgba(var(--r1), 0.12);
+  border: 1px solid rgba(var(--r1), 0.4);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: rgb(var(--r1));
 }
 </style>
-

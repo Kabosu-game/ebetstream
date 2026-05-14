@@ -26,7 +26,7 @@
                 <div class="col-lg-6 col-md-5 d-none d-md-block">
                   <div class="defis_image" data-aos="fade-left">
                     <div class="floating_card card_defis">
-                      <div class="card_icon">🎮</div>
+                      <div class="card_icon"><i class="fas fa-gamepad"></i></div>
                       <div class="card_content">
                         <span class="card_label">Top 10</span>
                         <span class="card_value">{{ partners.length }} Partners</span>
@@ -74,7 +74,7 @@
                           @error="handleImageError"
                         />
                         <div v-else class="w-100 h-100 d-flex align-items-center justify-content-center" 
-                             style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                             style="background: linear-gradient(135deg, #febd56 0%, #d98f25 100%);">
                           <i class="fas fa-building text-white fs-4"></i>
                         </div>
                       </div>
@@ -122,7 +122,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import apiClient from '@/utils/axios';
+import apiClient, { getApiErrorMessage } from '@/utils/axios';
 import { getStorageUrl } from '@/config/constants';
 import { fixImageUrl } from '@/utils/imageFixer';
 
@@ -175,13 +175,7 @@ const loadPartners = async () => {
     }
   } catch (err: any) {
     console.error('Error loading partners:', err);
-    if (err.response?.data?.message) {
-      error.value = err.response.data.message;
-    } else if (err.isNetworkError) {
-      error.value = 'Connection error. Check your internet connection.';
-    } else {
-      error.value = 'Error loading partners';
-    }
+    error.value = getApiErrorMessage(err);
   } finally {
     loading.value = false;
   }
@@ -340,6 +334,4 @@ onMounted(() => {
   }
 }
 </style>
-
-
 

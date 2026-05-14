@@ -1,135 +1,114 @@
 <template>
-  <div class="page-content-with-space">
-    <section class="content_section py-6 position-relative overflow-hidden pb-120">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12 gx-0 gx-lg-4">
-            <div class="top10__main">
-              <!-- Header Section -->
-              <div class="row w-100 h-100 align-items-center mb-8">
-                <div class="col-lg-8">
-                  <div class="content_header" data-aos="fade-right">
-                    <span class="hero_badge mb-3 d-inline-block">
-                      <i class="fas fa-headset me-2"></i>Support
-                    </span>
-                    <h1 class="hero_title mb-4">
-                      Support <span class="text_gradient">eBetStream</span>
-                    </h1>
-                    <p class="hero_subtitle mb-5">
-                      Our support team is available 24/7 to help you. Choose the method that works best for you.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row w-100 g-5">
-                <!-- Support Options -->
-                <div class="col-lg-8">
-                  <div class="support_options">
-                    <div class="support_card n11-bg rounded-8 p-5 mb-4">
-                      <div class="d-flex align-items-center gap-4 mb-4">
-                        <div class="support_icon">
-                          <i class="fas fa-envelope text_gradient fs-1"></i>
-                        </div>
-                        <div class="flex-grow-1">
-                          <h3 class="text-white mb-2">Email Support</h3>
-                          <p class="text-white mb-3" style="opacity: 0.8;">
-                            Send us an email and we will respond within 24 hours.
-                          </p>
-                          <a href="mailto:support@acmpt.online" class="text_gradient text-decoration-none">
-                            support@acmpt.online
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="support_card n11-bg rounded-8 p-5 mb-4">
-                      <div class="d-flex align-items-center gap-4 mb-4">
-                        <div class="support_icon">
-                          <i class="fas fa-comments text_gradient fs-1"></i>
-                        </div>
-                        <div class="flex-grow-1">
-                          <h3 class="text-white mb-2">Live Chat</h3>
-                          <p class="text-white mb-3" style="opacity: 0.8;">
-                            Chat with our team in real-time (available 24/7).
-                          </p>
-                          <button class="btn_primary" @click="openChat">
-                            <i class="fas fa-comment-dots me-2"></i>
-                            Open Chat
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="support_card n11-bg rounded-8 p-5">
-                      <div class="d-flex align-items-center gap-4">
-                        <div class="support_icon">
-                          <i class="fas fa-phone text_gradient fs-1"></i>
-                        </div>
-                        <div class="flex-grow-1">
-                          <h3 class="text-white mb-2">Phone Support</h3>
-                          <p class="text-white mb-3" style="opacity: 0.8;">
-                            Call us for immediate assistance.
-                          </p>
-                          <a href="tel:+1234567890" class="text_gradient text-decoration-none">
-                            +1 (234) 567-890
-                          </a>
-                          <p class="text-white mt-2 small" style="opacity: 0.7;">
-                            Mon-Fri: 9am-6pm (UTC)
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Quick Links -->
-                <div class="col-lg-4">
-                  <div class="quick_links_card n11-bg rounded-8 p-4">
-                    <h4 class="text-white mb-4">Useful Resources</h4>
-                    <div class="d-flex flex-column gap-3">
-                      <router-link to="/help" class="quick_link text-white text-decoration-none d-flex align-items-center gap-3 p-3 rounded-8" style="background: rgba(255,255,255,0.05);">
-                        <i class="fas fa-question-circle text_gradient"></i>
-                        <span>Help Center</span>
-                      </router-link>
-                      <router-link to="/faq" class="quick_link text-white text-decoration-none d-flex align-items-center gap-3 p-3 rounded-8" style="background: rgba(255,255,255,0.05);">
-                        <i class="fas fa-list-alt text_gradient"></i>
-                        <span>FAQ</span>
-                      </router-link>
-                      <router-link to="/contact" class="quick_link text-white text-decoration-none d-flex align-items-center gap-3 p-3 rounded-8" style="background: rgba(255,255,255,0.05);">
-                        <i class="fas fa-envelope text_gradient"></i>
-                        <span>Contact Form</span>
-                      </router-link>
-                      <router-link to="/privacy" class="quick_link text-white text-decoration-none d-flex align-items-center gap-3 p-3 rounded-8" style="background: rgba(255,255,255,0.05);">
-                        <i class="fas fa-shield-alt text_gradient"></i>
-                        <span>Privacy</span>
-                      </router-link>
-                    </div>
-                  </div>
-
-                  <!-- Status -->
-                  <div class="status_card n11-bg rounded-8 p-4 mt-4">
-                    <h4 class="text-white mb-3">Service Status</h4>
-                    <div class="status_item d-flex justify-content-between align-items-center mb-2">
-                      <span class="text-white" style="opacity: 0.8;">Platform</span>
-                      <span class="badge bg-success">Operational</span>
-                    </div>
-                    <div class="status_item d-flex justify-content-between align-items-center mb-2">
-                      <span class="text-white" style="opacity: 0.8;">Payments</span>
-                      <span class="badge bg-success">Operational</span>
-                    </div>
-                    <div class="status_item d-flex justify-content-between align-items-center">
-                      <span class="text-white" style="opacity: 0.8;">Streaming</span>
-                      <span class="badge bg-success">Operational</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+  <div class="tw-page">
+    <!-- Hero -->
+    <section class="tw-page-hero">
+      <div class="hero-inner">
+        <p class="tw-page-hero__sub"><i class="fas fa-headset me-2"></i>Support</p>
+        <h1 class="tw-page-hero__title">Support <span class="accent">Center</span></h1>
+        <p class="hero-desc">Our support team is available 24/7 to help you. Choose the contact method that works best for you.</p>
       </div>
     </section>
+
+    <div class="tw-page-body">
+      <!-- Support method cards -->
+      <section class="page-section">
+        <h2 class="section-title">Get in Touch</h2>
+        <div class="tw-grid-3">
+          <!-- Email -->
+          <div class="tw-card support-card">
+            <div class="support-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <h3 class="support-title">Email Support</h3>
+            <p class="support-desc">Send us an email and we will respond within 24 hours.</p>
+            <a href="mailto:support@acmpt.online" class="support-link">
+              support@acmpt.online <i class="fas fa-external-link-alt ms-1"></i>
+            </a>
+            <div class="support-meta">Response within 24h</div>
+          </div>
+
+          <!-- Chat -->
+          <div class="tw-card support-card">
+            <div class="support-icon">
+              <i class="fas fa-comments"></i>
+            </div>
+            <h3 class="support-title">Live Chat</h3>
+            <p class="support-desc">Chat with our team in real-time. Available 24/7.</p>
+            <button class="tw-btn tw-btn--primary" @click="openChat">
+              <i class="fas fa-comment-dots me-2"></i>Open Chat
+            </button>
+            <div class="support-meta online"><span class="dot"></span> Available now</div>
+          </div>
+
+          <!-- Phone -->
+          <div class="tw-card support-card">
+            <div class="support-icon">
+              <i class="fas fa-phone"></i>
+            </div>
+            <h3 class="support-title">Phone Support</h3>
+            <p class="support-desc">Call us for immediate assistance.</p>
+            <a href="tel:+1234567890" class="support-link">
+              +1 (234) 567-890 <i class="fas fa-external-link-alt ms-1"></i>
+            </a>
+            <div class="support-meta">Mon–Fri: 9am–6pm (UTC)</div>
+          </div>
+        </div>
+      </section>
+
+      <div class="tw-divider"></div>
+
+      <!-- Bottom row: quick links + status -->
+      <section class="bottom-row">
+        <!-- Quick links -->
+        <div class="tw-card links-card">
+          <h4 class="card-heading">Useful Resources</h4>
+          <div class="quick-links">
+            <router-link to="/help" class="quick-link">
+              <i class="fas fa-question-circle quick-link__icon"></i>
+              <span>Help Center</span>
+              <i class="fas fa-chevron-right quick-link__arrow"></i>
+            </router-link>
+            <router-link to="/faq" class="quick-link">
+              <i class="fas fa-list-alt quick-link__icon"></i>
+              <span>FAQ</span>
+              <i class="fas fa-chevron-right quick-link__arrow"></i>
+            </router-link>
+            <router-link to="/contact" class="quick-link">
+              <i class="fas fa-envelope quick-link__icon"></i>
+              <span>Contact Form</span>
+              <i class="fas fa-chevron-right quick-link__arrow"></i>
+            </router-link>
+            <router-link to="/privacy" class="quick-link">
+              <i class="fas fa-shield-alt quick-link__icon"></i>
+              <span>Privacy</span>
+              <i class="fas fa-chevron-right quick-link__arrow"></i>
+            </router-link>
+          </div>
+        </div>
+
+        <!-- Service status -->
+        <div class="tw-card status-card">
+          <h4 class="card-heading">Service Status</h4>
+          <div class="status-list">
+            <div class="status-row">
+              <span class="status-name">Platform</span>
+              <span class="status-badge operational"><i class="fas fa-circle me-1"></i>Operational</span>
+            </div>
+            <div class="tw-divider mini-divider"></div>
+            <div class="status-row">
+              <span class="status-name">Payments</span>
+              <span class="status-badge operational"><i class="fas fa-circle me-1"></i>Operational</span>
+            </div>
+            <div class="tw-divider mini-divider"></div>
+            <div class="status-row">
+              <span class="status-name">Streaming</span>
+              <span class="status-badge operational"><i class="fas fa-circle me-1"></i>Operational</span>
+            </div>
+          </div>
+          <p class="status-footer">All systems normal</p>
+        </div>
+      </section>
+    </div>
   </div>
 </template>
 
@@ -141,99 +120,228 @@ const openChat = () => {
 </script>
 
 <style scoped>
-.content_section {
-  width: 100%;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-  color: white;
-  position: relative;
-  overflow: hidden;
-  border-radius: 24px;
-}
-
-.support_card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.support_card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 159, 0, 0.3);
-}
-
-.quick_links_card, .status_card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-}
-
-.quick_link {
-  transition: all 0.3s ease;
-}
-
-.quick_link:hover {
-  background: rgba(255, 159, 0, 0.1) !important;
-  transform: translateX(5px);
-}
-
-.text_gradient {
-  background: linear-gradient(90deg, #FF9F00, #FF9F00);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.hero_badge {
-  background: rgba(255, 159, 0, 0.2);
-  color: #FF9F00;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-.hero_title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: white;
-  line-height: 1.2;
-}
-
-.hero_subtitle {
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.6;
-}
-
-.btn_primary {
-  background: linear-gradient(135deg, #FFD700, #FF9F00);
-  color: #000;
-  border: none;
-  padding: 0.75rem 2rem;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: 0.3s;
-  cursor: pointer;
-  display: inline-flex;
+/* Hero */
+.tw-page-hero {
+  display: flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 1.5rem 3rem;
+  background: linear-gradient(180deg, rgba(37,150,190,0.12) 0%, transparent 100%);
+  border-bottom: 1px solid rgba(37,150,190,0.15);
 }
 
-.btn_primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(255, 159, 0, 0.4);
+.hero-inner {
+  max-width: 620px;
 }
 
-.page-content-with-space {
-  padding-top: 90px;
+.hero-desc {
+  color: rgb(var(--n3));
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.accent {
+  color: rgb(var(--g1));
+}
+
+/* Body */
+.tw-page-body {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+.page-section {
+  margin-bottom: 2.5rem;
+}
+
+.section-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  margin-bottom: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Support cards */
+.support-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.support-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 10px;
+  background: rgba(37,150,190,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: rgb(var(--g1));
+  margin-bottom: 0.25rem;
+}
+
+.support-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  margin: 0;
+}
+
+.support-desc {
+  font-size: 0.85rem;
+  color: rgb(var(--n3));
+  line-height: 1.6;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.support-link {
+  color: rgb(var(--g1));
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.support-link:hover {
+  opacity: 0.8;
+}
+
+.support-meta {
+  font-size: 0.78rem;
+  color: rgb(var(--n3));
+  margin-top: auto;
+}
+
+.support-meta.online {
+  color: #3bc464;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #3bc464;
+  display: inline-block;
+}
+
+/* Bottom row */
+.bottom-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.card-heading {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  margin-bottom: 1rem;
+}
+
+/* Quick links */
+.quick-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.quick-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.9rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  color: rgb(var(--n8));
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.quick-link:hover {
+  background: rgba(37,150,190,0.12);
+  border-color: rgba(37,150,190,0.35);
+  transform: translateX(3px);
+}
+
+.quick-link__icon {
+  color: rgb(var(--g1));
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.quick-link__arrow {
+  margin-left: auto;
+  color: rgb(var(--n3));
+  font-size: 0.7rem;
+}
+
+/* Status */
+.status-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.mini-divider {
+  margin: 0.5rem 0;
+  opacity: 0.5;
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+}
+
+.status-name {
+  font-size: 0.88rem;
+  color: rgb(var(--n3));
+}
+
+.status-badge {
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+}
+
+.status-badge.operational {
+  background: rgba(59,196,100,0.15);
+  color: #3bc464;
+}
+
+.status-footer {
+  font-size: 0.78rem;
+  color: rgb(var(--n3));
+  margin-top: 1rem;
+  margin-bottom: 0;
+  text-align: center;
+  opacity: 0.7;
 }
 
 @media (max-width: 768px) {
-  .page-content-with-space {
-    padding-top: 60px;
+  .tw-page-hero {
+    padding: 2.5rem 1rem 2rem;
   }
-  
-  .hero_title {
-    font-size: 1.8rem;
+
+  .bottom-row {
+    grid-template-columns: 1fr;
   }
 }
 </style>
-

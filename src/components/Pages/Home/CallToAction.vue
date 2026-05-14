@@ -24,7 +24,7 @@
                           <span>Sign Up Now</span>
                           <i class="fas fa-arrow-right ms-2"></i>
                         </router-link>
-                        <router-link to="/pubg-mobile" class="btn_secondary btn-lg text-decoration-none">
+                        <router-link to="/about" class="btn_secondary btn-lg text-decoration-none">
                           <i class="fas fa-info-circle me-2"></i>
                           <span>Discover More</span>
                         </router-link>
@@ -32,11 +32,11 @@
                     </div>
                   </div>
 
-                  <!-- Colonne illustration / floating card 🚀 -->
+                  <!-- Colonne illustration / floating card <i class="fas fa-rocket"></i> -->
                   <div class="col-lg-6 col-md-5 d-none d-md-block">
                     <div class="top10_image" data-aos="fade-left">
                       <div class="floating_card card_top10">
-                        <div class="card_icon">🚀</div>
+                        <div class="card_icon"><i class="fas fa-rocket"></i></div>
                         <div class="card_content">
                           <span class="card_label">Adventure</span>
                           <span class="card_value">Cyber Gaming</span>

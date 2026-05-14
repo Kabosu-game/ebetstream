@@ -4,14 +4,6 @@ import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import apiClient from "@/utils/axios";
 import SideNav from "./SideNav.vue";
-import {
-  IconAdjustmentsHorizontal,
-  IconGift,
-  IconUserCircle,
-  IconX,
-  IconLogout,
-  IconUser,
-} from "@tabler/icons-vue";
 import NavItem from "./NavItem.vue";
 
 import logo from "@/assets/images/logoebet.png";
@@ -290,7 +282,7 @@ onBeforeUnmount(() => {
                 class="py-1 px-2 n11-bg rounded-5 position-relative"
                 @click="toggleBonusMenu"
               >
-                <IconGift height="24" width="24" class="fs-four" />
+                <i class="fas fa-gift fs-four" height="24" width="24" ></i>
                 <span
                   v-if="bonuses.length > 0"
                   class="fs-eight g1-bg px-1 rounded-5 position-absolute end-0 top-0"
@@ -396,7 +388,7 @@ onBeforeUnmount(() => {
                     class="user-menu-item d-flex align-items-center gap-2 w-100 text-start p-2 rounded-3 border-0 bg-transparent text-white text-decoration-none"
                     @click="userMenuOpen = false"
                   >
-                    <IconUser height="18" width="18" />
+                    <i class="fas fa-user" height="18" width="18"></i>
                     <span class="small">Profile</span>
                   </router-link>
                   
@@ -405,7 +397,7 @@ onBeforeUnmount(() => {
                     @click="toggleBonusMenuFromProfile"
                     class="user-menu-item d-flex align-items-center gap-2 w-100 text-start p-2 rounded-3 border-0 bg-transparent text-white d-sm-none"
                   >
-                    <IconGift height="18" width="18" />
+                    <i class="fas fa-gift" height="18" width="18"></i>
                     <span class="small">{{ t('bonus.myBonuses') }}</span>
                     <span
                       v-if="bonuses.length > 0"
@@ -418,7 +410,7 @@ onBeforeUnmount(() => {
                     @click="logout"
                     class="user-menu-item d-flex align-items-center gap-2 w-100 text-start p-2 rounded-3 border-0 bg-transparent text-white"
                   >
-                    <IconLogout height="18" width="18" />
+                    <i class="fas fa-sign-out-alt" height="18" width="18"></i>
                     <span class="small">Logout</span>
                   </button>
                 </div>

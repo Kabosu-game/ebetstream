@@ -1,221 +1,300 @@
 <script setup lang="ts">
-import { IconAdjustmentsHorizontal, IconX } from "@tabler/icons-vue";
 import { onBeforeUnmount, onMounted, ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-import NavItem from "./NavItem.vue";
 import Language from "./Language.vue";
 import SideNav from "./SideNav.vue";
 
 import logo from "@/assets/images/logoebet.png";
 
 const { t } = useI18n();
-
 const router = useRouter();
-const isCardExpanded = ref(false);
-const isMiddleExpanded = ref(false);
 
-// Check if user is authenticated
-const isAuthenticated = computed(() => {
-  const token = localStorage.getItem("auth_token");
-  return !!token;
-});
+const sidebarOpen = ref(false);
+const userMenuOpen = ref(false);
+const searchQuery = ref("");
 
-// Check if user is admin
-const isAdmin = computed(() => {
-  const userRole = localStorage.getItem("user_role");
-  return userRole === 'admin';
-});
+const isAuthenticated = computed(() => !!localStorage.getItem("auth_token"));
+const isAdmin = computed(() => localStorage.getItem("user_role") === "admin");
+const isAgent = computed(() => localStorage.getItem("user_role") === "agent");
+const username = computed(() => localStorage.getItem("username") || "Me");
+const userInitial = computed(() => (username.value[0] || "U").toUpperCase());
 
 const logout = () => {
   localStorage.removeItem("auth_token");
-  router.push("/");
-  // Reload to update the header
-  window.location.reload();
+  localStorage.removeItem("user_role");
+  localStorage.removeItem("username");
+  window.location.href = "/";
 };
 
-const toggleCard = () => {
-  isCardExpanded.value = !isCardExpanded.value;
-};
+const toggleSidebar = () => { sidebarOpen.value = !sidebarOpen.value; };
+const closeSidebar  = () => { sidebarOpen.value = false; };
+const toggleUserMenu = (e: Event) => { e.stopPropagation(); userMenuOpen.value = !userMenuOpen.value; };
+const closeUserMenu  = () => { userMenuOpen.value = false; };
 
-const toggleMiddle = () => {
-  isMiddleExpanded.value = !isMiddleExpanded.value;
-};
-
-const handleClickOutside = (event: MouseEvent) => {
-  const target = event.target as HTMLElement;
-  if (isCardExpanded.value && !target.closest(".navbar-toggler")) {
-    isCardExpanded.value = false;
+const handleSearch = () => {
+  if (searchQuery.value.trim()) {
+    router.push({ path: "/streams", query: { q: searchQuery.value.trim() } });
+    closeSidebar();
   }
 };
 
-const handleClickOutsideMiddle = (event: MouseEvent) => {
-  const target = event.target as HTMLElement;
-  if (isMiddleExpanded.value && !target.closest(".left-nav-icon")) {
-    isMiddleExpanded.value = false;
-  }
+const handleOutside = (e: MouseEvent) => {
+  const el = e.target as HTMLElement;
+  if (sidebarOpen.value && !el.closest(".left-nav-area") && !el.closest(".tw-mobile-toggle"))
+    sidebarOpen.value = false;
+  if (userMenuOpen.value && !el.closest(".hdr-user"))
+    userMenuOpen.value = false;
 };
 
-onMounted(() => {
-  document.body.addEventListener("click", handleClickOutside);
-  document.body.addEventListener("click", handleClickOutsideMiddle);
-});
-
-onBeforeUnmount(() => {
-  document.body.removeEventListener("click", handleClickOutside);
-  document.body.removeEventListener("click", handleClickOutsideMiddle);
-});
+onMounted(() => document.body.addEventListener("click", handleOutside));
+onBeforeUnmount(() => document.body.removeEventListener("click", handleOutside));
 </script>
 
 <template>
-  <header class="header-section2 header-section">
-    <nav
-      class="navbar navbar-expand-lg position-relative py-md-3 py-lg-6 workready"
-    >
-      <div
-        class="collapse navbar-collapse justify-content-between hide"
-        :class="{ show: isCardExpanded }"
-        id="navbar-content"
-      >
-        <ul
-          class="navbar-nav2fixed navbar-nav d-flex align-items-lg-center gap-4 gap-sm-5 py-2 py-lg-0 align-self-center p2-bg"
-        >
-          <NavItem />
-
-          <li v-if="!isAuthenticated" class="dropdown show-dropdown d-block d-sm-none">
-            <div class="d-flex align-items-center flex-wrap gap-3">
-              <router-link
-                to="/login"
-                class="cmn-btn second-alt px-xxl-11 rounded-2"
-                >{{ $t('common.login') }}</router-link
-              >
-              <router-link to="/create-account" class="cmn-btn px-xxl-11"
-                >{{ $t('common.signUp') }}</router-link
-              >
-            </div>
-          </li>
-          <li v-else-if="!isAdmin" class="dropdown show-dropdown d-block d-sm-none">
-            <div class="d-flex align-items-center flex-wrap gap-3">
-              <router-link
-                to="/dashboard"
-                class="cmn-btn px-xxl-11 rounded-2"
-                >{{ $t('common.dashboard') }}</router-link
-              >
-              <button
-                @click="logout"
-                class="cmn-btn second-alt px-xxl-11 rounded-2"
-                >{{ $t('common.logout') }}</button
-              >
-            </div>
-          </li>
-          <li v-else class="dropdown show-dropdown d-block d-sm-none">
-            <div class="d-flex align-items-center flex-wrap gap-3">
-              <router-link
-                to="/admin"
-                class="cmn-btn px-xxl-11 rounded-2"
-                >Admin</router-link
-              >
-              <button
-                @click="logout"
-                class="cmn-btn second-alt px-xxl-11 rounded-2"
-                >Logout</button
-              >
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div
-        class="right-area custom-pos position-relative d-flex gap-0 gap-lg-7 align-items-center me-5 me-xl-10"
-      >
-        <Language />
-        <template v-if="!isAuthenticated">
-          <router-link
-            to="/login"
-            class="cmn-btn second-alt px-xxl-11 rounded-2 me-5 me-lg-0 d-none d-sm-block"
-            >{{ $t('common.login') }}</router-link
-          >
-          <router-link
-            to="/create-account"
-            class="cmn-btn d-none px-xxl-11 d-sm-block d-lg-none d-xl-block"
-            >{{ $t('common.signUp') }}</router-link
-          >
-        </template>
-        <template v-else-if="!isAdmin">
-          <router-link
-            to="/dashboard"
-            class="cmn-btn px-xxl-11 rounded-2 me-5 me-lg-0 d-none d-sm-block"
-            >{{ $t('common.dashboard') }}</router-link
-          >
-          <button
-            @click="logout"
-            class="cmn-btn second-alt px-xxl-11 rounded-2 d-none d-sm-block d-lg-none d-xl-block"
-            >{{ $t('common.logout') }}</button
-          >
-        </template>
-        <template v-else>
-          <router-link
-            to="/admin"
-            class="cmn-btn px-xxl-11 rounded-2 me-5 me-lg-0 d-none d-sm-block"
-            >Admin</router-link
-          >
-          <button
-            @click="logout"
-            class="cmn-btn second-alt px-xxl-11 rounded-2 d-none d-sm-block d-lg-none d-xl-block"
-            >Logout</button
-          >
-        </template>
-      </div>
-      <button
-        @click="toggleCard"
-        class="navbar-toggler mt-1 mt-sm-2 mt-lg-0"
-        type="button"
-        data-bs-toggle="collapse"
-        aria-label="Navbar Toggler"
-        data-bs-target="#navbar-content"
-        aria-expanded="true"
-        id="nav-icon3"
-      >
-        <span></span><span></span><span></span><span></span>
-      </button>
-    </nav>
-    <div id="div10" class="navigation left-nav-area box3 position-fixed">
-      <div
-        class="logo-area slide-toggle3 trader-list position-fixed top-0 d-flex align-items-center justify-content-center pt-6 pt-md-8 gap-sm-4 gap-md-5 gap-lg-7 px-4 px-lg-8"
-      >
-        <router-link
-          class="navbar-brand d-center text-center gap-1 gap-lg-2 ms-lg-4"
-          to="/"
-        >
-          <img class="logo" width="180" height="46" :src="logo" alt="logoebet" />
-        </router-link>
-      </div>
-      <div
-        class="nav_aside px-5 p2-bg hide"
-        :class="{ show: isMiddleExpanded }"
-      >
-        <div class="nav-clsoeicon d-flex justify-content-end">
-          <IconX
-            @click="toggleMiddle"
-            width="32"
-            height="32"
-            class="ti ti-x left-nav-icon n8-color order-2 order-lg-0 d-block d-lg-none fs-three"
-          />
-        </div>
-        <SideNav />
-      </div>
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="left-nav-area" :class="{ 'mobile-open': sidebarOpen }">
+    <div class="logo-area">
+      <router-link class="navbar-brand" to="/" @click="closeSidebar">
+        <img class="logo" :src="logo" alt="eBetStream" />
+      </router-link>
     </div>
+    <div class="nav_aside">
+      <div class="nav-clsoeicon">
+        <button class="tw-icon-btn" @click="closeSidebar" aria-label="Close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <SideNav @nav-click="closeSidebar" />
+    </div>
+  </aside>
+
+  <div v-if="sidebarOpen" class="sidebar-overlay" @click="closeSidebar"></div>
+
+  <!-- ===== TOP BAR ===== -->
+  <header class="header-section2">
+    <nav class="navbar">
+
+      <!-- Hamburger (mobile) -->
+      <button class="navbar-toggler tw-mobile-toggle" @click.stop="toggleSidebar" aria-label="Menu">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <!-- Search -->
+      <div class="tw-search">
+        <input
+          v-model="searchQuery"
+          type="text"
+          :placeholder="t('common.search', 'Search…')"
+          @keyup.enter="handleSearch"
+        />
+        <i class="ti ti-search search-icon"></i>
+      </div>
+
+      <!-- Right actions -->
+      <div class="right-area">
+
+        <!-- Language (hidden on very small) -->
+        <Language class="hdr-lang" />
+
+        <!-- NOT authenticated -->
+        <template v-if="!isAuthenticated">
+          <router-link to="/login" class="cmn-btn second-alt hdr-btn-text">
+            {{ t('common.login') }}
+          </router-link>
+          <router-link to="/create-account" class="cmn-btn hdr-btn-text">
+            {{ t('common.signUp') }}
+          </router-link>
+          <!-- Mobile: icon-only login -->
+          <router-link to="/login" class="hdr-icon-btn hdr-btn-icon-only" aria-label="Login">
+            <i class="fas fa-user"></i>
+          </router-link>
+        </template>
+
+        <!-- Authenticated user -->
+        <template v-else>
+          <!-- Desktop buttons -->
+          <router-link
+            v-if="isAgent"
+            to="/agent-dashboard"
+            class="cmn-btn hdr-btn-text"
+          >Espace Agent</router-link>
+          <router-link
+            v-else-if="!isAdmin"
+            to="/dashboard"
+            class="cmn-btn hdr-btn-text"
+          >{{ t('common.dashboard') }}</router-link>
+          <router-link
+            v-else
+            to="/admin"
+            class="cmn-btn hdr-btn-text"
+          >Admin</router-link>
+
+          <button class="cmn-btn second-alt hdr-btn-text" @click="logout">
+            {{ t('common.logout') }}
+          </button>
+
+          <!-- Mobile/tablet: compact avatar + dropdown -->
+          <div class="hdr-user" @click.stop="toggleUserMenu">
+            <div class="hdr-user__avatar">{{ userInitial }}</div>
+            <!-- Dropdown -->
+            <div class="hdr-user__dropdown" :class="{ open: userMenuOpen }">
+              <router-link
+                v-if="isAgent"
+                to="/agent-dashboard"
+                class="hdr-user__item"
+                @click="closeUserMenu"
+              >
+                <i class="fas fa-user-shield"></i>
+                <span>Espace Agent</span>
+              </router-link>
+              <router-link
+                v-else-if="!isAdmin"
+                to="/dashboard"
+                class="hdr-user__item"
+                @click="closeUserMenu"
+              >
+                <i class="fas fa-th-large"></i>
+                <span>{{ t('common.dashboard') }}</span>
+              </router-link>
+              <router-link
+                v-else
+                to="/admin"
+                class="hdr-user__item"
+                @click="closeUserMenu"
+              >
+                <i class="fas fa-shield-alt"></i>
+                <span>Admin</span>
+              </router-link>
+              <div class="hdr-user__divider"></div>
+              <button class="hdr-user__item hdr-user__item--danger" @click="logout">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>{{ t('common.logout') }}</span>
+              </button>
+            </div>
+          </div>
+        </template>
+      </div>
+    </nav>
   </header>
-  <button
-    @click="toggleMiddle"
-    type="button"
-    class="middle-iconfixed position-fixed top-50 start-0 left-nav-icon"
-  >
-    <IconAdjustmentsHorizontal
-      width="38"
-      height="38"
-      class="ti ti-adjustments-horizontal n8-color d-block d-lg-none fs-two"
-    />
-  </button>
 </template>
 
-<style scoped></style>
+<style scoped>
+/* Desktop buttons visible, avatar hidden */
+.hdr-btn-text      { display: inline-flex; }
+.hdr-btn-icon-only { display: none; }
+.hdr-user          { display: none; }
+
+/* Tablet (≤900px): hide text buttons, show avatar dropdown */
+@media (max-width: 900px) {
+  .hdr-btn-text      { display: none !important; }
+  .hdr-btn-icon-only { display: none !important; }
+  .hdr-user          { display: block; position: relative; cursor: pointer; }
+}
+
+/* Mobile (≤575px): same but also icon-only login */
+@media (max-width: 575px) {
+  .hdr-lang          { display: none !important; }
+  .hdr-btn-icon-only { display: inline-flex; }
+}
+
+/* User avatar circle */
+.hdr-user__avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgb(var(--g1));
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(var(--g1), 0.4);
+  transition: border-color 0.2s;
+  user-select: none;
+}
+
+.hdr-user:hover .hdr-user__avatar,
+.hdr-user .open + .hdr-user__avatar {
+  border-color: rgb(var(--g1));
+}
+
+/* Dropdown panel */
+.hdr-user__dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 200px;
+  background: rgb(var(--p2));
+  border: 1px solid rgb(var(--n2));
+  border-radius: 8px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+  z-index: 999;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+
+  &.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}
+
+/* Dropdown items */
+.hdr-user__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgb(var(--n5));
+  text-decoration: none;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover {
+    background: rgba(var(--n8), 0.07);
+    color: rgb(var(--n8));
+  }
+
+  svg { flex-shrink: 0; color: rgb(var(--n3)); }
+}
+
+.hdr-user__item--danger {
+  color: rgb(var(--r1));
+  &:hover { background: rgba(var(--r1), 0.08); color: rgb(var(--r1)); }
+  svg { color: rgb(var(--r1)); }
+}
+
+.hdr-user__divider {
+  height: 1px;
+  background: rgb(var(--n2));
+  margin: 2px 0;
+}
+
+/* Icon-only login button */
+.hdr-icon-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(var(--n8), 0.08);
+  color: rgb(var(--n8));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: background 0.15s;
+  border: 1px solid rgba(var(--n8), 0.15);
+
+  &:hover { background: rgba(var(--n8), 0.15); }
+}
+</style>

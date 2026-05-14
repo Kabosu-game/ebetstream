@@ -490,7 +490,6 @@
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
-import { IconBallFootball } from "@tabler/icons-vue";
 import chealse from "@/assets/images/icon/chealse.png";
 import liverpool from "@/assets/images/icon/liverpool.png";
 </script>

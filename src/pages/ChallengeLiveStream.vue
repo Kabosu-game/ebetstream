@@ -1,36 +1,27 @@
 <template>
-  <div class="page-content-with-space">
-    <section class="defis_section py-6 position-relative overflow-hidden pb-120">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12 gx-0 gx-lg-4">
-            <div class="defis__main">
-
-              <!-- Loading State -->
-              <div v-if="loading" class="text-center py-5">
-                <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </div>
+  <div class="tw-page">
+<!-- Loading State -->
+              <div v-if="loading" class="tw-empty"><div class="spinner"></div></div>
 
               <!-- Error State -->
-              <div v-else-if="error" class="text-center py-5">
-                <div class="alert alert-danger">{{ error }}</div>
-                <button class="btn_primary mt-3" @click="$router.push('/challenges')">
+              <div v-else-if="error" class="tw-empty">
+      <div class="tw-empty__icon"><i class="fas fa-exclamation-triangle"></i></div>
+      <p class="tw-empty__title">{{ error }}</p>
+                <button class="tw-btn tw-btn--primary mt-3" @click="$router.push('/challenges')">
                   <i class="fas fa-arrow-left me-2"></i>Back to Challenges
                 </button>
               </div>
 
               <!-- Live Stream Content -->
               <div v-else-if="challenge">
-                <button class="btn_secondary mb-4" @click="$router.push(`/challenges/${challenge.id}`)">
+                <button class="tw-btn tw-btn--secondary tw-detail-back" @click="$router.push(`/challenges/${challenge.id}`)">
                   <i class="fas fa-arrow-left me-2"></i>Back to Challenge
                 </button>
 
                 <div class="row g-4">
                   <!-- Left Column - Video Player -->
                   <div class="col-lg-8">
-                    <div class="defi_card n11-bg rounded-8 p-0 mb-4 overflow-hidden">
+                    <div class="tw-content-block p-0 mb-4 overflow-hidden">
                       <div class="video_container position-relative" style="background: #000; aspect-ratio: 16/9;">
 
                         <!-- WebRTC Video : muted requis pour autoplay (politique navigateur) -->
@@ -100,21 +91,21 @@
                     </div>
 
                     <!-- Challenge Info -->
-                    <div class="defi_card n11-bg rounded-8 p-4">
-                      <h2 class="fw-bold mb-3 text-white">
-                        <span class="text_gradient">{{ challenge.game }}</span> Challenge
+                    <div class="tw-content-block">
+                      <h2 class="fw-bold mb-3">
+                        <span>{{ challenge.game }}</span> Challenge
                       </h2>
                       <div class="row g-3">
                         <div class="col-md-6">
                           <div class="info_item p-3 rounded-3 n11-bg">
                             <span class="text-white small d-block mb-1" style="opacity: 0.8;">Creator</span>
-                            <span class="fw-bold text-white">{{ challenge.creator?.username }}</span>
+                            <span class="fw-bold">{{ challenge.creator?.username }}</span>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="info_item p-3 rounded-3 n11-bg">
                             <span class="text-white small d-block mb-1" style="opacity: 0.8;">Opponent</span>
-                            <span class="fw-bold text-white">{{ challenge.opponent?.username || 'Waiting...' }}</span>
+                            <span class="fw-bold">{{ challenge.opponent?.username || 'Waiting...' }}</span>
                           </div>
                         </div>
                         <div class="col-md-6">
@@ -126,7 +117,7 @@
                         <div class="col-md-6">
                           <div class="info_item p-3 rounded-3 n11-bg">
                             <span class="text-white small d-block mb-1" style="opacity: 0.8;">Status</span>
-                            <span class="fw-bold text-white">{{ getStatusLabel(challenge.status) }}</span>
+                            <span class="fw-bold">{{ getStatusLabel(challenge.status) }}</span>
                           </div>
                         </div>
                       </div>
@@ -135,29 +126,29 @@
 
                   <!-- Right Column -->
                   <div class="col-lg-4">
-                    <div class="defi_card n11-bg rounded-8 p-4 mb-4">
-                      <h5 class="fw-bold mb-3 text-white">
+                    <div class="tw-content-block mb-4">
+                      <h5 class="fw-bold mb-3">
                         <i class="fas fa-chart-line me-2"></i>Live Stats
                       </h5>
                       <div class="mb-3">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                           <span class="text-white small" style="opacity: 0.8;">Viewers</span>
-                          <span class="fw-bold text-white">{{ challenge.viewer_count || 0 }}</span>
+                          <span class="fw-bold">{{ challenge.viewer_count || 0 }}</span>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mb-2">
                           <span class="text-white small" style="opacity: 0.8;">Started</span>
-                          <span class="fw-bold text-white">{{ formatTime(challenge.live_started_at) }}</span>
+                          <span class="fw-bold">{{ formatTime(challenge.live_started_at) }}</span>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
                           <span class="text-white small" style="opacity: 0.8;">Duration</span>
-                          <span class="fw-bold text-white">{{ getLiveDuration() }}</span>
+                          <span class="fw-bold">{{ getLiveDuration() }}</span>
                         </div>
                       </div>
                     </div>
 
                     <div v-if="challenge.creator_score !== null || challenge.opponent_score !== null"
-                      class="defi_card n11-bg rounded-8 p-4 mb-4">
-                      <h5 class="fw-bold mb-3 text-white">Scores</h5>
+                      class="tw-content-block mb-4">
+                      <h5 class="fw-bold mb-3">Scores</h5>
                       <div class="d-flex justify-content-between align-items-center mb-3">
                         <div class="text-center">
                           <div class="text-white small mb-1">{{ challenge.creator?.username }}</div>
@@ -173,11 +164,6 @@
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
   </div>
 </template>
 
@@ -218,7 +204,7 @@ let ws: WebSocket | null = null;
 let pc: RTCPeerConnection | null = null;
 let wsReconnectTimer: ReturnType<typeof setTimeout> | null = null;
 let retryTimer: ReturnType<typeof setTimeout> | null = null;
-// ✅ FIX — utiliser un flag "destroyed" pour bloquer tout après unmount
+// <i class="fas fa-check-circle" style="color:#00c853"></i> FIX — utiliser un flag "destroyed" pour bloquer tout après unmount
 let destroyed = false;
 let streamEnded = false;
 let refreshInterval: ReturnType<typeof setInterval> | null = null;
@@ -251,12 +237,12 @@ const startRetryTimer = () => {
   }, 10000);
 };
 
-// ✅ FIX #1 — Vérifier CONNECTING en plus de OPEN + vérifier destroyed
+// <i class="fas fa-check-circle" style="color:#00c853"></i> FIX #1 — Vérifier CONNECTING en plus de OPEN + vérifier destroyed
 const connectWebRTC = () => {
   if (!challenge.value) return;
-  // ✅ Ne rien faire si le composant est démonté
+  // <i class="fas fa-check-circle" style="color:#00c853"></i> Ne rien faire si le composant est démonté
   if (destroyed) return;
-  // ✅ Bloquer si déjà OPEN ou CONNECTING (évite double connexion)
+  // <i class="fas fa-check-circle" style="color:#00c853"></i> Bloquer si déjà OPEN ou CONNECTING (évite double connexion)
   if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) return;
 
   streamEnded = false;
@@ -304,7 +290,7 @@ const connectWebRTC = () => {
         showRetry.value = false;
         cleanupPeer();
         if (ws) {
-          // ✅ Neutraliser tous les handlers avant close
+          // <i class="fas fa-check-circle" style="color:#00c853"></i> Neutraliser tous les handlers avant close
           ws.onclose = null;
           ws.onerror = null;
           ws.onmessage = null;
@@ -408,7 +394,7 @@ const cleanupPeer = () => {
   }
 };
 
-// ✅ FIX #2 — cleanupAll vérifie readyState avant close() + neutralise tous les handlers
+// <i class="fas fa-check-circle" style="color:#00c853"></i> FIX #2 — cleanupAll vérifie readyState avant close() + neutralise tous les handlers
 const cleanupAll = () => {
   destroyed = true;
   if (retryTimer) clearTimeout(retryTimer);
@@ -420,7 +406,7 @@ const cleanupAll = () => {
     ws.onerror = null;
     ws.onmessage = null;
     ws.onopen = null;
-    // ✅ Ne fermer que si pas déjà fermé ou en cours de fermeture
+    // <i class="fas fa-check-circle" style="color:#00c853"></i> Ne fermer que si pas déjà fermé ou en cours de fermeture
     if (ws.readyState !== WebSocket.CLOSED && ws.readyState !== WebSocket.CLOSING) {
       ws.close();
     }
@@ -431,7 +417,7 @@ const cleanupAll = () => {
   wsStatus.value = 'disconnected';
 };
 
-// ✅ FIX #3 — retryConnection remet destroyed = false et streamEnded = false AVANT setTimeout
+// <i class="fas fa-check-circle" style="color:#00c853"></i> FIX #3 — retryConnection remet destroyed = false et streamEnded = false AVANT setTimeout
 const retryConnection = () => {
   showRetry.value = false;
   hasRemoteStream.value = false;
@@ -453,7 +439,7 @@ const retryConnection = () => {
   }
   if (videoPlayer.value) videoPlayer.value.srcObject = null;
   wsStatus.value = 'disconnected';
-  // ✅ Reset des flags bloquants AVANT de reconnecter
+  // <i class="fas fa-check-circle" style="color:#00c853"></i> Reset des flags bloquants AVANT de reconnecter
   destroyed = false;
   streamEnded = false;
   setTimeout(connectWebRTC, 800);
@@ -522,7 +508,7 @@ const refreshChallengeData = async (connectIfLive = true) => {
         challenge.value.opponent_score = data.opponent_score;
         challenge.value.status = data.status;
       }
-      // ✅ Reconnexion uniquement si WS vraiment déconnecté (pas CONNECTING)
+      // <i class="fas fa-check-circle" style="color:#00c853"></i> Reconnexion uniquement si WS vraiment déconnecté (pas CONNECTING)
       if (
         connectIfLive &&
         data.is_live &&
@@ -556,81 +542,3 @@ onUnmounted(() => {
 });
 </script>
 
-<style scoped>
-.defis_section {
-  width: 100%;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-  color: white;
-  position: relative;
-  overflow: hidden;
-  border-radius: 24px;
-}
-
-.text_gradient {
-  background: linear-gradient(90deg, #FF9F00, #FF9F00);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.btn_primary {
-  background-color: #FF9F00;
-  color: #000;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: 0.3s;
-  cursor: pointer;
-}
-
-.btn_secondary {
-  background: transparent;
-  border: 2px solid #FF9F00;
-  color: #FF9F00;
-  padding: 0.75rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: 0.3s;
-  cursor: pointer;
-}
-
-.defi_card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-}
-
-.n10-color {
-  color: #FF9F00;
-}
-
-.n11-bg {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.info_item {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.page-content-with-space {
-  padding-top: 90px;
-}
-
-@keyframes pulse {
-
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.5;
-  }
-}
-
-@media (max-width: 768px) {
-  .page-content-with-space {
-    padding-top: 60px;
-  }
-}
-</style>

@@ -85,7 +85,7 @@
                     title="View Details"
                     style="min-width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center; cursor: pointer;"
                   >
-                    <IconEye :size="16" />
+                    <i class="fas fa-eye"></i>
                   </button>
                   <button 
                     v-if="request.status !== 'approved' && request.status !== 'rejected'"
@@ -94,7 +94,7 @@
                     title="Approve"
                     style="min-width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"
                   >
-                    <IconCheck :size="16" />
+                    <i class="fas fa-check"></i>
                   </button>
                   <button 
                     v-if="request.status !== 'approved' && request.status !== 'rejected'"
@@ -103,7 +103,7 @@
                     title="Reject"
                     style="min-width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"
                   >
-                    <IconX :size="16" />
+                    <i class="fas fa-times"></i>
                   </button>
                 </div>
               </td>
@@ -355,7 +355,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 import apiClient from '@/utils/axios';
-import { IconEye, IconCheck, IconX } from '@tabler/icons-vue';
 
 interface AgentRequest {
   id: number;

@@ -1,108 +1,92 @@
 <template>
-  <div class="page-content-with-space">
-    <!-- Section Ambassadeurs -->
-    <section class="defis_section py-6 position-relative overflow-hidden pb-120">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12 gx-0 gx-lg-4">
-            <div class="defis__main">
-              <!-- Header Section -->
-              <div class="row h-100 align-items-center mb-5">
-                <div class="col-lg-6 col-md-7">
-                  <div class="defis_content" data-aos="fade-right">
-                    <span class="hero_badge mb-3 d-inline-block">
-                      <i class="fas fa-user-tie me-2"></i>Top Ambassadors
-                    </span>
-                    <h2 class="hero_title mb-4">
-                      The Best <span class="text_gradient">Ambassadors</span><br />
-                      this week
-                    </h2>
-                    <p class="hero_subtitle mb-5">
-                      Discover the most active and inspiring ambassadors and follow their performances.
-                    </p>
-                  </div>
-                </div>
+  <div class="tw-page">
+    <!-- Hero -->
+    <div class="tw-page-hero">
+      <div class="tw-page-hero__title">
+        <span class="hero-icon">
+          <i class="fas fa-user-tie"></i>
+        </span>
+        Ambassadors
+      </div>
+      <p class="tw-page-hero__sub">
+        Discover the most active and inspiring ambassadors of the week and follow their performances.
+      </p>
+    </div>
 
-                <!-- Colonne image / carte -->
-                <div class="col-lg-6 col-md-5 d-none d-md-block">
-                  <div class="defis_image" data-aos="fade-left">
-                    <div class="floating_card card_defis">
-                      <div class="card_icon">👑</div>
-                      <div class="card_content">
-                        <span class="card_label">Top 10</span>
-                        <span class="card_value">{{ ambassadors.length }} Ambassadors</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+    <!-- Section header -->
+    <div class="tw-section-header">
+      <div class="tw-section-title">
+        <span class="tw-section-icon"><i class="fas fa-crown"></i></span>
+        Top Ambassadors
+      </div>
+      <span class="count-badge">{{ ambassadors.length }} ranked</span>
+    </div>
 
-              <!-- Liste des ambassadeurs -->
-              <div v-if="loading" class="row mt-5">
-                <div class="col-12 text-center py-5">
-                  <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-                    <span class="visually-hidden">Loading...</span>
-                  </div>
-                </div>
-              </div>
-              <div v-else-if="ambassadors.length > 0" class="row mt-5 g-4">
-                <div v-for="(ambassador, index) in ambassadors" :key="ambassador.id" class="col-12 col-md-6 col-lg-4">
-                  <div class="defi_card n11-bg rounded-8 p-4 h-100 d-flex flex-column" 
-                       style="cursor: pointer;" 
-                       @click="viewAmbassador(ambassador.id)">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                      <span class="ambassador_rank fw-bold" style="font-size: 1.5rem; color: #FFD700;">
-                        #{{ index + 1 }}
-                      </span>
-                      <span class="badge bg-warning text-dark px-3 py-2 fw-bold">
-                        {{ ambassador.score }} pts
-                      </span>
-                    </div>
-                    
-                    <div class="d-flex align-items-center gap-3 mb-3">
-                      <div class="ambassador_avatar rounded-circle overflow-hidden" 
-                           style="width: 60px; height: 60px; flex-shrink: 0; border: 2px solid rgba(255, 255, 255, 0.3);">
-                        <img 
-                          v-if="ambassador.avatar_url" 
-                          :src="ambassador.avatar_url" 
-                          :alt="ambassador.name"
-                          class="w-100 h-100"
-                          style="object-fit: cover;"
-                        />
-                        <div v-else class="w-100 h-100 d-flex align-items-center justify-content-center" 
-                             style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                          <i class="fas fa-user text-white fs-4"></i>
-                        </div>
-                      </div>
-                      <div class="flex-grow-1">
-                        <h5 class="fw-bold mb-1 text-white">{{ ambassador.name }}</h5>
-                        <p class="text-white small mb-0" style="opacity: 0.8;">@{{ ambassador.username }}</p>
-                      </div>
-                    </div>
+    <!-- Loading state -->
+    <div v-if="loading" class="tw-empty">
+      <div class="tw-empty__icon">
+        <i class="fas fa-spinner fa-spin"></i>
+      </div>
+      <p class="tw-empty__title">Loading ambassadors...</p>
+    </div>
 
-                    <div v-if="ambassador.country" class="mb-3">
-                      <span class="text-white small" style="opacity: 0.8;">
-                        <i class="fas fa-map-marker-alt me-1"></i>{{ ambassador.country }}
-                      </span>
-                    </div>
+    <!-- Ambassador grid -->
+    <div v-else-if="ambassadors.length > 0" class="tw-grid-3">
+      <div
+        v-for="(ambassador, index) in ambassadors"
+        :key="ambassador.id"
+        class="tw-card tw-card--clickable amb-card"
+        @click="viewAmbassador(ambassador.id)"
+      >
+        <!-- Rank + score row -->
+        <div class="amb-card__topbar">
+          <span class="amb-rank" :class="{ 'amb-rank--gold': index === 0, 'amb-rank--silver': index === 1, 'amb-rank--bronze': index === 2 }">
+            #{{ index + 1 }}
+          </span>
+          <span class="tw-badge amb-score">
+            <i class="fas fa-star"></i>
+            {{ ambassador.score }} pts
+          </span>
+        </div>
 
-                    <p v-if="ambassador.bio" class="text-white small mb-0" style="opacity: 0.8; line-height: 1.5;">
-                      {{ ambassador.bio }}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div v-else class="row mt-5">
-                <div class="col-12 text-center py-5">
-                  <p class="text-white" style="opacity: 0.7;">No ambassadors available at the moment.</p>
-                </div>
-              </div>
-              <!-- /Liste des ambassadeurs -->
-            </div>
+        <!-- Avatar + identity -->
+        <div class="amb-card__profile">
+          <div class="tw-avatar amb-avatar">
+            <img
+              v-if="ambassador.avatar_url"
+              :src="ambassador.avatar_url"
+              :alt="ambassador.name"
+            />
+            <span v-else class="amb-avatar__fallback">
+              <i class="fas fa-user"></i>
+            </span>
+          </div>
+          <div class="amb-identity">
+            <span class="tw-card__title">{{ ambassador.name }}</span>
+            <span class="tw-card__sub">@{{ ambassador.username }}</span>
           </div>
         </div>
+
+        <!-- Country -->
+        <div v-if="ambassador.country" class="amb-country">
+          <i class="fas fa-map-marker-alt"></i>
+          {{ ambassador.country }}
+        </div>
+
+        <!-- Bio -->
+        <p v-if="ambassador.bio" class="amb-bio">
+          {{ ambassador.bio }}
+        </p>
       </div>
-    </section>
+    </div>
+
+    <!-- Empty state -->
+    <div v-else class="tw-empty">
+      <div class="tw-empty__icon">
+        <i class="fas fa-users-slash"></i>
+      </div>
+      <p class="tw-empty__title">No ambassadors available at the moment.</p>
+    </div>
   </div>
 </template>
 
@@ -131,7 +115,7 @@ const loadAmbassadors = async () => {
   try {
     loading.value = true;
     error.value = '';
-    
+
     const response = await apiClient.get('/ambassadors', {
       params: { limit: 100 } // Get all ambassadors
     });
@@ -157,139 +141,124 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.defis_section {
-  width: 100%;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-  color: white;
-  position: relative;
-  overflow: hidden;
-  border-radius: 24px;
-}
-
-.text_gradient {
-  background: linear-gradient(90deg, #FF9F00, #FF9F00);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.btn_primary {
-  background-color: #FF9F00;
-  color: #000;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: 0.3s;
-  cursor: pointer;
-}
-.btn_primary:hover {
-  background-color: #FF9F00;
-  transform: translateY(-2px);
-}
-.btn_primary.active {
-  background-color: #FF9F00;
-  box-shadow: 0 4px 15px rgba(255, 159, 0, 0.4);
-}
-
-.btn_secondary {
-  background: transparent;
-  border: 2px solid #FF9F00;
-  color: #FF9F00;
-  padding: 0.75rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: 0.3s;
-  cursor: pointer;
-}
-.btn_secondary:hover {
-  background-color: #FF9F00;
-  color: #000;
-}
-.btn_secondary.active {
-  background-color: #FF9F00;
-  color: #000;
-}
-
-.floating_card {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(20px);
-  border-radius: 24px;
-  padding: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  display: flex;
+/* ── Ambassador card extras ── */
+.hero-icon {
+  display: inline-flex;
   align-items: center;
-  gap: 1.5rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: rgba(var(--g1), 0.15);
+  color: rgb(var(--g1));
+  font-size: 1rem;
+  margin-right: 0.5rem;
+  vertical-align: middle;
 }
 
-.card_icon {
-  font-size: 3rem;
+.count-badge {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgb(var(--n3));
+  background: rgba(var(--n2), 1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
 }
 
-.card_content {
+/* Card top bar */
+.amb-card {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
+  padding: 1.25rem;
 }
 
-.card_label {
-  font-size: 0.9rem;
-  opacity: 0.9;
-  font-weight: 500;
+.amb-card__topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.card_value {
-  font-size: 1.8rem;
+.amb-rank {
+  font-size: 1.25rem;
   font-weight: 800;
-  color: white;
+  color: rgb(var(--n3));
+  letter-spacing: -0.5px;
 }
 
-.defi_card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.defi_card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 159, 0, 0.3);
+.amb-rank--gold  { color: #FFD700; }
+.amb-rank--silver { color: #C0C0C0; }
+.amb-rank--bronze { color: #CD7F32; }
+
+.amb-score {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
 }
 
-.hero_badge {
-  background: rgba(255, 159, 0, 0.2);
-  color: #FF9F00;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 600;
+/* Profile row */
+.amb-card__profile {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
 }
 
-.hero_title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: white;
-  line-height: 1.2;
+/* Avatar */
+.amb-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid rgba(var(--g1), 0.35);
+  background: rgb(var(--p3));
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.hero_subtitle {
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.6;
+.amb-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-/* Espace visible en haut de la page */
-.page-content-with-space {
-  padding-top: 90px; /* ajuste selon la hauteur réelle du header */
+.amb-avatar__fallback {
+  font-size: 1.4rem;
+  color: rgb(var(--n3));
 }
-/* responsive */
-@media (max-width: 768px) {
-  .page-content-with-space {
-    padding-top: 60px;
-  }
-  
-  .hero_title {
-    font-size: 1.8rem;
-  }
+
+.amb-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+/* Country */
+.amb-country {
+  font-size: 0.8rem;
+  color: rgb(var(--n3));
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.amb-country i {
+  color: rgb(var(--g1));
+  font-size: 0.72rem;
+}
+
+/* Bio */
+.amb-bio {
+  font-size: 0.8rem;
+  color: rgb(var(--n3));
+  line-height: 1.55;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 </style>

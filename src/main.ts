@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import "./style.css";
 import { router } from "./route";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import "@tabler/icons-webfont/tabler-icons.min.css";
 import "./assets/scss/style.scss";
 import i18n from "./i18n";

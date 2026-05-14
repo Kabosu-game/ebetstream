@@ -66,21 +66,21 @@
                     @click="viewDetails(cert)" 
                     title="View Details"
                   >
-                    <IconEye :size="16" />
+                    <i class="fas fa-eye"></i>
                   </button>
                   <button 
                     class="btn btn-sm btn-primary d-flex align-items-center justify-content-center" 
                     @click="approveCertification(cert.id)" 
                     title="Approve"
                   >
-                    <IconCheck :size="16" />
+                    <i class="fas fa-check"></i>
                   </button>
                   <button 
                     class="btn btn-sm btn-danger d-flex align-items-center justify-content-center" 
                     @click="showRejectModal(cert)" 
                     title="Reject"
                   >
-                    <IconX :size="16" />
+                    <i class="fas fa-times"></i>
                   </button>
                 </div>
                 <div v-else class="d-flex gap-2 justify-content-center">
@@ -89,7 +89,7 @@
                     @click="viewDetails(cert)" 
                     title="View Details"
                   >
-                    <IconEye :size="16" />
+                    <i class="fas fa-eye"></i>
                   </button>
                   <span v-if="cert.reviewed_by" class="text-white-50 small">
                     Reviewed by: {{ cert.reviewer?.username || cert.reviewer?.email || 'Admin' }}
@@ -141,8 +141,8 @@
                   <template v-for="(condition, key) in selectedCert.verification_data" :key="key">
                     <div v-if="String(key) !== 'all_met'" class="mb-2">
                       <span :class="condition.met ? 'text-success' : 'text-danger'">
-                        <IconCheck v-if="condition.met" :size="16" class="me-1" />
-                        <IconX v-else :size="16" class="me-1" />
+                        <i class="fas fa-check me-1" v-if="condition.met"  ></i>
+                        <i class="fas fa-times me-1" v-else  ></i>
                         {{ condition.message }}
                       </span>
                     </div>
@@ -199,7 +199,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import apiClient from '@/utils/axios';
-import { IconCheck, IconX, IconEye } from '@tabler/icons-vue';
 
 interface CertificationRequest {
   id: number;

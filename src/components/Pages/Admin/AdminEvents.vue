@@ -6,7 +6,7 @@
         <p class="text-white-50">Manage all platform events</p>
       </div>
       <button class="btn_primary" @click="openCreateModal">
-        <IconPlus :size="18" class="me-2" />Create Event
+        <i class="fas fa-plus me-2"  ></i>Create Event
       </button>
     </div>
 
@@ -101,14 +101,14 @@
                     @click="editEvent(event)" 
                     title="Edit Event"
                   >
-                    <IconPencil :size="16" />
+                    <IconPencil />
                   </button>
                   <button 
                     class="btn btn-sm btn-danger" 
                     @click="deleteEvent(event.id)" 
                     title="Delete Event"
                   >
-                    <IconTrash :size="16" />
+                    <i class="fas fa-trash"></i>
                   </button>
                 </div>
               </td>
@@ -345,7 +345,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 import apiClient from '@/utils/axios';
-import { IconPlus, IconPencil, IconTrash } from '@tabler/icons-vue';
 
 interface Event {
   id: number;

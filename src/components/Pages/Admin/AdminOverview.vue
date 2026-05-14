@@ -78,7 +78,7 @@
       <div class="rank-table-card">
         <div class="rtc-header">
           <div class="rtc-title">
-            <i class="ti ti-award"></i>
+            <i class="fas fa-award"></i>
             <span>Top 10 Joueurs</span>
             <span class="rtc-period">cette semaine</span>
           </div>
@@ -95,7 +95,7 @@
             <div class="rank-badge" :class="getRankClass(idx)">{{ idx + 1 }}</div>
             <div class="rank-avatar">
               <img v-if="player.avatar_url" :src="player.avatar_url" :alt="player.name" />
-              <i v-else class="ti ti-user"></i>
+              <i v-else class="fas fa-user"></i>
             </div>
             <div class="rank-info">
               <span class="rank-name">{{ player.name }}</span>
@@ -113,7 +113,7 @@
       <div class="rank-table-card">
         <div class="rtc-header">
           <div class="rtc-title">
-            <i class="ti ti-star"></i>
+            <i class="fas fa-star"></i>
             <span>Top 10 Ambassadeurs</span>
             <span class="rtc-period">cette semaine</span>
           </div>
@@ -130,7 +130,7 @@
             <div class="rank-badge" :class="getRankClass(idx)">{{ idx + 1 }}</div>
             <div class="rank-avatar">
               <img v-if="amb.avatar_url" :src="amb.avatar_url" :alt="amb.name" />
-              <i v-else class="ti ti-user"></i>
+              <i v-else class="fas fa-user"></i>
             </div>
             <div class="rank-info">
               <span class="rank-name">{{ amb.name }}</span>
@@ -149,7 +149,7 @@
     <div class="partners-card">
       <div class="rtc-header">
         <div class="rtc-title">
-          <i class="ti ti-building"></i>
+          <i class="fas fa-building"></i>
           <span>Partenaires développeurs</span>
         </div>
         <div v-if="loadingPartners" class="rtc-loader"><div class="spin"></div></div>
@@ -162,14 +162,14 @@
         <div v-for="p in topPartners" :key="p.id" class="partner-chip">
           <div class="partner-chip-avatar">
             <img v-if="p.avatar_url" :src="p.avatar_url" :alt="p.name" />
-            <i v-else class="ti ti-building"></i>
+            <i v-else class="fas fa-building"></i>
           </div>
           <div class="partner-chip-info">
             <span class="partner-chip-name">{{ p.name }}</span>
             <span class="partner-chip-spec">{{ p.specialty || 'Développeur' }}</span>
           </div>
           <span v-if="p.country" class="partner-chip-country">
-            <i class="ti ti-map-pin"></i> {{ p.country }}
+            <i class="fas fa-map-marker-alt"></i> {{ p.country }}
           </span>
         </div>
       </div>

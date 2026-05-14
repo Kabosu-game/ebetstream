@@ -1,135 +1,140 @@
 <template>
-  <div class="page-content-with-space">
-    <section class="defis_section py-6 position-relative overflow-hidden pb-120">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12 gx-0 gx-lg-4">
-            <div class="defis__main">
-              <!-- Header -->
-              <div class="text-center mb-5">
-                <h1 class="text-white fw-bold mb-3">Become a Certified Referee</h1>
-                <p class="text-white-50">Join our team of certified referees and ensure fairness in competitions</p>
-              </div>
+  <div class="tw-page">
+    <!-- Hero -->
+    <section class="tw-page-hero">
+      <div class="hero-inner">
+        <p class="tw-page-hero__sub"><i class="fas fa-gavel me-2"></i>Certification</p>
+        <h1 class="tw-page-hero__title">Become a <span class="accent">Referee</span></h1>
+        <p class="hero-desc">Join our team of certified referees and ensure fairness in competitions.</p>
+      </div>
+    </section>
 
-              <!-- Conditions -->
-              <div class="defi_card n11-bg rounded-8 p-4 p-lg-5 mb-4">
-                <h2 class="text-white fw-bold mb-4">
-                  <i class="fas fa-check-circle me-2 text-warning"></i>
-                  Conditions to Become a Certified Referee
-                </h2>
-                <ul class="conditions-list text-white">
-                  <li>Pass and succeed an Ebetstream refereeing test</li>
-                  <li>Have good knowledge of games, rules, and disputes</li>
-                  <li>Be able to record, verify, and validate evidence</li>
-                  <li>Have a fast response time (minimum availability)</li>
-                  <li>Commit to absolute neutrality</li>
-                </ul>
-              </div>
+    <div class="tw-page-body">
 
-              <!-- Documents requis -->
-              <div class="defi_card n11-bg rounded-8 p-4 p-lg-5 mb-4">
-                <h2 class="text-white fw-bold mb-4">
-                  <i class="fas fa-file-alt me-2 text-warning"></i>
-                  Required Documents
-                </h2>
-                <div class="mb-3">
-                  <h5 class="text-white mb-3">Identity Documents (required)</h5>
-                  <ul class="text-white-50">
-                    <li>ID Card / Passport (front and back)</li>
-                    <li>Selfie for face verification (anti-fraud)</li>
-                  </ul>
-                </div>
-                <div>
-                  <h5 class="text-white mb-3">Specific Documents for Referees</h5>
-                  <ul class="text-white-50">
-                    <li>Mini CV (experience in gaming, refereeing, moderation)</li>
-                    <li>Short presentation video (15–30 sec)</li>
-                    <li>Proof of activity in gaming communities (Discord, Facebook, etc.)</li>
-                  </ul>
-                </div>
-              </div>
+      <!-- Conditions + Documents: two columns -->
+      <section class="two-col-section">
+        <!-- Conditions -->
+        <div class="tw-card info-card">
+          <div class="card-header-row">
+            <div class="card-icon"><i class="fas fa-check-circle"></i></div>
+            <h3 class="card-title">Requirements</h3>
+          </div>
+          <ul class="check-list">
+            <li>Pass and succeed an Ebetstream refereeing test</li>
+            <li>Have good knowledge of games, rules, and disputes</li>
+            <li>Be able to record, verify, and validate evidence</li>
+            <li>Have a fast response time (minimum availability)</li>
+            <li>Commit to absolute neutrality</li>
+          </ul>
+        </div>
 
-              <!-- Processus -->
-              <div class="defi_card n11-bg rounded-8 p-4 p-lg-5 mb-4">
-                <h2 class="text-white fw-bold mb-4">
-                  <i class="fas fa-list-ol me-2 text-warning"></i>
-                  Validation Process
-                </h2>
-                <div class="process-steps">
-                  <div class="step-item mb-3">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                      <h5 class="text-white mb-2">Submission</h5>
-                      <p class="text-white-50 mb-0">The candidate fills out a form + submits documents</p>
-                    </div>
-                  </div>
-                  <div class="step-item mb-3">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                      <h5 class="text-white mb-2">Verification</h5>
-                      <p class="text-white-50 mb-0">The Ebetstream team verifies: identity, account history, behavior, documents provided</p>
-                    </div>
-                  </div>
-                  <div class="step-item mb-3">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                      <h5 class="text-white mb-2">Test</h5>
-                      <p class="text-white-50 mb-0">Refereeing test</p>
-                    </div>
-                  </div>
-                  <div class="step-item mb-3">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                      <h5 class="text-white mb-2">Quick Interview (optional)</h5>
-                      <p class="text-white-50 mb-0">5-minute video call or video recording</p>
-                    </div>
-                  </div>
-                  <div class="step-item mb-3">
-                    <div class="step-number">5</div>
-                    <div class="step-content">
-                      <h5 class="text-white mb-2">Validation</h5>
-                      <p class="text-white-50 mb-0">Awarding of an official badge + access to advanced tools</p>
-                    </div>
-                  </div>
-                  <div class="step-item">
-                    <div class="step-number">6</div>
-                    <div class="step-content">
-                      <h5 class="text-white mb-2">Training</h5>
-                      <p class="text-white-50 mb-0">Mini-guides or videos provided by Ebetstream</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        <!-- Documents -->
+        <div class="tw-card info-card">
+          <div class="card-header-row">
+            <div class="card-icon docs"><i class="fas fa-file-alt"></i></div>
+            <h3 class="card-title">Required Documents</h3>
+          </div>
+          <div class="doc-group">
+            <h5 class="doc-group-title">Identity Documents <span class="required-tag">Required</span></h5>
+            <ul class="doc-list">
+              <li>ID Card / Passport (front and back)</li>
+              <li>Selfie for face verification (anti-fraud)</li>
+            </ul>
+          </div>
+          <div class="tw-divider mini"></div>
+          <div class="doc-group">
+            <h5 class="doc-group-title">Referee-Specific Documents</h5>
+            <ul class="doc-list">
+              <li>Mini CV (experience in gaming, refereeing, moderation)</li>
+              <li>Short presentation video (15–30 sec)</li>
+              <li>Proof of activity in gaming communities (Discord, Facebook, etc.)</li>
+            </ul>
+          </div>
+        </div>
+      </section>
 
-              <!-- Critères de disqualification -->
-              <div class="defi_card n11-bg rounded-8 p-4 p-lg-5 mb-4">
-                <h2 class="text-white fw-bold mb-4">
-                  <i class="fas fa-ban me-2 text-danger"></i>
-                  Disqualification / Rejection Criteria
-                </h2>
-                <ul class="text-white-50">
-                  <li>Falsified documents</li>
-                  <li>Suspicious activities or multiple accounts</li>
-                  <li>Fraudulent betting or match-fixing</li>
-                  <li>Insults, toxicity, harassment</li>
-                  <li>Refusal to cooperate with the rules</li>
-                  <li>Poor past experiences in e-sports</li>
-                </ul>
-              </div>
+      <div class="tw-divider"></div>
 
-              <!-- Formulaire de demande -->
-              <div class="defi_card n11-bg rounded-8 p-4 p-lg-5">
-                <h2 class="text-white fw-bold mb-4">
-                  <i class="fas fa-paper-plane me-2 text-warning"></i>
-                  Submit Your Request
-                </h2>
-                <CertificationForm type="referee" />
-              </div>
+      <!-- Validation process steps -->
+      <section class="steps-section">
+        <h2 class="section-title">Validation Process</h2>
+        <div class="tw-steps">
+          <div class="tw-step">
+            <div class="tw-step__num">1</div>
+            <div>
+              <p class="tw-step__title">Submission</p>
+              <p class="tw-step__desc">The candidate fills out a form and submits required documents.</p>
+            </div>
+          </div>
+          <div class="tw-step">
+            <div class="tw-step__num">2</div>
+            <div>
+              <p class="tw-step__title">Verification</p>
+              <p class="tw-step__desc">The Ebetstream team verifies identity, account history, behavior, and documents provided.</p>
+            </div>
+          </div>
+          <div class="tw-step">
+            <div class="tw-step__num">3</div>
+            <div>
+              <p class="tw-step__title">Test</p>
+              <p class="tw-step__desc">Refereeing test to assess your knowledge of rules and dispute resolution.</p>
+            </div>
+          </div>
+          <div class="tw-step">
+            <div class="tw-step__num">4</div>
+            <div>
+              <p class="tw-step__title">Quick Interview <span class="optional-tag">Optional</span></p>
+              <p class="tw-step__desc">5-minute video call or video recording to discuss your background.</p>
+            </div>
+          </div>
+          <div class="tw-step">
+            <div class="tw-step__num">5</div>
+            <div>
+              <p class="tw-step__title">Validation</p>
+              <p class="tw-step__desc">Awarding of an official badge and access to advanced referee tools.</p>
+            </div>
+          </div>
+          <div class="tw-step">
+            <div class="tw-step__num">6</div>
+            <div>
+              <p class="tw-step__title">Training</p>
+              <p class="tw-step__desc">Mini-guides or onboarding videos provided by Ebetstream to get you started.</p>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <div class="tw-divider"></div>
+
+      <!-- Disqualification criteria -->
+      <section class="disq-section">
+        <div class="tw-alert tw-alert--danger">
+          <h4 class="disq-title"><i class="fas fa-ban me-2"></i>Disqualification / Rejection Criteria</h4>
+          <ul class="disq-list">
+            <li>Falsified documents</li>
+            <li>Suspicious activities or multiple accounts</li>
+            <li>Fraudulent betting or match-fixing</li>
+            <li>Insults, toxicity, or harassment</li>
+            <li>Refusal to cooperate with the rules</li>
+            <li>Poor past experiences in e-sports</li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="tw-divider"></div>
+
+      <!-- Form -->
+      <section class="form-section">
+        <div class="tw-card form-card">
+          <div class="card-header-row">
+            <div class="card-icon form-icon"><i class="fas fa-paper-plane"></i></div>
+            <h3 class="card-title">Submit Your Request</h3>
+          </div>
+          <CertificationForm type="referee" />
+        </div>
+      </section>
+
+    </div>
   </div>
 </template>
 
@@ -138,91 +143,252 @@ import CertificationForm from '@/components/Pages/Certification/CertificationFor
 </script>
 
 <style scoped>
-.page-content-with-space {
-  padding-top: 90px;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-}
-
-.defis_section {
-  width: 100%;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-  color: white;
-  position: relative;
-  overflow: hidden;
-  border-radius: 24px;
-}
-
-.conditions-list {
-  list-style: none;
-  padding: 0;
-}
-
-.conditions-list li {
-  padding: 0.75rem 0;
-  padding-left: 2rem;
-  position: relative;
-}
-
-.conditions-list li::before {
-  content: "✓";
-  position: absolute;
-  left: 0;
-  color: #FF9F00;
-  font-weight: bold;
-}
-
-.process-steps {
-  position: relative;
-}
-
-.step-item {
-  display: flex;
-  gap: 1.5rem;
-  position: relative;
-}
-
-.step-item:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  left: 1.25rem;
-  top: 3rem;
-  width: 2px;
-  height: calc(100% + 1rem);
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.step-number {
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #FF9F00 0%, #FFB84D 100%);
-  color: #000;
+/* Hero */
+.tw-page-hero {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
-  font-size: 1.1rem;
+  text-align: center;
+  padding: 4rem 1.5rem 3rem;
+  background: linear-gradient(180deg, rgba(37,150,190,0.12) 0%, transparent 100%);
+  border-bottom: 1px solid rgba(37,150,190,0.15);
+}
+
+.hero-inner {
+  max-width: 620px;
+}
+
+.hero-desc {
+  color: rgb(var(--n3));
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.accent {
+  color: rgb(var(--g1));
+}
+
+/* Body */
+.tw-page-body {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+/* Two column */
+.two-col-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+/* Info card */
+.info-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.card-header-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.card-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 8px;
+  background: rgba(37,150,190,0.15);
+  color: rgb(var(--g1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
   flex-shrink: 0;
 }
 
-.step-content {
-  flex: 1;
-  padding-top: 0.25rem;
+.card-icon.docs     { background: rgba(66,153,225,0.15); color: #4299e1; }
+.card-icon.form-icon { background: rgba(59,196,100,0.15); color: #3bc464; }
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  margin: 0;
+}
+
+/* Check list */
+.check-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.check-list li {
+  padding-left: 1.6rem;
+  position: relative;
+  color: rgb(var(--n3));
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.check-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.3rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  background: rgba(37,150,190,0.3);
+  border: 2px solid rgb(var(--g1));
+}
+
+/* Doc groups */
+.doc-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.doc-group-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.required-tag {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  background: rgba(237,137,54,0.15);
+  color: #ed8936;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.doc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.doc-list li {
+  color: rgb(var(--n3));
+  font-size: 0.85rem;
+  line-height: 1.5;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.doc-list li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: rgb(var(--n2));
+}
+
+.mini {
+  margin: 0.5rem 0;
+}
+
+/* Section title */
+.section-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Steps section */
+.steps-section {
+  margin-bottom: 2.5rem;
+}
+
+.optional-tag {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  background: rgba(37,150,190,0.15);
+  color: rgb(var(--g1));
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  vertical-align: middle;
+  margin-left: 0.4rem;
+}
+
+/* Disqualification */
+.disq-section {
+  margin-bottom: 2.5rem;
+}
+
+.disq-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  margin-bottom: 0.75rem;
+}
+
+.disq-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.disq-list li {
+  color: rgb(var(--n3));
+  font-size: 0.88rem;
+  padding-left: 1.2rem;
+  position: relative;
+}
+
+.disq-list li::before {
+  content: "×";
+  position: absolute;
+  left: 0;
+  color: #fc4747;
+  font-weight: 700;
+}
+
+/* Form */
+.form-section {
+  margin-top: 0;
+}
+
+.form-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 @media (max-width: 768px) {
-  .page-content-with-space {
-    padding-top: 60px;
+  .tw-page-hero {
+    padding: 2.5rem 1rem 2rem;
   }
-  
-  .container-fluid {
-    margin-left: 0 !important;
-  }
-  
-  .defis__main {
-    margin-left: 0 !important;
+
+  .two-col-section {
+    grid-template-columns: 1fr;
   }
 }
 </style>
-

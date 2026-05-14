@@ -1,196 +1,268 @@
 <template>
-  <div class="page-content-with-space">
-    <section class="defis_section py-6 position-relative overflow-hidden pb-120">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12 gx-0 gx-lg-4">
-            <div class="defis__main">
+  <div class="sv-page">
 
-              <!-- Loading -->
-              <div v-if="loading" class="text-center py-5">
-                <div class="spinner-border text-primary" role="status" style="width:3rem;height:3rem;">
-                  <span class="visually-hidden">Loading...</span>
+    <!-- Loading -->
+    <div v-if="loading" class="sv-loading">
+      <div class="sv-spinner"></div>
+      <p>Chargement du stream…</p>
+    </div>
+
+    <!-- Error -->
+    <div v-else-if="pageError" class="sv-error">
+      <i class="ti ti-video-off sv-error__icon"></i>
+      <h3>{{ pageError }}</h3>
+      <button class="sv-btn sv-btn--secondary" @click="$router.push('/streams')">
+        <i class="fas fa-arrow-left"></i> Retour aux streams
+      </button>
+    </div>
+
+    <!-- Content -->
+    <div v-else-if="stream" class="sv-layout">
+
+      <!-- ── Left: video + info ── -->
+      <div class="sv-main">
+
+        <!-- Back button -->
+        <button class="sv-back" @click="$router.push('/streams')">
+          <i class="fas fa-arrow-left"></i> Retour
+        </button>
+
+        <!-- Video player -->
+        <div class="sv-player">
+          <video
+            ref="remoteVideo"
+            v-show="connected"
+            autoplay
+            playsinline
+            controls
+            class="sv-player__video"
+          ></video>
+
+          <!-- Waiting / offline overlay -->
+          <div v-if="!connected" class="sv-player__overlay">
+            <template v-if="stream.is_live">
+              <div class="sv-spinner sv-spinner--lg"></div>
+              <p class="sv-player__wait-msg">{{ waitingMsg }}</p>
+              <button v-if="showRetry" class="sv-btn sv-btn--secondary sv-retry" @click="retryConnection">
+                <i class="fas fa-sync-alt"></i> Réessayer
+              </button>
+            </template>
+            <template v-else>
+              <i class="ti ti-video-off sv-player__offline-icon"></i>
+              <p class="sv-player__wait-msg">Stream hors ligne</p>
+              <span class="sv-player__wait-sub">Revenez quand le streamer est en direct.</span>
+            </template>
+          </div>
+
+          <!-- Badges -->
+          <div class="sv-player__badges">
+            <span v-if="stream.is_live" class="sv-badge-live">
+              <span class="sv-live-dot"></span>LIVE
+            </span>
+            <span v-if="stream.is_live" class="sv-badge-viewers">
+              <i class="fas fa-eye"></i> {{ stream.viewer_count || 0 }}
+            </span>
+          </div>
+
+          <!-- WS status indicator -->
+          <span class="sv-ws-status" :style="{ background: wsStatusColor }">{{ wsStatusLabel }}</span>
+        </div>
+
+        <!-- Stream info card -->
+        <div class="sv-info">
+          <div class="sv-info__top">
+            <div class="sv-info__avatar">
+              {{ (stream.user?.username || '?').slice(0, 2).toUpperCase() }}
+            </div>
+            <div class="sv-info__meta">
+              <h2 class="sv-info__title">{{ stream.title || 'Sans titre' }}</h2>
+              <p class="sv-info__channel">{{ stream.user?.username || 'User' }}</p>
+              <p class="sv-info__followers">
+                <i class="far fa-heart"></i>
+                {{ stream.follower_count }}
+                follower{{ stream.follower_count !== 1 ? 's' : '' }}
+              </p>
+            </div>
+            <!-- Own stream: show label, not button -->
+            <span v-if="stream.is_own_stream" class="sv-own-badge">
+              <i class="fas fa-video"></i> Votre stream
+            </span>
+            <!-- Other stream: follow button -->
+            <button
+              v-else-if="isAuthenticated"
+              class="sv-follow-btn"
+              :class="{ 'sv-follow-btn--following': isFollowing }"
+              @click="toggleFollow"
+              :disabled="followingLoading"
+            >
+              <i :class="isFollowing ? 'fas fa-heart' : 'far fa-heart'"></i>
+              <span>{{ followingLoading ? '…' : isFollowing ? 'Suivi' : 'Suivre' }}</span>
+            </button>
+            <!-- Not logged in: login prompt -->
+            <button
+              v-else
+              class="sv-follow-btn sv-follow-btn--ghost"
+              @click="$router.push('/login')"
+            >
+              <i class="fas fa-sign-in-alt"></i>
+              <span>Se connecter</span>
+            </button>
+          </div>
+
+          <!-- Monetization actions -->
+          <div v-if="isAuthenticated && !stream.is_own_stream" class="sv-money-actions">
+            <button class="sv-donate-btn" @click="showDonateModal = true">
+              <i class="fas fa-coins"></i> Donner des EBT
+            </button>
+            <button v-if="stream.is_live" class="sv-predict-btn" @click="showPredictModal = true">
+              <i class="fas fa-star"></i> Soutenir
+            </button>
+          </div>
+
+          <!-- Tags -->
+          <div class="sv-info__tags" v-if="stream.category || stream.game">
+            <span v-if="stream.category" class="sv-tag">{{ stream.category }}</span>
+            <span v-if="stream.game" class="sv-tag sv-tag--game">{{ stream.game }}</span>
+          </div>
+
+          <!-- Description -->
+          <p v-if="stream.description" class="sv-info__desc">{{ stream.description }}</p>
+        </div>
+      </div>
+
+      <!-- ── Right: chat ── -->
+      <div class="sv-chat">
+        <div class="sv-chat__header">
+          <i class="fas fa-comment-dots"></i>
+          <span>Chat en direct</span>
+        </div>
+
+        <!-- Messages -->
+        <div class="sv-chat__messages" ref="chatContainer">
+          <div v-if="chatLoading && chatMessages.length === 0" class="sv-chat__loading">
+            <div class="sv-spinner sv-spinner--sm"></div>
+          </div>
+          <div v-else-if="chatMessages.length === 0" class="sv-chat__empty">
+            <i class="fas fa-comment-slash"></i>
+            <p>Aucun message pour le moment</p>
+          </div>
+          <div v-else class="sv-chat__list">
+            <div
+              v-for="msg in chatMessages"
+              :key="msg.id"
+              class="sv-msg"
+              :class="{ 'sv-msg--own': msg.user_id === currentUserId }"
+            >
+              <div class="sv-msg__avatar">
+                {{ (msg.user?.username || '?').slice(0, 2).toUpperCase() }}
+              </div>
+              <div class="sv-msg__body">
+                <div class="sv-msg__top">
+                  <span class="sv-msg__name">{{ msg.user?.username || 'User' }}</span>
+                  <span v-if="msg.is_moderator" class="sv-msg__badge sv-msg__badge--mod">MOD</span>
+                  <span v-if="msg.is_subscriber" class="sv-msg__badge sv-msg__badge--sub">SUB</span>
+                  <span class="sv-msg__time">{{ formatTime(msg.created_at) }}</span>
                 </div>
+                <p class="sv-msg__text">{{ msg.message }}</p>
               </div>
-
-              <!-- Erreur -->
-              <div v-else-if="pageError" class="text-center py-5">
-                <div class="alert alert-danger">{{ pageError }}</div>
-                <button class="btn_primary mt-3" @click="$router.push('/streams')">
-                  <i class="fas fa-arrow-left me-2"></i>Back to Streams
-                </button>
-              </div>
-
-              <!-- Contenu -->
-              <div v-else-if="stream">
-                <button class="btn_secondary mb-4" @click="$router.push('/streams')">
-                  <i class="fas fa-arrow-left me-2"></i>Back
-                </button>
-
-                <div class="row g-4">
-
-                  <!-- ── Colonne vidéo ── -->
-                  <div class="col-lg-8">
-                    <div class="defi_card n11-bg rounded-8 p-0 mb-4 overflow-hidden">
-                      <div class="video_container position-relative" style="background:#000;aspect-ratio:16/9;">
-
-                        <!-- Vidéo WebRTC -->
-                        <video ref="remoteVideo" v-show="connected" autoplay playsinline controls class="w-100 h-100"
-                          style="object-fit:contain;"></video>
-
-                        <!-- Attente connexion WebRTC -->
-                        <div v-if="stream.is_live && !connected"
-                          class="w-100 h-100 d-flex align-items-center justify-content-center position-absolute top-0 start-0">
-                          <div class="text-center text-white">
-                            <div class="spinner-border text-warning mb-3" role="status"></div>
-                            <p class="mb-0">{{ waitingMsg }}</p>
-                            <button v-if="showRetry" class="btn_secondary mt-3"
-                              style="padding:.5rem 1rem;font-size:.85rem;" @click="retryConnection">
-                              <i class="fas fa-redo me-1"></i>Réessayer
-                            </button>
-                          </div>
-                        </div>
-
-                        <!-- Stream offline -->
-                        <div v-if="!stream.is_live"
-                          class="w-100 h-100 d-flex align-items-center justify-content-center position-absolute top-0 start-0"
-                          style="background:#000;">
-                          <div class="text-center text-white">
-                            <i class="fas fa-video-slash fs-1 mb-3" style="opacity:.5;"></i>
-                            <p class="mb-0">Stream offline</p>
-                            <small style="opacity:.6;">Revenez quand le streamer est en direct.</small>
-                          </div>
-                        </div>
-
-                        <!-- Badge LIVE -->
-                        <div v-if="stream.is_live" class="position-absolute top-0 start-0 m-3">
-                          <span class="badge bg-danger px-3 py-2">
-                            <i class="fas fa-circle me-1" style="font-size:.6rem;animation:pulse 2s infinite;"></i>LIVE
-                          </span>
-                        </div>
-
-                        <!-- Viewers -->
-                        <div v-if="stream.is_live" class="position-absolute bottom-0 end-0 m-3">
-                          <span class="badge bg-dark px-2 py-1">
-                            <i class="fas fa-eye me-1"></i>{{ stream.viewer_count || 0 }}
-                          </span>
-                        </div>
-
-                        <!-- Statut WS (discret) -->
-                        <div class="position-absolute top-0 end-0 m-3">
-                          <span class="badge px-2 py-1" :style="{ background: wsStatusColor, fontSize: '.7rem' }">
-                            {{ wsStatusLabel }}
-                          </span>
-                        </div>
-
-                      </div>
-                    </div>
-
-                    <!-- Infos stream -->
-                    <div class="defi_card n11-bg rounded-8 p-4">
-                      <h2 class="fw-bold mb-3 text-white">{{ stream.title || 'Sans titre' }}</h2>
-                      <div class="d-flex align-items-center gap-3 mb-3 flex-wrap">
-                        <div class="d-flex align-items-center gap-2">
-                          <div class="rounded-circle d-flex align-items-center justify-content-center"
-                            style="width:48px;height:48px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);flex-shrink:0;">
-                            <i class="fas fa-user text-white"></i>
-                          </div>
-                          <div>
-                            <h5 class="mb-0 text-white">{{ stream.user?.username || 'User' }}</h5>
-                            <span class="text-white small" style="opacity:.8;">
-                              {{ stream.follower_count }} follower{{ stream.follower_count !== 1 ? 's' : '' }}
-                            </span>
-                          </div>
-                        </div>
-                        <div class="ms-auto">
-                          <button v-if="isAuthenticated" class="btn_primary" @click="toggleFollow"
-                            :disabled="followingLoading">
-                            <span v-if="followingLoading">...</span>
-                            <span v-else>
-                              <i :class="(isFollowing ? 'fas' : 'far') + ' fa-heart me-2'"></i>
-                              {{ isFollowing ? 'Ne plus suivre' : 'Suivre' }}
-                            </span>
-                          </button>
-                        </div>
-                      </div>
-                      <div class="mb-3">
-                        <span v-if="stream.category" class="badge bg-secondary me-2">{{ stream.category }}</span>
-                        <span v-if="stream.game" class="badge bg-info">{{ stream.game }}</span>
-                      </div>
-                      <p class="text-white" style="opacity:.9;">{{ stream.description || 'Aucune description' }}</p>
-                    </div>
-                  </div>
-
-                  <!-- ── Chat ── -->
-                  <div class="col-lg-4">
-                    <div class="defi_card n11-bg rounded-8 p-4 d-flex flex-column" style="max-height:800px;">
-                      <h5 class="fw-bold mb-4 text-white">
-                        <i class="fas fa-comments me-2"></i>Chat
-                      </h5>
-
-                      <div class="chat_messages flex-grow-1 mb-3 overflow-auto" ref="chatContainer">
-                        <div v-if="chatLoading && chatMessages.length === 0" class="text-center py-3">
-                          <div class="spinner-border spinner-border-sm text-primary"></div>
-                        </div>
-                        <div v-else-if="chatMessages.length === 0" class="text-center py-5 text-white"
-                          style="opacity:.7;">
-                          <p>Aucun message pour le moment</p>
-                        </div>
-                        <div v-else>
-                          <div v-for="msg in chatMessages" :key="msg.id" class="chat_message mb-3 p-2 rounded-3"
-                            :class="{ 'own_message': msg.user_id === currentUserId }">
-                            <div class="d-flex align-items-start gap-2">
-                              <div class="rounded-circle d-flex align-items-center justify-content-center"
-                                style="width:24px;height:24px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);flex-shrink:0;">
-                                <i class="fas fa-user text-white" style="font-size:.7rem;"></i>
-                              </div>
-                              <div class="flex-grow-1 overflow-hidden">
-                                <div class="d-flex align-items-center gap-1 mb-1 flex-wrap">
-                                  <span class="fw-bold text-white small">{{ msg.user?.username || 'User' }}</span>
-                                  <span v-if="msg.is_moderator" class="badge bg-success"
-                                    style="font-size:.65rem;">MOD</span>
-                                  <span v-if="msg.is_subscriber" class="badge bg-warning"
-                                    style="font-size:.65rem;">SUB</span>
-                                  <span class="text-white ms-auto" style="opacity:.6;font-size:.75rem;">{{
-                                    formatTime(msg.created_at) }}</span>
-                                </div>
-                                <p class="mb-0 text-white small" style="word-break:break-word;">{{ msg.message }}</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div v-if="isAuthenticated" class="chat_input">
-                        <div class="input-group">
-                          <input v-model="newMessage" type="text"
-                            class="form-control n11-bg text-white border-secondary" placeholder="Tapez votre message..."
-                            @keyup.enter="sendMessage" :disabled="sendingMessage" maxlength="500" />
-                          <button class="btn_primary px-3" @click="sendMessage"
-                            :disabled="sendingMessage || !newMessage.trim()">
-                            <i class="fas fa-paper-plane"></i>
-                          </button>
-                        </div>
-                      </div>
-                      <div v-else class="text-center py-3">
-                        <p class="text-white small mb-2" style="opacity:.8;">Connectez-vous pour chatter</p>
-                        <button class="btn_secondary" style="padding:.5rem 1rem;font-size:.85rem;"
-                          @click="$router.push('/login')">
-                          Se connecter
-                        </button>
-                      </div>
-
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
             </div>
           </div>
         </div>
+
+        <!-- Input -->
+        <div v-if="isAuthenticated" class="sv-chat__input-wrap">
+          <input
+            v-model="newMessage"
+            type="text"
+            class="sv-chat__input"
+            placeholder="Tapez un message…"
+            @keyup.enter="sendMessage"
+            :disabled="sendingMessage"
+            maxlength="500"
+          />
+          <button
+            class="sv-chat__send"
+            @click="sendMessage"
+            :disabled="sendingMessage || !newMessage.trim()"
+          >
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+        <div v-else class="sv-chat__login-cta">
+          <p>Connectez-vous pour chatter</p>
+          <button class="sv-btn sv-btn--primary" @click="$router.push('/login')">
+            Se connecter
+          </button>
+        </div>
       </div>
-    </section>
+
+    </div>
+
+    <!-- ── Modal Donation ── -->
+    <div v-if="showDonateModal" class="sv-modal-overlay" @click.self="showDonateModal = false">
+      <div class="sv-modal">
+        <div class="sv-modal__header">
+          <h3><i class="fas fa-coins"></i> Envoyer des EBT</h3>
+          <button @click="showDonateModal = false"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="sv-modal__body">
+          <p class="sv-modal__info">
+            <strong>85%</strong> va directement au streamer. <strong>15%</strong> à la plateforme.
+          </p>
+          <div class="sv-modal__group">
+            <label>Montant (EBT)</label>
+            <input v-model="donateAmount" type="number" min="1" placeholder="ex: 50" class="sv-chat__input" />
+          </div>
+          <div class="sv-modal__group">
+            <label>Message (optionnel)</label>
+            <input v-model="donateMessage" type="text" maxlength="500" placeholder="Félicitations !" class="sv-chat__input" />
+          </div>
+          <div v-if="moneyMsg" :class="['sv-modal__msg', moneyMsgType === 'success' ? 'sv-modal__msg--ok' : 'sv-modal__msg--err']">
+            {{ moneyMsg }}
+          </div>
+        </div>
+        <div class="sv-modal__footer">
+          <button class="sv-btn sv-btn--secondary" @click="showDonateModal = false">Annuler</button>
+          <button class="sv-btn sv-btn--primary" @click="sendDonation" :disabled="moneyLoading || !donateAmount">
+            <i class="fas fa-paper-plane"></i> {{ moneyLoading ? 'Envoi…' : 'Envoyer' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Modal Prédiction ── -->
+    <div v-if="showPredictModal" class="sv-modal-overlay" @click.self="showPredictModal = false">
+      <div class="sv-modal">
+        <div class="sv-modal__header">
+          <h3><i class="fas fa-star"></i> Soutenir le streamer</h3>
+          <button @click="showPredictModal = false"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="sv-modal__body">
+          <p class="sv-modal__info">
+            Commission de <strong>15%</strong> prélevée sur vos crédits.<br />
+            Le streamer reçoit <strong>40%</strong> de la commission — soit <strong>6%</strong> de votre mise.
+          </p>
+          <div class="sv-modal__group">
+            <label>Crédits à engager (EBT)</label>
+            <input v-model="predictAmount" type="number" min="1" placeholder="ex: 100" class="sv-chat__input" />
+            <small v-if="predictAmount">
+              Commission payée : {{ (parseFloat(predictAmount || '0') * 0.15).toFixed(2) }} EBT
+              — Streamer gagne : {{ (parseFloat(predictAmount || '0') * 0.15 * 0.40).toFixed(2) }} EBT
+            </small>
+          </div>
+          <div v-if="moneyMsg" :class="['sv-modal__msg', moneyMsgType === 'success' ? 'sv-modal__msg--ok' : 'sv-modal__msg--err']">
+            {{ moneyMsg }}
+          </div>
+        </div>
+        <div class="sv-modal__footer">
+          <button class="sv-btn sv-btn--secondary" @click="showPredictModal = false">Annuler</button>
+          <button class="sv-btn sv-btn--primary" @click="sendPrediction" :disabled="moneyLoading || !predictAmount">
+            <i class="fas fa-bolt"></i> {{ moneyLoading ? 'Envoi…' : 'Soutenir' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -203,6 +275,7 @@ interface Stream {
   id: number; title: string; description: string; thumbnail_url?: string;
   category?: string; game?: string; is_live: boolean;
   viewer_count: number; follower_count: number;
+  is_following: boolean; is_own_stream: boolean;
   user: { id: number; username: string; };
 }
 interface ChatMessage {
@@ -233,6 +306,62 @@ const currentUserId = ref<number | null>(null);
 const chatContainer = ref<HTMLElement | null>(null);
 
 const isAuthenticated = computed(() => !!localStorage.getItem('auth_token'));
+
+// ── Monetisation ──────────────────────────────────────────────────────────────
+const showDonateModal  = ref(false);
+const showPredictModal = ref(false);
+const donateAmount     = ref('');
+const donateMessage    = ref('');
+const predictAmount    = ref('');
+const moneyLoading     = ref(false);
+const moneyMsg         = ref('');
+const moneyMsgType     = ref<'success'|'error'>('success');
+
+const sendDonation = async () => {
+  if (!donateAmount.value || parseFloat(donateAmount.value) <= 0) return;
+  moneyLoading.value = true;
+  moneyMsg.value = '';
+  try {
+    const res = await apiClient.post(`/streams/${streamId}/donate`, {
+      amount: parseFloat(donateAmount.value),
+      message: donateMessage.value || undefined,
+    });
+    if (res.data.success) {
+      moneyMsgType.value = 'success';
+      moneyMsg.value = `Don de ${donateAmount.value} EBT envoyé ! Le streamer reçoit ${res.data.data.streamer_amount} EBT.`;
+      donateAmount.value = '';
+      donateMessage.value = '';
+      setTimeout(() => { showDonateModal.value = false; moneyMsg.value = ''; }, 2500);
+    }
+  } catch (e: any) {
+    moneyMsgType.value = 'error';
+    moneyMsg.value = e.response?.data?.message || 'Erreur lors du don';
+  } finally {
+    moneyLoading.value = false;
+  }
+};
+
+const sendPrediction = async () => {
+  if (!predictAmount.value || parseFloat(predictAmount.value) <= 0) return;
+  moneyLoading.value = true;
+  moneyMsg.value = '';
+  try {
+    const res = await apiClient.post(`/streams/${streamId}/predict`, {
+      credits_amount: parseFloat(predictAmount.value),
+    });
+    if (res.data.success) {
+      moneyMsgType.value = 'success';
+      moneyMsg.value = `${predictAmount.value} crédits de soutien envoyés !`;
+      predictAmount.value = '';
+      setTimeout(() => { showPredictModal.value = false; moneyMsg.value = ''; }, 2500);
+    }
+  } catch (e: any) {
+    moneyMsgType.value = 'error';
+    moneyMsg.value = e.response?.data?.message || 'Erreur';
+  } finally {
+    moneyLoading.value = false;
+  }
+};
 
 // ── WebRTC ────────────────────────────────────────────────────────────────────
 let ws: WebSocket | null = null;
@@ -458,6 +587,8 @@ const loadStream = async (connectRtc = true) => {
     const res = await apiClient.get(`/streams/${streamId}`);
     if (res.data.success) {
       stream.value = res.data.data;
+      // Sync follow state from API (backend now returns is_following for auth users)
+      if (stream.value) isFollowing.value = stream.value.is_following ?? false;
       if (connectRtc && stream.value?.is_live && (!ws || ws.readyState !== WebSocket.OPEN)) {
         connectWebRTC();
       }
@@ -572,121 +703,681 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.defis_section {
-  width: 100%;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-  color: white;
+/* ── Page ── */
+.sv-page { padding: 16px 0 48px; }
+
+/* ── Loading ── */
+.sv-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 80px 20px;
+  color: rgb(var(--n3));
+  font-size: 14px;
+}
+
+/* ── Error ── */
+.sv-error {
+  text-align: center;
+  padding: 80px 20px;
+  color: rgb(var(--n3));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.sv-error__icon { font-size: 56px; opacity: .3; }
+
+.sv-error h3 { font-size: 18px; font-weight: 700; color: rgb(var(--n5)); margin: 0; }
+
+/* ── Spinner ── */
+.sv-spinner {
+  width: 28px; height: 28px;
+  border: 3px solid rgba(var(--g1), .25);
+  border-top-color: rgb(var(--g1));
+  border-radius: 50%;
+  animation: sv-spin .7s linear infinite;
+
+  &--lg { width: 40px; height: 40px; border-width: 3px; }
+  &--sm { width: 20px; height: 20px; border-width: 2px; }
+}
+
+@keyframes sv-spin { to { transform: rotate(360deg); } }
+
+/* ── Layout: video + chat ── */
+.sv-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 16px;
+  align-items: start;
+
+  @media (max-width: 1000px) { grid-template-columns: 1fr 280px; }
+  @media (max-width: 768px)  { grid-template-columns: 1fr; }
+}
+
+/* ── Back button ── */
+.sv-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  background: rgba(var(--n8), .07);
+  border: 1px solid rgba(var(--n8), .12);
+  border-radius: 5px;
+  color: rgb(var(--n5));
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: all .15s;
+  &:hover { background: rgba(var(--n8), .13); color: rgb(var(--n8)); }
+  i { font-size: 14px; }
+}
+
+/* ── Video player ── */
+.sv-player {
   position: relative;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 8px;
   overflow: hidden;
-  border-radius: 24px;
+  margin-bottom: 14px;
 }
 
-.btn_primary {
-  background-color: #FF9F00;
-  color: #000;
+.sv-player__video {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.sv-player__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(0,0,0,.65);
+  z-index: 2;
+}
+
+.sv-player__wait-msg {
+  font-size: 14px;
+  color: rgba(255,255,255,.85);
+  margin: 0;
+  text-align: center;
+}
+
+.sv-player__wait-sub {
+  font-size: 12px;
+  color: rgba(255,255,255,.5);
+  text-align: center;
+}
+
+.sv-player__offline-icon {
+  font-size: 48px;
+  color: rgba(255,255,255,.3);
+}
+
+.sv-retry {
+  margin-top: 4px;
+  height: 32px;
+  padding: 0 14px;
+  font-size: 12px;
+}
+
+/* Badges overlay */
+.sv-player__badges {
+  position: absolute;
+  top: 10px; left: 10px;
+  display: flex;
+  gap: 6px;
+  z-index: 3;
+}
+
+.sv-badge-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgb(var(--r1));
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  padding: 3px 7px;
+  border-radius: 3px;
+  box-shadow: 0 2px 8px rgba(var(--r1), .5);
+}
+
+.sv-live-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.9);
+  animation: pulseDot 1.6s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%,100% { opacity:1; transform:scale(1); }
+  50%      { opacity:.4; transform:scale(1.4); }
+}
+
+.sv-badge-viewers {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(0,0,0,.65);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 7px;
+  border-radius: 3px;
+  backdrop-filter: blur(4px);
+  i { font-size: 11px; }
+}
+
+/* WS status */
+.sv-ws-status {
+  position: absolute;
+  top: 10px; right: 10px;
+  z-index: 3;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 3px;
+  color: #fff;
+}
+
+/* ── Stream info card ── */
+.sv-info {
+  background: rgb(var(--p2));
+  border: 1px solid rgb(var(--n2));
+  border-radius: 8px;
+  padding: 18px;
+}
+
+.sv-info__top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.sv-info__avatar {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgb(var(--g1)), #d4962e);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 2px solid rgba(var(--g1), .35);
+}
+
+.sv-info__meta { flex: 1; min-width: 0; }
+
+.sv-info__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  margin: 0 0 3px;
+  word-break: break-word;
+}
+
+.sv-info__channel {
+  font-size: 13px;
+  color: rgb(var(--n5));
+  margin: 0 0 2px;
+  font-weight: 600;
+}
+
+.sv-info__followers {
+  font-size: 12px;
+  color: rgb(var(--n3));
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  i { font-size: 12px; }
+}
+
+/* Follow button */
+.sv-follow-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 14px;
+  background: rgb(var(--g1));
+  color: #fff;
   border: none;
-  padding: .75rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: .3s;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 700;
   cursor: pointer;
+  flex-shrink: 0;
+  transition: all .2s;
+  box-shadow: 0 3px 12px rgba(var(--g1), .3);
+
+  &:hover { background: rgba(var(--g1), .83); transform: translateY(-1px); }
+  &:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+  i { font-size: 14px; }
+
+  &--following {
+    background: rgba(var(--n8), .1);
+    border: 1px solid rgba(var(--n8), .2);
+    color: rgb(var(--n8));
+    box-shadow: none;
+    &:hover { background: rgba(var(--r1), .12); color: rgb(var(--r1)); border-color: rgba(var(--r1), .3); }
+  }
+
+  &--ghost {
+    background: rgba(var(--n8), .06);
+    border: 1px solid rgba(var(--n8), .14);
+    color: rgb(var(--n3));
+    box-shadow: none;
+    &:hover { background: rgba(var(--n8), .12); color: rgb(var(--n8)); }
+  }
 }
 
-.btn_primary:hover {
-  transform: translateY(-2px);
+.sv-own-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 12px;
+  background: rgba(var(--g1), .12);
+  border: 1px solid rgba(var(--g1), .3);
+  border-radius: 5px;
+  color: rgb(var(--g1));
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  i { font-size: 13px; }
 }
 
-.btn_primary:disabled {
-  opacity: .5;
-  cursor: not-allowed;
-  transform: none;
+.sv-info__tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
 }
 
-.btn_secondary {
-  background: transparent;
-  border: 2px solid #FF9F00;
-  color: #FF9F00;
-  padding: .75rem 1.5rem;
-  border-radius: 10px;
+.sv-tag {
+  font-size: 11px;
   font-weight: 600;
-  transition: .3s;
-  cursor: pointer;
+  background: rgba(var(--n8), .08);
+  color: rgb(var(--n3));
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+
+  &--game { background: rgba(var(--g1), .14); color: rgb(var(--g1)); }
 }
 
-.btn_secondary:hover {
-  background-color: #FF9F00;
-  color: #000;
+.sv-info__desc {
+  font-size: 13px;
+  color: rgb(var(--n3));
+  line-height: 1.6;
+  margin: 0;
 }
 
-.defi_card {
-  background: rgba(255, 255, 255, .1);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
+/* ── Chat ── */
+.sv-chat {
+  background: rgb(var(--p2));
+  border: 1px solid rgb(var(--n2));
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+  min-height: 400px;
+  position: sticky;
+  top: 66px;
+
+  @media (max-width: 768px) {
+    height: auto;
+    min-height: 340px;
+    position: static;
+    margin-top: 8px;
+  }
 }
 
-.chat_messages {
-  max-height: 600px;
-  min-height: 300px;
+.sv-chat__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid rgb(var(--n2));
+  font-size: 13px;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  flex-shrink: 0;
+  i { font-size: 16px; color: rgb(var(--g1)); }
+}
+
+.sv-chat__messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, .2) transparent;
+  scrollbar-color: rgb(var(--n2)) transparent;
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-thumb { background: rgb(var(--n2)); border-radius: 2px; }
 }
 
-.chat_messages::-webkit-scrollbar {
-  width: 4px;
+.sv-chat__loading {
+  display: flex;
+  justify-content: center;
+  padding: 24px;
 }
 
-.chat_messages::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, .2);
-  border-radius: 2px;
+.sv-chat__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 100%;
+  color: rgb(var(--n3));
+  i { font-size: 32px; opacity: .3; }
+  p { font-size: 13px; margin: 0; }
 }
 
-.chat_message {
-  background: rgba(255, 255, 255, .05);
-  transition: background .2s;
+.sv-chat__list { display: flex; flex-direction: column; gap: 10px; }
+
+/* Message */
+.sv-msg {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
 }
 
-.own_message {
-  background: rgba(255, 159, 0, .1);
+.sv-msg__avatar {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #febd56, #d98f25);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
 }
 
-.chat_input {
-  border-top: 1px solid rgba(255, 255, 255, .1);
-  padding-top: 1rem;
+.sv-msg--own .sv-msg__avatar { background: linear-gradient(135deg, rgb(var(--g1)), #e8a83a); }
+
+.sv-msg__body { flex: 1; min-width: 0; }
+
+.sv-msg__top {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 2px;
+  flex-wrap: wrap;
 }
 
-.form-control {
-  color: white;
+.sv-msg__name {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  .sv-msg--own & { color: rgb(var(--g1)); }
 }
 
-.form-control::placeholder {
-  color: rgba(255, 255, 255, .5);
+.sv-msg__badge {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+
+  &--mod { background: rgba(0,200,83,.2); color: #00c853; }
+  &--sub { background: rgba(255,180,0,.2); color: #ffb400; }
 }
 
-.form-control:focus {
-  background-color: rgba(255, 255, 255, .1);
-  border-color: #FF9F00;
-  color: white;
+.sv-msg__time {
+  font-size: 10px;
+  color: rgb(var(--n3));
+  margin-left: auto;
 }
 
-@keyframes pulse {
+.sv-msg__text {
+  font-size: 13px;
+  color: rgb(var(--n5));
+  line-height: 1.45;
+  margin: 0;
+  word-break: break-word;
+}
 
-  0%,
-  100% {
-    opacity: 1;
+/* Chat input */
+.sv-chat__input-wrap {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid rgb(var(--n2));
+  flex-shrink: 0;
+}
+
+.sv-chat__input {
+  flex: 1;
+  height: 36px;
+  background: rgb(var(--p1));
+  border: 1px solid rgb(var(--n2));
+  border-radius: 5px;
+  color: rgb(var(--n8));
+  font-size: 13px;
+  padding: 0 12px;
+  outline: none;
+  font-family: var(--body-font);
+  transition: border-color .2s;
+  &::placeholder { color: rgb(var(--n3)); }
+  &:focus { border-color: rgb(var(--g1)); }
+  &:disabled { opacity: .5; }
+}
+
+.sv-chat__send {
+  width: 36px; height: 36px;
+  background: rgb(var(--g1));
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+  transition: background .15s;
+  &:hover { background: rgba(var(--g1), .83); }
+  &:disabled { opacity: .45; cursor: not-allowed; }
+}
+
+.sv-chat__login-cta {
+  padding: 14px;
+  border-top: 1px solid rgb(var(--n2));
+  text-align: center;
+  flex-shrink: 0;
+  p { font-size: 12px; color: rgb(var(--n3)); margin: 0 0 8px; }
+}
+
+/* ── Buttons ── */
+.sv-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+  border: none;
+
+  &--primary {
+    background: rgb(var(--g1));
+    color: #fff;
+    &:hover { background: rgba(var(--g1), .83); }
   }
 
-  50% {
-    opacity: .5;
+  &--secondary {
+    background: rgba(var(--n8), .08);
+    border: 1px solid rgba(var(--n8), .15);
+    color: rgb(var(--n8));
+    &:hover { background: rgba(var(--n8), .15); }
+  }
+}
+/* ── Monetisation buttons ── */
+.sv-money-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.sv-donate-btn, .sv-predict-btn {
+  height: 32px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all .2s;
+  i { font-size: 12px; }
+}
+
+.sv-donate-btn {
+  background: rgba(254, 189, 86, .15);
+  color: rgb(var(--g1));
+  border: 1px solid rgba(254, 189, 86, .35);
+  &:hover { background: rgba(254, 189, 86, .25); }
+}
+
+.sv-predict-btn {
+  background: rgba(0, 200, 83, .12);
+  color: #00c853;
+  border: 1px solid rgba(0, 200, 83, .3);
+  &:hover { background: rgba(0, 200, 83, .22); }
+}
+
+/* ── Modals donation / prediction ── */
+.sv-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 16px;
+}
+
+.sv-modal {
+  background: rgb(var(--p2));
+  border: 1px solid rgb(var(--n2));
+  border-radius: 10px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.5);
+}
+
+.sv-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-bottom: 1px solid rgb(var(--n2));
+
+  h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: rgb(var(--n8));
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    i { color: rgb(var(--g1)); }
+  }
+
+  button {
+    background: none;
+    border: none;
+    color: rgb(var(--n3));
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+    &:hover { color: rgb(var(--n8)); }
   }
 }
 
-.page-content-with-space {
-  padding-top: 90px;
+.sv-modal__body {
+  padding: 18px;
 }
 
-@media (max-width: 768px) {
-  .page-content-with-space {
-    padding-top: 60px;
+.sv-modal__info {
+  font-size: 13px;
+  color: rgb(var(--n3));
+  line-height: 1.5;
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  background: rgba(var(--g1), .07);
+  border: 1px solid rgba(var(--g1), .2);
+  border-radius: 6px;
+
+  strong { color: rgb(var(--g1)); }
+}
+
+.sv-modal__group {
+  margin-bottom: 14px;
+
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: rgb(var(--n3));
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: 6px;
   }
+
+  small {
+    display: block;
+    font-size: 11px;
+    color: rgb(var(--n3));
+    margin-top: 5px;
+  }
+}
+
+.sv-modal__msg {
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-top: 10px;
+
+  &--ok { background: rgba(0,200,83,.1); color: #00c853; border: 1px solid rgba(0,200,83,.25); }
+  &--err { background: rgba(var(--r1),.1); color: rgb(var(--r1)); border: 1px solid rgba(var(--r1),.25); }
+}
+
+.sv-modal__footer {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  padding: 14px 18px;
+  border-top: 1px solid rgb(var(--n2));
 }
 </style>

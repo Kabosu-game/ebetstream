@@ -1,121 +1,175 @@
 <template>
-  <section class="login_section pt-120 p3-bg">
-    <div class="container-fluid">
-      <div class="row justify-content-between align-items-center">
+  <div class="tw-auth-page">
+    <div class="tw-auth-card">
 
-        <!-- Image -->
-        <div class="col-6 d-none d-lg-block">
-          <div class="login_section__thumb">
-            <img class="w-100" width="720" height="900" :src="createAccount" alt="Image" />
-          </div>
-        </div>
-
-        <!-- Form -->
-        <div class="col-lg-6 col-xl-5">
-          <div class="login_section__loginarea">
-            <div class="row justify-content-start">
-              <div class="col-xxl-10">
-                <div class="pb-10 pt-8 mb-7 mt-12 mt-lg-0 px-4 px-sm-10">
-
-                  <h3 class="mb-6 mb-md-8">{{ $t('auth.createAccount') }}</h3>
-                  <p class="mb-10 mb-md-15">
-                    {{ $t('auth.createAccountDescription') }}
-                  </p>
-
-                  <!-- SUCCESS MESSAGE -->
-                  <div v-if="successMessage" class="alert alert-success mb-4">
-                    <span>{{ successMessage }}</span>
-                    <button class="close-btn" @click="successMessage = ''">✖</button>
-                  </div>
-
-                  <!-- ERROR MESSAGE -->
-                  <div v-if="errorMessage" class="alert alert-danger mb-4">
-                    <span>{{ errorMessage }}</span>
-                    <button class="close-btn" @click="errorMessage = ''">✖</button>
-                  </div>
-
-                  <form @submit.prevent="registerUser" class="login_section__form">
-
-                    <!-- Username -->
-                    <input class="n11-bg mb-5" type="text" :placeholder="$t('auth.username')" v-model="form.username" required />
-
-                    <!-- Email -->
-                    <input class="n11-bg mb-5" type="email" :placeholder="$t('auth.email')" v-model="form.email" required />
-
-                    <!-- Password -->
-                    <div class="password-field mb-5">
-                      <input
-                        :type="showPassword ? 'text' : 'password'"
-                        class="n11-bg"
-                        :placeholder="$t('auth.password')"
-                        v-model="form.password"
-                        required
-                      />
-                      <button type="button" class="eye-btn" @click="showPassword = !showPassword">
-                        {{ showPassword ? '🙈' : '👁️' }}
-                      </button>
-                    </div>
-
-                    <!-- Confirm Password -->
-                    <div class="password-field mb-5">
-                      <input
-                        :type="showConfirm ? 'text' : 'password'"
-                        class="n11-bg"
-                        :placeholder="$t('auth.confirmPassword')"
-                        v-model="form.password_confirmation"
-                        required
-                      />
-                      <button type="button" class="eye-btn" @click="showConfirm = !showConfirm">
-                        {{ showConfirm ? '🙈' : '👁️' }}
-                      </button>
-                    </div>
-
-                    <!-- Password strength -->
-                    <div class="password-strength mb-5">
-                      <div :class="passwordStrengthClass">{{ passwordStrengthText }}</div>
-                    </div>
-
-                    <!-- Promo Code -->
-                    <input class="n11-bg mb-5" type="text" :placeholder="$t('auth.promoCode')" v-model="form.promo_code" />
-
-                    <!-- Submit -->
-                    <button type="submit" class="cmn-btn px-5 py-3 mb-6 w-100" :disabled="loading">
-                      <span v-if="loading">{{ $t('common.pleaseWait') }}</span>
-                      <span v-else>{{ $t('auth.signUpNow') }}</span>
-                    </button>
-
-                  </form>
-
-                  <!-- Social -->
-                  <div class="login_section__socialmedia text-center mb-6">
-                    <span class="mb-6">{{ $t('auth.orContinueWith') }}</span>
-                    <div class="login_section__social d-center gap-3">
-                      <router-link to="#" class="n11-bg px-3 py-2 rounded-5">
-                        <IconBrandFacebookFilled :size="24" />
-                      </router-link>
-                      <router-link to="#" class="n11-bg px-3 py-2 rounded-5">
-                        <IconBrandTwitterFilled :size="24" />
-                      </router-link>
-                      <router-link to="#" class="n11-bg px-3 py-2 rounded-5">
-                        <IconBrandGoogle :size="24" />
-                      </router-link>
-                    </div>
-                  </div>
-
-                  <span class="d-center gap-1">
-                    {{ $t('auth.alreadyMember') }}
-                    <router-link class="g1-color" to="/login">{{ $t('auth.login') }}</router-link>
-                  </span>
-
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
+      <!-- Logo -->
+      <div class="tw-auth-logo">
+        <router-link to="/">eBetStream</router-link>
       </div>
+
+      <!-- Title & subtitle -->
+      <h2 class="tw-auth-title">{{ $t('auth.createAccount') }}</h2>
+      <p class="tw-auth-sub">{{ $t('auth.createAccountDescription') }}</p>
+
+      <!-- Success alert -->
+      <div v-if="successMessage" class="tw-alert tw-alert--success">
+        <span>{{ successMessage }}</span>
+        <button class="tw-alert__close" @click="successMessage = ''">✕</button>
+      </div>
+
+      <!-- Error alert -->
+      <div v-if="errorMessage" class="tw-alert tw-alert--error">
+        <span>{{ errorMessage }}</span>
+        <button class="tw-alert__close" @click="errorMessage = ''">✕</button>
+      </div>
+
+      <!-- Form -->
+      <form @submit.prevent="registerUser" class="tw-auth-form">
+
+        <!-- Username -->
+        <div class="tw-field">
+          <label class="tw-label" for="reg-username">{{ $t('auth.username') }}</label>
+          <input
+            id="reg-username"
+            class="tw-input"
+            type="text"
+            :placeholder="$t('auth.username')"
+            v-model="form.username"
+            required
+            autocomplete="username"
+          />
+        </div>
+
+        <!-- Email -->
+        <div class="tw-field">
+          <label class="tw-label" for="reg-email">{{ $t('auth.email') }}</label>
+          <input
+            id="reg-email"
+            class="tw-input"
+            type="email"
+            :placeholder="$t('auth.email')"
+            v-model="form.email"
+            required
+            autocomplete="email"
+          />
+        </div>
+
+        <!-- Password -->
+        <div class="tw-field">
+          <label class="tw-label" for="reg-password">{{ $t('auth.password') }}</label>
+          <div class="tw-password-wrap">
+            <input
+              id="reg-password"
+              class="tw-input"
+              :type="showPassword ? 'text' : 'password'"
+              :placeholder="$t('auth.password')"
+              v-model="form.password"
+              required
+              autocomplete="new-password"
+            />
+            <button type="button" class="tw-eye-btn" @click="showPassword = !showPassword" :aria-label="showPassword ? 'Hide password' : 'Show password'">
+              <svg v-if="showPassword" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+                <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+              <svg v-else xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Password strength bar -->
+          <div v-if="form.password" class="tw-strength-bar">
+            <div class="tw-strength-bar__track">
+              <div
+                class="tw-strength-bar__fill"
+                :class="`tw-strength-bar__fill--${passwordStrengthClass}`"
+              ></div>
+            </div>
+            <span class="tw-strength-bar__label" :class="`tw-strength-text--${passwordStrengthClass}`">
+              {{ passwordStrengthText }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="tw-field">
+          <label class="tw-label" for="reg-confirm">{{ $t('auth.confirmPassword') }}</label>
+          <div class="tw-password-wrap">
+            <input
+              id="reg-confirm"
+              class="tw-input"
+              :type="showConfirm ? 'text' : 'password'"
+              :placeholder="$t('auth.confirmPassword')"
+              v-model="form.password_confirmation"
+              required
+              autocomplete="new-password"
+            />
+            <button type="button" class="tw-eye-btn" @click="showConfirm = !showConfirm" :aria-label="showConfirm ? 'Hide password' : 'Show password'">
+              <svg v-if="showConfirm" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+                <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+              <svg v-else xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Promo Code (optional) -->
+        <div class="tw-field">
+          <label class="tw-label" for="reg-promo">
+            {{ $t('auth.promoCode') }}
+            <span class="tw-label-optional">({{ $t('common.optional', 'optional') }})</span>
+          </label>
+          <input
+            id="reg-promo"
+            class="tw-input"
+            type="text"
+            :placeholder="$t('auth.promoCode')"
+            v-model="form.promo_code"
+          />
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="tw-btn tw-btn--primary w-100" :disabled="loading">
+          <span v-if="loading">{{ $t('common.pleaseWait') }}</span>
+          <span v-else>{{ $t('auth.signUpNow') }}</span>
+        </button>
+
+      </form>
+
+      <!-- Divider -->
+      <div class="tw-divider">
+        <span>{{ $t('auth.orContinueWith') }}</span>
+      </div>
+
+      <!-- Social buttons -->
+      <div class="tw-social-row">
+        <router-link to="#" class="tw-social-btn">
+          <i class="fab fa-facebook-f"></i>
+        </router-link>
+        <router-link to="#" class="tw-social-btn">
+          <i class="fab fa-twitter"></i>
+        </router-link>
+        <router-link to="#" class="tw-social-btn">
+          <i class="fab fa-google"></i>
+        </router-link>
+      </div>
+
+      <!-- Footer link -->
+      <p class="tw-auth-footer">
+        {{ $t('auth.alreadyMember') }}
+        <router-link to="/login">{{ $t('auth.login') }}</router-link>
+      </p>
+
     </div>
-  </section>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -124,12 +178,6 @@ import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import apiClient from "@/utils/axios";
 import createAccount from "@/assets/images/1234.jpeg";
-import { 
-  IconBrandFacebookFilled, 
-  IconBrandGoogle, 
-  IconBrandTwitterFilled 
-} from "@tabler/icons-vue";
-
 const { t } = useI18n();
 
 const router = useRouter();
@@ -214,44 +262,147 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.alert {
-  padding: 12px 16px;
-  border-radius: 6px;
+/* Form */
+.tw-auth-form {
+  width: 100%;
+}
+
+/* Field spacing */
+.tw-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+/* Optional label hint */
+.tw-label-optional {
+  font-size: 0.75rem;
+  color: rgb(var(--n3));
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+/* Password field wrapper */
+.tw-password-wrap {
   position: relative;
 }
-.alert-success { background: #d1f7d6; color: #0f6f1a; }
-.alert-danger { background: #f7d6d6; color: #a70f0f; }
 
-.close-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: transparent;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
+.tw-password-wrap .tw-input {
+  padding-right: 44px;
 }
 
-.password-field {
-  position: relative;
-}
-
-.eye-btn {
+.tw-eye-btn {
   position: absolute;
   top: 50%;
-  right: 10px;
+  right: 12px;
   transform: translateY(-50%);
   background: transparent;
   border: none;
   cursor: pointer;
+  color: rgb(var(--n3));
+  display: flex;
+  align-items: center;
+  padding: 0;
+  transition: color 0.15s;
 }
 
-.password-strength div {
-  font-size: 0.9em;
-  font-weight: bold;
+.tw-eye-btn:hover {
+  color: rgb(var(--n8));
 }
 
-.password-strength .weak { color: #f44336; }
-.password-strength .medium { color: #ff9800; }
-.password-strength .strong { color: #4caf50; }
+/* Password strength bar */
+.tw-strength-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.tw-strength-bar__track {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: rgb(var(--n2));
+  overflow: hidden;
+}
+
+.tw-strength-bar__fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease, background 0.3s ease;
+}
+
+.tw-strength-bar__fill--weak {
+  width: 33%;
+  background: #f44336;
+}
+
+.tw-strength-bar__fill--medium {
+  width: 66%;
+  background: #ff9800;
+}
+
+.tw-strength-bar__fill--strong {
+  width: 100%;
+  background: #4caf50;
+}
+
+.tw-strength-bar__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tw-strength-text--weak   { color: #f44336; }
+.tw-strength-text--medium { color: #ff9800; }
+.tw-strength-text--strong { color: #4caf50; }
+
+/* Divider */
+.tw-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 20px;
+  color: rgb(var(--n3));
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.tw-divider::before,
+.tw-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgb(var(--n2));
+}
+
+/* Social buttons */
+.tw-social-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.tw-social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: rgb(var(--p3));
+  border: 1px solid rgb(var(--n2));
+  color: rgb(var(--n8));
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.tw-social-btn:hover {
+  background: rgb(var(--n2));
+  border-color: rgb(var(--g1));
+  color: rgb(var(--g1));
+}
 </style>

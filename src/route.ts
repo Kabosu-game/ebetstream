@@ -380,36 +380,6 @@ export const router = createRouter({
       meta: { title: "Détails Événement - Ebetstream" },
     },
     {
-      path: "/games/category/:id",
-      component: () => import("./pages/GameCategory.vue"),
-      meta: { title: "Game Category - Ebetstream" },
-    },
-    {
-      path: "/games/:id",
-      component: () => import("./pages/GameDetail.vue"),
-      meta: { title: "Détails Jeu - Ebetstream" },
-    },
-    {
-      path: "/pubg-mobile",
-      component: () => import("./pages/GameByName.vue"),
-      meta: { title: "PUBG Mobile - Ebetstream" },
-    },
-    {
-      path: "/garena-free-fire",
-      component: () => import("./pages/GameByName.vue"),
-      meta: { title: "Garena Free Fire - Ebetstream" },
-    },
-    {
-      path: "/mobile-legends",
-      component: () => import("./pages/GameByName.vue"),
-      meta: { title: "Mobile Legends: Bang Bang - Ebetstream" },
-    },
-    {
-      path: "/mobile-legends-bang-bang",
-      component: () => import("./pages/GameByName.vue"),
-      meta: { title: "Mobile Legends: Bang Bang - Ebetstream" },
-    },
-    {
       path: "/admin",
       component: () => import("./pages/AdminDashboard.vue"),
       meta: { layout: AdminLayout, title: "Dashboard Admin - Ebetstream" },
@@ -419,6 +389,31 @@ export const router = createRouter({
       path: "/about",
       component: () => import("./pages/About.vue"),
       meta: { title: "À propos - eBetStream" },
+    },
+    {
+      path: "/monetisation",
+      component: () => import("./pages/Monetization.vue"),
+      meta: { title: "Programme de Monétisation - eBetStream" },
+    },
+    {
+      path: "/arena",
+      component: () => import("./pages/Arena.vue"),
+      meta: { title: "EBETSTREAM ARENA™ - eBetStream" },
+    },
+    {
+      path: "/arena/matches/:id",
+      component: () => import("./pages/ArenaMatchDetail.vue"),
+      meta: { title: "Match Arena - eBetStream" },
+    },
+    {
+      path: "/agent-dashboard",
+      component: () => import("./pages/AgentDashboard.vue"),
+      meta: { title: "Tableau de bord Agent - eBetStream" },
+    },
+    {
+      path: "/agents-crypto",
+      component: () => import("./pages/AgentsCrypto.vue"),
+      meta: { title: "Réseau Agents Crypto - eBetStream" },
     },
     {
       path: "/contact",

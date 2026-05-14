@@ -1,10 +1,19 @@
 <template>
-  <HeaderTwo />
-  <router-view />
-  <MainFooter />
+  <div class="tw-layout-two">
+    <router-view />
+  </div>
 </template>
 
 <script setup lang="ts">
-import HeaderTwo from "../components/Shared/HeaderTwo.vue";
-import MainFooter from "../components/Shared/MainFooter.vue";
+import { RouterView } from "vue-router";
 </script>
+
+<style scoped>
+.tw-layout-two {
+  min-height: 100vh;
+  background: rgb(var(--p1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>

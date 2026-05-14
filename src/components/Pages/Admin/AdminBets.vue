@@ -70,7 +70,7 @@
                     title="Mark as Won"
                     :disabled="updatingStatus === bet.id"
                   >
-                    <IconCheck :size="16" />
+                    <i class="fas fa-check"></i>
                   </button>
                   <button 
                     v-if="bet.status === 'pending'"
@@ -79,7 +79,7 @@
                     title="Mark as Lost"
                     :disabled="updatingStatus === bet.id"
                   >
-                    <IconX :size="16" />
+                    <i class="fas fa-times"></i>
                   </button>
                   <button 
                     v-if="bet.status === 'pending'"
@@ -88,7 +88,7 @@
                     title="Cancel Bet"
                     :disabled="updatingStatus === bet.id"
                   >
-                    <IconBan :size="16" />
+                    <IconBan />
                   </button>
                   <span v-if="updatingStatus === bet.id" class="spinner-border spinner-border-sm text-primary"></span>
                 </div>
@@ -130,26 +130,23 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import apiClient from '@/utils/axios';
-import { IconCheck, IconX, IconBan } from '@tabler/icons-vue';
 
 interface Bet {
   id: number;
   user_id: number;
-  game_match_id: number;
   bet_type: string;
   amount: number;
   potential_win: number;
   status: string;
   created_at: string;
   user?: { username: string; email: string };
-  game_match?: {
-    id: number;
-    team1_name: string;
-    team2_name: string;
-    team1_odds: number;
-    draw_odds: number;
-    team2_odds: number;
-    game?: { name: string };
+  championship_match?: {
+    player1?: { player_name?: string };
+    player2?: { player_name?: string };
+  };
+  arena_match?: {
+    team1_name?: string;
+    team2_name?: string;
   };
 }
 
@@ -171,9 +168,7 @@ const filteredBets = computed(() => {
     const query = searchQuery.value.toLowerCase();
     filtered = filtered.filter(b => 
       (b.user?.username || '').toLowerCase().includes(query) ||
-      (b.game_match?.team1_name || '').toLowerCase().includes(query) ||
-      (b.game_match?.team2_name || '').toLowerCase().includes(query) ||
-      (b.game_match?.game?.name || '').toLowerCase().includes(query)
+      getMatchName(b).toLowerCase().includes(query)
     );
   }
   
@@ -258,10 +253,13 @@ const updateBetStatus = async (betId: number, status: 'won' | 'lost' | 'cancelle
 };
 
 const getMatchName = (bet: Bet) => {
-  if (bet.game_match) {
-    const team1 = bet.game_match.team1_name || 'Team 1';
-    const team2 = bet.game_match.team2_name || 'Team 2';
-    return `${team1} vs ${team2}`;
+  if (bet.championship_match) {
+    const p1 = bet.championship_match.player1?.player_name || 'Joueur 1';
+    const p2 = bet.championship_match.player2?.player_name || 'Joueur 2';
+    return `${p1} vs ${p2}`;
+  }
+  if (bet.arena_match) {
+    return `${bet.arena_match.team1_name || 'Équipe 1'} vs ${bet.arena_match.team2_name || 'Équipe 2'}`;
   }
   return 'N/A';
 };
@@ -275,23 +273,7 @@ const getBetTypeLabel = (betType: string) => {
   return labels[betType] || betType || 'N/A';
 };
 
-const getBetOdds = (bet: Bet) => {
-  if (!bet.game_match) {
-    return 'N/A';
-  }
-  
-  const match = bet.game_match;
-  switch (bet.bet_type) {
-    case 'team1_win':
-      return match.team1_odds || 'N/A';
-    case 'draw':
-      return match.draw_odds || 'N/A';
-    case 'team2_win':
-      return match.team2_odds || 'N/A';
-    default:
-      return 'N/A';
-  }
-};
+const getBetOdds = (_bet: Bet) => 'N/A';
 
 const getStatusLabel = (status: string) => {
   const labels: Record<string, string> = {

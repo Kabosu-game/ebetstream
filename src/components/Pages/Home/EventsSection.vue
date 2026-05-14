@@ -1,271 +1,306 @@
 <template>
-  <!-- Events Section -->
-  <section class="top10_section py-6 position-relative overflow-hidden">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-12 gx-0 gx-lg-4">
-          <div class="top10__main">
-            <div class="row w-100">
-              <div class="col-12">
-                <div class="row h-100 align-items-center">
-                  <!-- Colonne texte -->
-                  <div class="col-lg-6 col-md-7">
-                    <div class="top10_content" data-aos="fade-right">
-                      <span class="hero_badge mb-3 d-inline-block">
-                        <i class="fas fa-calendar-alt me-2"></i>{{ $t('events.title') }}
-                      </span>
-                      <h2 class="hero_title mb-4">
-                        {{ $t('events.upcomingEventsThisMonth') }}
-                      </h2>
-                      <p class="hero_subtitle mb-5">
-                        {{ $t('events.upcomingEventsDescription') }}
-                      </p>
-                      <div class="hero_actions d-flex flex-wrap gap-3">
-                        <router-link to="/events" class="btn_primary text-decoration-none">
-                          <span>{{ $t('events.viewAllEvents') }}</span>
-                          <i class="fas fa-arrow-right ms-2"></i>
-                        </router-link>
-                      </div>
-                    </div>
-                  </div>
+  <!-- ===== UPCOMING EVENTS (Twitch-style) ===== -->
+  <section class="tw-section">
+    <div class="tw-section-header">
+      <div class="tw-section-header__left">
+        <i class="ti ti-calendar-event tw-section-icon"></i>
+        <h2 class="tw-section-title">Événements</h2>
+      </div>
+      <router-link to="/events" class="tw-see-all">
+        Voir tout <i class="fas fa-chevron-right"></i>
+      </router-link>
+    </div>
 
-                  <!-- Colonne illustration / floating card -->
-                  <div class="col-lg-6 col-md-5 d-none d-md-block">
-                    <div class="top10_image" data-aos="fade-left">
-                      <div class="floating_card card_top10">
-                        <div class="card_icon">📅</div>
-                        <div class="card_content">
-                          <span class="card_label">Events</span>
-                          <span class="card_value">Upcoming</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+    <!-- Loading -->
+    <div v-if="loading" class="tw-event-grid">
+      <div v-for="n in 3" :key="n" class="tw-event-card tw-event-card--skeleton">
+        <div class="tw-event-card__thumb skeleton"></div>
+        <div class="tw-event-card__body">
+          <div class="skeleton-line mb-2"></div>
+          <div class="skeleton-line skeleton-line--short"></div>
+        </div>
+      </div>
+    </div>
 
-                  <!-- Liste des événements -->
-                  <div class="col-12 mt-5">
-                    <div v-if="loading" class="text-center py-5">
-                      <div class="spinner-border text-warning" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                      </div>
-                    </div>
-                    <div v-else-if="error" class="alert alert-warning" role="alert">
-                      {{ error }}
-                    </div>
-                    <div v-else-if="upcomingEvents.length === 0" class="text-center py-5">
-                      <p class="text-muted">{{ $t('events.noEvents') }}</p>
-                    </div>
-                    <div v-else class="top10_list row g-4">
-                      <div v-for="event in upcomingEvents" :key="event.id" class="col-lg-6 col-xl-4">
-                        <div class="player_card p-4" style="cursor: pointer;" @click="viewEvent(event.id)">
-                          <div v-if="event.image_url" class="event_image mb-3 rounded overflow-hidden" style="height: 150px;">
-                            <img 
-                              :src="event.image_url" 
-                              :alt="event.title"
-                              class="w-100 h-100"
-                              style="object-fit: cover;"
-                              @error="handleImageError($event)"
-                            />
-                          </div>
-                          <div v-else class="event_placeholder mb-3 rounded d-flex align-items-center justify-content-center" 
-                               style="height: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                            <i class="fas fa-calendar-alt text-white" style="font-size: 2.5rem;"></i>
-                          </div>
-                          <div class="player_info">
-                            <h3 class="player_name mb-2">{{ event.title }}</h3>
-                            <p class="player_score mb-2">
-                              <i class="fas fa-clock me-1"></i>{{ formatDate(event.start_at) }}
-                            </p>
-                            <p v-if="event.location" class="player_country small text-muted mb-0">
-                              <i class="fas fa-map-marker-alt me-1"></i>{{ event.location }}
-                            </p>
-                            <p v-if="event.type" class="player_score small mt-2 mb-0">
-                              <span class="badge bg-primary">{{ event.type }}</span>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- /Events List -->
-                </div>
-              </div>
-            </div>
+    <!-- Event cards -->
+    <div v-else-if="upcomingEvents.length > 0" class="tw-event-grid">
+      <div
+        v-for="event in upcomingEvents"
+        :key="event.id"
+        class="tw-event-card"
+        @click="viewEvent(event.id)"
+      >
+        <!-- Thumbnail -->
+        <div class="tw-event-card__thumb">
+          <img
+            v-if="event.image_url"
+            :src="event.image_url"
+            :alt="event.title"
+            @error="onImgError"
+          />
+          <div v-else class="tw-event-card__thumb-fallback">
+            <i class="fas fa-calendar-day"></i>
+          </div>
+          <!-- Type badge -->
+          <span v-if="event.type" class="tw-event-badge">{{ event.type }}</span>
+        </div>
+
+        <!-- Body -->
+        <div class="tw-event-card__body">
+          <p class="tw-event-card__title">{{ event.title }}</p>
+          <div class="tw-event-card__meta">
+            <span class="tw-event-card__date">
+              <i class="fas fa-clock"></i> {{ formatDate(event.start_at) }}
+            </span>
+            <span v-if="event.location" class="tw-event-card__location">
+              <i class="fas fa-map-marker-alt"></i> {{ event.location }}
+            </span>
           </div>
         </div>
-      </div>  
+      </div>
+    </div>
+
+    <!-- Empty -->
+    <div v-else class="tw-empty-state">
+      <i class="ti ti-calendar-off tw-empty-state__icon"></i>
+      <p>{{ $t('events.noEvents', 'No upcoming events at the moment.') }}</p>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
-import apiClient from '@/utils/axios';
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
+import apiClient from "@/utils/axios";
 
 const { t } = useI18n();
+const router = useRouter();
 
-interface Event {
+interface EventItem {
   id: number;
   title: string;
-  description?: string | null;
   start_at: string;
-  end_at?: string | null;
   location?: string | null;
-  image?: string | null;
   image_url?: string;
-  status?: string;
   type?: string | null;
-  is_upcoming?: boolean;
-  is_ongoing?: boolean;
-  is_past?: boolean;
 }
 
-const router = useRouter();
-const upcomingEvents = ref<Event[]>([]);
+const upcomingEvents = ref<EventItem[]>([]);
 const loading = ref(false);
-const error = ref('');
 
 const loadEvents = async () => {
   try {
     loading.value = true;
-    error.value = '';
-    
-    const response = await apiClient.get('/events', {
-      params: { 
-        status: 'upcoming',
-        limit: 6,
-        sort_by: 'start_at',
-        sort_order: 'asc'
-      }
+    const res = await apiClient.get("/events", {
+      params: { status: "upcoming", limit: 6, sort_by: "start_at", sort_order: "asc" },
     });
-
-    if (response.data.success) {
-      const data = response.data.data;
-      upcomingEvents.value = Array.isArray(data) ? data : (data?.data || []);
-    } else {
-      error.value = response.data.message || 'Error loading events';
+    if (res.data.success) {
+      const data = res.data.data;
+      upcomingEvents.value = Array.isArray(data) ? data : data?.data || [];
     }
-  } catch (err: any) {
-    console.error('Error loading events:', err);
-    if (err.response?.data?.message) {
-      error.value = err.response.data.message;
-    } else if (err.isNetworkError) {
-      error.value = 'Connection error. Please check your internet connection.';
-    } else {
-      error.value = 'Error loading events';
-    }
+  } catch {
+    upcomingEvents.value = [];
   } finally {
     loading.value = false;
   }
 };
 
-const viewEvent = (id: number) => {
-  router.push(`/events/${id}`);
-};
+const viewEvent = (id: number) => router.push(`/events/${id}`);
 
-const formatDate = (dateString: string) => {
-  if (!dateString) return '';
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', { 
-    day: 'numeric', 
-    month: 'short',
-    year: 'numeric'
+const formatDate = (d: string) => {
+  if (!d) return "";
+  return new Date(d).toLocaleDateString("en-US", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
   });
 };
 
-const handleImageError = (e: Event | any) => {
-  const img = (e.target || (e as any).target) as HTMLImageElement;
-  if (img) {
-    img.style.display = 'none';
-  }
+const onImgError = (e: globalThis.Event) => {
+  const img = e.target as HTMLImageElement;
+  if (img) img.style.display = "none";
 };
 
-onMounted(() => {
-  loadEvents();
-});
+onMounted(() => loadEvents());
 </script>
 
 <style scoped>
-.top10_section {
-  width: 100%;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-  color: white;
-  position: relative;
-  overflow: hidden;
-  border-radius: 24px;
+.tw-section {
+  padding: 24px 0 8px;
 }
 
-.top10_content {
-  color: white;
-}
-
-.player_card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(15px);
-  border-radius: 16px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.player_card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-}
-
-.player_name {
-  font-weight: 700;
-  font-size: 1.1rem;
-}
-
-.player_score {
-  font-size: 0.9rem;
-  opacity: 0.85;
-}
-
-.floating_card {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(20px);
-  border-radius: 24px;
-  padding: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+.tw-section-header {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  justify-content: space-between;
+  margin-bottom: 16px;
 }
 
-.card_icon {
-  font-size: 3rem;
+.tw-section-header__left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.card_content {
+.tw-section-icon {
+  font-size: 20px;
+  color: rgb(var(--g1));
+}
+
+.tw-section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  margin: 0;
+}
+
+.tw-see-all {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgb(var(--g1));
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+
+  &:hover { color: rgba(var(--g1), 0.8); }
+}
+
+/* Grid */
+.tw-event-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+
+  @media (max-width: 900px) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 576px) { grid-template-columns: 1fr; }
+}
+
+/* Card */
+.tw-event-card {
+  background: rgb(var(--p2));
+  border: 1px solid rgb(var(--n2));
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.2s;
+
+  &:hover {
+    border-color: rgb(var(--g1));
+    transform: translateY(-3px);
+  }
+}
+
+/* Thumbnail */
+.tw-event-card__thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: rgb(var(--p3));
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+  }
+
+  .tw-event-card:hover & img {
+    transform: scale(1.04);
+  }
+}
+
+.tw-event-card__thumb-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgb(var(--p3)) 0%, rgb(var(--n11)) 100%);
+
+  i {
+    font-size: 40px;
+    color: rgba(var(--n3), 0.5);
+  }
+}
+
+.tw-event-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgb(var(--g1));
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+
+/* Body */
+.tw-event-card__body {
+  padding: 12px;
+}
+
+.tw-event-card__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(var(--n8));
+  margin: 0 0 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tw-event-card__meta {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 4px;
 }
 
-.card_label {
-  font-size: 0.9rem;
-  opacity: 0.9;
-  font-weight: 500;
-}
-
-.card_value {
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: white;
-}
-
-.hero_actions .btn_primary {
-  display: inline-flex;
+.tw-event-card__date,
+.tw-event-card__location {
+  font-size: 12px;
+  color: rgb(var(--n3));
+  display: flex;
   align-items: center;
-  color: inherit;
+  gap: 4px;
+
+  i { font-size: 12px; }
 }
 
-.hero_actions .btn_primary:hover {
-  color: inherit;
-  text-decoration: none;
+/* Skeleton */
+.tw-event-card--skeleton .tw-event-card__thumb {
+  background: linear-gradient(90deg, rgb(var(--p2)) 25%, rgb(var(--p3)) 50%, rgb(var(--p2)) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+.tw-event-card__body .skeleton-line {
+  height: 12px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, rgb(var(--p2)) 25%, rgb(var(--p3)) 50%, rgb(var(--p2)) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+.skeleton-line--short { width: 60%; }
+.mb-2 { margin-bottom: 8px; }
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Empty state */
+.tw-empty-state {
+  text-align: center;
+  padding: 40px 0;
+  color: rgb(var(--n3));
+
+  &__icon { font-size: 48px; margin-bottom: 12px; display: block; opacity: 0.4; }
+  p { font-size: 14px; margin: 0; }
 }
 </style>
-

@@ -110,7 +110,7 @@
                       <div 
                         v-else
                         class="rounded-circle d-inline-flex align-items-center justify-content-center"
-                        style="width: 100px; height: 100px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"
+                        style="width: 100px; height: 100px; background: linear-gradient(135deg, #febd56 0%, #d98f25 100%);"
                       >
                         <i class="fas fa-users fa-3x text-white"></i>
                       </div>

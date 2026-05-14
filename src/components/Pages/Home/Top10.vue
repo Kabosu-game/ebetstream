@@ -1,83 +1,71 @@
 <template>
-  <!-- Section Top 10 -->
-  <section class="top10_section py-4 position-relative overflow-hidden">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-12 gx-0 gx-lg-4">
-          <div class="top10__main">
-            <div class="row w-100">
-              <div class="col-12">
-                <!-- Header -->
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <div>
-                    <span class="hero_badge mb-2 d-inline-block">
-                        <i class="fas fa-trophy me-2"></i>Top Players
-                      </span>
-                    <h3 class="hero_title mb-0">
-                      Top 10 <span class="text_gradient">Players</span> this week
-                    </h3>
-                  </div>
-                  <router-link to="/players" class="btn_primary text-decoration-none btn-sm">
-                    <span>View All</span>
-                          <i class="fas fa-arrow-right ms-2"></i>
-                        </router-link>
-                      </div>
+  <section class="tw-section">
+    <div class="tw-section-header">
+      <div class="tw-section-header__left">
+        <i class="ti ti-trophy tw-section-icon"></i>
+        <h2 class="tw-section-title">Top 10 des meilleurs joueurs</h2>
+      </div>
+      <router-link to="/players" class="tw-see-all">
+        Voir tout <i class="fas fa-chevron-right"></i>
+      </router-link>
+    </div>
 
-                <!-- Liste compacte -->
-                <div v-if="loading" class="text-center py-4">
-                      <div class="spinner-border text-warning" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                      </div>
-                    </div>
-                    <div v-else-if="error" class="alert alert-warning" role="alert">
-                      {{ error }}
-                    </div>
-                <div v-else-if="topPlayers.length === 0" class="text-center py-4">
-                  <p class="text-muted mb-0">No players available at the moment.</p>
-                </div>
-                <div v-else class="compact_leaderboard">
-                  <div 
-                    v-for="(player, index) in topPlayers" 
-                    :key="player.id" 
-                    class="leaderboard_item"
-                    :class="{ 'top_3': index < 3 }"
-                    @click="viewPlayer(player.id)"
-                  >
-                    <div class="rank_badge">
-                      <span v-if="index === 0" class="medal gold">🥇</span>
-                      <span v-else-if="index === 1" class="medal silver">🥈</span>
-                      <span v-else-if="index === 2" class="medal bronze">🥉</span>
-                      <span v-else class="rank_number">#{{ index + 1 }}</span>
-                    </div>
-                    <div class="player_avatar_mini">
-                              <img 
-                                v-if="player.avatar_url" 
-                                :src="player.avatar_url" 
-                                :alt="player.name"
-                                @error="handleImageError($event)"
-                              />
-                              <i v-else class="fas fa-user"></i>
-                            </div>
-                    <div class="player_info_compact flex-grow-1">
-                      <div class="player_name_compact">{{ player.name }}</div>
-                      <div class="player_meta">
-                        <span class="username">@{{ player.username }}</span>
-                        <span v-if="player.country" class="country">
-                          <i class="fas fa-map-marker-alt"></i> {{ player.country }}
-                                </span>
-                      </div>
-                    </div>
-                    <div class="player_score_compact">
-                      <span class="score_value">{{ player.score }}</span>
-                      <span class="score_label">pts</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div v-if="loading" class="tw-top10-loading">
+      <div v-for="n in 5" :key="n" class="tw-top10-row tw-top10-row--skeleton">
+        <div class="skeleton-line skeleton-line--short"></div>
+        <div class="skeleton-avatar"></div>
+        <div class="skeleton-line flex-grow-1"></div>
+      </div>
+    </div>
+
+    <div v-else-if="error" class="tw-empty-state">
+      <i class="ti ti-alert-circle tw-empty-state__icon"></i>
+      <p>{{ error }}</p>
+    </div>
+
+    <div v-else-if="topPlayers.length === 0" class="tw-empty-state">
+      <i class="ti ti-users tw-empty-state__icon"></i>
+      <p>Aucun joueur disponible pour le moment.</p>
+    </div>
+
+    <div v-else class="tw-top10-list">
+      <div
+        v-for="(player, index) in topPlayers"
+        :key="player.id"
+        class="tw-top10-row"
+        :class="{ 'tw-top10-row--top3': index < 3 }"
+        @click="viewPlayer(player.id)"
+      >
+        <div class="tw-top10-rank">
+          <span v-if="index === 0" class="tw-top10-medal"><i class="fas fa-medal" style="color:#ffd700"></i></span>
+          <span v-else-if="index === 1" class="tw-top10-medal">🥈</span>
+          <span v-else-if="index === 2" class="tw-top10-medal">🥉</span>
+          <span v-else class="tw-top10-rank-num">#{{ index + 1 }}</span>
         </div>
-      </div>  
+
+        <div class="tw-top10-avatar">
+          <img
+            v-if="player.avatar_url"
+            :src="player.avatar_url"
+            :alt="player.name"
+            @error="handleImageError($event)"
+          />
+          <i v-else class="fas fa-user"></i>
+        </div>
+
+        <div class="tw-top10-info">
+          <p class="tw-top10-name">{{ player.name }}</p>
+          <p class="tw-top10-meta">
+            <span>@{{ player.username }}</span>
+            <span v-if="player.country"><i class="fas fa-map-marker-alt"></i> {{ player.country }}</span>
+          </p>
+        </div>
+
+        <div class="tw-top10-score">
+          <span class="tw-top10-score-val">{{ player.score }}</span>
+          <span class="tw-top10-score-lbl">pts</span>
+        </div>
+      </div>
     </div>
   </section>
 </template>
@@ -94,9 +82,6 @@ interface Player {
   score: number;
   avatar_url?: string;
   country?: string | null;
-  wins?: number;
-  losses?: number;
-  certifications?: string[] | null;
 }
 
 const router = useRouter();
@@ -108,214 +93,147 @@ const loadTopPlayers = async () => {
   try {
     loading.value = true;
     error.value = '';
-    
-    const response = await apiClient.get('/top-players', {
-      params: { limit: 10, period: 'week' }
-    });
-
-    if (response.data.success) {
-      topPlayers.value = response.data.data;
-    }
-  } catch (err: any) {
-    console.error('Error loading top players:', err);
-    error.value = 'Error loading players';
+    const response = await apiClient.get('/top-players', { params: { limit: 10, period: 'week' } });
+    if (response.data.success) topPlayers.value = response.data.data;
+  } catch {
+    error.value = 'Erreur lors du chargement des joueurs';
   } finally {
     loading.value = false;
   }
 };
 
-const viewPlayer = (id: number) => {
-  router.push(`/players/${id}`);
-};
+const viewPlayer = (id: number) => router.push(`/players/${id}`);
 
 const handleImageError = (event: Event) => {
   const img = event.target as HTMLImageElement;
-  const playerName = img.alt || 'User';
-  img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(playerName)}&background=667eea&color=fff&size=200`;
+  img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(img.alt || 'User')}&background=667eea&color=fff&size=200`;
 };
 
-onMounted(() => {
-  loadTopPlayers();
-});
+onMounted(loadTopPlayers);
 </script>
 
 <style scoped>
-.top10_section {
-  width: 100%;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-  color: white;
-  position: relative;
+.tw-top10-list {
+  background: rgb(var(--p2));
+  border: 1px solid rgb(var(--n2));
+  border-radius: 8px;
   overflow: hidden;
-  border-radius: 16px;
 }
 
-.hero_badge {
-  font-size: 0.75rem;
-  padding: 0.25rem 0.75rem;
-  background: rgba(255, 215, 0, 0.15);
-  border: 1px solid rgba(255, 215, 0, 0.3);
-  border-radius: 20px;
-  color: #FFD700;
-}
-
-.hero_title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: white;
-  margin: 0;
-}
-
-.compact_leaderboard {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.leaderboard_item {
+.tw-top10-row {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.6rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgb(var(--n2));
   cursor: pointer;
-  transition: all 0.2s ease;
-  background: rgba(255, 255, 255, 0.02);
+  transition: background 0.15s, transform 0.15s;
 }
 
-.leaderboard_item:last-child {
-  border-bottom: none;
+.tw-top10-row:last-child { border-bottom: none; }
+
+.tw-top10-row:hover {
+  background: rgb(var(--p3));
+  transform: translateX(3px);
 }
 
-.leaderboard_item:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateX(4px);
+.tw-top10-row--top3 {
+  background: rgba(var(--g1), 0.06);
 }
 
-.leaderboard_item.top_3 {
-  background: rgba(255, 215, 0, 0.08);
+.tw-top10-row--top3:hover {
+  background: rgba(var(--g1), 0.1);
 }
 
-.leaderboard_item.top_3:hover {
-  background: rgba(255, 215, 0, 0.15);
-}
-
-.rank_badge {
-  width: 32px;
+.tw-top10-rank {
+  width: 36px;
   text-align: center;
   flex-shrink: 0;
 }
 
-.medal {
-  font-size: 1.5rem;
-  display: block;
+.tw-top10-medal { font-size: 1.4rem; }
+
+.tw-top10-rank-num {
+  font-size: 13px;
+  font-weight: 800;
+  color: rgb(var(--g1));
 }
 
-.rank_number {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #FFD700;
-}
-
-.player_avatar_mini {
-  width: 36px;
-  height: 36px;
+.tw-top10-avatar {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
-  border: 2px solid rgba(255, 215, 0, 0.4);
-  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgb(var(--n2));
+  background: rgb(var(--p3));
   display: flex;
   align-items: center;
   justify-content: center;
+  color: rgb(var(--n3));
 }
 
-.player_avatar_mini img {
+.tw-top10-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.player_avatar_mini i {
-  font-size: 0.9rem;
-  color: #FFD700;
-}
-
-.player_info_compact {
+.tw-top10-info {
+  flex: 1;
   min-width: 0;
-  overflow: hidden;
 }
 
-.player_name_compact {
-  font-weight: 600;
-  font-size: 0.85rem;
-  color: white;
+.tw-top10-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  margin: 0 0 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: 0.15rem;
 }
 
-.player_meta {
+.tw-top10-meta {
+  font-size: 12px;
+  color: rgb(var(--n3));
+  margin: 0;
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.6);
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
-.username {
-  white-space: nowrap;
-}
+.tw-top10-meta i { font-size: 11px; }
 
-.country {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  white-space: nowrap;
-}
-
-.player_score_compact {
+.tw-top10-score {
   text-align: right;
   flex-shrink: 0;
-  min-width: 60px;
 }
 
-.score_value {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #FFD700;
+.tw-top10-score-val {
   display: block;
+  font-size: 16px;
+  font-weight: 800;
+  color: rgb(var(--g1));
 }
 
-.score_label {
-  font-size: 0.65rem;
-  color: rgba(255, 255, 255, 0.5);
+.tw-top10-score-lbl {
+  font-size: 10px;
+  color: rgb(var(--n3));
   text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.btn_primary.btn-sm {
-  font-size: 0.75rem;
-  padding: 0.4rem 0.9rem;
-  display: inline-flex;
-  align-items: center;
-}
-
-@media (max-width: 768px) {
-  .player_meta {
+.tw-top10-loading {
+  display: flex;
   flex-direction: column;
-    align-items: flex-start;
-    gap: 0.25rem;
-  }
-  
-  .leaderboard_item {
-    padding: 0.5rem 0.75rem;
-  gap: 0.5rem;
+  gap: 8px;
 }
 
-  .player_avatar_mini {
-    width: 32px;
-    height: 32px;
-  }
+.tw-top10-row--skeleton {
+  background: rgb(var(--p2));
+  border: 1px solid rgb(var(--n2));
+  border-radius: 8px;
+  padding: 12px 16px;
 }
 </style>

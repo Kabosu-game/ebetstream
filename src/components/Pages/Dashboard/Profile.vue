@@ -27,11 +27,11 @@
                 @load="onImageLoad"
               />
               <div v-else class="profile_photo_placeholder rounded-circle d-flex align-items-center justify-content-center">
-                <IconUser :size="48" class="text-white" />
+                <i class="fas fa-user text-white"  ></i>
               </div>
             </div>
             <label for="profilePhotoInput" class="profile_photo_edit_btn">
-              <IconCamera :size="20" />
+              <i class="fas fa-camera"></i>
             </label>
             <input 
               id="profilePhotoInput"
@@ -68,7 +68,7 @@
             <div class="info_card n11-bg rounded-8 p-3 h-100">
               <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
                 <div class="d-flex align-items-center gap-2">
-                <span class="fs-3">📧</span>
+                <span class="fs-3"><i class="fas fa-envelope"></i></span>
                 <p class="mb-0 fw-bold small">Email</p>
               </div>
                 <button 
@@ -78,7 +78,7 @@
                   title="Edit Email"
                   type="button"
                 >
-                  <IconPencil :size="16" />
+                  <IconPencil />
                 </button>
               </div>
               <div v-if="!editingEmail">
@@ -97,14 +97,14 @@
                     @click="saveEmail"
                     :disabled="savingEmail"
                   >
-                    <IconCheck :size="16" />
+                    <i class="fas fa-check"></i>
                   </button>
                   <button 
                     class="btn btn-sm btn-secondary flex-fill"
                     @click="cancelEditEmail"
                     :disabled="savingEmail"
                   >
-                    <IconX :size="16" />
+                    <i class="fas fa-times"></i>
                   </button>
                 </div>
               </div>
@@ -126,7 +126,7 @@
                   title="Edit Phone"
                   type="button"
                 >
-                  <IconPencil :size="16" />
+                  <IconPencil />
                 </button>
               </div>
               <div v-if="!editingPhone">
@@ -145,14 +145,14 @@
                     @click="savePhone"
                     :disabled="savingPhone"
                   >
-                    <IconCheck :size="16" />
+                    <i class="fas fa-check"></i>
                   </button>
                   <button 
                     class="btn btn-sm btn-secondary flex-fill"
                     @click="cancelEditPhone"
                     :disabled="savingPhone"
                   >
-                    <IconX :size="16" />
+                    <i class="fas fa-times"></i>
                   </button>
                 </div>
               </div>
@@ -164,7 +164,7 @@
             <div class="info_card n11-bg rounded-8 p-3 h-100">
               <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
                 <div class="d-flex align-items-center gap-2">
-                  <span class="fs-3">👤</span>
+                  <span class="fs-3"><i class="fas fa-user"></i></span>
                   <p class="mb-0 fw-bold small">Full Name</p>
                 </div>
                 <button 
@@ -174,7 +174,7 @@
                   title="Edit Full Name"
                   type="button"
                 >
-                  <IconPencil :size="16" />
+                  <IconPencil />
                 </button>
               </div>
               <div v-if="!editingFullName">
@@ -193,14 +193,14 @@
                     @click="saveFullName"
                     :disabled="savingFullName"
                   >
-                    <IconCheck :size="16" />
+                    <i class="fas fa-check"></i>
                   </button>
                   <button 
                     class="btn btn-sm btn-secondary flex-fill"
                     @click="cancelEditFullName"
                     :disabled="savingFullName"
                   >
-                    <IconX :size="16" />
+                    <i class="fas fa-times"></i>
                   </button>
                 </div>
               </div>
@@ -232,7 +232,7 @@
               <div class="col-6 col-md-6">
                 <div class="info_card n11-bg rounded-8 p-3 h-100 d-flex flex-column align-items-start justify-content-center text-start">
               <div class="d-flex align-items-center gap-2 mb-2">
-                <span class="fs-3">🏆</span>
+                <span class="fs-3"><i class="fas fa-trophy"></i></span>
                 <p class="mb-0 fw-bold small">Status</p>
               </div>
               <p class="mb-0 text-white small">{{ profileData.status || 'None' }}</p>
@@ -244,7 +244,7 @@
                 <div class="info_card n11-bg rounded-8 p-3 h-100">
                   <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
                     <div class="d-flex align-items-center gap-2">
-                      <span class="fs-3">🌍</span>
+                      <span class="fs-3"><i class="fas fa-globe"></i></span>
                       <p class="mb-0 fw-bold small">Country</p>
                     </div>
                     <button 
@@ -254,7 +254,7 @@
                       title="Edit Country"
                       type="button"
                     >
-                      <IconPencil :size="16" />
+                      <IconPencil />
                     </button>
                   </div>
                   <div v-if="!editingCountry">
@@ -273,14 +273,14 @@
                         @click="saveCountry"
                         :disabled="savingCountry"
                       >
-                        <IconCheck :size="16" />
+                        <i class="fas fa-check"></i>
                       </button>
                       <button 
                         class="btn btn-sm btn-secondary flex-fill"
                         @click="cancelEditCountry"
                         :disabled="savingCountry"
                       >
-                        <IconX :size="16" />
+                        <i class="fas fa-times"></i>
                       </button>
                     </div>
                   </div>
@@ -293,7 +293,7 @@
         <div class="info_card n11-bg rounded-8 p-4">
           <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
             <div class="d-flex align-items-center gap-2">
-              <span class="fs-3">📝</span>
+              <span class="fs-3"><i class="fas fa-edit"></i></span>
               <h6 class="fw-bold mb-0">Biography</h6>
             </div>
             <button 
@@ -303,7 +303,7 @@
               title="Edit Biography"
               type="button"
             >
-              <IconPencil :size="16" />
+              <IconPencil />
             </button>
           </div>
           <div v-if="!editingBio">
@@ -323,7 +323,7 @@
                 @click="saveBio"
                 :disabled="savingBio"
               >
-                <IconCheck :size="16" class="me-1" />
+                <i class="fas fa-check me-1"  ></i>
                 Save
               </button>
               <button 
@@ -331,7 +331,7 @@
                 @click="cancelEditBio"
                 :disabled="savingBio"
               >
-                <IconX :size="16" class="me-1" />
+                <i class="fas fa-times me-1"  ></i>
                 Cancel
               </button>
             </div>
@@ -341,14 +341,14 @@
 
       <!-- Performance Profile -->
       <div class="mb-5">
-        <h6 class="fw-bold mb-3">📊 Performance Profile</h6>
+        <h6 class="fw-bold mb-3"><i class="fas fa-chart-bar"></i> Performance Profile</h6>
         <div class="n11-bg rounded-8 p-3 d-flex flex-column gap-2">
           <div class="d-flex justify-content-between">
-            <span>🏅 Tournaments Won</span>
+            <span><i class="fas fa-medal"></i> Tournaments Won</span>
               <span>{{ profileData.tournaments_won || 0 }} {{ formatTournamentsList(profileData.tournaments_list) }}</span>
           </div>
           <div class="d-flex justify-content-between">
-            <span>🔥 EbetStream Ranking</span>
+            <span><i class="fas fa-fire"></i> EbetStream Ranking</span>
               <span>{{ formatRanking(profileData.ranking, profileData.division) }}</span>
           </div>
           <div class="d-flex justify-content-between">
@@ -425,7 +425,7 @@
         <div class="certification_section n11-bg rounded-8 p-4">
           <div class="d-flex align-items-center justify-content-between mb-4">
             <div>
-              <h5 class="fw-bold mb-1 text-white">🏆 Certification Ebetstream</h5>
+              <h5 class="fw-bold mb-1 text-white"><i class="fas fa-trophy"></i> Certification Ebetstream</h5>
               <p class="text-white small mb-0" style="opacity: 0.8;">Get your official certification</p>
             </div>
             <div v-if="certificationStatus?.request?.status === 'approved'" class="badge bg-success fs-6 px-3 py-2">
@@ -578,21 +578,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed, nextTick } from "vue";
-import {
-  IconPencil,
-  IconCheck,
-  IconX,
-  IconUser,
-  IconCamera,
-  IconCertificate,
-  IconCircleCheck,
-  IconClock,
-  IconCircleX,
-  IconQrcode,
-  IconQrcodeOff,
-  IconExternalLink,
-  IconCopy
-} from "@tabler/icons-vue";
 import apiClient from "@/utils/axios";
 import { getStorageUrl, PRODUCTION_URLS, STORAGE_BASE_URL } from '@/config/constants';
 import { fixImageUrl } from '@/utils/imageFixer';
@@ -852,7 +837,6 @@ const handlePhotoUpload = async (event: Event) => {
   }
 };
 
-
 const formatTournamentsList = (list: string[] | null) => {
   if (!list || list.length === 0) return '';
   return '(' + list.join(' • ') + ')';
@@ -1075,7 +1059,7 @@ const profilePhotoUrl = computed(() => {
 });
 
 const onImageLoad = () => {
-  console.log('✅ Image loaded successfully:', profilePhotoUrl.value);
+  console.log('<i class="fas fa-check-circle" style="color:#00c853"></i> Image loaded successfully:', profilePhotoUrl.value);
   imageLoadError.value = false;
 };
 
@@ -1083,7 +1067,7 @@ const handleImageError = (event: Event) => {
   const img = event.target as HTMLImageElement;
   imageLoadError.value = true;
   
-  console.error('❌ Error loading profile photo:', {
+  console.error('<i class="fas fa-times-circle" style="color:#eb0028"></i> Error loading profile photo:', {
     src: img.src,
     profile_photo_url: profileData.value.profile_photo_url,
     profile_photo: profileData.value.profile_photo,
@@ -1156,7 +1140,7 @@ onMounted(async () => {
 .profile_photo_placeholder {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #febd56 0%, #d98f25 100%);
   border: 4px solid #FF9F00;
 }
 
@@ -1208,7 +1192,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   padding: 12px 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #febd56 0%, #d98f25 100%);
   border-radius: 12px;
   color: #fff;
   text-decoration: none;

@@ -1,141 +1,63 @@
 <template>
-  <footer class="footer_section p2-bg">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-12 gx-0 gx-lg-4">
-          <div class="top10__main">
-            <!-- Main Footer Content -->
-            <div class="row w-100 py-10 py-md-12 py-lg-15">
-              <!-- Brand Column -->
-              <div class="col-lg-4 col-md-6 mb-8 mb-lg-0">
-                <div class="footer_section__brand">
-                  <h3 class="mb-4 n8-color fw-bold">eBetStream</h3>
-                  <p class="fs-ten n4-color mb-0">
-                    {{ $t('footer.description') }}
-                  </p>
-                </div>
-              </div>
+  <footer class="tw-footer">
+    <div class="tw-footer__inner">
+      <!-- Brand + description -->
+      <div class="tw-footer__brand">
+        <span class="tw-footer__logo">eBetStream</span>
+        <p class="tw-footer__tagline">{{ $t('footer.description', 'Compete. Stream. Win. The ultimate gaming platform.') }}</p>
+      </div>
 
-              <!-- Quick Links -->
-              <div class="col-lg-2 col-md-3 col-sm-6 mb-8 mb-lg-0">
-                <div class="footer_section__links">
-                  <h5 class="mb-4 mb-md-5 n8-color fw-semibold">{{ $t('footer.company') }}</h5>
-                  <ul class="list-unstyled d-flex flex-column gap-3">
-                    <li>
-                      <router-link to="/about" class="fs-ten n4-color text-decoration-none footer-link">
-                        {{ $t('footer.aboutUs') }}
-                      </router-link>
-                    </li>
-                    <li>
-                      <router-link to="/contact" class="fs-ten n4-color text-decoration-none footer-link">
-                        {{ $t('footer.contact') }}
-                      </router-link>
-                    </li>
-                    <li>
-                      <router-link to="/careers" class="fs-ten n4-color text-decoration-none footer-link">
-                        {{ $t('footer.careers') }}
-                      </router-link>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <!-- Legal Links -->
-              <div class="col-lg-2 col-md-3 col-sm-6 mb-8 mb-lg-0">
-                <div class="footer_section__links">
-                  <h5 class="mb-4 mb-md-5 n8-color fw-semibold">{{ $t('footer.legal') }}</h5>
-                  <ul class="list-unstyled d-flex flex-column gap-3">
-                    <li>
-                      <router-link to="/privacy" class="fs-ten n4-color text-decoration-none footer-link">
-                        {{ $t('footer.privacy') }}
-                      </router-link>
-                    </li>
-                    <li>
-                      <router-link to="/terms" class="fs-ten n4-color text-decoration-none footer-link">
-                        {{ $t('footer.terms') }}
-                      </router-link>
-                    </li>
-                    <li>
-                      <router-link to="/cookies" class="fs-ten n4-color text-decoration-none footer-link">
-                        {{ $t('footer.cookies') }}
-                      </router-link>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <!-- Support Links -->
-              <div class="col-lg-2 col-md-3 col-sm-6 mb-8 mb-lg-0">
-                <div class="footer_section__links">
-                  <h5 class="mb-4 mb-md-5 n8-color fw-semibold">{{ $t('footer.support') }}</h5>
-                  <ul class="list-unstyled d-flex flex-column gap-3">
-                    <li>
-                      <router-link to="/help" class="fs-ten n4-color text-decoration-none footer-link">
-                        {{ $t('footer.help') }}
-                      </router-link>
-                    </li>
-                    <li>
-                      <router-link to="/faq" class="fs-ten n4-color text-decoration-none footer-link">
-                        {{ $t('footer.faq') }}
-                      </router-link>
-                    </li>
-                    <li>
-                      <router-link to="/support" class="fs-ten n4-color text-decoration-none footer-link">
-                        {{ $t('footer.supportCenter') }}
-                      </router-link>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <!-- Certifications -->
-              <div class="col-lg-2 col-md-3 col-sm-6 mb-8 mb-lg-0">
-                <div class="footer_section__links">
-                  <h5 class="mb-4 mb-md-5 n8-color fw-semibold">{{ $t('footer.certifications') }}</h5>
-                  <ul class="list-unstyled d-flex flex-column gap-3">
-                    <li>
-                      <router-link to="/become-organizer" class="fs-ten n4-color text-decoration-none footer-link">
-                        {{ $t('footer.becomeOrganizer') }}
-                      </router-link>
-                    </li>
-                    <li>
-                      <router-link to="/become-referee" class="fs-ten n4-color text-decoration-none footer-link">
-                        {{ $t('footer.becomeReferee') }}
-                      </router-link>
-                    </li>
-                    <li>
-                      <router-link to="/become-ambassador" class="fs-ten n4-color text-decoration-none footer-link">
-                        {{ $t('footer.becomeAmbassador') }}
-                      </router-link>
-                    </li>
-                    <li>
-                      <router-link to="/become-agent" class="fs-ten n4-color text-decoration-none footer-link">
-                        {{ $t('footer.becomeAgent') }}
-                      </router-link>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <!-- Bottom Bar -->
-            <div class="row w-100 border-top border-four pt-6 pb-6">
-              <div class="col-12">
-                <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
-                  <div class="footer_section__copyright">
-                    <p class="fs-ten n4-color mb-0">
-                      &copy; {{ currentYear }} eBetStream. {{ $t('footer.allRightsReserved') }}
-                    </p>
-                  </div>
-                  <div class="footer_section__badges d-flex align-items-center gap-3">
-                    <span class="fs-ten n4-color px-3 py-1 border border-four rounded-2">18+</span>
-                    <span class="fs-ten n4-color px-3 py-1 border border-four rounded-2">{{ $t('footer.responsibleGaming') }}</span>
-                  </div>
-                  </div>
-                  </div>
-            </div>
-          </div>
+      <!-- Links grid -->
+      <div class="tw-footer__links">
+        <div class="tw-footer__col">
+          <h6 class="tw-footer__col-title">{{ $t('footer.company', 'Company') }}</h6>
+          <ul>
+            <li><router-link to="/about">{{ $t('footer.aboutUs', 'About') }}</router-link></li>
+            <li><router-link to="/monetisation">Monétisation</router-link></li>
+            <li><router-link to="/arena">EBETSTREAM ARENA™</router-link></li>
+            <li><router-link to="/contact">{{ $t('footer.contact', 'Contact') }}</router-link></li>
+            <li><router-link to="/careers">{{ $t('footer.careers', 'Careers') }}</router-link></li>
+          </ul>
         </div>
+
+        <div class="tw-footer__col">
+          <h6 class="tw-footer__col-title">{{ $t('footer.legal', 'Legal') }}</h6>
+          <ul>
+            <li><router-link to="/privacy">{{ $t('footer.privacy', 'Privacy') }}</router-link></li>
+            <li><router-link to="/terms">{{ $t('footer.terms', 'Terms') }}</router-link></li>
+            <li><router-link to="/cookies">{{ $t('footer.cookies', 'Cookies') }}</router-link></li>
+          </ul>
+        </div>
+
+        <div class="tw-footer__col">
+          <h6 class="tw-footer__col-title">{{ $t('footer.support', 'Support') }}</h6>
+          <ul>
+            <li><router-link to="/help">{{ $t('footer.help', 'Help') }}</router-link></li>
+            <li><router-link to="/faq">{{ $t('footer.faq', 'FAQ') }}</router-link></li>
+            <li><router-link to="/support">{{ $t('footer.supportCenter', 'Support Center') }}</router-link></li>
+          </ul>
+        </div>
+
+        <div class="tw-footer__col">
+          <h6 class="tw-footer__col-title">{{ $t('footer.certifications', 'Certifications') }}</h6>
+          <ul>
+            <li><router-link to="/agents-crypto">Agents Crypto</router-link></li>
+            <li><router-link to="/become-agent">{{ $t('footer.becomeAgent', 'Become Agent') }}</router-link></li>
+            <li><router-link to="/become-referee">{{ $t('footer.becomeReferee', 'Become Referee') }}</router-link></li>
+            <li><router-link to="/become-ambassador">{{ $t('footer.becomeAmbassador', 'Ambassador') }}</router-link></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="tw-footer__bottom">
+      <p class="tw-footer__copyright">
+        &copy; {{ currentYear }} eBetStream. {{ $t('footer.allRightsReserved', 'All rights reserved.') }}
+      </p>
+      <div class="tw-footer__badges">
+        <span>18+</span>
+        <span>{{ $t('footer.responsibleGaming', 'Responsible Gaming') }}</span>
       </div>
     </div>
   </footer>
@@ -149,22 +71,115 @@ const { t } = useI18n();
 const currentYear = computed(() => new Date().getFullYear());
 </script>
 
-<style>
-.footer_section {
-  overflow: hidden;
+<style scoped>
+.tw-footer {
+  background: rgb(var(--p2));
+  border-top: 1px solid rgb(var(--n2));
+  margin-top: 40px;
 }
 
-.footer-link {
-  transition: all 0.3s ease;
+.tw-footer__inner {
+  display: flex;
+  gap: 48px;
+  padding: 40px 24px 32px;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 32px;
+  }
 }
 
-.footer-link:hover {
-  color: rgba(var(--g1), 1) !important;
-  padding-left: 4px;
+/* Brand */
+.tw-footer__brand {
+  flex: 0 0 220px;
+
+  @media (max-width: 768px) { flex: none; }
 }
 
-.footer_section__brand h3 {
-  font-size: 1.5rem;
+.tw-footer__logo {
+  display: block;
+  font-size: 20px;
+  font-weight: 800;
+  color: rgb(var(--n8));
+  margin-bottom: 10px;
   letter-spacing: -0.5px;
+}
+
+.tw-footer__tagline {
+  font-size: 13px;
+  color: rgb(var(--n3));
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Links grid */
+.tw-footer__links {
+  display: flex;
+  gap: 40px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.tw-footer__col {
+  min-width: 120px;
+
+  h6 { margin: 0 0 12px; }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  a {
+    font-size: 13px;
+    color: rgb(var(--n3));
+    text-decoration: none;
+    transition: color 0.15s;
+
+    &:hover { color: rgb(var(--n8)); }
+  }
+}
+
+.tw-footer__col-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgb(var(--n8));
+}
+
+/* Bottom bar */
+.tw-footer__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-top: 1px solid rgb(var(--n2));
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.tw-footer__copyright {
+  font-size: 12px;
+  color: rgb(var(--n3));
+  margin: 0;
+}
+
+.tw-footer__badges {
+  display: flex;
+  gap: 8px;
+
+  span {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgb(var(--n3));
+    border: 1px solid rgb(var(--n2));
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
 }
 </style>

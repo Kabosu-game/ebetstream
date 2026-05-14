@@ -36,7 +36,7 @@
                         <div 
                           v-else
                           class="rounded-circle d-inline-flex align-items-center justify-content-center"
-                          style="width: 150px; height: 150px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"
+                          style="width: 150px; height: 150px; background: linear-gradient(135deg, #febd56 0%, #d98f25 100%);"
                         >
                           <i class="fas fa-building fa-4x text-white"></i>
                         </div>
@@ -44,7 +44,7 @@
                       <div class="col-md-9">
                         <div class="d-flex align-items-center gap-3 mb-3 flex-wrap">
                           <span class="hero_badge d-inline-block">
-                            🏆 {{ federation.name }}
+                            <i class="fas fa-trophy"></i> {{ federation.name }}
                           </span>
                           <span 
                             :class="['badge', getStatusClass(federation.status)]"
@@ -485,7 +485,7 @@ onMounted(() => {
 .nav-tabs .nav-link.active {
   color: white;
   background: rgba(102, 126, 234, 0.2);
-  border-bottom: 2px solid #667eea;
+  border-bottom: 2px solid #febd56;
 }
 
 /* Espace visible en haut de la page */

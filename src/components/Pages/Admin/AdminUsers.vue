@@ -6,7 +6,7 @@
         <p class="text-white-50">Manage all platform users</p>
       </div>
       <button class="btn_primary" @click="showCreateModal = true">
-        <IconPlus :size="18" class="me-2" />New User
+        <i class="fas fa-plus me-2"  ></i>New User
       </button>
     </div>
 
@@ -63,7 +63,7 @@
               </td>
               <td class="p-3">
                 <span v-if="(user as any).is_ebetstar" class="badge bg-warning text-dark">
-                  ⭐ eBetStar
+                  <i class="fas fa-star"></i> eBetStar
                 </span>
                 <span v-else class="text-white-50">-</span>
               </td>
@@ -72,13 +72,13 @@
               <td class="p-3">
                 <div class="d-flex gap-2 justify-content-center">
                   <button class="btn btn-sm btn-success" @click="openBalanceModal(user)" title="Modify Balance">
-                    <IconWallet :size="16" />
+                    <i class="fas fa-wallet"></i>
                   </button>
                   <button class="btn btn-sm btn-warning" @click="editUser(user)" title="Edit">
-                    <IconEdit :size="16" />
+                    <i class="fas fa-edit"></i>
                   </button>
                   <button class="btn btn-sm btn-danger" @click="deleteUser(user.id)" title="Delete">
-                    <IconTrash :size="16" />
+                    <i class="fas fa-trash"></i>
                   </button>
                 </div>
               </td>
@@ -278,7 +278,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
 import apiClient from '@/utils/axios';
-import { IconPlus, IconEdit, IconTrash, IconWallet } from '@tabler/icons-vue';
 
 interface User {
   id: number;
@@ -551,6 +550,15 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.pay_method__table-scrollbar td:last-child,
+.pay_method__table-scrollbar th:last-child {
+  min-width: 140px;
+}
+
+.pay_method__table-scrollbar td:last-child .d-flex {
+  flex-wrap: nowrap;
+}
+
 .popup-overlay {
   position: fixed;
   top: 0;

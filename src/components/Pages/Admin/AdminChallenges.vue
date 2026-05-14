@@ -97,7 +97,7 @@
                     title="Complete Challenge"
                     style="min-width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"
                   >
-                    <IconCheck :size="16" />
+                    <i class="fas fa-check"></i>
                   </button>
                   <button 
                     v-if="challenge.status !== 'completed' && challenge.status !== 'cancelled'"
@@ -106,7 +106,7 @@
                     title="Cancel Challenge"
                     style="min-width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"
                   >
-                    <IconX :size="16" />
+                    <i class="fas fa-times"></i>
                   </button>
                   <button 
                     class="btn btn-sm btn-info text-white" 
@@ -114,7 +114,7 @@
                     title="View Details"
                     style="min-width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"
                   >
-                    <IconEye :size="16" />
+                    <i class="fas fa-eye"></i>
                   </button>
                 </div>
               </td>
@@ -463,7 +463,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 import apiClient from '@/utils/axios';
-import { IconEye, IconCheck, IconX } from '@tabler/icons-vue';
 
 interface Challenge {
   id: number;

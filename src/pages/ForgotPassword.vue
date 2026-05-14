@@ -72,7 +72,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import apiClient from "@/utils/axios";
+import apiClient, { getApiErrorMessage } from "@/utils/axios";
 import login from "@/assets/images/1234.jpeg";
 
 const router = useRouter();
@@ -106,14 +106,7 @@ const sendResetLink = async () => {
     }
   } catch (error: any) {
     console.error("Forgot password error:", error);
-    
-    if (error.response) {
-      errorMessage.value = error.response.data?.message || `Server error (${error.response.status})`;
-    } else if (error.request) {
-      errorMessage.value = "Cannot connect to the server. Please check your internet connection.";
-    } else {
-      errorMessage.value = `Error: ${error.message || 'An unexpected error occurred'}`;
-    }
+    errorMessage.value = getApiErrorMessage(error);
   } finally {
     loading.value = false;
   }
@@ -148,4 +141,3 @@ const sendResetLink = async () => {
   font-size: 18px;
 }
 </style>
-

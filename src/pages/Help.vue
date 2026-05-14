@@ -1,142 +1,97 @@
 <template>
-  <div class="page-content-with-space">
-    <section class="content_section py-6 position-relative overflow-hidden pb-120">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12 gx-0 gx-lg-4">
-            <div class="top10__main">
-              <!-- Header Section -->
-              <div class="row w-100 h-100 align-items-center mb-8">
-                <div class="col-lg-8">
-                  <div class="content_header" data-aos="fade-right">
-                    <span class="hero_badge mb-3 d-inline-block">
-                      <i class="fas fa-question-circle me-2"></i>Help Center
-                    </span>
-                    <h1 class="hero_title mb-4">
-                      Help <span class="text_gradient">Center</span>
-                    </h1>
-                    <p class="hero_subtitle mb-5">
-                      Quickly find answers to your questions and learn how to use all eBetStream features.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Search Section -->
-              <div class="row w-100 mb-8">
-                <div class="col-lg-8">
-                  <div class="search_box n11-bg rounded-8 p-4">
-                    <div class="input-group">
-                      <span class="input-group-text n11-bg border-secondary text-white">
-                        <i class="fas fa-search"></i>
-                      </span>
-                      <input 
-                        v-model="searchQuery"
-                        type="text" 
-                        class="form-control n11-bg text-white border-secondary" 
-                        placeholder="Search help..."
-                        @input="filterArticles"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Categories -->
-              <div class="row w-100 mb-8">
-                <div class="col-12">
-                  <h2 class="text-white mb-4">Categories</h2>
-                  <div class="row g-4">
-                    <div 
-                      v-for="category in categories" 
-                      :key="category.id"
-                      class="col-md-6 col-lg-4"
-                    >
-                      <div 
-                        class="category_card n11-bg rounded-8 p-4 h-100"
-                        @click="selectedCategory = category.id"
-                        style="cursor: pointer;"
-                      >
-                        <div class="category_icon mb-3">
-                          <i :class="`${category.icon} text_gradient fs-1`"></i>
-                        </div>
-                        <h4 class="text-white mb-2">{{ category.name }}</h4>
-                        <p class="text-white mb-0" style="opacity: 0.8;">
-                          {{ category.description }}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Articles -->
-              <div class="row w-100 mb-8">
-                <div class="col-12">
-                  <h2 class="text-white mb-4">Popular Articles</h2>
-                  <div class="row g-4">
-                    <div 
-                      v-for="article in filteredArticles" 
-                      :key="article.id"
-                      class="col-md-6"
-                    >
-                      <div 
-                        class="article_card n11-bg rounded-8 p-4"
-                        @click="selectedArticle = article"
-                        style="cursor: pointer;"
-                      >
-                        <h5 class="text-white mb-2">{{ article.title }}</h5>
-                        <p class="text-white mb-0" style="opacity: 0.8; line-height: 1.6;">
-                          {{ article.excerpt }}
-                        </p>
-                        <div class="mt-3">
-                          <span class="badge bg-warning text-dark">{{ article.category }}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Quick Links -->
-              <div class="row w-100">
-                <div class="col-12">
-                  <div class="quick_links_card n11-bg rounded-8 p-5">
-                    <h3 class="text-white mb-4">Quick Links</h3>
-                    <div class="row g-3">
-                      <div class="col-md-6">
-                        <router-link to="/faq" class="quick_link text-white text-decoration-none d-flex align-items-center gap-3 p-3 rounded-8" style="background: rgba(255,255,255,0.05);">
-                          <i class="fas fa-list-alt text_gradient fs-4"></i>
-                          <span>FAQ</span>
-                        </router-link>
-                      </div>
-                      <div class="col-md-6">
-                        <router-link to="/contact" class="quick_link text-white text-decoration-none d-flex align-items-center gap-3 p-3 rounded-8" style="background: rgba(255,255,255,0.05);">
-                          <i class="fas fa-envelope text_gradient fs-4"></i>
-                          <span>Contact Us</span>
-                        </router-link>
-                      </div>
-                      <div class="col-md-6">
-                        <router-link to="/support" class="quick_link text-white text-decoration-none d-flex align-items-center gap-3 p-3 rounded-8" style="background: rgba(255,255,255,0.05);">
-                          <i class="fas fa-headset text_gradient fs-4"></i>
-                          <span>Support</span>
-                        </router-link>
-                      </div>
-                      <div class="col-md-6">
-                        <router-link to="/privacy" class="quick_link text-white text-decoration-none d-flex align-items-center gap-3 p-3 rounded-8" style="background: rgba(255,255,255,0.05);">
-                          <i class="fas fa-shield-alt text_gradient fs-4"></i>
-                          <span>Privacy</span>
-                        </router-link>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+  <div class="tw-page">
+    <!-- Hero -->
+    <section class="tw-page-hero">
+      <div class="hero-inner">
+        <p class="tw-page-hero__sub"><i class="fas fa-question-circle me-2"></i>Help Center</p>
+        <h1 class="tw-page-hero__title">How can we <span class="accent">help you?</span></h1>
+        <p class="hero-desc">Quickly find answers to your questions and learn how to use all eBetStream features.</p>
+        <div class="search-wrap">
+          <span class="search-icon"><i class="fas fa-search"></i></span>
+          <input
+            v-model="searchQuery"
+            type="text"
+            class="tw-input search-input"
+            placeholder="Search for answers..."
+            @input="filterArticles"
+          />
         </div>
       </div>
     </section>
+
+    <div class="tw-page-body">
+      <!-- Categories -->
+      <section class="page-section">
+        <h2 class="section-title">Browse Categories</h2>
+        <div class="tw-grid-3">
+          <div
+            v-for="category in categories"
+            :key="category.id"
+            class="tw-card category-card"
+            :class="{ active: selectedCategory === category.id }"
+            @click="selectedCategory = selectedCategory === category.id ? null : category.id"
+          >
+            <div class="cat-icon">
+              <i :class="category.icon"></i>
+            </div>
+            <h4 class="cat-name">{{ category.name }}</h4>
+            <p class="cat-desc">{{ category.description }}</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="tw-divider"></div>
+
+      <!-- Articles -->
+      <section class="page-section">
+        <h2 class="section-title">Popular Articles</h2>
+        <div v-if="filteredArticles.length === 0" class="tw-alert">
+          No articles found matching your search.
+        </div>
+        <div class="articles-grid">
+          <div
+            v-for="article in filteredArticles"
+            :key="article.id"
+            class="tw-card article-card"
+          >
+            <h5 class="article-title">{{ article.title }}</h5>
+            <p class="article-excerpt">{{ article.excerpt }}</p>
+            <span class="article-badge">{{ article.category }}</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="tw-divider"></div>
+
+      <!-- Quick Links -->
+      <section class="page-section">
+        <div class="tw-card quick-links-card">
+          <h3 class="quick-links-title">Quick Links</h3>
+          <div class="quick-links-grid">
+            <router-link to="/faq" class="quick-link">
+              <i class="fas fa-list-alt quick-link__icon"></i>
+              <span>FAQ</span>
+              <i class="fas fa-chevron-right quick-link__arrow"></i>
+            </router-link>
+            <router-link to="/contact" class="quick-link">
+              <i class="fas fa-envelope quick-link__icon"></i>
+              <span>Contact Us</span>
+              <i class="fas fa-chevron-right quick-link__arrow"></i>
+            </router-link>
+            <router-link to="/support" class="quick-link">
+              <i class="fas fa-headset quick-link__icon"></i>
+              <span>Support</span>
+              <i class="fas fa-chevron-right quick-link__arrow"></i>
+            </router-link>
+            <router-link to="/privacy" class="quick-link">
+              <i class="fas fa-shield-alt quick-link__icon"></i>
+              <span>Privacy</span>
+              <i class="fas fa-chevron-right quick-link__arrow"></i>
+            </router-link>
+          </div>
+        </div>
+      </section>
+    </div>
   </div>
 </template>
 
@@ -167,19 +122,19 @@ const articles = [
 
 const filteredArticles = computed(() => {
   let filtered = articles;
-  
+
   if (searchQuery.value) {
-    filtered = filtered.filter(article => 
+    filtered = filtered.filter(article =>
       article.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       article.excerpt.toLowerCase().includes(searchQuery.value.toLowerCase())
     );
   }
-  
+
   if (selectedCategory.value) {
     const category = categories.find(c => c.id === selectedCategory.value);
     filtered = filtered.filter(article => article.category === category?.name);
   }
-  
+
   return filtered;
 });
 
@@ -189,88 +144,224 @@ const filterArticles = () => {
 </script>
 
 <style scoped>
-.content_section {
+/* Hero */
+.tw-page-hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 1.5rem 3rem;
+  background: linear-gradient(180deg, rgba(37,150,190,0.12) 0%, transparent 100%);
+  border-bottom: 1px solid rgba(37,150,190,0.15);
+}
+
+.hero-inner {
+  max-width: 680px;
   width: 100%;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-  color: white;
+}
+
+.hero-desc {
+  color: rgb(var(--n3));
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.accent {
+  color: rgb(var(--g1));
+}
+
+/* Search */
+.search-wrap {
   position: relative;
-  overflow: hidden;
-  border-radius: 24px;
+  max-width: 520px;
+  margin: 0 auto;
 }
 
-.category_card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgb(var(--n3));
+  pointer-events: none;
+  z-index: 1;
 }
 
-.category_card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 159, 0, 0.3);
+.search-input {
+  width: 100%;
+  padding-left: 2.75rem !important;
+  font-size: 0.95rem;
 }
 
-.article_card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Page body */
+.tw-page-body {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
 }
 
-.article_card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 159, 0, 0.3);
+.page-section {
+  margin-bottom: 2.5rem;
 }
 
-.quick_link {
-  transition: all 0.3s ease;
+.section-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  margin-bottom: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
-.quick_link:hover {
-  background: rgba(255, 159, 0, 0.1) !important;
-  transform: translateX(5px);
+/* Category cards */
+.category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: border-color 0.2s, transform 0.2s;
 }
 
-.text_gradient {
-  background: linear-gradient(90deg, #FF9F00, #FF9F00);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.category-card:hover,
+.category-card.active {
+  border-color: rgb(var(--g1));
+  transform: translateY(-3px);
 }
 
-.hero_badge {
-  background: rgba(255, 159, 0, 0.2);
-  color: #FF9F00;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
+.cat-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 8px;
+  background: rgba(37,150,190,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: rgb(var(--g1));
+  margin-bottom: 0.25rem;
+}
+
+.cat-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  margin: 0;
+}
+
+.cat-desc {
+  font-size: 0.82rem;
+  color: rgb(var(--n3));
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Articles */
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.article-card {
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.article-card:hover {
+  border-color: rgba(37,150,190,0.4);
+  transform: translateY(-3px);
+}
+
+.article-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  margin-bottom: 0.5rem;
+}
+
+.article-excerpt {
+  font-size: 0.85rem;
+  color: rgb(var(--n3));
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+
+.article-badge {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  background: rgba(37,150,190,0.18);
+  color: rgb(var(--g1));
+  border-radius: 999px;
+  font-size: 0.75rem;
   font-weight: 600;
 }
 
-.hero_title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: white;
-  line-height: 1.2;
+/* Quick links */
+.quick-links-card {
+  padding: 1.75rem 2rem;
 }
 
-.hero_subtitle {
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.6;
+.quick-links-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgb(var(--n8));
+  margin-bottom: 1.25rem;
 }
 
-.page-content-with-space {
-  padding-top: 90px;
+.quick-links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+
+.quick-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  color: rgb(var(--n8));
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.quick-link:hover {
+  background: rgba(37,150,190,0.12);
+  border-color: rgba(37,150,190,0.35);
+  transform: translateX(3px);
+}
+
+.quick-link__icon {
+  color: rgb(var(--g1));
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.quick-link__arrow {
+  margin-left: auto;
+  color: rgb(var(--n3));
+  font-size: 0.7rem;
 }
 
 @media (max-width: 768px) {
-  .page-content-with-space {
-    padding-top: 60px;
+  .tw-page-hero {
+    padding: 2.5rem 1rem 2rem;
   }
-  
-  .hero_title {
-    font-size: 1.8rem;
+
+  .articles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-links-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>
-

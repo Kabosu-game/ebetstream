@@ -16,6 +16,7 @@
     "check:symlink": "node scripts/check-storage-symlink.js"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.2.0",
     "@headlessui/vue": "^1.7.22",
     "@tabler/icons": "^3.14.0",
     "@tabler/icons-vue": "^3.12.0",

@@ -1,24 +1,14 @@
 <template>
-  <div class="page-content-with-space">
+  <div class="tw-page">
     <!-- Championship Details Section -->
-    <section class="defis_section py-6 position-relative overflow-hidden pb-120">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12 gx-0 gx-lg-4">
-            <div class="defis__main">
-              <!-- Loading State -->
-              <div v-if="loading" class="text-center py-5">
-                <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </div>
+<!-- Loading State -->
+              <div v-if="loading" class="tw-empty"><div class="spinner"></div></div>
 
               <!-- Error State -->
-              <div v-else-if="error" class="text-center py-5">
-                <div class="alert alert-danger">
-                  {{ error }}
-                </div>
-                <button class="btn_primary mt-3" @click="$router.push('/championships')">
+              <div v-else-if="error" class="tw-empty">
+      <div class="tw-empty__icon"><i class="fas fa-exclamation-triangle"></i></div>
+      <p class="tw-empty__title">{{ error }}</p>
+                <button class="tw-btn tw-btn--primary mt-3" @click="$router.push('/championships')">
                   <i class="fas fa-arrow-left me-2"></i>
                   Back to Championships
                 </button>
@@ -29,12 +19,12 @@
                 <!-- Header -->
                 <div class="row mb-5">
                   <div class="col-12">
-                    <button class="btn_secondary mb-4" @click="$router.push('/championships')">
+                    <button class="tw-btn tw-btn--secondary tw-detail-back" @click="$router.push('/championships')">
                       <i class="fas fa-arrow-left me-2"></i>
                       Back
                     </button>
                     
-                    <div class="defis_content">
+                    <div class="tw-page-hero mb-4">
                       <div class="d-flex align-items-center gap-3 mb-3">
                         <span class="division_badge" :class="`division_${championship.division}`">
                           <i class="fas fa-trophy me-2"></i>
@@ -47,11 +37,11 @@
                           {{ getStatusLabel(championship.status) }}
                         </span>
                       </div>
-                      <h2 class="hero_title mb-4">
-                        <span class="text_gradient">{{ championship.game }}</span><br />
+                      <h1 class="tw-page-hero__title">
+                        <span>{{ championship.game }}</span><br />
                         {{ championship.name }}
-                      </h2>
-                      <p v-if="championship.description" class="hero_subtitle">
+                      </h1>
+                      <p v-if="championship.description" class="tw-page-hero__sub">
                         {{ championship.description }}
                       </p>
                     </div>
@@ -63,8 +53,8 @@
                   <!-- Left Column - Championship Info -->
                   <div class="col-lg-8">
                     <!-- Championship Details Card -->
-                    <div class="defi_card n11-bg rounded-8 p-4 p-lg-6 mb-4">
-                      <h4 class="fw-bold mb-4 text-white">Championship Information</h4>
+                    <div class="tw-content-block mb-4">
+                      <h4 class="fw-bold mb-4">Championship Information</h4>
                       
                       <!-- Dates -->
                       <div class="row g-4 mb-4">
@@ -72,7 +62,7 @@
                           <div class="info_item p-3 rounded" style="background: rgba(255, 255, 255, 0.05);">
                             <div class="d-flex align-items-center gap-2 mb-2">
                               <i class="fas fa-calendar-alt text-warning"></i>
-                              <span class="fw-bold text-white">Start Date</span>
+                              <span class="fw-bold">Start Date</span>
                             </div>
                             <p class="mb-0 text-white-50">{{ formatDate(championship.start_date) }}</p>
                           </div>
@@ -81,7 +71,7 @@
                           <div class="info_item p-3 rounded" style="background: rgba(255, 255, 255, 0.05);">
                             <div class="d-flex align-items-center gap-2 mb-2">
                               <i class="fas fa-clock text-info"></i>
-                              <span class="fw-bold text-white">Registration Ends</span>
+                              <span class="fw-bold">Registration Ends</span>
                             </div>
                             <p class="mb-0 text-white-50">{{ formatDate(championship.registration_end_date) }}</p>
                           </div>
@@ -123,7 +113,7 @@
 
                       <!-- Prize Distribution -->
                       <div v-if="championship.prize_distribution" class="mb-4">
-                        <h5 class="fw-bold mb-3 text-white">Prize Distribution</h5>
+                        <h5 class="fw-bold mb-3">Prize Distribution</h5>
                         <div class="row g-3">
                           <div 
                             v-for="(prize, position) in championship.prize_distribution" 
@@ -132,7 +122,7 @@
                           >
                             <div class="prize_item p-3 rounded d-flex justify-content-between align-items-center" style="background: rgba(255, 255, 255, 0.05);">
                               <div>
-                                <span class="fw-bold text-white">{{ position }}</span>
+                                <span class="fw-bold">{{ position }}</span>
                                 <span class="text-white-50 ms-2">Place</span>
                               </div>
                               <span class="fw-bold text-warning">{{ prize }} EBT</span>
@@ -143,7 +133,7 @@
 
                       <!-- Rules -->
                       <div v-if="championship.rules" class="mb-4">
-                        <h5 class="fw-bold mb-3 text-white">Rules</h5>
+                        <h5 class="fw-bold mb-3">Rules</h5>
                         <div class="rules_content p-3 rounded" style="background: rgba(255, 255, 255, 0.05);">
                           <p class="text-white-50 mb-0" style="white-space: pre-line;">{{ championship.rules }}</p>
                         </div>
@@ -154,7 +144,7 @@
                         <!-- Check if registration is open -->
                         <div v-if="isRegistrationOpen" class="mb-3">
                           <button 
-                            class="btn_primary w-100 py-3"
+                            class="tw-btn tw-btn--primary w-100 py-3"
                             @click="showRegistrationModal = true"
                             :disabled="(championship.validated_registrations_count || 0) >= championship.max_participants"
                           >
@@ -186,8 +176,8 @@
                     </div>
 
                     <!-- Matches Card -->
-                    <div v-if="matches.length > 0" class="defi_card n11-bg rounded-8 p-4 p-lg-6 mb-4">
-                      <h4 class="fw-bold mb-4 text-white">Scheduled Matches</h4>
+                    <div v-if="matches.length > 0" class="tw-content-block mb-4">
+                      <h4 class="fw-bold mb-4">Scheduled Matches</h4>
                       <div class="matches_list">
                         <div 
                           v-for="match in matches" 
@@ -284,9 +274,9 @@
                           <!-- Match Result (if completed) -->
                           <div v-if="match.status === 'completed'" class="match_result text-center">
                             <div class="d-flex align-items-center justify-content-center gap-3">
-                              <span class="fw-bold text-white">{{ match.player1_score || 0 }}</span>
+                              <span class="fw-bold">{{ match.player1_score || 0 }}</span>
                               <span class="text-white-50">-</span>
-                              <span class="fw-bold text-white">{{ match.player2_score || 0 }}</span>
+                              <span class="fw-bold">{{ match.player2_score || 0 }}</span>
                             </div>
                             <div v-if="match.winner_id" class="mt-2">
                               <span class="badge bg-success">
@@ -299,8 +289,8 @@
                     </div>
 
                     <!-- Standings Card -->
-                    <div v-if="championship.status === 'started' || championship.status === 'finished'" class="defi_card n11-bg rounded-8 p-4 p-lg-6">
-                      <h4 class="fw-bold mb-4 text-white">Standings</h4>
+                    <div v-if="championship.status === 'started' || championship.status === 'finished'" class="tw-content-block">
+                      <h4 class="fw-bold mb-4">Standings</h4>
                       <div v-if="standingsLoading" class="text-center py-3">
                         <div class="spinner-border spinner-border-sm text-primary"></div>
                       </div>
@@ -336,8 +326,8 @@
                   <!-- Right Column - Sidebar -->
                   <div class="col-lg-4">
                     <!-- Quick Info Card -->
-                    <div class="defi_card n11-bg rounded-8 p-4 mb-4">
-                      <h5 class="fw-bold mb-3 text-white">Quick Info</h5>
+                    <div class="tw-content-block mb-4">
+                      <h5 class="fw-bold mb-3">Quick Info</h5>
                       <div class="quick_info">
                         <div class="info_row mb-3">
                           <span class="text-white-50">Game:</span>
@@ -367,8 +357,8 @@
                     </div>
 
                     <!-- Registration Status -->
-                    <div v-if="isRegistered && userRegistration" class="defi_card n11-bg rounded-8 p-4">
-                      <h5 class="fw-bold mb-3 text-white">Your Registration</h5>
+                    <div v-if="isRegistered && userRegistration" class="tw-content-block">
+                      <h5 class="fw-bold mb-3">Your Registration</h5>
                       <div class="registration_info">
                         <div class="info_row mb-2">
                           <span class="text-white-50">Status:</span>
@@ -396,20 +386,15 @@
                   <p class="mb-2">Unable to load championship data.</p>
                   <p class="mb-0 small text-white-50">Loading: {{ loading }}, Error: {{ error || 'None' }}, Championship: {{ championship ? 'Loaded' : 'Not loaded' }}</p>
                 </div>
-                <button class="btn_primary mt-3" @click="loadChampionship">
+                <button class="tw-btn tw-btn--primary mt-3" @click="loadChampionship">
                   <i class="fas fa-sync me-2"></i>
                   Retry
                 </button>
-                <button class="btn_secondary mt-3 ms-2" @click="$router.push('/championships')">
+                <button class="tw-btn tw-btn--secondary mt-3 ms-2" @click="$router.push('/championships')">
                   <i class="fas fa-arrow-left me-2"></i>
                   Back to Championships
                 </button>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- Registration Modal -->
     <div v-if="showRegistrationModal" class="popup-overlay" @click.self="closeRegistrationModal">
@@ -554,7 +539,7 @@
           <div class="alert alert-info mb-4">
             <div class="d-flex justify-content-between align-items-center">
               <span class="text-white">Registration Fee:</span>
-              <span class="fw-bold text-white">{{ championship?.registration_fee || 0 }} EBT</span>
+              <span class="fw-bold">{{ championship?.registration_fee || 0 }} EBT</span>
             </div>
             <div class="d-flex justify-content-between align-items-center mt-2">
               <span class="text-white-50 small">Your Balance:</span>
@@ -576,7 +561,7 @@
           <div class="d-flex gap-3">
             <button 
               type="submit" 
-              class="btn_primary flex-fill" 
+              class="tw-btn tw-btn--primary flex-fill" 
               :disabled="registering || !hasEnoughBalance"
             >
               <span v-if="registering">Processing...</span>
@@ -587,7 +572,7 @@
             </button>
             <button 
               type="button" 
-              class="btn_secondary" 
+              class="tw-btn tw-btn--secondary" 
               @click="closeRegistrationModal"
               :disabled="registering"
             >
@@ -642,7 +627,7 @@
         <div class="d-flex gap-3">
           <button 
             type="button" 
-            class="btn_primary flex-fill" 
+            class="tw-btn tw-btn--primary flex-fill" 
             @click="placeBet" 
             :disabled="placingBet || !betAmount || betAmount <= 0 || !selectedBetType || walletBalance <= 0"
           >
@@ -650,7 +635,7 @@
             <span v-else-if="walletBalance <= 0">Insufficient balance</span>
             <span v-else>Confirm Bet</span>
           </button>
-          <button type="button" class="btn_secondary" @click="closeBetModal">Cancel</button>
+          <button type="button" class="tw-btn tw-btn--secondary" @click="closeBetModal">Cancel</button>
         </div>
       </div>
     </div>
@@ -1143,218 +1128,4 @@ onMounted(async () => {
   }
 });
 </script>
-
-<style scoped>
-.page-content-with-space {
-  padding-top: 90px;
-}
-
-.defis_section {
-  width: 100%;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-  color: white;
-  position: relative;
-  overflow: hidden;
-  border-radius: 24px;
-}
-
-.division_badge {
-  padding: 0.75rem 1.5rem;
-  border-radius: 50px;
-  font-weight: 700;
-  font-size: 1rem;
-  display: inline-flex;
-  align-items: center;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.division_1 {
-  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-  color: #000;
-  box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
-}
-
-.division_2 {
-  background: linear-gradient(135deg, #C0C0C0 0%, #808080 100%);
-  color: #000;
-  box-shadow: 0 5px 15px rgba(192, 192, 192, 0.3);
-}
-
-.division_3 {
-  background: linear-gradient(135deg, #CD7F32 0%, #8B4513 100%);
-  color: #fff;
-  box-shadow: 0 5px 15px rgba(205, 127, 50, 0.3);
-}
-
-.info_item {
-  transition: all 0.3s ease;
-}
-
-.info_item:hover {
-  background: rgba(255, 255, 255, 0.1) !important;
-  transform: translateY(-2px);
-}
-
-.quick_info .info_row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.quick_info .info_row:last-child {
-  border-bottom: none;
-}
-
-.standings_table {
-  max-height: 600px;
-  overflow-y: auto;
-}
-
-.standing_item {
-  transition: all 0.3s ease;
-}
-
-.standing_item:hover {
-  background: rgba(255, 255, 255, 0.1) !important;
-  transform: translateX(5px);
-}
-
-.position_badge {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(5px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  padding: 1rem;
-}
-
-.popup-box {
-  max-height: 90vh;
-  overflow-y: auto;
-}
-
-.btn_primary {
-  background-color: #FF9F00;
-  color: #000;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: 0.3s;
-  cursor: pointer;
-}
-
-.btn_primary:hover:not(:disabled) {
-  background-color: #FFB340;
-  transform: translateY(-2px);
-}
-
-.btn_primary:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.btn_secondary {
-  background: transparent;
-  border: 2px solid #FF9F00;
-  color: #FF9F00;
-  padding: 0.75rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: 0.3s;
-  cursor: pointer;
-}
-
-.btn_secondary:hover:not(:disabled) {
-  background-color: #FF9F00;
-  color: #000;
-}
-
-.match_betting_options {
-  margin-top: 1rem;
-}
-
-.betting_buttons {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.btn_bet_option {
-  flex: 1;
-  min-width: 80px;
-  padding: 0.5rem 0.75rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 215, 0, 0.3);
-  border-radius: 8px;
-  color: white;
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.btn_bet_option:hover:not(:disabled) {
-  background: rgba(255, 215, 0, 0.2);
-  border-color: rgba(255, 215, 0, 0.6);
-  transform: translateY(-2px);
-}
-
-.btn_bet_option:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.bet_team_name {
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-  font-size: 0.7rem;
-}
-
-.bet_odds {
-  font-weight: 700;
-  color: #FFD700;
-  font-size: 0.85rem;
-}
-
-@media (max-width: 768px) {
-  .page-content-with-space {
-    padding-top: 60px;
-  }
-  
-  .hero_title {
-    font-size: 1.8rem;
-  }
-  
-  .container-fluid {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-}
-</style>
 

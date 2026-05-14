@@ -9,7 +9,7 @@
               <!-- Colonne texte -->
               <div class="col-lg-6 col-md-7">
                 <div class="defis_content" data-aos="fade-right">
-                  <span class="hero_badge mb-3 d-inline-block">🌟 Joueurs EbetStar</span>
+                  <span class="hero_badge mb-3 d-inline-block"><i class="fas fa-star"></i> Joueurs EbetStar</span>
                   <h2 class="hero_title mb-4">
                     Découvrez nos <span class="text_gradient">Meilleurs Joueurs</span><br />
                     et leurs statistiques !
@@ -30,7 +30,7 @@
               <div class="col-lg-6 col-md-5 d-none d-md-block">
                 <div class="defis_image" data-aos="fade-left">
                   <div class="floating_card card_defis">
-                    <div class="card_icon">🎮</div>
+                    <div class="card_icon"><i class="fas fa-gamepad"></i></div>
                     <div class="card_content">
                       <span class="card_label">Top Player</span>
                       <span class="card_value">EbetStar</span>
@@ -47,14 +47,14 @@
                   
                   <!-- Photo de profil et Nom -->
                   <div class="d-flex align-items-center mb-3">
-                    <div class="player_icon me-3">👤</div>
+                    <div class="player_icon me-3"><i class="fas fa-user"></i></div>
                     <h5 class="fw-bold mb-0">{{ joueur.nom }}</h5>
                   </div>
 
                   <!-- Jeu préféré -->
                   <div class="mb-3">
                     <span class="fs-eight n10-color">
-                      🎮 Jeu préféré : <strong>{{ joueur.jeu }}</strong>
+                      <i class="fas fa-gamepad"></i> Jeu préféré : <strong>{{ joueur.jeu }}</strong>
                     </span>
                   </div>
 

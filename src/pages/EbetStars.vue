@@ -27,7 +27,7 @@
                 <div class="col-lg-6 col-md-5 d-none d-md-block">
                   <div class="defis_image" data-aos="fade-left">
                     <div class="floating_card card_defis">
-                      <div class="card_icon">⭐</div>
+                      <div class="card_icon"><i class="fas fa-star"></i></div>
                       <div class="card_content">
                         <span class="card_label">Top 10</span>
                         <span class="card_value">{{ ebetstars.length }} eBetStars</span>
@@ -68,7 +68,7 @@
                           @error="handleImageError"
                         />
                         <div v-else class="w-100 h-100 d-flex align-items-center justify-content-center" 
-                             style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                             style="background: linear-gradient(135deg, #febd56 0%, #d98f25 100%);">
                           <i class="fas fa-user text-white fs-4"></i>
                         </div>
                       </div>
@@ -79,7 +79,7 @@
                         <p class="text-white small mb-0 d-flex align-items-center gap-2" style="opacity: 0.8;">
                           <span>@{{ ebetstar.username }}</span>
                           <span class="badge bg-warning text-dark px-2 py-1" style="font-size: 0.7rem;">
-                            ⭐ eBetStar
+                            <i class="fas fa-star"></i> eBetStar
                           </span>
                         </p>
                       </div>

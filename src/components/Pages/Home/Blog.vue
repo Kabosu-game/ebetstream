@@ -217,11 +217,11 @@ const blogPosts: BlogPost[] = [
   width: 100%;
   height: 180px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #febd56 0%, #d98f25 100%);
 }
 
 .blog_image_placeholder_1 {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #febd56 0%, #d98f25 100%);
 }
 
 .blog_image_placeholder_2 {

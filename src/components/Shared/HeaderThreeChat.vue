@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { IconMessageDots } from "@tabler/icons-vue";
 import { ref } from "vue";
 
 import flores from "@/assets/images/flores.png";
@@ -26,7 +25,7 @@ const mesgToggleCard = () => {
       aria-label="Shopping Button"
       class="common_toggles2 py-1 px-2 n11-bg rounded-5 position-relative"
     >
-      <IconMessageDots height="24" width="24" class="slide-toggle2 fs-four" />
+      <i class="fas fa-comment-dots slide-toggle2 fs-four" height="24" width="24" ></i>
       <span class="fs-eight g1-bg px-1 rounded-5 position-absolute end-0 top-0"
         >2</span
       >
@@ -49,7 +48,7 @@ const mesgToggleCard = () => {
           <h5 class="fs-five">Chat</h5>
         </div>
         <div @click="mesgToggleCard" class="common_toggles3">
-          <IconX class="ti ti-x fs-four cpoint n5-color" />
+          <i class="fas fa-times ti ti-x fs-four cpoint n5-color" ></i>
         </div>
       </div>
       <div class="cmns_msgarea__body p-5 p-md-6">
@@ -392,7 +391,7 @@ const mesgToggleCard = () => {
                 class="ti ti-mood-happy fs-four cpoint"
             /></span>
             <button class="py-3 px-5 g1-bg rounded-8">
-              <IconSend width="{24}" height="{24}" class="ti ti-send fs-four" />
+              <i class="fas fa-paper-plane ti ti-send fs-four" width="{24}" height="{24}" ></i>
             </button>
           </div>
         </form>

@@ -47,7 +47,7 @@
                         minlength="6"
                       />
                       <button type="button" class="eye-btn" @click="showPassword = !showPassword">
-                        {{ showPassword ? '🙈' : '👁️' }}
+                        {{ showPassword ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>' }}
                       </button>
                     </div>
 
@@ -62,7 +62,7 @@
                         minlength="6"
                       />
                       <button type="button" class="eye-btn" @click="showConfirmPassword = !showConfirmPassword">
-                        {{ showConfirmPassword ? '🙈' : '👁️' }}
+                        {{ showConfirmPassword ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>' }}
                       </button>
                     </div>
 
@@ -94,7 +94,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import apiClient from "@/utils/axios";
+import apiClient, { getApiErrorMessage } from "@/utils/axios";
 import login from "@/assets/images/1234.jpeg";
 
 const router = useRouter();
@@ -205,18 +205,14 @@ const resetPassword = async () => {
       token_length: form.value.token?.length,
     });
     
+    const errorMsg = getApiErrorMessage(error);
+    errorMessage.value = errorMsg;
+
     if (error.response) {
-      const errorMsg = error.response.data?.message || `Server error (${error.response.status})`;
-      errorMessage.value = errorMsg;
-      
       // If token is invalid, suggest requesting a new one
       if (errorMsg.includes('Invalid') || errorMsg.includes('token')) {
         errorMessage.value += "\n\nPlease request a new password reset link from the forgot password page.";
       }
-    } else if (error.request) {
-      errorMessage.value = "Cannot connect to the server. Please check your internet connection.";
-    } else {
-      errorMessage.value = `Error: ${error.message || 'An unexpected error occurred'}`;
     }
   } finally {
     loading.value = false;
@@ -267,4 +263,3 @@ const resetPassword = async () => {
   font-size: 18px;
 }
 </style>
-

@@ -1,41 +1,31 @@
 <template>
-  <div class="page-content-with-space">
-    <section class="defis_section py-6 position-relative overflow-hidden pb-120">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12 gx-0 gx-lg-4">
-            <div class="defis__main">
-              
-              <!-- Header -->
+  <div class="tw-page">
+<!-- Header -->
               <div class="row mb-5">
                 <div class="col-12">
-                  <button class="btn_secondary mb-4" @click="$router.push('/clans')">
+                  <button class="tw-btn tw-btn--secondary tw-detail-back" @click="$router.push('/clans')">
                     <i class="fas fa-arrow-left me-2"></i>
                     Back to Clans
                   </button>
                   
-                  <div v-if="loading" class="text-center py-5">
-                    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-                      <span class="visually-hidden">Loading...</span>
-                    </div>
-                  </div>
+                  <div v-if="loading" class="tw-empty"><div class="spinner"></div></div>
 
                   <div v-else-if="error" class="alert alert-danger">
                     <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
                   </div>
 
-                  <div v-else-if="clan" class="defis_content">
+                  <div v-else-if="clan" class="tw-page-hero mb-4">
                     <div class="d-flex align-items-center gap-3 mb-3">
-                      <span class="hero_badge d-inline-block">
-                        ⚔️ {{ clan.name }}
-                      </span>
+                      <p class="tw-page-hero__eyebrow">
+                        <i class="fas fa-fist-raised"></i> {{ clan.name }}
+                      </p>
                       <span v-if="clan.status === 'active'" class="badge bg-success">Active</span>
                       <span v-else class="badge bg-secondary">Inactive</span>
                     </div>
-                    <h2 class="hero_title mb-4">
-                      {{ clan.name }} <span class="text_gradient">Clan</span>
-                    </h2>
-                    <p v-if="clan.description" class="hero_subtitle mb-4">
+                    <h1 class="tw-page-hero__title">
+                      {{ clan.name }} <span>Clan</span>
+                    </h1>
+                    <p v-if="clan.description" class="tw-page-hero__sub">
                       {{ clan.description }}
                     </p>
                     <div class="d-flex flex-wrap gap-4 mb-4">
@@ -62,7 +52,7 @@
                   <div class="d-flex gap-3 flex-wrap">
                     <button 
                       v-if="!isMember"
-                      class="btn_primary"
+                      class="tw-btn tw-btn--primary"
                       @click="joinClan"
                       :disabled="joining || !clan.can_join"
                     >
@@ -73,7 +63,7 @@
                     </button>
                     <button 
                       v-else
-                      class="btn_secondary"
+                      class="tw-btn tw-btn--secondary"
                       @click="leaveClan"
                       :disabled="leaving || isLeader"
                     >
@@ -84,7 +74,7 @@
                     </button>
                     <button 
                       v-if="isMember && !isLeader && !hasApplied"
-                      class="btn_secondary"
+                      class="tw-btn tw-btn--secondary"
                       @click="showApplyModal = true"
                     >
                       <i class="fas fa-crown me-2"></i>Apply for Leadership
@@ -128,7 +118,7 @@
 
                   <!-- Members Tab -->
                   <div v-if="activeTab === 'members'" class="tab-content">
-                    <div class="defi_card n11-bg rounded-8 p-4">
+                    <div class="tw-content-block">
                       <h5 class="text-white mb-4">Clan Members ({{ clan.members_count || 0 }})</h5>
                       <div v-if="loadingMembers" class="text-center py-3">
                         <div class="spinner-border spinner-border-sm text-primary"></div>
@@ -159,7 +149,7 @@
 
                   <!-- Chat Tab -->
                   <div v-if="activeTab === 'chat' && isMember" class="tab-content">
-                    <div class="defi_card n11-bg rounded-8 p-4">
+                    <div class="tw-content-block">
                       <h5 class="text-white mb-4">Clan Chat</h5>
                       <div class="chat-container" style="height: 400px; overflow-y: auto; background: rgba(0,0,0,0.2); border-radius: 10px; padding: 1rem;">
                         <div v-if="loadingMessages" class="text-center py-3">
@@ -198,7 +188,7 @@
                             />
                             <button 
                               type="submit" 
-                              class="btn_primary"
+                              class="tw-btn tw-btn--primary"
                               :disabled="sendingMessage || !newMessage.trim()"
                             >
                               <i class="fas fa-paper-plane"></i>
@@ -211,7 +201,7 @@
 
                   <!-- Leadership Tab -->
                   <div v-if="activeTab === 'leadership' && isMember" class="tab-content">
-                    <div class="defi_card n11-bg rounded-8 p-4">
+                    <div class="tw-content-block">
                       <h5 class="text-white mb-4">Leadership Election</h5>
                       
                       <!-- Current Leader -->
@@ -267,11 +257,6 @@
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- Apply for Leadership Modal -->
     <div v-if="showApplyModal" class="popup-overlay" @click.self="showApplyModal = false">
@@ -299,7 +284,7 @@
           <div class="d-flex gap-3">
             <button 
               type="submit" 
-              class="btn_primary flex-fill" 
+              class="tw-btn tw-btn--primary flex-fill" 
               :disabled="applying"
             >
               <span v-if="applying">Applying...</span>
@@ -309,7 +294,7 @@
             </button>
             <button 
               type="button" 
-              class="btn_secondary" 
+              class="tw-btn tw-btn--secondary" 
               @click="showApplyModal = false"
               :disabled="applying"
             >
@@ -692,131 +677,4 @@ onUnmounted(() => {
   }
 });
 </script>
-
-<style scoped>
-.page-content-with-space {
-  padding-top: 90px;
-}
-
-.defis_section {
-  width: 100%;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-  color: white;
-  position: relative;
-  overflow: hidden;
-  border-radius: 24px;
-}
-
-.text_gradient {
-  background: linear-gradient(90deg, #FF9F00, #FF9F00);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.btn_primary {
-  background-color: #FF9F00;
-  color: #000;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: 0.3s;
-  cursor: pointer;
-}
-.btn_primary:hover {
-  background-color: #FF9F00;
-  transform: translateY(-2px);
-}
-
-.btn_secondary {
-  background: transparent;
-  border: 2px solid #FF9F00;
-  color: #FF9F00;
-  padding: 0.75rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: 0.3s;
-  cursor: pointer;
-}
-.btn_secondary:hover {
-  background-color: #FF9F00;
-  color: #000;
-}
-
-.defi_card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-}
-
-.nav-tabs {
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-}
-
-.nav-tabs .nav-link {
-  color: rgba(255, 255, 255, 0.7);
-  border: none;
-  border-bottom: 2px solid transparent;
-  background: transparent;
-  padding: 0.75rem 1.5rem;
-}
-
-.nav-tabs .nav-link:hover {
-  color: white;
-  border-bottom-color: rgba(255, 159, 0, 0.5);
-}
-
-.nav-tabs .nav-link.active {
-  color: #FF9F00;
-  border-bottom-color: #FF9F00;
-  background: transparent;
-}
-
-.popup-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.65);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-.popup-box {
-  width: 95%;
-  max-width: 500px;
-  border-radius: 24px;
-  padding: 2rem;
-}
-
-.chat-container {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 159, 0, 0.5) rgba(0, 0, 0, 0.2);
-}
-
-.chat-container::-webkit-scrollbar {
-  width: 6px;
-}
-
-.chat-container::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-}
-
-.chat-container::-webkit-scrollbar-thumb {
-  background: rgba(255, 159, 0, 0.5);
-  border-radius: 10px;
-}
-
-@media (max-width: 768px) {
-  .container-fluid {
-    margin-left: 0 !important;
-  }
-  .defis__main {
-    margin-left: 0 !important;
-  }
-  .page-content-with-space {
-    padding-top: 60px;
-  }
-}
-</style>
 

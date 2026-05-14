@@ -139,7 +139,7 @@
                     title="View Details"
                     style="min-width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"
                   >
-                    <IconEye :size="16" />
+                    <i class="fas fa-eye"></i>
                   </button>
                   <button 
                     class="btn btn-sm btn-primary" 
@@ -147,7 +147,7 @@
                     title="Edit"
                     style="min-width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"
                   >
-                    <IconPencil :size="16" />
+                    <IconPencil />
                   </button>
                   <button 
                     class="btn btn-sm btn-danger" 
@@ -155,7 +155,7 @@
                     title="Delete"
                     style="min-width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"
                   >
-                    <IconTrash :size="16" />
+                    <i class="fas fa-trash"></i>
                   </button>
                 </div>
               </td>
@@ -304,7 +304,7 @@
                     @click="removeMember(member.id)"
                     title="Remove Member"
                   >
-                    <IconUserMinus :size="16" />
+                    <IconUserMinus />
                   </button>
                 </div>
               </div>
@@ -342,7 +342,7 @@
                     @click="approveLeader(candidate.id)"
                     title="Approve as Leader"
                   >
-                    <IconCheck :size="16" class="me-1" /> Approve
+                    <i class="fas fa-check me-1"  ></i> Approve
                   </button>
                 </div>
               </div>
@@ -463,7 +463,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
-import { IconEye, IconPencil, IconTrash, IconUserMinus, IconCheck } from "@tabler/icons-vue";
 import apiClient from "@/utils/axios";
 
 interface Clan {

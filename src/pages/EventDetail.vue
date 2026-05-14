@@ -1,25 +1,14 @@
 <template>
-  <div class="page-content-with-space">
+  <div class="tw-page">
     <!-- Event Details Section -->
-    <section class="defis_section py-6 position-relative overflow-hidden pb-120">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12 gx-0 gx-lg-4">
-            <div class="defis__main">
-              
-              <!-- Loading State -->
-              <div v-if="loading" class="text-center py-5">
-                <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-              </div>
+<!-- Loading State -->
+              <div v-if="loading" class="tw-empty"><div class="spinner"></div></div>
 
               <!-- Error State -->
-              <div v-else-if="error" class="text-center py-5">
-                <div class="alert alert-danger">
-                  {{ error }}
-                </div>
-                <button class="btn_primary mt-3" @click="$router.push('/events')">
+              <div v-else-if="error" class="tw-empty">
+      <div class="tw-empty__icon"><i class="fas fa-exclamation-triangle"></i></div>
+      <p class="tw-empty__title">{{ error }}</p>
+                <button class="tw-btn tw-btn--primary mt-3" @click="$router.push('/events')">
                   <i class="fas fa-arrow-left me-2"></i>
                   Back to Events
                 </button>
@@ -30,32 +19,32 @@
                 <!-- Header -->
                 <div class="row mb-5">
                   <div class="col-12">
-                    <button class="btn_secondary mb-4" @click="$router.push('/events')">
+                    <button class="tw-btn tw-btn--secondary tw-detail-back" @click="$router.push('/events')">
                       <i class="fas fa-arrow-left me-2"></i>
                       Back
                     </button>
                     
-                    <div class="defis_content">
-                      <span class="hero_badge mb-3 d-inline-block">
+                    <div class="tw-page-hero mb-4">
+                      <p class="tw-page-hero__eyebrow">
                         <i class="fas fa-calendar-alt me-2"></i>Event Details
-                      </span>
-                      <h2 class="hero_title mb-4">
-                        <span class="text_gradient">{{ event.title }}</span>
-                      </h2>
+                      </p>
+                      <h1 class="tw-page-hero__title">
+                        <span>{{ event.title }}</span>
+                      </h1>
                       <div class="d-flex flex-wrap gap-3 align-items-center">
-                        <span v-if="event.is_ongoing" class="badge bg-success px-3 py-2" style="font-size: 1rem;">
+                        <span v-if="event.is_ongoing" class="tw-badge tw-badge--ongoing" style="font-size: 1rem;">
                           <i class="fas fa-circle me-1" style="font-size: 0.5rem;"></i>
                           Ongoing
                         </span>
-                        <span v-else-if="event.is_upcoming" class="badge bg-primary px-3 py-2" style="font-size: 1rem;">
+                        <span v-else-if="event.is_upcoming" class="tw-badge tw-badge--open" style="font-size: 1rem;">
                           <i class="fas fa-clock me-1"></i>
                           Upcoming
                         </span>
-                        <span v-else-if="event.is_past" class="badge bg-secondary px-3 py-2" style="font-size: 1rem;">
+                        <span v-else-if="event.is_past" class="tw-badge tw-badge--closed" style="font-size: 1rem;">
                           <i class="fas fa-check-circle me-1"></i>
                           Past
                         </span>
-                        <span v-if="event.type" class="badge bg-info px-3 py-2" style="font-size: 1rem;">
+                        <span v-if="event.type" class="tw-badge tw-badge--pending" style="font-size: 1rem;">
                           {{ event.type }}
                         </span>
                       </div>
@@ -68,7 +57,7 @@
                   <!-- Left Column - Event Image and Info -->
                   <div class="col-lg-8">
                     <!-- Event Image -->
-                    <div v-if="eventImageUrl && !imageError" class="event_detail_image mb-4 rounded overflow-hidden" style="height: 400px;">
+                    <div v-if="eventImageUrl && !imageError" class="tw-detail-thumb mb-4">
                       <img 
                         :src="eventImageUrl" 
                         :alt="event.title"
@@ -77,14 +66,13 @@
                         @error="handleImageError"
                       />
                     </div>
-                    <div v-else class="event_detail_placeholder mb-4 rounded d-flex align-items-center justify-content-center" 
-                         style="height: 400px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <div v-else class="tw-detail-thumb tw-detail-thumb--placeholder mb-4">
                       <i class="fas fa-calendar-alt text-white" style="font-size: 5rem;"></i>
                     </div>
 
                     <!-- Description Section -->
-                    <div class="defi_card n11-bg rounded-8 p-4 p-lg-6 mb-4">
-                      <h4 class="fw-bold mb-3 text-white">
+                    <div class="tw-content-block mb-4">
+                      <h4 class="fw-bold mb-3">
                         <i class="fas fa-info-circle me-2"></i>Description
                       </h4>
                       <p v-if="event.description" class="text-white" style="opacity: 0.9; line-height: 1.8; font-size: 1.05rem; white-space: pre-line;">
@@ -96,8 +84,8 @@
                     </div>
 
                     <!-- Additional Info -->
-                    <div class="defi_card n11-bg rounded-8 p-4 p-lg-6">
-                      <h4 class="fw-bold mb-4 text-white">
+                    <div class="tw-content-block">
+                      <h4 class="fw-bold mb-4">
                         <i class="fas fa-calendar-check me-2"></i>Information
                       </h4>
                       <div class="row g-3">
@@ -162,8 +150,8 @@
 
                   <!-- Right Column - Quick Info -->
                   <div class="col-lg-4">
-                    <div class="defi_card n11-bg rounded-8 p-4 p-lg-6 sticky-top" style="top: 100px;">
-                      <h4 class="fw-bold mb-4 text-white">
+                    <div class="tw-content-block tw-detail-sidebar">
+                      <h4 class="fw-bold mb-4">
                         <i class="fas fa-info me-2"></i>Summary
                       </h4>
                       
@@ -171,28 +159,28 @@
                         <div class="d-flex align-items-center gap-2 mb-3">
                           <i class="fas fa-calendar text-warning"></i>
                           <div>
-                            <p class="text-white mb-0 small" style="opacity: 0.7;">Date</p>
+                            <p class="tw-muted mb-0">Date</p>
                             <p class="text-white mb-0 fw-bold">{{ formatDate(event.start_at) }}</p>
                           </div>
                         </div>
                         <div v-if="event.location" class="d-flex align-items-center gap-2 mb-3">
                           <i class="fas fa-map-marker-alt text-warning"></i>
                           <div>
-                            <p class="text-white mb-0 small" style="opacity: 0.7;">Location</p>
+                            <p class="tw-muted mb-0">Location</p>
                             <p class="text-white mb-0 fw-bold">{{ event.location }}</p>
                           </div>
                         </div>
                         <div v-if="event.type" class="d-flex align-items-center gap-2 mb-3">
                           <i class="fas fa-tag text-warning"></i>
                           <div>
-                            <p class="text-white mb-0 small" style="opacity: 0.7;">Type</p>
+                            <p class="tw-muted mb-0">Type</p>
                             <p class="text-white mb-0 fw-bold">{{ event.type }}</p>
                           </div>
                         </div>
                         <div class="d-flex align-items-center gap-2 mb-3">
                           <i class="fas fa-users text-warning"></i>
                           <div>
-                            <p class="text-white mb-0 small" style="opacity: 0.7;">Registered</p>
+                            <p class="tw-muted mb-0">Registered</p>
                             <p class="text-white mb-0 fw-bold">
                               {{ event.registrations_count || 0 }}
                               <span v-if="event.max_participants" style="opacity: 0.7;">
@@ -204,23 +192,23 @@
                       </div>
 
                       <div v-if="event.is_upcoming" class="d-grid gap-2">
-                        <button class="btn_primary w-100 py-3" @click="showRegistrationModal = true">
+                        <button class="tw-btn tw-btn--primary w-100 py-3" @click="showRegistrationModal = true">
                           <i class="fas fa-user-plus me-2"></i>
                           Register for Event
                         </button>
                       </div>
                       <div v-else-if="event.is_ongoing" class="d-grid gap-2">
-                        <button class="btn_primary w-100 py-3">
+                        <button class="tw-btn tw-btn--primary w-100 py-3">
                           <i class="fas fa-play me-2"></i>
                           Follow Event
                         </button>
-                        <button class="btn_secondary w-100 py-2">
+                        <button class="tw-btn tw-btn--secondary w-100 py-2">
                           <i class="fas fa-share-alt me-2"></i>
                           Share
                         </button>
                       </div>
                       <div v-else class="d-grid gap-2">
-                        <button class="btn_secondary w-100 py-2" disabled>
+                        <button class="tw-btn tw-btn--secondary w-100 py-2" disabled>
                           <i class="fas fa-check-circle me-2"></i>
                           Event Ended
                         </button>
@@ -229,62 +217,57 @@
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- Registration Modal -->
-    <div v-if="showRegistrationModal" class="modal-overlay" @click.self="showRegistrationModal = false">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title">Register for Event</h3>
-          <button class="modal-close" @click="showRegistrationModal = false">
+    <div v-if="showRegistrationModal" class="tw-modal-overlay" @click.self="showRegistrationModal = false">
+      <div class="tw-modal">
+        <div class="tw-modal__header">
+          <h3 class="tw-modal__title">Register for Event</h3>
+          <button class="tw-modal__close" @click="showRegistrationModal = false">
             <i class="fas fa-times"></i>
           </button>
         </div>
-        <div class="modal-body">
+        <div class="tw-modal__body">
           <form @submit.prevent="handleRegistration">
             <div class="mb-3">
-              <label for="pseudo" class="form-label">Username *</label>
+              <label for="pseudo" class="tw-label">Username *</label>
               <input
                 type="text"
                 id="pseudo"
                 v-model="registrationForm.pseudo"
-                class="form-control"
+                class="tw-input"
                 required
                 placeholder="Your username"
               />
             </div>
             <div class="mb-3">
-              <label for="email" class="form-label">Email *</label>
+              <label for="email" class="tw-label">Email *</label>
               <input
                 type="email"
                 id="email"
                 v-model="registrationForm.email"
-                class="form-control"
+                class="tw-input"
                 required
                 placeholder="your@email.com"
               />
             </div>
             <div class="mb-3">
-              <label for="phone" class="form-label">Phone</label>
+              <label for="phone" class="tw-label">Phone</label>
               <input
                 type="tel"
                 id="phone"
                 v-model="registrationForm.phone"
-                class="form-control"
+                class="tw-input"
                 placeholder="+1 234 567 8900"
               />
             </div>
             <div class="mb-3">
-              <label for="country" class="form-label">Country</label>
+              <label for="country" class="tw-label">Country</label>
               <input
                 type="text"
                 id="country"
                 v-model="registrationForm.country"
-                class="form-control"
+                class="tw-input"
                 placeholder="United States"
               />
             </div>
@@ -292,7 +275,7 @@
               {{ registrationError }}
             </div>
             <div class="d-grid gap-2">
-              <button type="submit" class="btn_primary w-100 py-3" :disabled="registering">
+              <button type="submit" class="tw-btn tw-btn--primary w-100 py-3" :disabled="registering">
                 <span v-if="registering">
                   <i class="fas fa-spinner fa-spin me-2"></i>Registering...
                 </span>
@@ -300,7 +283,7 @@
                   <i class="fas fa-check me-2"></i>Confirm Registration
                 </span>
               </button>
-              <button type="button" class="btn_secondary w-100 py-2" @click="showRegistrationModal = false">
+              <button type="button" class="tw-btn tw-btn--secondary w-100 py-2" @click="showRegistrationModal = false">
                 Cancel
               </button>
             </div>
@@ -314,7 +297,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import apiClient from '@/utils/axios';
+import apiClient, { getApiErrorMessage } from '@/utils/axios';
 import { getStorageUrl, STORAGE_BASE_URL } from '@/config/constants';
 import { fixImageUrl } from '@/utils/imageFixer';
 
@@ -418,10 +401,8 @@ const loadEvent = async () => {
     console.error('Error loading event:', err);
     if (err.response?.status === 404) {
       error.value = 'Event not found';
-    } else if (err.isNetworkError) {
-      error.value = 'Connection error. Please check your internet connection.';
     } else {
-      error.value = 'Error loading event';
+      error.value = getApiErrorMessage(err);
     }
   } finally {
     loading.value = false;
@@ -507,217 +488,4 @@ onMounted(() => {
   loadEvent();
 });
 </script>
-
-<style scoped>
-.defis_section {
-  width: 100%;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-  color: white;
-  position: relative;
-  overflow: hidden;
-  border-radius: 24px;
-}
-
-.defi_card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Modal Styles */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  padding: 20px;
-}
-
-.modal-content {
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-  border-radius: 16px;
-  width: 100%;
-  max-width: 500px;
-  max-height: 90vh;
-  overflow-y: auto;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.modal-title {
-  color: white;
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin: 0;
-}
-
-.modal-close {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background 0.3s;
-}
-
-.modal-close:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.modal-body {
-  padding: 24px;
-}
-
-.form-label {
-  color: white;
-  font-weight: 500;
-  margin-bottom: 8px;
-  display: block;
-}
-
-.form-control {
-  width: 100%;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  color: white;
-  font-size: 1rem;
-  transition: all 0.3s;
-}
-
-.form-control:focus {
-  outline: none;
-  border-color: #667eea;
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.form-control::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.alert {
-  padding: 12px 16px;
-  border-radius: 8px;
-  margin-bottom: 16px;
-}
-
-.alert-danger {
-  background: rgba(220, 53, 69, 0.2);
-  border: 1px solid rgba(220, 53, 69, 0.5);
-  color: #ff6b6b;
-}
-
-@media (max-width: 768px) {
-  .modal-content {
-    max-width: 100%;
-    margin: 10px;
-  }
-  
-  .modal-header {
-    padding: 16px 20px;
-  }
-  
-  .modal-body {
-    padding: 20px;
-  }
-}
-
-.info_item {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-}
-
-.text_gradient {
-  background: linear-gradient(90deg, #FF9F00, #FF9F00);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.btn_primary {
-  background-color: #FF9F00;
-  color: #000;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: 0.3s;
-  cursor: pointer;
-}
-
-.btn_primary:hover {
-  background-color: #FF9F00;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(255, 159, 0, 0.4);
-}
-
-.btn_secondary {
-  background: transparent;
-  border: 2px solid #FF9F00;
-  color: #FF9F00;
-  padding: 0.75rem 1.5rem;
-  border-radius: 10px;
-  font-weight: 600;
-  transition: 0.3s;
-  cursor: pointer;
-}
-
-.btn_secondary:hover {
-  background-color: #FF9F00;
-  color: #000;
-}
-
-.hero_badge {
-  background: rgba(255, 159, 0, 0.2);
-  color: #FF9F00;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-.hero_title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: white;
-  line-height: 1.2;
-}
-
-.page-content-with-space {
-  padding-top: 90px;
-}
-
-@media (max-width: 768px) {
-  .page-content-with-space {
-    padding-top: 60px;
-  }
-  
-  .hero_title {
-    font-size: 1.8rem;
-  }
-}
-</style>
 

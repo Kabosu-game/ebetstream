@@ -6,7 +6,7 @@
         <p class="text-white-50">Manage partner developers</p>
       </div>
       <button class="btn_primary" @click="showCreateModal = true">
-        <IconPlus :size="18" class="me-2" />New Partner
+        <i class="fas fa-plus me-2"  ></i>New Partner
       </button>
     </div>
 
@@ -30,8 +30,8 @@
                 style="object-fit: cover;"
               />
               <div v-else class="w-100 h-100 d-flex align-items-center justify-content-center" 
-                   style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                <IconBuilding :size="24" class="text-white" />
+                   style="background: linear-gradient(135deg, #febd56 0%, #d98f25 100%);">
+                <i class="fas fa-building text-white"  ></i>
               </div>
             </div>
             <div class="flex-grow-1">
@@ -41,15 +41,15 @@
           </div>
           <div class="mb-3">
             <span v-if="partner.country" class="text-white-50 small d-flex align-items-center">
-              <IconMapPin :size="14" class="me-1" />{{ partner.country }}
+              <i class="fas fa-map-marker-alt me-1"  ></i>{{ partner.country }}
             </span>
           </div>
           <div class="d-flex gap-2">
             <button class="btn btn-sm btn-warning flex-fill d-flex align-items-center justify-content-center gap-1" @click="editPartner(partner)">
-              <IconEdit :size="16" />Edit
+              <i class="fas fa-edit"></i>Edit
             </button>
             <button class="btn btn-sm btn-danger d-flex align-items-center justify-content-center" @click="deletePartner(partner.id)">
-              <IconTrash :size="16" />
+              <i class="fas fa-trash"></i>
             </button>
           </div>
         </div>
@@ -107,7 +107,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import apiClient from '@/utils/axios';
-import { IconPlus, IconEdit, IconTrash, IconBuilding, IconMapPin } from '@tabler/icons-vue';
 import { fixImageUrl } from '@/utils/imageFixer';
 
 interface Partner {
