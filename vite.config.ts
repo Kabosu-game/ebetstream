@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => {
         (mode === 'production' ? 'https://api.ebetstream.live' : '/api')
       ),
       'import.meta.env.VITE_STREAM_WS_URL': JSON.stringify(
-        env.VITE_STREAM_WS_URL || 'wss://ws.ebetstream.live'
+        env.VITE_STREAM_WS_URL || 'wss://ebetstreamvf-production.up.railway.app'
       ),
     },
     server: {
