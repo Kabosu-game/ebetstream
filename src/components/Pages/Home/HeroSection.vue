@@ -45,25 +45,19 @@
           @mouseenter="pauseAutoPlay"
           @mouseleave="resumeAutoPlay"
         >
-          <div class="live-featured__thumb-wrap">
-            <div class="live-featured__thumb" :style="getThumbStyle(activeStream)">
-              <div class="live-featured__overlay"></div>
-            </div>
+          <!-- StreamCover: couverture pro générée automatiquement -->
+          <StreamCover
+            :stream-id="activeStream.id"
+            :title="activeStream.title"
+            :username="activeStream.user?.username"
+            :game="activeStream.game?.name"
+            :is-live="true"
+            :viewer-count="activeStream.viewers_count"
+            :thumbnail-url="activeStream.thumbnail_url"
+            class="live-featured__cover"
+          />
 
-            <!-- Top badges -->
-            <div class="live-featured__top">
-              <span class="badge-live"><span class="badge-live__dot"></span>LIVE</span>
-              <span class="badge-viewers"><i class="fas fa-eye"></i> {{ formatViewers(activeStream.viewers_count) }}</span>
-            </div>
-
-            <!-- Bottom: title overlay -->
-            <div class="live-featured__bottom">
-              <p class="live-featured__stream-title">{{ activeStream.title }}</p>
-              <span class="live-featured__tag" v-if="activeStream.game?.name">{{ activeStream.game.name }}</span>
-            </div>
-          </div>
-
-          <!-- Info bar below thumb -->
+          <!-- Info bar below cover -->
           <div class="live-featured__info">
             <div class="live-featured__avatar" :style="getAvatarStyle(activeStream)">
               {{ getInitials(activeStream.user?.username || activeStream.title) }}
@@ -101,11 +95,16 @@
             @click="viewStream(stream.id)"
             @mouseenter="setActive(idx + 1)"
           >
-            <div class="live-sidebar__thumb-wrap">
-              <div class="live-sidebar__thumb" :style="getThumbStyle(stream)"></div>
-              <span class="badge-live badge-live--xs"><span class="badge-live__dot"></span>LIVE</span>
-              <span class="badge-viewers badge-viewers--xs"><i class="fas fa-eye"></i> {{ formatViewers(stream.viewers_count) }}</span>
-            </div>
+            <StreamCover
+              :stream-id="stream.id"
+              :title="stream.title"
+              :username="stream.user?.username"
+              :game="stream.game?.name"
+              :is-live="true"
+              :viewer-count="stream.viewers_count"
+              :thumbnail-url="stream.thumbnail_url"
+              class="live-sidebar__cover"
+            />
             <div class="live-sidebar__info">
               <div class="live-sidebar__avatar" :style="getAvatarStyle(stream)">
                 {{ getInitials(stream.user?.username || stream.title) }}
@@ -129,9 +128,15 @@
             @click="viewStream(stream.id)"
             @touchstart="setActive(idx + 1)"
           >
-            <div class="live-strip__thumb" :style="getThumbStyle(stream)">
-              <span class="badge-live badge-live--xs"><span class="badge-live__dot"></span>LIVE</span>
-            </div>
+            <StreamCover
+              :stream-id="stream.id"
+              :title="stream.user?.username || stream.title"
+              :username="stream.user?.username"
+              :game="stream.game?.name"
+              :is-live="true"
+              :viewer-count="stream.viewers_count"
+              class="live-strip__cover"
+            />
             <p class="live-strip__name">{{ stream.user?.username || 'Stream' }}</p>
           </div>
         </div>
@@ -215,6 +220,7 @@
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import apiClient from "@/utils/axios";
+import StreamCover from "@/components/Shared/StreamCover.vue";
 
 interface Stream {
   id: number;
@@ -256,27 +262,19 @@ const resumeAutoPlay = () => { if (streams.value.length > 1) startTimer(); };
 const viewStream = (id: number) => router.push(`/streams/${id}`);
 const formatViewers = (n?: number) => !n ? "0" : n >= 1000 ? (n / 1000).toFixed(1) + "K" : String(n);
 
-const gradients = [
+const GRADIENTS = [
   "linear-gradient(135deg,#febd56,#d4962e)",
   "linear-gradient(135deg,#1a9fff,#0057c8)",
   "linear-gradient(135deg,#ff4d6a,#a01030)",
   "linear-gradient(135deg,#00c8a0,#007a63)",
   "linear-gradient(135deg,#ff9f00,#c86f00)",
-  "linear-gradient(135deg,#d4962e,#b87820)",
 ];
 
-const getThumbStyle  = (s: Stream) => s.thumbnail_url ? { backgroundImage: `url(${s.thumbnail_url})`, backgroundSize: "cover", backgroundPosition: "center" } : { background: gradients[s.id % gradients.length] };
-const getAvatarStyle = (s: Stream) => s.user?.avatar_url ? { backgroundImage: `url(${s.user.avatar_url})`, backgroundSize: "cover" } : { background: gradients[s.id % gradients.length] };
-const getInitials    = (n: string) => n ? n.slice(0, 2).toUpperCase() : "?";
+const getAvatarStyle = (s: Stream) => s.user?.avatar_url
+  ? { backgroundImage: `url(${s.user.avatar_url})`, backgroundSize: "cover" }
+  : { background: GRADIENTS[s.id % GRADIENTS.length] };
 
-const particleStyle = (n: number) => ({
-  left: `${(n * 31 + 7) % 100}%`,
-  top: `${(n * 17 + 11) % 100}%`,
-  width: `${4 + (n % 5) * 2}px`,
-  height: `${4 + (n % 5) * 2}px`,
-  animationDelay: `${(n * 0.4) % 3}s`,
-  animationDuration: `${3 + (n % 4)}s`,
-});
+const getInitials = (n: string) => n ? n.slice(0, 2).toUpperCase() : "?";
 
 onMounted(() => loadStreams());
 onUnmounted(() => { if (timer) clearInterval(timer); });
@@ -421,64 +419,11 @@ onUnmounted(() => { if (timer) clearInterval(timer); });
   min-width: 0;
 }
 
-.live-featured__thumb-wrap {
-  position: relative;
-  aspect-ratio: 16/9;
+.live-featured__cover {
   border-radius: 8px;
   overflow: hidden;
-}
-
-.live-featured__thumb {
-  width: 100%;
-  height: 100%;
-  transition: transform .4s ease, filter .3s ease;
-  .live-featured:hover & { transform: scale(1.03); filter: brightness(1.08); }
-}
-
-.live-featured__overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, transparent 35%, rgba(0,0,0,.75) 100%);
-  pointer-events: none;
-}
-
-.live-featured__top {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  display: flex;
-  gap: 6px;
-  z-index: 4;
-}
-
-.live-featured__bottom {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 12px 14px 10px;
-  z-index: 4;
-}
-
-.live-featured__stream-title {
-  font-size: 15px;
-  font-weight: 700;
-  color: #fff;
-  margin: 0 0 4px;
-  text-shadow: 0 1px 4px rgba(0,0,0,.8);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.live-featured__tag {
-  display: inline-block;
-  background: rgba(var(--g1),.88);
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 7px;
-  border-radius: 3px;
+  transition: transform .4s ease;
+  .live-featured:hover & { transform: scale(1.015); }
 }
 
 /* Info bar */
@@ -595,18 +540,11 @@ onUnmounted(() => { if (timer) clearInterval(timer); });
   }
 }
 
-.live-sidebar__thumb-wrap {
-  position: relative;
+.live-sidebar__cover {
   width: 100%;
-  height: 80px;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.live-sidebar__thumb {
-  width: 100%; height: 100%;
+  border-radius: 0;
   transition: transform .3s;
-  .live-sidebar__card:hover & { transform: scale(1.04); }
+  .live-sidebar__card:hover & { transform: scale(1.03); }
 }
 
 .live-sidebar__info {
@@ -670,11 +608,9 @@ onUnmounted(() => { if (timer) clearInterval(timer); });
   &--active, &:hover { border-color: rgb(var(--g1)); }
 }
 
-.live-strip__thumb {
-  position: relative;
+.live-strip__cover {
   width: 100%;
-  height: 60px;
-  background: rgb(var(--p3));
+  border-radius: 0;
 }
 
 .live-strip__name {

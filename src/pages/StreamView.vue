@@ -48,9 +48,19 @@
               </button>
             </template>
             <template v-else>
-              <i class="ti ti-video-off sv-player__offline-icon"></i>
-              <p class="sv-player__wait-msg">Stream hors ligne</p>
-              <span class="sv-player__wait-sub">Revenez quand le streamer est en direct.</span>
+              <StreamCover
+                :stream-id="stream.id"
+                :title="stream.title"
+                :username="stream.user?.username"
+                :game="stream.game"
+                :category="stream.category"
+                :is-ended="true"
+                :follower-count="stream.follower_count"
+                style="position:absolute;inset:0;width:100%;height:100%;border-radius:0;"
+              />
+              <div class="sv-offline-badge">
+                <i class="fas fa-video-slash"></i> Hors ligne
+              </div>
             </template>
           </div>
 
@@ -270,6 +280,7 @@
 import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import apiClient from '@/utils/axios';
+import StreamCover from '@/components/Shared/StreamCover.vue';
 
 interface Stream {
   id: number; title: string; description: string; thumbnail_url?: string;
@@ -822,6 +833,27 @@ onBeforeUnmount(() => {
 .sv-player__offline-icon {
   font-size: 48px;
   color: rgba(255,255,255,.3);
+}
+
+.sv-offline-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 8px;
+  background: rgba(0,0,0,.72);
+  backdrop-filter: blur(8px);
+  color: rgba(255,255,255,.7);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  border: 1px solid rgba(255,255,255,.12);
+  pointer-events: none;
 }
 
 .sv-retry {

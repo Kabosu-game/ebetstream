@@ -88,14 +88,15 @@
             class="st-card"
             @click="$router.push(`/challenges/${ch.id}/live`)"
           >
-            <div class="st-card__thumb">
-              <div class="st-card__thumb-bg st-card__thumb-bg--challenge">
-                <i class="ti ti-swords st-card__thumb-icon"></i>
-              </div>
-              <span class="st-badge-live"><span class="st-dot"></span>LIVE</span>
-              <span class="st-badge-viewers"><i class="fas fa-eye"></i> {{ ch.viewer_count || 0 }}</span>
-              <div class="st-card__thumb-overlay"></div>
-            </div>
+            <StreamCover
+              :stream-id="ch.id"
+              :title="`${ch.game || 'Challenge'} · ${ch.creator?.username} VS ${ch.opponent?.username || '?'}`"
+              :username="ch.creator?.username"
+              :game="ch.game"
+              :is-live="true"
+              :is-challenge="true"
+              :viewer-count="ch.viewer_count || 0"
+            />
             <div class="st-card__info">
               <div class="st-card__avatar st-card__avatar--challenge">
                 <i class="fas fa-fist-raised"></i>
@@ -131,22 +132,18 @@
             class="st-card"
             @click="$router.push(`/streams/${stream.id}`)"
           >
-            <div class="st-card__thumb">
-              <img
-                v-if="stream.thumbnail_url"
-                :src="stream.thumbnail_url"
-                :alt="stream.title"
-                class="st-card__thumb-img"
-              />
-              <div v-else class="st-card__thumb-bg" :style="gradientFor(stream.id)">
-                <i class="ti ti-video st-card__thumb-icon"></i>
-              </div>
-              <span class="st-badge-live"><span class="st-dot"></span>LIVE</span>
-              <span class="st-badge-viewers"><i class="fas fa-eye"></i> {{ formatViewers(stream.viewer_count) }}</span>
-              <div class="st-card__thumb-overlay"></div>
-            </div>
+            <StreamCover
+              :stream-id="stream.id"
+              :title="stream.title"
+              :username="stream.user?.username"
+              :game="stream.game"
+              :category="stream.category"
+              :is-live="true"
+              :viewer-count="stream.viewer_count"
+              :thumbnail-url="stream.thumbnail_url"
+            />
             <div class="st-card__info">
-              <div class="st-card__avatar" :style="gradientFor(stream.id)">
+              <div class="st-card__avatar" :style="avatarStyle(stream.id)">
                 {{ initials(stream.user?.username || stream.title) }}
               </div>
               <div class="st-card__meta">
@@ -176,20 +173,18 @@
             class="st-card"
             @click="$router.push(`/streams/${stream.id}`)"
           >
-            <div class="st-card__thumb">
-              <img
-                v-if="stream.thumbnail_url"
-                :src="stream.thumbnail_url"
-                :alt="stream.title"
-                class="st-card__thumb-img"
-              />
-              <div v-else class="st-card__thumb-bg" :style="gradientFor(stream.id)">
-                <i class="ti ti-video st-card__thumb-icon"></i>
-              </div>
-              <div class="st-card__thumb-overlay"></div>
-            </div>
+            <StreamCover
+              :stream-id="stream.id"
+              :title="stream.title"
+              :username="stream.user?.username"
+              :game="stream.game"
+              :category="stream.category"
+              :is-ended="true"
+              :follower-count="stream.follower_count"
+              :thumbnail-url="stream.thumbnail_url"
+            />
             <div class="st-card__info">
-              <div class="st-card__avatar" :style="gradientFor(stream.id)">
+              <div class="st-card__avatar" :style="avatarStyle(stream.id)">
                 {{ initials(stream.user?.username || stream.title) }}
               </div>
               <div class="st-card__meta">
@@ -218,14 +213,14 @@
       </div>
 
       <div v-if="activeTab === 'challenges' && liveChallenges.length === 0" class="st-empty">
-        <i class="ti ti-swords st-empty__icon"></i>
+        <i class="fas fa-fist-raised st-empty__icon"></i>
         <h3 class="st-empty__title">No live challenges</h3>
         <p class="st-empty__sub">Start a challenge to see it here.</p>
         <router-link to="/challenges" class="st-btn-primary">Browse Challenges</router-link>
       </div>
 
       <div v-if="activeTab === 'offline' && offlineStreams.length === 0" class="st-empty">
-        <i class="ti ti-video-off st-empty__icon"></i>
+        <i class="fas fa-video-slash st-empty__icon"></i>
         <h3 class="st-empty__title">No streams found</h3>
         <p class="st-empty__sub">Try adjusting your search.</p>
       </div>
@@ -235,7 +230,7 @@
         v-if="activeTab === 'all' && allStreams.length === 0 && liveChallenges.length === 0"
         class="st-empty"
       >
-        <i class="ti ti-video-off st-empty__icon"></i>
+        <i class="fas fa-video-slash st-empty__icon"></i>
         <h3 class="st-empty__title">No streams available</h3>
         <p class="st-empty__sub">Be the first to stream on eBetStream!</p>
         <button v-if="isAuthenticated" class="st-btn-primary" @click="$router.push('/streams/create')">
@@ -252,7 +247,10 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient from '@/utils/axios';
-import { STREAM_GRADIENTS, gradientFor, initials, formatViewers } from '@/utils/formatters';
+import { formatViewers, initials, STREAM_GRADIENTS } from '@/utils/formatters';
+import StreamCover from '@/components/Shared/StreamCover.vue';
+
+const avatarStyle = (id: number) => ({ background: STREAM_GRADIENTS[id % STREAM_GRADIENTS.length] });
 
 const router = useRouter();
 
