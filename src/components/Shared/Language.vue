@@ -74,6 +74,7 @@ import {
 import { useI18n } from "vue-i18n";
 import english from "@/assets/images/icon/lang-usa.png";
 import france from "@/assets/images/icon/lang-france.png";
+import spain from "@/assets/images/icon/argentina.png";
 
 const { locale } = useI18n();
 
@@ -90,12 +91,17 @@ const languages = [
     srcImage: english,
     name: "English",
   },
+  {
+    id: "es",
+    code: "es",
+    srcImage: spain,
+    name: "Español",
+  },
 ];
 
 const getCurrentLanguage = () => {
-  const savedLocale = localStorage.getItem("app_language");
-  const code = (savedLocale && savedLocale !== 'en') ? savedLocale : 'fr';
-  return languages.find(lang => lang.code === code) || languages[0];
+  const savedLocale = localStorage.getItem("app_language") || 'fr';
+  return languages.find(lang => lang.code === savedLocale) || languages[0];
 };
 
 const selectedPerson = ref(getCurrentLanguage());
