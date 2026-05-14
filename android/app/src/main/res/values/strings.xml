@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">EbetStream</string>
+    <string name="title_activity_main">EbetStream</string>
+    <string name="package_name">live.ebetstream.app</string>
+    <string name="custom_url_scheme">live.ebetstream.app</string>
+</resources>

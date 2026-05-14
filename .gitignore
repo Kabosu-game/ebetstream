@@ -30,6 +30,13 @@ dist-ssr
 
 .vercel
 
+# Capacitor Android build artifacts
+android/.gradle/
+android/app/build/
+android/build/
+android/.idea/
+android/capacitor-cordova-android-plugins/build/
+
 # API (pushed to separate repo ebetstreamvf)
 ebetstream_api
 
