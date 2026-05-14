@@ -66,6 +66,10 @@ onBeforeUnmount(() => document.body.removeEventListener("click", handleOutside))
         </button>
       </div>
       <SideNav @nav-click="closeSidebar" />
+      <div class="tw-divider" style="margin: 8px 16px;"></div>
+      <div class="sidebar-lang">
+        <Language />
+      </div>
     </div>
   </aside>
 
@@ -279,6 +283,11 @@ onBeforeUnmount(() => document.body.removeEventListener("click", handleOutside))
   height: 1px;
   background: rgb(var(--n2));
   margin: 2px 0;
+}
+
+/* Language in sidebar */
+.sidebar-lang {
+  padding: 4px 16px 12px;
 }
 
 /* Icon-only login button */
