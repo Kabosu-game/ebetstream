@@ -614,7 +614,7 @@ const saveTitle = async () => {
 // ── Capture media ─────────────────────────────────────────────────────────────
 const captureMedia = async (): Promise<MediaStream> => {
   const mode = sourceMode.value;
-  if (mode === 'screen' && !supportsDisplayMedia) {
+  if (mode === 'screen' && !supportsDisplayMedia && !Capacitor.isNativePlatform()) {
     throw Object.assign(new Error('COMPAT'), {
       name: 'CompatError',
       friendly: isIOS ? t('streamStudio.screenShareIos') : t('streamStudio.screenShareUnsupported'),
