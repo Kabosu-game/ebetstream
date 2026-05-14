@@ -21,7 +21,7 @@
                       />
                       <div class="top_matches__winnercard-obi">
                         <span class="mb-3 n4-color">Dec 25, 10:00</span>
-                        <h5>UK Politics - Prime Minister After Election</h5>
+                        <h5>{{ $t('ui.uk_politics_prime_minister_after_election') }}</h5>
                       </div>
                     </div>
                     <div class="row gy-2">
@@ -30,19 +30,19 @@
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Starmer, Keir</span>
+                            <span>{{ $t('ui.starmer_keir') }}</span>
                             <span>4.5</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Mordaunt, Penny</span>
+                            <span>{{ $t('ui.mordaunt_penny') }}</span>
                             <span>7.5</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3"
                           >
-                            <span>Corbyn, Jeremy</span>
+                            <span>{{ $t('ui.corbyn_jeremy') }}</span>
                             <span>19.0</span>
                           </div>
                         </div>
@@ -52,19 +52,19 @@
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Sunak, Rishi</span>
+                            <span>{{ $t('ui.sunak_rishi') }}</span>
                             <span>6.5</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Johnson, Boris</span>
+                            <span>{{ $t('ui.johnson_boris') }}</span>
                             <span>8.0</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3"
                           >
-                            <span>Burnham, Andy</span>
+                            <span>{{ $t('ui.burnham_andy') }}</span>
                             <span>23.0</span>
                           </div>
                         </div>
@@ -74,19 +74,19 @@
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Cameron, David</span>
+                            <span>{{ $t('ui.cameron_david') }}</span>
                             <span>6.5</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Farage, Nigel</span>
+                            <span>{{ $t('ui.farage_nigel') }}</span>
                             <span>8.0</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3"
                           >
-                            <span>Nandy, Lisa</span>
+                            <span>{{ $t('ui.nandy_lisa') }}</span>
                             <span>23.0</span>
                           </div>
                         </div>
@@ -95,7 +95,7 @@
                         <div
                           class="top_matches__winnercard-singe d-flex align-items-center justify-content-center n11-bg rounded-2 py-1 px-3 mb-2 gap-2 mt-2"
                         >
-                          <span class="cpoint">Show more</span>
+                          <span class="cpoint">{{ $t('common.show_more') }}</span>
                           <i class="ti ti-arrow-badge-down cpoint mt-1"></i>
                         </div>
                       </div>
@@ -112,6 +112,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import specials2 from "@/assets/images/icon/specials2.png";
 </script>
 

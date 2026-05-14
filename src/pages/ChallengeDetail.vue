@@ -4,7 +4,7 @@
     <!-- Loading -->
     <div v-if="loading" class="cd-loading">
       <div class="cd-spinner"></div>
-      <p>Loading challenge…</p>
+      <p>{{ $t('ui.loading_challenge') }}</p>
     </div>
 
     <!-- Error -->
@@ -12,8 +12,7 @@
       <i class="fas fa-exclamation-circle cd-error__icon"></i>
       <h3>{{ error }}</h3>
       <button class="cd-btn cd-btn--primary" @click="$router.push('/challenges')">
-        <i class="fas fa-arrow-left"></i> Back to Challenges
-      </button>
+        <i class="fas fa-arrow-left"></i>{{ $t('ui.back_to_challenges') }}</button>
     </div>
 
     <!-- Content -->
@@ -22,8 +21,7 @@
       <!-- ── Page header ── -->
       <div class="cd-header">
         <button class="cd-back" @click="$router.push('/challenges')">
-          <i class="fas fa-arrow-left"></i> Back
-        </button>
+          <i class="fas fa-arrow-left"></i>{{ $t('common.back') }}</button>
         <div class="cd-header__center">
           <span class="cd-status-badge"
             :class="{
@@ -59,12 +57,12 @@
               </div>
               <div class="cd-player__info">
                 <p class="cd-player__name">{{ challenge.creator.username }}</p>
-                <span class="cd-player__role">Creator</span>
+                <span class="cd-player__role">{{ $t('ui.creator') }}</span>
               </div>
               <div class="cd-player__score-wrap">
                 <template v-if="challenge.creator_score !== null">
                   <span class="cd-player__score">{{ challenge.creator_score }}</span>
-                  <span class="cd-player__score-lbl">pts</span>
+                  <span class="cd-player__score-lbl">{{ $t('ui.pts') }}</span>
                 </template>
                 <span v-else-if="challenge.status === 'accepted' || challenge.status === 'in_progress'" class="cd-player__score-pending">
                   <i class="fas fa-hourglass-half"></i>
@@ -78,7 +76,7 @@
               <div class="cd-pot">
                 <i class="fas fa-coins"></i>
                 <span class="cd-pot__amount">{{ (challenge.bet_amount * 2).toLocaleString() }} EBT</span>
-                <span class="cd-pot__lbl">prize pool</span>
+                <span class="cd-pot__lbl">{{ $t('ui.prize_pool_2') }}</span>
               </div>
             </div>
 
@@ -91,7 +89,7 @@
               <div class="cd-player__score-wrap">
                 <template v-if="challenge.opponent_score !== null">
                   <span class="cd-player__score">{{ challenge.opponent_score }}</span>
-                  <span class="cd-player__score-lbl">pts</span>
+                  <span class="cd-player__score-lbl">{{ $t('ui.pts') }}</span>
                 </template>
                 <span v-else-if="challenge.opponent && (challenge.status === 'accepted' || challenge.status === 'in_progress')" class="cd-player__score-pending">
                   <i class="fas fa-hourglass-half"></i>
@@ -116,19 +114,19 @@
           <!-- Challenge info grid -->
           <div class="cd-info-grid">
             <div class="cd-info-item">
-              <span class="cd-info-item__lbl">Game</span>
+              <span class="cd-info-item__lbl">{{ $t('common.game') }}</span>
               <span class="cd-info-item__val"><i class="fas fa-gamepad"></i> {{ challenge.game }}</span>
             </div>
             <div class="cd-info-item">
-              <span class="cd-info-item__lbl">Bet per player</span>
+              <span class="cd-info-item__lbl">{{ $t('ui.bet_per_player') }}</span>
               <span class="cd-info-item__val"><i class="fas fa-coins"></i> {{ challenge.bet_amount.toLocaleString() }} EBT</span>
             </div>
             <div class="cd-info-item">
-              <span class="cd-info-item__lbl">Created</span>
+              <span class="cd-info-item__lbl">{{ $t('ui.created_2') }}</span>
               <span class="cd-info-item__val"><i class="fas fa-calendar-alt"></i> {{ formatDate(challenge.created_at) }}</span>
             </div>
             <div class="cd-info-item" v-if="challenge.expires_at">
-              <span class="cd-info-item__lbl">Expires</span>
+              <span class="cd-info-item__lbl">{{ $t('ui.expires_2') }}</span>
               <span class="cd-info-item__val"><i class="fas fa-clock"></i> {{ formatDate(challenge.expires_at) }}</span>
             </div>
           </div>
@@ -136,15 +134,14 @@
           <!-- Private chat (participants only) -->
           <div v-if="isParticipant && challenge.opponent" class="cd-chat">
             <div class="cd-chat__header">
-              <i class="fas fa-comment-dots"></i> Private Discussion
-            </div>
+              <i class="fas fa-comment-dots"></i>{{ $t('ui.private_discussion') }}</div>
             <div class="cd-chat__messages" ref="chatEl">
               <div v-if="loadingMessages" class="cd-chat__loading">
                 <div class="cd-spinner cd-spinner--sm"></div>
               </div>
               <div v-else-if="messages.length === 0" class="cd-chat__empty">
                 <i class="fas fa-comment-slash"></i>
-                <span>No messages yet</span>
+                <span>{{ $t('ui.no_messages_yet') }}</span>
               </div>
               <div v-else>
                 <div v-for="msg in messages" :key="msg.id" class="cd-msg"
@@ -164,7 +161,7 @@
               </div>
             </div>
             <form class="cd-chat__input" @submit.prevent="sendMessage">
-              <input v-model="newMessage" class="cd-chat__field" placeholder="Type a message…"
+              <input v-model="newMessage" class="cd-chat__field" :placeholder="$t('ui.type_a_message')"
                 :disabled="sendingMessage" maxlength="1000" />
               <button type="submit" class="cd-chat__send" :disabled="sendingMessage || !newMessage.trim()">
                 <i class="fas fa-paper-plane"></i>
@@ -182,46 +179,40 @@
             <span class="cd-live-dot"></span>
             <strong>LIVE</strong> — {{ challenge.viewer_count || 0 }} spectateurs
             <button class="cd-btn cd-btn--live" @click="viewLiveStream">
-              <i class="fas fa-play"></i> Watch
-            </button>
+              <i class="fas fa-play"></i>{{ $t('ui.watch') }}</button>
           </div>
 
           <!-- Accept challenge -->
           <div v-if="challenge.status === 'open' && challenge.creator.id !== currentUserId && !challenge.opponent" class="cd-action-card">
             <div class="cd-action-card__header">
-              <i class="fas fa-fist-raised"></i> Join this Challenge
-            </div>
+              <i class="fas fa-fist-raised"></i>{{ $t('ui.join_this_challenge') }}</div>
             <p class="cd-action-card__desc">
-              Stake <strong>{{ challenge.bet_amount.toLocaleString() }} EBT</strong> to accept.<br />
+              Stake <strong>{{ challenge.bet_amount.toLocaleString() }} EBT</strong>{{ $t('ui.to_accept') }}<br />
               Winner takes the full prize pool.
             </p>
             <button class="cd-btn cd-btn--primary cd-btn--full" @click="acceptChallenge">
-              <i class="fas fa-check-circle"></i> Accept Challenge
-            </button>
+              <i class="fas fa-check-circle"></i>{{ $t('ui.accept_challenge') }}</button>
           </div>
 
           <!-- Cancel challenge (creator) -->
           <div v-if="challenge.status === 'open' && challenge.creator.id === currentUserId" class="cd-action-card">
             <div class="cd-action-card__header">
-              <i class="fas fa-cog"></i> Your Challenge
-            </div>
-            <p class="cd-action-card__desc">Waiting for an opponent to join.</p>
+              <i class="fas fa-cog"></i>{{ $t('ui.your_challenge') }}</div>
+            <p class="cd-action-card__desc">{{ $t('ui.waiting_for_an_opponent_to_join') }}</p>
             <button class="cd-btn cd-btn--danger cd-btn--full" @click="cancelChallenge">
-              <i class="fas fa-times-circle"></i> Cancel & Refund
-            </button>
+              <i class="fas fa-times-circle"></i>{{ $t('ui.cancel_refund') }}</button>
           </div>
 
           <!-- ── LIVE STREAMING CONTROL (creator) ── -->
           <div v-if="isCreator && (challenge.status === 'accepted' || challenge.status === 'in_progress')" class="cd-action-card">
             <div class="cd-action-card__header">
-              <i class="fas fa-broadcast-tower"></i> Live Streaming
-              <span v-if="challenge.is_live" class="cd-ws-badge"
+              <i class="fas fa-broadcast-tower"></i>{{ $t('ui.live_streaming') }}<span v-if="challenge.is_live" class="cd-ws-badge"
                 :style="{ background: wsStreamerStatusColor }">{{ wsStreamerStatusLabel }}</span>
             </div>
 
             <!-- Not live -->
             <div v-if="!challenge.is_live && !recordingError">
-              <p class="cd-action-card__desc">Stream your gameplay live for your audience.</p>
+              <p class="cd-action-card__desc">{{ $t('ui.stream_your_gameplay_live_for_your_audience') }}</p>
               <button class="cd-btn cd-btn--live cd-btn--full" @click="startScreenRecording" :disabled="startingRecording">
                 <i class="fas fa-spinner fa-spin" v-if="startingRecording"></i>
                 <span class="cd-live-dot" v-else></span>
@@ -249,19 +240,19 @@
               <!-- Controls -->
               <div class="cd-live-controls">
                 <button v-if="!challenge.is_live_paused" class="cd-tool" @click="pauseScreenRecording" title="Pause">
-                  <i class="fas fa-pause"></i><span>Pause</span>
+                  <i class="fas fa-pause"></i><span>{{ $t('ui.pause') }}</span>
                 </button>
                 <button v-else class="cd-tool cd-tool--active" @click="resumeScreenRecording" title="Resume">
-                  <i class="fas fa-play"></i><span>Resume</span>
+                  <i class="fas fa-play"></i><span>{{ $t('ui.resume') }}</span>
                 </button>
                 <button class="cd-tool" @click="refreshViewerCount" title="Refresh stats">
-                  <i class="fas fa-sync-alt"></i><span>Stats</span>
+                  <i class="fas fa-sync-alt"></i><span>{{ $t('ui.stats') }}</span>
                 </button>
                 <button class="cd-tool" @click="copyStreamUrl" title="Copy link">
-                  <i class="fas fa-copy"></i><span>Copy link</span>
+                  <i class="fas fa-copy"></i><span>{{ $t('ui.copy_link') }}</span>
                 </button>
                 <button class="cd-tool" @click="openStreamInNewTab" title="View in streams">
-                  <i class="fas fa-external-link-alt"></i><span>View</span>
+                  <i class="fas fa-external-link-alt"></i><span>{{ $t('common.view') }}</span>
                 </button>
               </div>
 
@@ -280,10 +271,9 @@
           <!-- Submit score -->
           <div v-if="(challenge.status === 'accepted' || challenge.status === 'in_progress') && isParticipant && !hasSubmittedScore" class="cd-action-card">
             <div class="cd-action-card__header">
-              <i class="fas fa-paper-plane"></i> Submit Your Score
-            </div>
+              <i class="fas fa-paper-plane"></i>{{ $t('ui.submit_your_score') }}</div>
             <div class="cd-score-input">
-              <input v-model.number="myScore" type="number" class="cd-input" placeholder="Your score" min="0" :disabled="submittingScore" />
+              <input v-model.number="myScore" type="number" class="cd-input" :placeholder="$t('ui.your_score')" min="0" :disabled="submittingScore" />
               <button class="cd-btn cd-btn--primary" @click="submitScore" :disabled="submittingScore || !myScore">
                 <i class="fas fa-spinner fa-spin" v-if="submittingScore"></i>
                 <i class="fas fa-check" v-else></i>
@@ -296,14 +286,14 @@
           <!-- Score submitted -->
           <div v-if="hasSubmittedScore && challenge.status !== 'completed'" class="cd-action-card cd-action-card--success">
             <i class="fas fa-check-circle cd-action-card__icon"></i>
-            <p>Score submitted: <strong>{{ getMySubmittedScore() }}</strong></p>
+            <p>{{ $t('ui.score_submitted') }}<strong>{{ getMySubmittedScore() }}</strong></p>
             <p class="cd-action-card__desc">Waiting for {{ getOtherPlayerName() }}…</p>
           </div>
 
           <!-- Challenge completed -->
           <div v-if="challenge.status === 'completed'" class="cd-action-card cd-action-card--gold">
             <i class="fas fa-trophy cd-action-card__icon"></i>
-            <h4>Challenge Completed</h4>
+            <h4>{{ $t('ui.challenge_completed') }}</h4>
             <p v-if="challenge.creator_score !== null && challenge.opponent_score !== null" class="cd-action-card__winner">
               {{ getWinner() }}
             </p>
@@ -312,19 +302,17 @@
           <!-- Cancelled -->
           <div v-if="challenge.status === 'cancelled'" class="cd-action-card">
             <i class="fas fa-ban cd-action-card__icon" style="color:rgb(var(--r1))"></i>
-            <h4>Challenge Cancelled</h4>
+            <h4>{{ $t('ui.challenge_cancelled') }}</h4>
           </div>
 
           <!-- Not participant notice -->
           <div v-if="!isParticipant && challenge.status !== 'open'" class="cd-notice">
-            <i class="fas fa-info-circle"></i> You are not a participant in this challenge.
-          </div>
+            <i class="fas fa-info-circle"></i>{{ $t('ui.you_are_not_a_participant_in_this_challenge') }}</div>
 
           <!-- ── Stop Challenge Request ── -->
           <div v-if="isParticipant && challenge.opponent && (challenge.status === 'accepted' || challenge.status === 'in_progress')" class="cd-action-card">
             <div class="cd-action-card__header">
-              <i class="fas fa-stop-circle"></i> Stop Challenge
-            </div>
+              <i class="fas fa-stop-circle"></i>{{ $t('ui.stop_challenge') }}</div>
 
             <div v-if="stopRequestLoading" class="cd-loading cd-loading--sm">
               <div class="cd-spinner cd-spinner--sm"></div>
@@ -335,19 +323,15 @@
               <div v-if="stopRequest.status === 'pending'" class="cd-stop-request cd-stop-request--pending">
                 <p>
                   <span v-if="stopRequest.initiator_id === currentUserId">
-                    Waiting for <strong>{{ getOtherPlayerName() }}</strong> to confirm.
-                  </span>
+                    Waiting for <strong>{{ getOtherPlayerName() }}</strong>{{ $t('ui.to_confirm') }}</span>
                   <span v-else>
-                    <strong>{{ stopRequest.initiator?.username }}</strong> requested to stop.
-                  </span>
+                    <strong>{{ stopRequest.initiator?.username }}</strong>{{ $t('ui.requested_to_stop') }}</span>
                 </p>
                 <div class="cd-stop-request__actions">
                   <button v-if="stopRequest.initiator_id === currentUserId" class="cd-btn cd-btn--ghost cd-btn--sm" @click="cancelStopRequest" :disabled="cancellingStop">
-                    <i class="fas fa-times"></i> Cancel
-                  </button>
+                    <i class="fas fa-times"></i>{{ $t('common.cancel') }}</button>
                   <button v-else class="cd-btn cd-btn--primary cd-btn--sm" @click="confirmStopRequest" :disabled="confirmingStop">
-                    <i class="fas fa-check"></i> Confirm
-                  </button>
+                    <i class="fas fa-check"></i>{{ $t('common.confirm') }}</button>
                 </div>
               </div>
               <!-- Confirmed -->
@@ -365,7 +349,7 @@
             </template>
 
             <template v-else>
-              <p class="cd-action-card__desc">Both players must agree to stop. Admin will review and complete the challenge.</p>
+              <p class="cd-action-card__desc">{{ $t('ui.both_players_must_agree_to_stop_admin_will_review_and_comple') }}</p>
               <button class="cd-btn cd-btn--ghost cd-btn--full" @click="requestStopChallenge" :disabled="requestingStop">
                 <i class="fas fa-stop-circle"></i> {{ requestingStop ? 'Requesting…' : 'Request to Stop' }}
               </button>
@@ -379,6 +363,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted, computed, onUnmounted, watch, nextTick } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import apiClient from "@/utils/axios";

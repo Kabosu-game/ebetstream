@@ -11,10 +11,9 @@
                 <div class="col-lg-6 col-md-7">
                   <div class="defis_content" data-aos="fade-right">
                     <span class="hero_badge mb-3 d-inline-block">
-                      <i class="fas fa-trophy"></i> Fédérations Esport & Gaming
-                    </span>
+                      <i class="fas fa-trophy"></i>{{ $t('ui.f_d_rations_esport_gaming') }}</span>
                     <h2 class="hero_title mb-4">
-                      Discover <span class="text_gradient">Federations</span><br />
+                      Discover <span class="text_gradient">{{ $t('ui.federations') }}</span><br />
                       and their championships!
                     </h2>
                     <p class="hero_subtitle mb-5">
@@ -24,7 +23,7 @@
                     <div class="hero_actions d-flex flex-wrap gap-3">
                       <router-link to="/federations/register" class="btn_secondary text-decoration-none">
                         <i class="fas fa-plus-circle me-2"></i>
-                        <span>Register Your Federation</span>
+                        <span>{{ $t('ui.register_your_federation') }}</span>
                       </router-link>
                     </div>
                   </div>
@@ -36,7 +35,7 @@
                     <div class="floating_card card_defis">
                       <div class="card_icon"><i class="fas fa-trophy"></i></div>
                       <div class="card_content">
-                        <span class="card_label">Total</span>
+                        <span class="card_label">{{ $t('betting.total') }}</span>
                         <span class="card_value">{{ federations.length }} Federations</span>
                       </div>
                     </div>
@@ -48,7 +47,7 @@
               <div v-if="loading" class="row mt-5">
                 <div class="col-12 text-center py-5">
                   <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-                    <span class="visually-hidden">Loading...</span>
+                    <span class="visually-hidden">{{ $t('common.loading') }}</span>
                   </div>
                 </div>
               </div>
@@ -75,7 +74,7 @@
                       <img 
                         v-if="federation.logo_url" 
                         :src="federation.logo_url" 
-                        :alt="federation.name"
+                        :alt="$t('ui.federation_name')"
                         class="rounded-circle"
                         style="width: 100px; height: 100px; object-fit: cover;"
                       />
@@ -124,10 +123,10 @@
               <div v-else class="row mt-5">
                 <div class="col-12 text-center py-5">
                   <i class="fas fa-building fs-1 text-white-50 mb-3"></i>
-                  <p class="text-white-50">No federations available at the moment.</p>
+                  <p class="text-white-50">{{ $t('ui.no_federations_available_at_the_moment') }}</p>
                   <router-link to="/federations/register" class="btn_primary mt-3 text-decoration-none">
                     <i class="fas fa-plus-circle me-2"></i>
-                    <span>Register First Federation</span>
+                    <span>{{ $t('ui.register_first_federation') }}</span>
                   </router-link>
                 </div>
               </div>
@@ -173,6 +172,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted } from "vue";
 import apiClient from "@/utils/axios";
 

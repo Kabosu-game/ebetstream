@@ -32,19 +32,19 @@
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Badenoch, Kemi</span>
+                            <span>{{ $t('ui.badenoch_kemi') }}</span>
                             <span>4.5</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Cleverly, James</span>
+                            <span>{{ $t('ui.cleverly_james') }}</span>
                             <span>7.5</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3"
                           >
-                            <span>Johnson, Boris</span>
+                            <span>{{ $t('ui.johnson_boris') }}</span>
                             <span>19.0</span>
                           </div>
                         </div>
@@ -54,19 +54,19 @@
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Mordaunt, Penny</span>
+                            <span>{{ $t('ui.mordaunt_penny') }}</span>
                             <span>6.5</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Farage, Nigel</span>
+                            <span>{{ $t('ui.farage_nigel') }}</span>
                             <span>8.0</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3"
                           >
-                            <span>Frost, Davis</span>
+                            <span>{{ $t('ui.frost_davis') }}</span>
                             <span>23.0</span>
                           </div>
                         </div>
@@ -76,19 +76,19 @@
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Braverman, Suella</span>
+                            <span>{{ $t('ui.braverman_suella') }}</span>
                             <span>6.5</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Cameron, David</span>
+                            <span>{{ $t('ui.cameron_david') }}</span>
                             <span>8.0</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3"
                           >
-                            <span>Barclay, Stephen</span>
+                            <span>{{ $t('ui.barclay_stephen') }}</span>
                             <span>23.0</span>
                           </div>
                         </div>
@@ -97,7 +97,7 @@
                         <div
                           class="top_matches__winnercard-singe d-flex align-items-center justify-content-center n11-bg rounded-2 py-1 px-3 mb-2 gap-2 mt-2"
                         >
-                          <span class="cpoint">Show more</span>
+                          <span class="cpoint">{{ $t('common.show_more') }}</span>
                           <i class="ti ti-arrow-badge-down cpoint mt-1"></i>
                         </div>
                       </div>
@@ -114,6 +114,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import specials2 from "@/assets/images/icon/specials2.png";
 </script>
 

@@ -5,7 +5,7 @@
         <!-- Image -->
         <div class="col-6 d-none d-lg-block">
           <div class="login_section__thumb">
-            <img class="w-100" width="720" height="900" :src="login" alt="Image" />
+            <img class="w-100" width="720" height="900" :src="login" :alt="$t('ui.image')" />
           </div>
         </div>
 
@@ -15,7 +15,7 @@
             <div class="row justify-content-start">
               <div class="col-xxl-10">
                 <div class="pb-10 pt-8 mb-7 mt-12 mt-lg-0 px-4 px-sm-10">
-                  <h3 class="mb-6 mb-md-8">Forgot Password</h3>
+                  <h3 class="mb-6 mb-md-8">{{ $t('ui.forgot_password') }}</h3>
                   <p class="mb-10 mb-md-15">
                     Enter your email address and we'll send you a link to reset your password.
                   </p>
@@ -38,7 +38,7 @@
                       <input
                         class="n11-bg"
                         type="email"
-                        placeholder="Email"
+                        :placeholder="$t('common.email')"
                         v-model="form.email"
                         required
                       />
@@ -49,8 +49,8 @@
                       type="submit"
                       :disabled="loading"
                     >
-                      <span v-if="loading">Sending...</span>
-                      <span v-else>Send Reset Link</span>
+                      <span v-if="loading">{{ $t('ui.sending') }}</span>
+                      <span v-else>{{ $t('ui.send_reset_link') }}</span>
                     </button>
                   </form>
 
@@ -70,6 +70,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import apiClient, { getApiErrorMessage } from "@/utils/axios";

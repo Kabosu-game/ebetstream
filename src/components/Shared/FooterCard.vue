@@ -1,21 +1,28 @@
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { onBeforeUnmount, onMounted, ref, computed } from "vue";
 import { Switch } from "@headlessui/vue";
 import salzburg from "@/assets/images/icon/sports-salzburg.png";
 
 const enabled = ref(false);
 
 const isCardExpanded = ref(false);
-const activeItem = ref("Single");
+const activeItem = ref("single");
 const toggleCard = () => {
   isCardExpanded.value = !isCardExpanded.value;
 };
 
-const handleClick = (item: string) => {
-  activeItem.value = item;
+const itemKeys = ["single", "multiple", "system"] as const;
+const items = computed(() =>
+  itemKeys.map((key) => ({ key, label: t(`betting.${key}`) }))
+);
+
+const handleClick = (key: string) => {
+  activeItem.value = key;
 };
-const items = ["Single", "Multiple", "System"];
 
 const handleClickOutSide = (event: MouseEvent) => {
   const target = event.target as HTMLElement;
@@ -40,7 +47,7 @@ onBeforeUnmount(() => {
     <div class="fixed_footer__head py-3 px-4">
       <div class="d-flex justify-content-between">
         <div class="fixed_footer__head-betslip d-flex align-items-center gap-2">
-          <span class="fw-bold">Betslip</span>
+          <span class="fw-bold">{{ $t('betting.betslip') }}</span>
           <span class="fixed_footer__head-n1">1</span>
           <button @click="toggleCard" class="footfixedbtn" type="button">
             <i
@@ -51,7 +58,7 @@ onBeforeUnmount(() => {
         <div
           class="fixed_footer__head-quickbet d-flex align-items-center gap-1"
         >
-          <span class="fw-bold">Betslip Bet</span>
+          <span class="fw-bold">{{ $t('betting.betslip_bet') }}</span>
           <Switch v-model="enabled" as="template" v-slot="{ checked }">
             <button
               class="position-relative d-inline-flex h-6 w-11 align-items-center rounded-full border border-2"
@@ -71,11 +78,11 @@ onBeforeUnmount(() => {
           <Tab
             v-for="item in items"
             class="tab-item"
-            :class="activeItem == item ? 'n11-bg' : ''"
-            :key="item"
-            @click="() => handleClick(item)"
+            :class="activeItem == item.key ? 'n11-bg' : ''"
+            :key="item.key"
+            @click="() => handleClick(item.key)"
           >
-            <span class="tab-trigger cpoint">{{ item }}</span>
+            <span class="tab-trigger cpoint">{{ item.label }}</span>
           </Tab>
         </TabList>
         <TabPanels class="tab-container n11-bg">
@@ -86,11 +93,11 @@ onBeforeUnmount(() => {
               >
                 <div class="d-flex align-content-center gap-1">
                   <img :src="salzburg" width="{20}" height="{20}" alt="Icon" />
-                  <span class="fs-seven cpoint">Salzburg</span>
-                  <span class="fs-seven">vs.</span>
-                  <span class="fs-seven cpoint">Union Berlin</span>
+                  <span class="fs-seven cpoint">{{ $t('ui.salzburg') }}</span>
+                  <span class="fs-seven">{{ $t('betting.vs_2') }}</span>
+                  <span class="fs-seven cpoint">{{ $t('ui.union_berlin') }}</span>
                 </div>
-                <span class="r1-color fs-seven">Live</span>
+                <span class="r1-color fs-seven">{{ $t('betting.live') }}</span>
                 <i class="ti ti-x n4-color cpoint"></i>
               </div>
               <div class="d-flex align-items-center gap-2">
@@ -99,7 +106,7 @@ onBeforeUnmount(() => {
                 >
                 <div>
                   <span class="fs-seven d-block">over 132.5</span>
-                  <span class="fs-nine d-block">Total (incl. overtime)</span>
+                  <span class="fs-nine d-block">{{ $t('ui.total_incl_overtime') }}</span>
                 </div>
               </div>
             </div>
@@ -109,7 +116,7 @@ onBeforeUnmount(() => {
                   class="border-four d-flex align-items-center justify-content-between pe-2 rounded-3 mb-4"
                 >
                   <input
-                    placeholder="Bet amount"
+                    :placeholder="$t('betting.bet_amount_2')"
                     class="place-style"
                     type="text"
                   />
@@ -140,7 +147,7 @@ onBeforeUnmount(() => {
                 <div
                   class="fixed_footer__content-possible d-flex align-items-center justify-content-between gap-2 mb-7"
                 >
-                  <span class="fs-seven">Possible win</span>
+                  <span class="fs-seven">{{ $t('betting.possible_win') }}</span>
                   <span class="fs-seven fw-bold">$300</span>
                 </div>
                 <button type="button" class="cmn-btn px-5 py-3 w-100 mb-4">
@@ -164,7 +171,7 @@ onBeforeUnmount(() => {
                   class="n3-color fs-five cpoint"
                 />
                 <router-link to="#" class="n3-color fs-seven"
-                  >Sign In & Bet</router-link
+                  >{{ $t('betting.sign_in_bet') }}</router-link
                 >
               </div>
               <div
@@ -176,7 +183,7 @@ onBeforeUnmount(() => {
                   class="n3-color fs-five cpoint"
                 />
                 <router-link to="#" class="n3-color fs-seven"
-                  >Settings</router-link
+                  >{{ $t('betting.settings') }}</router-link
                 >
               </div>
             </div>
@@ -188,11 +195,11 @@ onBeforeUnmount(() => {
               >
                 <div class="d-flex align-content-center gap-1">
                   <img :src="salzburg" width="{20}" height="{20}" alt="Icon" />
-                  <span class="fs-seven cpoint">Salzburg</span>
-                  <span class="fs-seven">vs.</span>
-                  <span class="fs-seven cpoint">Union Berlin</span>
+                  <span class="fs-seven cpoint">{{ $t('ui.salzburg') }}</span>
+                  <span class="fs-seven">{{ $t('betting.vs_2') }}</span>
+                  <span class="fs-seven cpoint">{{ $t('ui.union_berlin') }}</span>
                 </div>
-                <span class="r1-color fs-seven">Live</span>
+                <span class="r1-color fs-seven">{{ $t('betting.live') }}</span>
                 <i class="ti ti-x n4-color cpoint"></i>
               </div>
               <div class="d-flex align-items-center gap-2">
@@ -201,7 +208,7 @@ onBeforeUnmount(() => {
                 >
                 <div>
                   <span class="fs-seven d-block">over 182.5</span>
-                  <span class="fs-nine d-block">Total (incl. overtime)</span>
+                  <span class="fs-nine d-block">{{ $t('ui.total_incl_overtime') }}</span>
                 </div>
               </div>
             </div>
@@ -211,7 +218,7 @@ onBeforeUnmount(() => {
                   class="border-four d-flex align-items-center justify-content-between pe-2 rounded-3 mb-4"
                 >
                   <input
-                    placeholder="Bet amount"
+                    :placeholder="$t('betting.bet_amount_2')"
                     class="place-style"
                     type="text"
                   />
@@ -242,7 +249,7 @@ onBeforeUnmount(() => {
                 <div
                   class="fixed_footer__content-possible d-flex align-items-center justify-content-between gap-2 mb-7"
                 >
-                  <span class="fs-seven">Possible win</span>
+                  <span class="fs-seven">{{ $t('betting.possible_win') }}</span>
                   <span class="fs-seven fw-bold">$400</span>
                 </div>
                 <button type="button" class="cmn-btn px-5 py-3 w-100 mb-4">
@@ -266,7 +273,7 @@ onBeforeUnmount(() => {
                   class="n3-color fs-five cpoint"
                 />
                 <router-link to="#" class="n3-color fs-seven"
-                  >Sign In & Bet</router-link
+                  >{{ $t('betting.sign_in_bet') }}</router-link
                 >
               </div>
               <div
@@ -278,7 +285,7 @@ onBeforeUnmount(() => {
                   class="n3-color fs-five cpoint"
                 />
                 <router-link to="#" class="n3-color fs-seven"
-                  >Settings</router-link
+                  >{{ $t('betting.settings') }}</router-link
                 >
               </div>
             </div>
@@ -290,11 +297,11 @@ onBeforeUnmount(() => {
               >
                 <div class="d-flex align-content-center gap-1">
                   <img :src="salzburg" width="{20}" height="{20}" alt="Icon" />
-                  <span class="fs-seven cpoint">Salzburg</span>
-                  <span class="fs-seven">vs.</span>
-                  <span class="fs-seven cpoint">Union Berlin</span>
+                  <span class="fs-seven cpoint">{{ $t('ui.salzburg') }}</span>
+                  <span class="fs-seven">{{ $t('betting.vs_2') }}</span>
+                  <span class="fs-seven cpoint">{{ $t('ui.union_berlin') }}</span>
                 </div>
-                <span class="r1-color fs-seven">Live</span>
+                <span class="r1-color fs-seven">{{ $t('betting.live') }}</span>
                 <i class="ti ti-x n4-color cpoint"></i>
               </div>
               <div class="d-flex align-items-center gap-2">
@@ -303,7 +310,7 @@ onBeforeUnmount(() => {
                 >
                 <div>
                   <span class="fs-seven d-block">over 232.5</span>
-                  <span class="fs-nine d-block">Total (incl. overtime)</span>
+                  <span class="fs-nine d-block">{{ $t('ui.total_incl_overtime') }}</span>
                 </div>
               </div>
             </div>
@@ -313,7 +320,7 @@ onBeforeUnmount(() => {
                   class="border-four d-flex align-items-center justify-content-between pe-2 rounded-3 mb-4"
                 >
                   <input
-                    placeholder="Bet amount"
+                    :placeholder="$t('betting.bet_amount_2')"
                     class="place-style"
                     type="text"
                   />
@@ -344,7 +351,7 @@ onBeforeUnmount(() => {
                 <div
                   class="fixed_footer__content-possible d-flex align-items-center justify-content-between gap-2 mb-7"
                 >
-                  <span class="fs-seven">Possible win</span>
+                  <span class="fs-seven">{{ $t('betting.possible_win') }}</span>
                   <span class="fs-seven fw-bold">$900</span>
                 </div>
                 <button type="button" class="cmn-btn px-5 py-3 w-100 mb-4">
@@ -368,7 +375,7 @@ onBeforeUnmount(() => {
                   class="n3-color fs-five cpoint"
                 />
                 <router-link to="#" class="n3-color fs-seven"
-                  >Sign In & Bet</router-link
+                  >{{ $t('betting.sign_in_bet') }}</router-link
                 >
               </div>
               <div
@@ -380,7 +387,7 @@ onBeforeUnmount(() => {
                   class="n3-color fs-five cpoint"
                 />
                 <router-link to="#" class="n3-color fs-seven"
-                  >Settings</router-link
+                  >{{ $t('betting.settings') }}</router-link
                 >
               </div>
             </div>

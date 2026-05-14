@@ -11,10 +11,9 @@
                 <div class="col-lg-6 col-md-7">
                   <div class="defis_content" data-aos="fade-right">
                     <span class="hero_badge mb-3 d-inline-block">
-                      <i class="fas fa-star me-2"></i>eBetStars
-                    </span>
+                      <i class="fas fa-star me-2"></i>{{ $t('ui.ebetstars') }}</span>
                     <h2 class="hero_title mb-4">
-                      Top <span class="text_gradient">eBetStars</span><br />
+                      Top <span class="text_gradient">{{ $t('ui.ebetstars') }}</span><br />
                       Platform Ranking
                     </h2>
                     <p class="hero_subtitle mb-5">
@@ -29,7 +28,7 @@
                     <div class="floating_card card_defis">
                       <div class="card_icon"><i class="fas fa-star"></i></div>
                       <div class="card_content">
-                        <span class="card_label">Top 10</span>
+                        <span class="card_label">{{ $t('ui.top_10') }}</span>
                         <span class="card_value">{{ ebetstars.length }} eBetStars</span>
                       </div>
                     </div>
@@ -41,7 +40,7 @@
               <div v-if="loading" class="row mt-5">
                 <div class="col-12 text-center py-5">
                   <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-                    <span class="visually-hidden">Loading...</span>
+                    <span class="visually-hidden">{{ $t('common.loading') }}</span>
                   </div>
                 </div>
               </div>
@@ -62,7 +61,7 @@
                         <img 
                           v-if="ebetstar.avatar_url || ebetstar.profile_photo_url" 
                           :src="ebetstar.avatar_url || ebetstar.profile_photo_url" 
-                          :alt="ebetstar.name || ebetstar.username"
+                          :alt="$t('ui.ebetstar_name_ebetstar_username')"
                           class="w-100 h-100"
                           style="object-fit: cover;"
                           @error="handleImageError"
@@ -79,8 +78,7 @@
                         <p class="text-white small mb-0 d-flex align-items-center gap-2" style="opacity: 0.8;">
                           <span>@{{ ebetstar.username }}</span>
                           <span class="badge bg-warning text-dark px-2 py-1" style="font-size: 0.7rem;">
-                            <i class="fas fa-star"></i> eBetStar
-                          </span>
+                            <i class="fas fa-star"></i>{{ $t('ui.ebetstar') }}</span>
                         </p>
                       </div>
                     </div>
@@ -95,7 +93,7 @@
               </div>
               <div v-else class="row mt-5">
                 <div class="col-12 text-center py-5">
-                  <p class="text-white" style="opacity: 0.7;">No eBetStars available at the moment.</p>
+                  <p class="text-white" style="opacity: 0.7;">{{ $t('ui.no_ebetstars_available_at_the_moment') }}</p>
                 </div>
               </div>
               <!-- /Liste des ebetstars -->
@@ -108,6 +106,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient from '@/utils/axios';

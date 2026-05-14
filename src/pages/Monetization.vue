@@ -13,7 +13,7 @@
           Document Fondateur · Version Investisseur
         </span>
         <h1 class="mon-hero__title">
-          Programme Officiel<br />de <span class="mon-accent">Monétisation</span>
+          Programme Officiel<br />{{ $t('ui.de') }}<span class="mon-accent">{{ $t('ui.mon_tisation') }}</span>
         </h1>
         <p class="mon-hero__sub">
           Ebetstream transforme le gaming compétitif en opportunité économique durable.
@@ -22,17 +22,17 @@
         <div class="mon-hero__stats">
           <div class="mon-hstat">
             <span class="mon-hstat__val">20 000</span>
-            <span class="mon-hstat__lbl">Utilisateurs an 1</span>
+            <span class="mon-hstat__lbl">{{ $t('ui.utilisateurs_an_1') }}</span>
           </div>
           <div class="mon-hstat__sep"></div>
           <div class="mon-hstat">
-            <span class="mon-hstat__val">126 K$</span>
-            <span class="mon-hstat__lbl">Revenus estimés an 1</span>
+            <span class="mon-hstat__val">{{ $t('ui.126_k') }}</span>
+            <span class="mon-hstat__lbl">{{ $t('ui.revenus_estim_s_an_1') }}</span>
           </div>
           <div class="mon-hstat__sep"></div>
           <div class="mon-hstat">
-            <span class="mon-hstat__val">2 M$+</span>
-            <span class="mon-hstat__lbl">Objectif an 3</span>
+            <span class="mon-hstat__val">{{ $t('ui.2_m') }}</span>
+            <span class="mon-hstat__lbl">{{ $t('ui.objectif_an_3') }}</span>
           </div>
         </div>
       </div>
@@ -42,15 +42,15 @@
     <section class="mon-section">
       <div class="mon-section-header">
         <div class="mon-section-num">01</div>
-        <h2 class="mon-section-title">Vision</h2>
+        <h2 class="mon-section-title">{{ $t('ui.vision') }}</h2>
       </div>
       <div class="mon-vision-card">
         <div class="mon-vision-icon"><i class="fas fa-eye"></i></div>
         <div class="mon-vision-body">
           <p class="mon-vision-text">
             Ebetstream est une plateforme de streaming compétitif permettant aux gamers de générer
-            des revenus grâce à leur <strong>performance</strong>, leur <strong>influence</strong>
-            et l'engagement de leur <strong>audience</strong>.
+            des revenus grâce à leur <strong>{{ $t('ui.performance_2') }}</strong>{{ $t('ui.leur') }}<strong>{{ $t('ui.influence') }}</strong>
+            et l'engagement de leur <strong>{{ $t('ui.audience') }}</strong>.
           </p>
           <p class="mon-vision-tagline">
             La plateforme crée une nouvelle économie où le skill devient un actif monétisable.
@@ -63,7 +63,7 @@
     <section class="mon-section">
       <div class="mon-section-header">
         <div class="mon-section-num">02</div>
-        <h2 class="mon-section-title">Sources de Revenus des Streamers</h2>
+        <h2 class="mon-section-title">{{ $t('ui.sources_de_revenus_des_streamers') }}</h2>
       </div>
 
       <div class="mon-revenue-grid">
@@ -76,7 +76,7 @@
             </div>
             <div>
               <span class="mon-revenue-label">A</span>
-              <h3 class="mon-revenue-title">Donations Directes</h3>
+              <h3 class="mon-revenue-title">{{ $t('ui.donations_directes') }}</h3>
             </div>
           </div>
           <p class="mon-revenue-desc">
@@ -85,12 +85,12 @@
           <div class="mon-split">
             <div class="mon-split__item mon-split__item--streamer">
               <span class="mon-split__pct">85%</span>
-              <span class="mon-split__lbl">Streamer</span>
+              <span class="mon-split__lbl">{{ $t('ui.streamer') }}</span>
             </div>
             <div class="mon-split__divider"></div>
             <div class="mon-split__item mon-split__item--platform">
               <span class="mon-split__pct">15%</span>
-              <span class="mon-split__lbl">Plateforme</span>
+              <span class="mon-split__lbl">{{ $t('ui.plateforme') }}</span>
             </div>
           </div>
           <div class="mon-split-bar">
@@ -106,7 +106,7 @@
             </div>
             <div>
               <span class="mon-revenue-label">B</span>
-              <h3 class="mon-revenue-title">Support Prediction System</h3>
+              <h3 class="mon-revenue-title">{{ $t('ui.support_prediction_system') }}</h3>
             </div>
           </div>
           <p class="mon-revenue-desc">
@@ -116,18 +116,18 @@
           <div class="mon-split">
             <div class="mon-split__item mon-split__item--streamer">
               <span class="mon-split__pct">40%</span>
-              <span class="mon-split__lbl">Streamer</span>
+              <span class="mon-split__lbl">{{ $t('ui.streamer') }}</span>
             </div>
             <div class="mon-split__divider"></div>
             <div class="mon-split__item mon-split__item--platform">
               <span class="mon-split__pct">60%</span>
-              <span class="mon-split__lbl">Plateforme</span>
+              <span class="mon-split__lbl">{{ $t('ui.plateforme') }}</span>
             </div>
           </div>
           <div class="mon-split-bar">
             <div class="mon-split-bar__fill" style="width:40%"></div>
           </div>
-          <p class="mon-split-note">Commission calculée sur les crédits utilisés</p>
+          <p class="mon-split-note">{{ $t('ui.commission_calcul_e_sur_les_cr_dits_utilis_s') }}</p>
         </div>
 
         <!-- C. Matchs sponsorisés -->
@@ -138,7 +138,7 @@
             </div>
             <div>
               <span class="mon-revenue-label">C</span>
-              <h3 class="mon-revenue-title">Matchs Sponsorisés</h3>
+              <h3 class="mon-revenue-title">{{ $t('ui.matchs_sponsoris_s') }}</h3>
             </div>
           </div>
           <p class="mon-revenue-desc">
@@ -147,15 +147,15 @@
           <div class="mon-triple-split">
             <div class="mon-triple-item mon-triple-item--players">
               <span class="mon-triple-pct">60%</span>
-              <span class="mon-triple-lbl">Prize Pool Joueurs</span>
+              <span class="mon-triple-lbl">{{ $t('ui.prize_pool_joueurs') }}</span>
             </div>
             <div class="mon-triple-item mon-triple-item--organizer">
               <span class="mon-triple-pct">20%</span>
-              <span class="mon-triple-lbl">Streamer Organisateur</span>
+              <span class="mon-triple-lbl">{{ $t('ui.streamer_organisateur') }}</span>
             </div>
             <div class="mon-triple-item mon-triple-item--platform">
               <span class="mon-triple-pct">20%</span>
-              <span class="mon-triple-lbl">Plateforme</span>
+              <span class="mon-triple-lbl">{{ $t('ui.plateforme') }}</span>
             </div>
           </div>
           <div class="mon-triple-bar">
@@ -172,7 +172,7 @@
     <section class="mon-section">
       <div class="mon-section-header">
         <div class="mon-section-num">03</div>
-        <h2 class="mon-section-title">Niveaux des Streamers</h2>
+        <h2 class="mon-section-title">{{ $t('ui.niveaux_des_streamers') }}</h2>
       </div>
 
       <div class="mon-tiers">
@@ -182,36 +182,36 @@
           <div class="mon-tier__badge">
             <i class="fas fa-fire"></i>
           </div>
-          <h3 class="mon-tier__name">Rookie</h3>
-          <p class="mon-tier__range">0 – 1 000 followers</p>
+          <h3 class="mon-tier__name">{{ $t('ui.rookie') }}</h3>
+          <p class="mon-tier__range">{{ $t('ui.0_1_000_followers') }}</p>
           <div class="mon-tier__commission">
             <span class="mon-tier__pct">30%</span>
-            <span class="mon-tier__pct-lbl">commission</span>
+            <span class="mon-tier__pct-lbl">{{ $t('ui.commission_3') }}</span>
           </div>
           <ul class="mon-tier__perks">
-            <li><i class="fas fa-check"></i> Accès donations directes</li>
-            <li><i class="fas fa-check"></i> Support Prediction System</li>
-            <li><i class="fas fa-check"></i> Streaming illimité</li>
+            <li><i class="fas fa-check"></i>{{ $t('ui.acc_s_donations_directes') }}</li>
+            <li><i class="fas fa-check"></i>{{ $t('ui.support_prediction_system') }}</li>
+            <li><i class="fas fa-check"></i>{{ $t('ui.streaming_illimit') }}</li>
           </ul>
         </div>
 
         <!-- Pro -->
         <div class="mon-tier mon-tier--pro mon-tier--featured">
-          <div class="mon-tier__popular">Populaire</div>
+          <div class="mon-tier__popular">{{ $t('ui.populaire') }}</div>
           <div class="mon-tier__badge">
             <i class="fas fa-award"></i>
           </div>
-          <h3 class="mon-tier__name">Pro</h3>
-          <p class="mon-tier__range">1 000 – 10 000 followers</p>
+          <h3 class="mon-tier__name">{{ $t('ui.pro') }}</h3>
+          <p class="mon-tier__range">{{ $t('ui.1_000_10_000_followers') }}</p>
           <div class="mon-tier__commission">
             <span class="mon-tier__pct">40%</span>
-            <span class="mon-tier__pct-lbl">commission</span>
+            <span class="mon-tier__pct-lbl">{{ $t('ui.commission_3') }}</span>
           </div>
           <ul class="mon-tier__perks">
-            <li><i class="fas fa-check"></i> Tout Rookie inclus</li>
-            <li><i class="fas fa-check"></i> Accès tournois sponsorisés</li>
-            <li><i class="fas fa-check"></i> Priorité dans les classements</li>
-            <li><i class="fas fa-check"></i> Analytics avancés</li>
+            <li><i class="fas fa-check"></i>{{ $t('ui.tout_rookie_inclus') }}</li>
+            <li><i class="fas fa-check"></i>{{ $t('ui.acc_s_tournois_sponsoris_s') }}</li>
+            <li><i class="fas fa-check"></i>{{ $t('ui.priorit_dans_les_classements') }}</li>
+            <li><i class="fas fa-check"></i>{{ $t('ui.analytics_avanc_s') }}</li>
           </ul>
         </div>
 
@@ -220,18 +220,18 @@
           <div class="mon-tier__badge">
             <i class="fas fa-crown"></i>
           </div>
-          <h3 class="mon-tier__name">Elite</h3>
-          <p class="mon-tier__range">+10 000 followers</p>
+          <h3 class="mon-tier__name">{{ $t('ui.elite') }}</h3>
+          <p class="mon-tier__range">{{ $t('ui.10_000_followers') }}</p>
           <div class="mon-tier__commission">
             <span class="mon-tier__pct">50%</span>
-            <span class="mon-tier__pct-lbl">commission</span>
+            <span class="mon-tier__pct-lbl">{{ $t('ui.commission_3') }}</span>
           </div>
           <ul class="mon-tier__perks">
-            <li><i class="fas fa-check"></i> Tout Pro inclus</li>
-            <li><i class="fas fa-check"></i> Badge vérifié ✓</li>
-            <li><i class="fas fa-check"></i> Promotion interne</li>
-            <li><i class="fas fa-check"></i> Accès événements exclusifs</li>
-            <li><i class="fas fa-check"></i> Support dédié</li>
+            <li><i class="fas fa-check"></i>{{ $t('ui.tout_pro_inclus') }}</li>
+            <li><i class="fas fa-check"></i>{{ $t('ui.badge_v_rifi') }}</li>
+            <li><i class="fas fa-check"></i>{{ $t('ui.promotion_interne') }}</li>
+            <li><i class="fas fa-check"></i>{{ $t('ui.acc_s_v_nements_exclusifs') }}</li>
+            <li><i class="fas fa-check"></i>{{ $t('ui.support_d_di') }}</li>
           </ul>
         </div>
 
@@ -242,38 +242,38 @@
     <section class="mon-section">
       <div class="mon-section-header">
         <div class="mon-section-num">04</div>
-        <h2 class="mon-section-title">Règles & Sécurité</h2>
+        <h2 class="mon-section-title">{{ $t('ui.r_gles_s_curit') }}</h2>
       </div>
       <div class="mon-rules-grid">
         <div class="mon-rule">
           <div class="mon-rule__icon"><i class="fas fa-id-badge"></i></div>
-          <h4>Vérification d'identité</h4>
-          <p>Obligatoire pour tous les streamers participants aux tournois.</p>
+          <h4>{{ $t('ui.v_rification_didentit') }}</h4>
+          <p>{{ $t('ui.obligatoire_pour_tous_les_streamers_participants_aux_tournoi') }}</p>
         </div>
         <div class="mon-rule">
           <div class="mon-rule__icon"><i class="fas fa-shield-alt"></i></div>
-          <h4>Interdiction de triche</h4>
-          <p>Système de détection anti-triche actif sur tous les matchs compétitifs.</p>
+          <h4>{{ $t('ui.interdiction_de_triche') }}</h4>
+          <p>{{ $t('ui.syst_me_de_d_tection_anti_triche_actif_sur_tous_les_matchs_c') }}</p>
         </div>
         <div class="mon-rule">
           <div class="mon-rule__icon"><i class="fas fa-video"></i></div>
-          <h4>Matchs enregistrés</h4>
-          <p>Tous les matchs sont archivés pour garantir la transparence et les litiges.</p>
+          <h4>{{ $t('ui.matchs_enregistr_s') }}</h4>
+          <p>{{ $t('ui.tous_les_matchs_sont_archiv_s_pour_garantir_la_transparence_') }}</p>
         </div>
         <div class="mon-rule">
           <div class="mon-rule__icon"><i class="fas fa-balance-scale"></i></div>
-          <h4>Système d'arbitrage</h4>
-          <p>Processus d'arbitrage équitable pour résoudre les contestations.</p>
+          <h4>{{ $t('ui.syst_me_darbitrage') }}</h4>
+          <p>{{ $t('ui.processus_darbitrage_quitable_pour_r_soudre_les_contestation') }}</p>
         </div>
         <div class="mon-rule">
           <div class="mon-rule__icon"><i class="fas fa-users"></i></div>
-          <h4>Protection utilisateurs</h4>
-          <p>Données sécurisées, transactions protégées et RGPD conforme.</p>
+          <h4>{{ $t('ui.protection_utilisateurs') }}</h4>
+          <p>{{ $t('ui.donn_es_s_curis_es_transactions_prot_g_es_et_rgpd_conforme') }}</p>
         </div>
         <div class="mon-rule">
           <div class="mon-rule__icon"><i class="fas fa-eye"></i></div>
-          <h4>Transparence totale</h4>
-          <p>Toutes les commissions et répartitions sont affichées en clair.</p>
+          <h4>{{ $t('ui.transparence_totale') }}</h4>
+          <p>{{ $t('ui.toutes_les_commissions_et_r_partitions_sont_affich_es_en_cla') }}</p>
         </div>
       </div>
     </section>
@@ -282,40 +282,40 @@
     <section class="mon-section">
       <div class="mon-section-header">
         <div class="mon-section-num">05</div>
-        <h2 class="mon-section-title">Projection Financière — Année 1</h2>
+        <h2 class="mon-section-title">{{ $t('ui.projection_financi_re_ann_e_1') }}</h2>
       </div>
 
       <div class="mon-finance-banner">
-        <p class="mon-finance-banner__caption">Hypothèse : 20 000 utilisateurs · 1 000 streamers actifs</p>
+        <p class="mon-finance-banner__caption">{{ $t('ui.hypoth_se_20_000_utilisateurs_1_000_streamers_actifs') }}</p>
 
         <div class="mon-finance-grid">
 
           <div class="mon-fstat">
             <div class="mon-fstat__icon mon-fstat__icon--credits"><i class="fas fa-coins"></i></div>
             <span class="mon-fstat__val">50 000 $</span>
-            <span class="mon-fstat__lbl">Volume crédits mensuel estimé</span>
-            <span class="mon-fstat__sub">Commission plateforme 15% → <strong>7 500 $</strong></span>
+            <span class="mon-fstat__lbl">{{ $t('ui.volume_cr_dits_mensuel_estim') }}</span>
+            <span class="mon-fstat__sub">{{ $t('ui.commission_plateforme_15') }}<strong>7 500 $</strong></span>
           </div>
 
           <div class="mon-fstat">
             <div class="mon-fstat__icon mon-fstat__icon--donations"><i class="fas fa-handshake-heart"></i></div>
             <span class="mon-fstat__val">20 000 $</span>
-            <span class="mon-fstat__lbl">Donations estimées / mois</span>
-            <span class="mon-fstat__sub">Commission plateforme 15% → <strong>3 000 $</strong></span>
+            <span class="mon-fstat__lbl">{{ $t('ui.donations_estim_es_mois') }}</span>
+            <span class="mon-fstat__sub">{{ $t('ui.commission_plateforme_15') }}<strong>3 000 $</strong></span>
           </div>
 
           <div class="mon-fstat mon-fstat--highlight">
             <div class="mon-fstat__icon mon-fstat__icon--monthly"><i class="fas fa-chart-line"></i></div>
             <span class="mon-fstat__val">10 500 $</span>
-            <span class="mon-fstat__lbl">Revenus mensuels plateforme</span>
-            <span class="mon-fstat__sub">Estimation conservatrice</span>
+            <span class="mon-fstat__lbl">{{ $t('ui.revenus_mensuels_plateforme') }}</span>
+            <span class="mon-fstat__sub">{{ $t('ui.estimation_conservatrice') }}</span>
           </div>
 
           <div class="mon-fstat mon-fstat--highlight mon-fstat--annual">
             <div class="mon-fstat__icon mon-fstat__icon--annual"><i class="fas fa-chart-bar"></i></div>
             <span class="mon-fstat__val">126 000 $</span>
-            <span class="mon-fstat__lbl">Revenus annuels estimés</span>
-            <span class="mon-fstat__sub">Année 1 — base de calcul</span>
+            <span class="mon-fstat__lbl">{{ $t('ui.revenus_annuels_estim_s') }}</span>
+            <span class="mon-fstat__sub">{{ $t('ui.ann_e_1_base_de_calcul') }}</span>
           </div>
 
         </div>
@@ -326,18 +326,18 @@
     <section class="mon-section">
       <div class="mon-section-header">
         <div class="mon-section-num">06</div>
-        <h2 class="mon-section-title">Objectif à 3 Ans</h2>
+        <h2 class="mon-section-title">{{ $t('ui.objectif_3_ans') }}</h2>
       </div>
 
       <div class="mon-roadmap">
         <div class="mon-milestone">
-          <div class="mon-milestone__badge mon-milestone__badge--1">An 1</div>
+          <div class="mon-milestone__badge mon-milestone__badge--1">{{ $t('ui.an_1') }}</div>
           <div class="mon-milestone__body">
-            <h4>Lancement & Croissance</h4>
+            <h4>{{ $t('ui.lancement_croissance') }}</h4>
             <ul>
-              <li><i class="fas fa-users"></i> 20 000 utilisateurs actifs</li>
-              <li><i class="fas fa-video"></i> 1 000 streamers actifs</li>
-              <li><i class="fas fa-coins"></i> 126 000 $ revenus annuels</li>
+              <li><i class="fas fa-users"></i>{{ $t('ui.20_000_utilisateurs_actifs') }}</li>
+              <li><i class="fas fa-video"></i>{{ $t('ui.1_000_streamers_actifs') }}</li>
+              <li><i class="fas fa-coins"></i>{{ $t('ui.126_000_revenus_annuels') }}</li>
             </ul>
           </div>
         </div>
@@ -345,13 +345,13 @@
         <div class="mon-milestone__line"></div>
 
         <div class="mon-milestone">
-          <div class="mon-milestone__badge mon-milestone__badge--2">An 2</div>
+          <div class="mon-milestone__badge mon-milestone__badge--2">{{ $t('ui.an_2') }}</div>
           <div class="mon-milestone__body">
-            <h4>Expansion & Partenariats</h4>
+            <h4>{{ $t('ui.expansion_partenariats') }}</h4>
             <ul>
-              <li><i class="fas fa-users"></i> 60 000 utilisateurs actifs</li>
-              <li><i class="fas fa-video"></i> 5 000 streamers actifs</li>
-              <li><i class="fas fa-globe"></i> Expansion régionale</li>
+              <li><i class="fas fa-users"></i>{{ $t('ui.60_000_utilisateurs_actifs') }}</li>
+              <li><i class="fas fa-video"></i>{{ $t('ui.5_000_streamers_actifs') }}</li>
+              <li><i class="fas fa-globe"></i>{{ $t('ui.expansion_r_gionale') }}</li>
             </ul>
           </div>
         </div>
@@ -359,14 +359,14 @@
         <div class="mon-milestone__line"></div>
 
         <div class="mon-milestone">
-          <div class="mon-milestone__badge mon-milestone__badge--3">An 3</div>
+          <div class="mon-milestone__badge mon-milestone__badge--3">{{ $t('ui.an_3') }}</div>
           <div class="mon-milestone__body">
-            <h4>Leadership Mondial</h4>
+            <h4>{{ $t('ui.leadership_mondial') }}</h4>
             <ul>
-              <li><i class="fas fa-users"></i> 100 000 utilisateurs actifs</li>
-              <li><i class="fas fa-video"></i> 10 000 streamers actifs</li>
-              <li><i class="fas fa-coins"></i> 2 000 000 $+ revenus annuels</li>
-              <li><i class="fas fa-globe"></i> Expansion internationale</li>
+              <li><i class="fas fa-users"></i>{{ $t('ui.100_000_utilisateurs_actifs') }}</li>
+              <li><i class="fas fa-video"></i>{{ $t('ui.10_000_streamers_actifs') }}</li>
+              <li><i class="fas fa-coins"></i>{{ $t('ui.2_000_000_revenus_annuels') }}</li>
+              <li><i class="fas fa-globe"></i>{{ $t('ui.expansion_internationale') }}</li>
             </ul>
           </div>
         </div>
@@ -389,8 +389,7 @@
         </p>
         <div class="mon-cta__actions">
           <router-link to="/challenges" class="mon-btn mon-btn--primary">
-            <i class="fas fa-gamepad"></i> Commencer par jouer
-          </router-link>
+            <i class="fas fa-gamepad"></i>{{ $t('ui.commencer_par_jouer') }}</router-link>
         </div>
       </div>
     </section>
@@ -399,6 +398,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 // Static page — no data fetching needed
 </script>
 

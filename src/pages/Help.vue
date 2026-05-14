@@ -3,16 +3,16 @@
     <!-- Hero -->
     <section class="tw-page-hero">
       <div class="hero-inner">
-        <p class="tw-page-hero__sub"><i class="fas fa-question-circle me-2"></i>Help Center</p>
-        <h1 class="tw-page-hero__title">How can we <span class="accent">help you?</span></h1>
-        <p class="hero-desc">Quickly find answers to your questions and learn how to use all eBetStream features.</p>
+        <p class="tw-page-hero__sub"><i class="fas fa-question-circle me-2"></i>{{ $t('ui.help_center') }}</p>
+        <h1 class="tw-page-hero__title">{{ $t('ui.how_can_we') }}<span class="accent">{{ $t('ui.help_you') }}</span></h1>
+        <p class="hero-desc">{{ $t('ui.quickly_find_answers_to_your_questions_and_learn_how_to_use_') }}</p>
         <div class="search-wrap">
           <span class="search-icon"><i class="fas fa-search"></i></span>
           <input
             v-model="searchQuery"
             type="text"
             class="tw-input search-input"
-            placeholder="Search for answers..."
+            :placeholder="$t('ui.search_for_answers')"
             @input="filterArticles"
           />
         </div>
@@ -22,7 +22,7 @@
     <div class="tw-page-body">
       <!-- Categories -->
       <section class="page-section">
-        <h2 class="section-title">Browse Categories</h2>
+        <h2 class="section-title">{{ $t('ui.browse_categories') }}</h2>
         <div class="tw-grid-3">
           <div
             v-for="category in categories"
@@ -44,7 +44,7 @@
 
       <!-- Articles -->
       <section class="page-section">
-        <h2 class="section-title">Popular Articles</h2>
+        <h2 class="section-title">{{ $t('ui.popular_articles') }}</h2>
         <div v-if="filteredArticles.length === 0" class="tw-alert">
           No articles found matching your search.
         </div>
@@ -66,7 +66,7 @@
       <!-- Quick Links -->
       <section class="page-section">
         <div class="tw-card quick-links-card">
-          <h3 class="quick-links-title">Quick Links</h3>
+          <h3 class="quick-links-title">{{ $t('ui.quick_links') }}</h3>
           <div class="quick-links-grid">
             <router-link to="/faq" class="quick-link">
               <i class="fas fa-list-alt quick-link__icon"></i>
@@ -75,17 +75,17 @@
             </router-link>
             <router-link to="/contact" class="quick-link">
               <i class="fas fa-envelope quick-link__icon"></i>
-              <span>Contact Us</span>
+              <span>{{ $t('ui.contact_us') }}</span>
               <i class="fas fa-chevron-right quick-link__arrow"></i>
             </router-link>
             <router-link to="/support" class="quick-link">
               <i class="fas fa-headset quick-link__icon"></i>
-              <span>Support</span>
+              <span>{{ $t('ui.support') }}</span>
               <i class="fas fa-chevron-right quick-link__arrow"></i>
             </router-link>
             <router-link to="/privacy" class="quick-link">
               <i class="fas fa-shield-alt quick-link__icon"></i>
-              <span>Privacy</span>
+              <span>{{ $t('ui.privacy') }}</span>
               <i class="fas fa-chevron-right quick-link__arrow"></i>
             </router-link>
           </div>
@@ -96,6 +96,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, computed } from 'vue';
 
 const searchQuery = ref('');

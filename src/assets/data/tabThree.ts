@@ -60,56 +60,16 @@ import wolverhampton from "@/assets/images/icon/wolverhampton.png";
 import fulham from "@/assets/images/icon/fulham-fc.png";
 
 export const tabThree = [
-  {
-    id: "1",
-    imgSrc: soccer,
-    buttonName: "Soccer",
-  },
-  {
-    id: "2",
-    imgSrc: volta,
-    buttonName: "FIFA",
-  },
-  {
-    id: "3",
-    imgSrc: tennis,
-    buttonName: "Tennis",
-  },
-  {
-    id: "4",
-    imgSrc: basketball,
-    buttonName: "Basketball",
-  },
-  {
-    id: "5",
-    imgSrc: cricket,
-    buttonName: "Cricket",
-  },
-  {
-    id: "6",
-    imgSrc: eCricket,
-    buttonName: "eCricket",
-  },
-  {
-    id: "7",
-    imgSrc: amiricanFootball,
-    buttonName: "American Football",
-  },
-  {
-    id: "8",
-    imgSrc: iceHockey,
-    buttonName: "Ice Hockey",
-  },
-  {
-    id: "9",
-    imgSrc: iconNBA,
-    buttonName: "NBA 2K",
-  },
-  {
-    id: "10",
-    imgSrc: volta,
-    buttonName: "FIFA: Volta",
-  },
+  { id: "1", imgSrc: soccer, sportKey: "soccer" },
+  { id: "2", imgSrc: volta, sportKey: "fifa" },
+  { id: "3", imgSrc: tennis, sportKey: "tennis" },
+  { id: "4", imgSrc: basketball, sportKey: "basketball" },
+  { id: "5", imgSrc: cricket, sportKey: "cricket" },
+  { id: "6", imgSrc: eCricket, sportKey: "ecricket" },
+  { id: "7", imgSrc: amiricanFootball, sportKey: "american_football" },
+  { id: "8", imgSrc: iceHockey, sportKey: "ice_hockey" },
+  { id: "9", imgSrc: iconNBA, sportKey: "nba_2k" },
+  { id: "10", imgSrc: volta, sportKey: "fifa_volta" },
 ];
 
 export const basketballUpCE = [

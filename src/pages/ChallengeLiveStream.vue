@@ -8,15 +8,13 @@
       <div class="tw-empty__icon"><i class="fas fa-exclamation-triangle"></i></div>
       <p class="tw-empty__title">{{ error }}</p>
                 <button class="tw-btn tw-btn--primary mt-3" @click="$router.push('/challenges')">
-                  <i class="fas fa-arrow-left me-2"></i>Back to Challenges
-                </button>
+                  <i class="fas fa-arrow-left me-2"></i>{{ $t('ui.back_to_challenges') }}</button>
               </div>
 
               <!-- Live Stream Content -->
               <div v-else-if="challenge">
                 <button class="tw-btn tw-btn--secondary tw-detail-back" @click="$router.push(`/challenges/${challenge.id}`)">
-                  <i class="fas fa-arrow-left me-2"></i>Back to Challenge
-                </button>
+                  <i class="fas fa-arrow-left me-2"></i>{{ $t('ui.back_to_challenge') }}</button>
 
                 <div class="row g-4">
                   <!-- Left Column - Video Player -->
@@ -34,7 +32,7 @@
                           class="w-100 h-100 position-absolute top-0 start-0 d-flex align-items-center justify-content-center flex-column bg-dark"
                           style="z-index: 2;">
                           <i class="fas fa-pause-circle fs-1 text-warning mb-3" style="opacity: 0.8;"></i>
-                          <p class="mb-0 text-white">Stream en pause</p>
+                          <p class="mb-0 text-white">{{ $t('ui.stream_en_pause') }}</p>
                         </div>
 
                         <!-- Connecting -->
@@ -44,8 +42,7 @@
                           <div class="spinner-border text-warning mb-3" role="status"></div>
                           <p class="mb-0 text-white">{{ waitingMsg }}</p>
                           <button v-if="showRetry" class="btn btn-outline-light btn-sm mt-3" @click="retryConnection">
-                            <i class="fas fa-redo me-1"></i>Réessayer
-                          </button>
+                            <i class="fas fa-redo me-1"></i>{{ $t('ui.r_essayer') }}</button>
                         </div>
 
                         <!-- Error -->
@@ -54,7 +51,7 @@
                           style="z-index: 2;">
                           <i class="fas fa-exclamation-triangle fs-1 text-warning mb-3"></i>
                           <p class="mb-3 text-white">{{ streamError }}</p>
-                          <button class="btn btn-outline-light btn-sm" @click="retryConnection">Réessayer</button>
+                          <button class="btn btn-outline-light btn-sm" @click="retryConnection">{{ $t('ui.r_essayer') }}</button>
                         </div>
 
                         <!-- Offline -->
@@ -62,7 +59,7 @@
                           class="w-100 h-100 d-flex align-items-center justify-content-center">
                           <div class="text-center text-white">
                             <i class="fas fa-video-slash fs-1 mb-3" style="opacity: 0.5;"></i>
-                            <p class="mb-0">Stream is offline</p>
+                            <p class="mb-0">{{ $t('ui.stream_is_offline') }}</p>
                           </div>
                         </div>
 
@@ -93,30 +90,29 @@
                     <!-- Challenge Info -->
                     <div class="tw-content-block">
                       <h2 class="fw-bold mb-3">
-                        <span>{{ challenge.game }}</span> Challenge
-                      </h2>
+                        <span>{{ challenge.game }}</span>{{ $t('ui.challenge') }}</h2>
                       <div class="row g-3">
                         <div class="col-md-6">
                           <div class="info_item p-3 rounded-3 n11-bg">
-                            <span class="text-white small d-block mb-1" style="opacity: 0.8;">Creator</span>
+                            <span class="text-white small d-block mb-1" style="opacity: 0.8;">{{ $t('ui.creator') }}</span>
                             <span class="fw-bold">{{ challenge.creator?.username }}</span>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="info_item p-3 rounded-3 n11-bg">
-                            <span class="text-white small d-block mb-1" style="opacity: 0.8;">Opponent</span>
+                            <span class="text-white small d-block mb-1" style="opacity: 0.8;">{{ $t('ui.opponent') }}</span>
                             <span class="fw-bold">{{ challenge.opponent?.username || 'Waiting...' }}</span>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="info_item p-3 rounded-3 n11-bg">
-                            <span class="text-white small d-block mb-1" style="opacity: 0.8;">Bet Amount</span>
+                            <span class="text-white small d-block mb-1" style="opacity: 0.8;">{{ $t('betting.bet_amount') }}</span>
                             <span class="fw-bold n10-color">{{ challenge.bet_amount?.toLocaleString() }} EBT</span>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="info_item p-3 rounded-3 n11-bg">
-                            <span class="text-white small d-block mb-1" style="opacity: 0.8;">Status</span>
+                            <span class="text-white small d-block mb-1" style="opacity: 0.8;">{{ $t('common.status') }}</span>
                             <span class="fw-bold">{{ getStatusLabel(challenge.status) }}</span>
                           </div>
                         </div>
@@ -128,19 +124,18 @@
                   <div class="col-lg-4">
                     <div class="tw-content-block mb-4">
                       <h5 class="fw-bold mb-3">
-                        <i class="fas fa-chart-line me-2"></i>Live Stats
-                      </h5>
+                        <i class="fas fa-chart-line me-2"></i>{{ $t('ui.live_stats') }}</h5>
                       <div class="mb-3">
                         <div class="d-flex justify-content-between align-items-center mb-2">
-                          <span class="text-white small" style="opacity: 0.8;">Viewers</span>
+                          <span class="text-white small" style="opacity: 0.8;">{{ $t('ui.viewers') }}</span>
                           <span class="fw-bold">{{ challenge.viewer_count || 0 }}</span>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mb-2">
-                          <span class="text-white small" style="opacity: 0.8;">Started</span>
+                          <span class="text-white small" style="opacity: 0.8;">{{ $t('ui.started') }}</span>
                           <span class="fw-bold">{{ formatTime(challenge.live_started_at) }}</span>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
-                          <span class="text-white small" style="opacity: 0.8;">Duration</span>
+                          <span class="text-white small" style="opacity: 0.8;">{{ $t('ui.duration') }}</span>
                           <span class="fw-bold">{{ getLiveDuration() }}</span>
                         </div>
                       </div>
@@ -148,7 +143,7 @@
 
                     <div v-if="challenge.creator_score !== null || challenge.opponent_score !== null"
                       class="tw-content-block mb-4">
-                      <h5 class="fw-bold mb-3">Scores</h5>
+                      <h5 class="fw-bold mb-3">{{ $t('ui.scores') }}</h5>
                       <div class="d-flex justify-content-between align-items-center mb-3">
                         <div class="text-center">
                           <div class="text-white small mb-1">{{ challenge.creator?.username }}</div>
@@ -168,6 +163,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, computed, onMounted, onUnmounted, nextTick } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import apiClient from "@/utils/axios";

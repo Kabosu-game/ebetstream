@@ -54,7 +54,7 @@
                   <div class="col-lg-8">
                     <!-- Championship Details Card -->
                     <div class="tw-content-block mb-4">
-                      <h4 class="fw-bold mb-4">Championship Information</h4>
+                      <h4 class="fw-bold mb-4">{{ $t('ui.championship_information') }}</h4>
                       
                       <!-- Dates -->
                       <div class="row g-4 mb-4">
@@ -62,7 +62,7 @@
                           <div class="info_item p-3 rounded" style="background: rgba(255, 255, 255, 0.05);">
                             <div class="d-flex align-items-center gap-2 mb-2">
                               <i class="fas fa-calendar-alt text-warning"></i>
-                              <span class="fw-bold">Start Date</span>
+                              <span class="fw-bold">{{ $t('ui.start_date') }}</span>
                             </div>
                             <p class="mb-0 text-white-50">{{ formatDate(championship.start_date) }}</p>
                           </div>
@@ -71,7 +71,7 @@
                           <div class="info_item p-3 rounded" style="background: rgba(255, 255, 255, 0.05);">
                             <div class="d-flex align-items-center gap-2 mb-2">
                               <i class="fas fa-clock text-info"></i>
-                              <span class="fw-bold">Registration Ends</span>
+                              <span class="fw-bold">{{ $t('ui.registration_ends_2') }}</span>
                             </div>
                             <p class="mb-0 text-white-50">{{ formatDate(championship.registration_end_date) }}</p>
                           </div>
@@ -88,7 +88,7 @@
                             <h5 class="fw-bold text-white mb-1">
                               {{ championship.validated_registrations_count || 0 }}/{{ championship.max_participants }}
                             </h5>
-                            <p class="mb-0 text-white-50 small">Participants</p>
+                            <p class="mb-0 text-white-50 small">{{ $t('ui.participants') }}</p>
                           </div>
                         </div>
                         <div class="col-md-4">
@@ -97,7 +97,7 @@
                               <i class="fas fa-coins text-warning"></i>
                             </div>
                             <h5 class="fw-bold text-white mb-1">{{ championship.registration_fee }} EBT</h5>
-                            <p class="mb-0 text-white-50 small">Entry Fee</p>
+                            <p class="mb-0 text-white-50 small">{{ $t('ui.entry_fee') }}</p>
                           </div>
                         </div>
                         <div class="col-md-4" v-if="championship.total_prize_pool">
@@ -106,14 +106,14 @@
                               <i class="fas fa-coins text-warning"></i>
                             </div>
                             <h5 class="fw-bold text-warning mb-1">{{ championship.total_prize_pool }} EBT</h5>
-                            <p class="mb-0 text-white-50 small">Prize Pool</p>
+                            <p class="mb-0 text-white-50 small">{{ $t('ui.prize_pool_3') }}</p>
                           </div>
                         </div>
                       </div>
 
                       <!-- Prize Distribution -->
                       <div v-if="championship.prize_distribution" class="mb-4">
-                        <h5 class="fw-bold mb-3">Prize Distribution</h5>
+                        <h5 class="fw-bold mb-3">{{ $t('ui.prize_distribution') }}</h5>
                         <div class="row g-3">
                           <div 
                             v-for="(prize, position) in championship.prize_distribution" 
@@ -123,7 +123,7 @@
                             <div class="prize_item p-3 rounded d-flex justify-content-between align-items-center" style="background: rgba(255, 255, 255, 0.05);">
                               <div>
                                 <span class="fw-bold">{{ position }}</span>
-                                <span class="text-white-50 ms-2">Place</span>
+                                <span class="text-white-50 ms-2">{{ $t('ui.place') }}</span>
                               </div>
                               <span class="fw-bold text-warning">{{ prize }} EBT</span>
                             </div>
@@ -133,7 +133,7 @@
 
                       <!-- Rules -->
                       <div v-if="championship.rules" class="mb-4">
-                        <h5 class="fw-bold mb-3">Rules</h5>
+                        <h5 class="fw-bold mb-3">{{ $t('ui.rules') }}</h5>
                         <div class="rules_content p-3 rounded" style="background: rgba(255, 255, 255, 0.05);">
                           <p class="text-white-50 mb-0" style="white-space: pre-line;">{{ championship.rules }}</p>
                         </div>
@@ -156,13 +156,13 @@
                         <!-- Registration not open yet -->
                         <div v-else-if="!hasRegistrationStarted" class="alert alert-info">
                           <i class="fas fa-clock me-2"></i>
-                          <strong>Registrations will start on:</strong> {{ formatDate(championship.registration_start_date) }}
+                          <strong>{{ $t('ui.registrations_will_start_on') }}</strong> {{ formatDate(championship.registration_start_date) }}
                         </div>
                         
                         <!-- Registration closed -->
                         <div v-else class="alert alert-warning">
                           <i class="fas fa-ban me-2"></i>
-                          <strong>Registrations closed on:</strong> {{ formatDate(championship.registration_end_date) }}
+                          <strong>{{ $t('ui.registrations_closed_on') }}</strong> {{ formatDate(championship.registration_end_date) }}
                         </div>
                       </div>
                       
@@ -177,7 +177,7 @@
 
                     <!-- Matches Card -->
                     <div v-if="matches.length > 0" class="tw-content-block mb-4">
-                      <h4 class="fw-bold mb-4">Scheduled Matches</h4>
+                      <h4 class="fw-bold mb-4">{{ $t('ui.scheduled_matches') }}</h4>
                       <div class="matches_list">
                         <div 
                           v-for="match in matches" 
@@ -204,7 +204,7 @@
                                 <img 
                                   v-if="match.player1?.team_logo" 
                                   :src="getTeamLogoUrl(match.player1.team_logo)" 
-                                  :alt="match.player1?.team_name"
+                                  :alt="$t('ui.match_player1_team_name')"
                                   style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;"
                                 />
                                 <i v-else class="fas fa-users" style="font-size: 2rem; color: #FFD700;"></i>
@@ -232,7 +232,7 @@
                                 <img 
                                   v-if="match.player2?.team_logo" 
                                   :src="getTeamLogoUrl(match.player2.team_logo)" 
-                                  :alt="match.player2?.team_name"
+                                  :alt="$t('ui.match_player2_team_name')"
                                   style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;"
                                 />
                                 <i v-else class="fas fa-users" style="font-size: 2rem; color: #FFD700;"></i>
@@ -257,7 +257,7 @@
                                 @click="selectBet(match, 'draw', getOddsNumber(match.draw_odds, 3.00))"
                                 :disabled="!isAuthenticated"
                               >
-                                <span class="bet_team_name">Draw</span>
+                                <span class="bet_team_name">{{ $t('betting.draw_2') }}</span>
                                 <span class="bet_odds">{{ formatOdds(match.draw_odds, 3.00) }}x</span>
                               </button>
                               <button 
@@ -290,7 +290,7 @@
 
                     <!-- Standings Card -->
                     <div v-if="championship.status === 'started' || championship.status === 'finished'" class="tw-content-block">
-                      <h4 class="fw-bold mb-4">Standings</h4>
+                      <h4 class="fw-bold mb-4">{{ $t('ui.standings') }}</h4>
                       <div v-if="standingsLoading" class="text-center py-3">
                         <div class="spinner-border spinner-border-sm text-primary"></div>
                       </div>
@@ -318,7 +318,7 @@
                         </div>
                       </div>
                       <div v-else class="text-center py-3">
-                        <p class="text-white-50">No standings available yet.</p>
+                        <p class="text-white-50">{{ $t('ui.no_standings_available_yet') }}</p>
                       </div>
                     </div>
                   </div>
@@ -327,30 +327,30 @@
                   <div class="col-lg-4">
                     <!-- Quick Info Card -->
                     <div class="tw-content-block mb-4">
-                      <h5 class="fw-bold mb-3">Quick Info</h5>
+                      <h5 class="fw-bold mb-3">{{ $t('ui.quick_info') }}</h5>
                       <div class="quick_info">
                         <div class="info_row mb-3">
-                          <span class="text-white-50">Game:</span>
+                          <span class="text-white-50">{{ $t('ui.game') }}</span>
                           <span class="text-white fw-bold">{{ championship.game }}</span>
                         </div>
                         <div class="info_row mb-3">
-                          <span class="text-white-50">Division:</span>
+                          <span class="text-white-50">{{ $t('ui.division_5') }}</span>
                           <span class="text-white fw-bold">Division {{ championship.division }}</span>
                         </div>
                         <div class="info_row mb-3">
-                          <span class="text-white-50">Status:</span>
+                          <span class="text-white-50">{{ $t('ui.status') }}</span>
                           <span class="badge" :class="getStatusClass(championship.status)">
                             {{ getStatusLabel(championship.status) }}
                           </span>
                         </div>
                         <div class="info_row mb-3">
-                          <span class="text-white-50">Participants:</span>
+                          <span class="text-white-50">{{ $t('ui.participants_2') }}</span>
                           <span class="text-white fw-bold">
                             {{ championship.validated_registrations_count || 0 }}/{{ championship.max_participants }}
                           </span>
                         </div>
                         <div class="info_row">
-                          <span class="text-white-50">Entry Fee:</span>
+                          <span class="text-white-50">{{ $t('ui.entry_fee_2') }}</span>
                           <span class="text-warning fw-bold">{{ championship.registration_fee }} EBT</span>
                         </div>
                       </div>
@@ -358,20 +358,20 @@
 
                     <!-- Registration Status -->
                     <div v-if="isRegistered && userRegistration" class="tw-content-block">
-                      <h5 class="fw-bold mb-3">Your Registration</h5>
+                      <h5 class="fw-bold mb-3">{{ $t('ui.your_registration') }}</h5>
                       <div class="registration_info">
                         <div class="info_row mb-2">
-                          <span class="text-white-50">Status:</span>
+                          <span class="text-white-50">{{ $t('ui.status') }}</span>
                           <span class="badge" :class="getRegistrationStatusClass(userRegistration.status)">
                             {{ getRegistrationStatusLabel(userRegistration.status) }}
                           </span>
                         </div>
                         <div class="info_row mb-2">
-                          <span class="text-white-50">Registered:</span>
+                          <span class="text-white-50">{{ $t('ui.registered_2') }}</span>
                           <span class="text-white">{{ formatDate(userRegistration.registered_at) }}</span>
                         </div>
                         <div v-if="userRegistration.current_position" class="info_row">
-                          <span class="text-white-50">Current Position:</span>
+                          <span class="text-white-50">{{ $t('ui.current_position') }}</span>
                           <span class="text-warning fw-bold">#{{ userRegistration.current_position }}</span>
                         </div>
                       </div>
@@ -383,7 +383,7 @@
               <!-- No data state -->
               <div v-else class="text-center py-5">
                 <div class="alert alert-warning">
-                  <p class="mb-2">Unable to load championship data.</p>
+                  <p class="mb-2">{{ $t('ui.unable_to_load_championship_data') }}</p>
                   <p class="mb-0 small text-white-50">Loading: {{ loading }}, Error: {{ error || 'None' }}, Championship: {{ championship ? 'Loaded' : 'Not loaded' }}</p>
                 </div>
                 <button class="tw-btn tw-btn--primary mt-3" @click="loadChampionship">
@@ -399,78 +399,78 @@
     <!-- Registration Modal -->
     <div v-if="showRegistrationModal" class="popup-overlay" @click.self="closeRegistrationModal">
       <div class="popup-box p-5 rounded-4 shadow-lg n11-bg" style="max-width: 700px; max-height: 90vh; overflow-y: auto;">
-        <h3 class="fw-bold mb-4 text-center text-white">Registration Form – EBETSTREAM Championship</h3>
+        <h3 class="fw-bold mb-4 text-center text-white">{{ $t('ui.registration_form_ebetstream_championship') }}</h3>
         
         <div class="mb-4">
           <div class="alert alert-info">
-            <h5 class="text-white mb-2">📋 Championship Information</h5>
+            <h5 class="text-white mb-2">{{ $t('ui.championship_information_2') }}</h5>
             <div class="row g-2 text-white-50 small">
-              <div class="col-6"><strong>Game:</strong> {{ championship?.game }}</div>
-              <div class="col-6"><strong>Division:</strong> {{ championship?.division }}</div>
+              <div class="col-6"><strong>{{ $t('ui.game') }}</strong> {{ championship?.game }}</div>
+              <div class="col-6"><strong>{{ $t('ui.division_5') }}</strong> {{ championship?.division }}</div>
             </div>
           </div>
         </div>
 
         <form @submit.prevent="registerForChampionship" enctype="multipart/form-data">
-          <h5 class="text-white mb-3">1️⃣ Player / Team Leader Information</h5>
+          <h5 class="text-white mb-3">{{ $t('ui.1_player_team_leader_information') }}</h5>
           
           <div class="form-group mb-3">
-            <label class="text-white mb-2 d-block">Full Name *</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.full_name_3') }}</label>
             <input 
               v-model="registrationForm.full_name" 
               type="text" 
               class="form-control n11-bg text-white border-secondary" 
               required 
-              placeholder="Your full name"
+              :placeholder="$t('ui.your_full_name')"
             />
           </div>
 
           <div class="form-group mb-3">
-            <label class="text-white mb-2 d-block">EBETSTREAM Username *</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.ebetstream_username') }}</label>
             <input 
               v-model="registrationForm.player_username" 
               type="text" 
               class="form-control n11-bg text-white border-secondary" 
               required 
-              placeholder="Your EBETSTREAM username"
+              :placeholder="$t('ui.your_ebetstream_username')"
             />
           </div>
 
           <div class="form-group mb-3">
-            <label class="text-white mb-2 d-block">E-mail *</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.e_mail') }}</label>
             <input 
               v-model="registrationForm.contact_email" 
               type="email" 
               class="form-control n11-bg text-white border-secondary" 
               required 
-              placeholder="your.email@example.com"
+              :placeholder="$t('ui.your_email_example_com')"
             />
           </div>
 
           <div class="form-group mb-3">
-            <label class="text-white mb-2 d-block">Team Name *</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.team_name') }}</label>
             <input 
               v-model="registrationForm.team_name" 
               type="text" 
               class="form-control n11-bg text-white border-secondary" 
               required 
-              placeholder="Your team name"
+              :placeholder="$t('ui.your_team_name')"
             />
           </div>
 
           <div class="form-group mb-3">
-            <label class="text-white mb-2 d-block">Game *</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.game_2') }}</label>
             <input 
               type="text" 
               :value="championship?.game" 
               class="form-control n11-bg text-white border-secondary" 
               disabled
             />
-            <small class="text-white-50">The game is determined by the selected championship</small>
+            <small class="text-white-50">{{ $t('ui.the_game_is_determined_by_the_selected_championship') }}</small>
           </div>
 
           <div class="form-group mb-3">
-            <label class="text-white mb-2 d-block">Team Logo</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.team_logo') }}</label>
             <input 
               ref="teamLogoInput"
               type="file" 
@@ -478,32 +478,32 @@
               @change="handleLogoUpload"
               class="form-control n11-bg text-white border-secondary" 
             />
-            <small class="text-white-50">Accepted formats: JPG, PNG, GIF (max 5MB)</small>
+            <small class="text-white-50">{{ $t('ui.accepted_formats_jpg_png_gif_max_5mb') }}</small>
             <div v-if="registrationForm.team_logo_preview" class="mt-2">
-              <img :src="registrationForm.team_logo_preview" alt="Team Logo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px;" />
+              <img :src="registrationForm.team_logo_preview" :alt="$t('ui.team_logo_preview')" style="max-width: 150px; max-height: 150px; border-radius: 8px;" />
             </div>
           </div>
 
           <div class="form-group mb-3">
-            <label class="text-white mb-2 d-block">Selected Division *</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.selected_division') }}</label>
             <input 
               type="text" 
               :value="`Division ${championship?.division}`" 
               class="form-control n11-bg text-white border-secondary" 
               disabled
             />
-            <small class="text-white-50">The division is determined by the selected championship</small>
+            <small class="text-white-50">{{ $t('ui.the_division_is_determined_by_the_selected_championship') }}</small>
           </div>
 
           <div class="form-group mb-3">
-            <label class="text-white mb-2 d-block">Player Names or Usernames *</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.player_names_or_usernames') }}</label>
             <div v-for="(player, index) in registrationForm.players_list" :key="index" class="d-flex gap-2 mb-2">
               <input 
                 v-model="registrationForm.players_list[index]" 
                 type="text" 
                 class="form-control n11-bg text-white border-secondary" 
                 required
-                :placeholder="`Player ${index + 1}`"
+                :placeholder="$t('ui.player_index_1')"
               />
               <button 
                 v-if="registrationForm.players_list.length > 1"
@@ -515,9 +515,8 @@
               </button>
             </div>
             <button type="button" @click="addPlayer" class="btn btn-sm btn-secondary mt-2">
-              <i class="fas fa-plus me-1"></i> Add a Player
-            </button>
-            <small class="text-white-50 d-block mt-2">Add at least one player</small>
+              <i class="fas fa-plus me-1"></i>{{ $t('ui.add_a_player') }}</button>
+            <small class="text-white-50 d-block mt-2">{{ $t('ui.add_at_least_one_player') }}</small>
           </div>
 
           <div class="form-group mb-4">
@@ -538,11 +537,11 @@
           <!-- Payment Info -->
           <div class="alert alert-info mb-4">
             <div class="d-flex justify-content-between align-items-center">
-              <span class="text-white">Registration Fee:</span>
+              <span class="text-white">{{ $t('ui.registration_fee_2') }}</span>
               <span class="fw-bold">{{ championship?.registration_fee || 0 }} EBT</span>
             </div>
             <div class="d-flex justify-content-between align-items-center mt-2">
-              <span class="text-white-50 small">Your Balance:</span>
+              <span class="text-white-50 small">{{ $t('ui.your_balance_2') }}</span>
               <span class="fw-bold" :class="hasEnoughBalance ? 'text-success' : 'text-danger'">
                 {{ userBalance.toFixed(2) }} EBT
               </span>
@@ -564,7 +563,7 @@
               class="tw-btn tw-btn--primary flex-fill" 
               :disabled="registering || !hasEnoughBalance"
             >
-              <span v-if="registering">Processing...</span>
+              <span v-if="registering">{{ $t('common.processing') }}</span>
               <span v-else>
                 <i class="fas fa-credit-card me-2"></i>
                 Pay & Register
@@ -575,9 +574,7 @@
               class="tw-btn tw-btn--secondary" 
               @click="closeRegistrationModal"
               :disabled="registering"
-            >
-              Cancel
-            </button>
+            >{{ $t('common.cancel') }}</button>
           </div>
         </form>
       </div>
@@ -586,7 +583,7 @@
     <!-- Bet Modal -->
     <div v-if="showBetModal" class="popup-overlay" @click.self="closeBetModal">
       <div class="popup-box p-5 rounded-4 shadow-lg n11-bg" style="max-width: 500px;">
-        <h3 class="fw-bold mb-4 text-center text-white">Place a Bet</h3>
+        <h3 class="fw-bold mb-4 text-center text-white">{{ $t('ui.place_a_bet') }}</h3>
         <div v-if="selectedMatch" class="mb-4">
           <div class="text-white mb-2">
             <strong>{{ selectedMatch.player1?.team_name || 'Team 1' }} vs {{ selectedMatch.player2?.team_name || 'Team 2' }}</strong>
@@ -604,7 +601,7 @@
           </div>
         </div>
         <div class="form-group mb-4">
-          <label class="text-white mb-2 d-block">Bet Amount</label>
+          <label class="text-white mb-2 d-block">{{ $t('betting.bet_amount') }}</label>
           <input 
             v-model.number="betAmount" 
             type="number" 
@@ -631,11 +628,11 @@
             @click="placeBet" 
             :disabled="placingBet || !betAmount || betAmount <= 0 || !selectedBetType || walletBalance <= 0"
           >
-            <span v-if="placingBet">Processing...</span>
-            <span v-else-if="walletBalance <= 0">Insufficient balance</span>
-            <span v-else>Confirm Bet</span>
+            <span v-if="placingBet">{{ $t('common.processing') }}</span>
+            <span v-else-if="walletBalance <= 0">{{ $t('ui.insufficient_balance') }}</span>
+            <span v-else>{{ $t('ui.confirm_bet') }}</span>
           </button>
-          <button type="button" class="tw-btn tw-btn--secondary" @click="closeBetModal">Cancel</button>
+          <button type="button" class="tw-btn tw-btn--secondary" @click="closeBetModal">{{ $t('common.cancel') }}</button>
         </div>
       </div>
     </div>
@@ -643,6 +640,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import apiClient from '@/utils/axios';

@@ -4,13 +4,12 @@
     <!-- Hero -->
     <div class="tw-page-hero">
       <div>
-        <h1 class="tw-page-hero__title">P2P Challenges</h1>
-        <p class="tw-page-hero__sub">Compete against other players, wager EBT, and prove your dominance</p>
+        <h1 class="tw-page-hero__title">{{ $t('ui.p2p_challenges') }}</h1>
+        <p class="tw-page-hero__sub">{{ $t('ui.compete_against_other_players_wager_ebt_and_prove_your_domin') }}</p>
       </div>
       <div class="tw-page-hero__actions">
         <button class="tw-btn tw-btn--primary" @click="showCreateModal = true">
-          <i class="fas fa-plus-circle me-2"></i>Create a Challenge
-        </button>
+          <i class="fas fa-plus-circle me-2"></i>{{ $t('ui.create_a_challenge') }}</button>
       </div>
     </div>
 
@@ -20,32 +19,32 @@
         class="tw-filter-btn"
         :class="{ active: filterStatus === null && !showMyChallenges }"
         @click="filterStatus = null; showMyChallenges = false"
-      >All</button>
+      >{{ $t('common.all') }}</button>
       <button
         class="tw-filter-btn"
         :class="{ active: filterStatus === 'open' }"
         @click="filterStatus = 'open'; showMyChallenges = false"
-      >Open</button>
+      >{{ $t('ui.open') }}</button>
       <button
         class="tw-filter-btn"
         :class="{ active: filterStatus === 'accepted' }"
         @click="filterStatus = 'accepted'; showMyChallenges = false"
-      >Accepted</button>
+      >{{ $t('ui.accepted') }}</button>
       <button
         class="tw-filter-btn"
         :class="{ active: filterStatus === 'in_progress' }"
         @click="filterStatus = 'in_progress'; showMyChallenges = false"
-      >In Progress</button>
+      >{{ $t('ui.in_progress') }}</button>
       <button
         class="tw-filter-btn"
         :class="{ active: filterStatus === 'completed' }"
         @click="filterStatus = 'completed'; showMyChallenges = false"
-      >Completed</button>
+      >{{ $t('common.completed') }}</button>
       <button
         class="tw-filter-btn"
         :class="{ active: showMyChallenges }"
         @click="showMyChallenges = !showMyChallenges"
-      >My Challenges</button>
+      >{{ $t('ui.my_challenges') }}</button>
       <button
         class="tw-filter-btn refresh-btn"
         @click="loadChallenges()"
@@ -115,9 +114,7 @@
                 v-if="challenge.status === 'open' && challenge.creator.id === currentUserId"
                 class="tw-btn btn-cancel btn-sm"
                 @click="cancelChallenge(challenge.id)"
-              >
-                Cancel
-              </button>
+              >{{ $t('common.cancel') }}</button>
             </div>
           </div>
         </div>
@@ -127,11 +124,10 @@
     <!-- Empty state -->
     <div v-else class="tw-empty">
       <div class="tw-empty__icon"><i class="fas fa-fist-raised"></i></div>
-      <p class="tw-empty__title">No Challenges Available</p>
-      <p class="tw-empty__sub">Be the first to create a challenge!</p>
+      <p class="tw-empty__title">{{ $t('ui.no_challenges_available') }}</p>
+      <p class="tw-empty__sub">{{ $t('ui.be_the_first_to_create_a_challenge') }}</p>
       <button class="tw-btn tw-btn--primary mt-4" @click="showCreateModal = true">
-        <i class="fas fa-plus-circle me-2"></i>Create the First Challenge
-      </button>
+        <i class="fas fa-plus-circle me-2"></i>{{ $t('ui.create_the_first_challenge') }}</button>
     </div>
 
     <!-- ── Create Challenge Modal ── -->
@@ -139,7 +135,7 @@
       <div class="tw-modal">
 
         <div class="tw-modal__header">
-          <h3 class="tw-modal__title">Create a New Challenge</h3>
+          <h3 class="tw-modal__title">{{ $t('ui.create_a_new_challenge') }}</h3>
           <button class="tw-modal__close" @click="closeCreateModal">
             <i class="fas fa-times"></i>
           </button>
@@ -150,7 +146,7 @@
 
             <!-- Challenge type -->
             <div class="tw-form-group">
-              <label class="tw-label">Challenge Type</label>
+              <label class="tw-label">{{ $t('ui.challenge_type') }}</label>
               <div class="type-toggle">
                 <button
                   type="button"
@@ -158,28 +154,26 @@
                   :class="challengeType === 'free' ? 'tw-btn--primary' : 'tw-btn--secondary'"
                   @click="challengeType = 'free'; selectedOpponent = null; searchQuery = ''"
                 >
-                  <i class="fas fa-globe me-2"></i>Open Challenge
-                </button>
+                  <i class="fas fa-globe me-2"></i>{{ $t('ui.open_challenge') }}</button>
                 <button
                   type="button"
                   class="tw-btn type-btn"
                   :class="challengeType === 'direct' ? 'tw-btn--primary' : 'tw-btn--secondary'"
                   @click="challengeType = 'direct'"
                 >
-                  <i class="fas fa-user me-2"></i>Direct Challenge
-                </button>
+                  <i class="fas fa-user me-2"></i>{{ $t('ui.direct_challenge') }}</button>
               </div>
             </div>
 
             <!-- Opponent search (direct only) -->
             <div v-if="challengeType === 'direct'" class="tw-form-group">
-              <label class="tw-label">Username</label>
+              <label class="tw-label">{{ $t('ui.username') }}</label>
               <div class="search-wrap">
                 <input
                   v-model="searchQuery"
                   type="text"
                   class="tw-input"
-                  placeholder="Type username..."
+                  :placeholder="$t('ui.type_username')"
                   @input="searchUsers"
                   @focus="showUserSuggestions = true"
                   autocomplete="off"
@@ -217,24 +211,24 @@
                   <i class="fas fa-times"></i>
                 </button>
               </div>
-              <small class="form-hint">Leave empty to create an open challenge</small>
+              <small class="form-hint">{{ $t('ui.leave_empty_to_create_an_open_challenge') }}</small>
             </div>
 
             <!-- Game name -->
             <div class="tw-form-group">
-              <label class="tw-label">Jeu</label>
+              <label class="tw-label">{{ $t('ui.jeu') }}</label>
               <input
                 v-model="newChallenge.game"
                 type="text"
                 class="tw-input"
-                placeholder="Ex. Call of Duty Mobile, Free Fire..."
+                :placeholder="$t('ui.ex_call_of_duty_mobile_free_fire')"
                 required
               />
             </div>
 
             <!-- Bet amount -->
             <div class="tw-form-group">
-              <label class="tw-label">Bet Amount (EBT)</label>
+              <label class="tw-label">{{ $t('ui.bet_amount_ebt') }}</label>
               <input
                 v-model.number="newChallenge.bet_amount"
                 type="number"
@@ -244,12 +238,12 @@
                 step="1"
                 required
               />
-              <small class="form-hint">Minimum: 500 EBT — Maximum: 1,000,000 EBT</small>
+              <small class="form-hint">{{ $t('ui.minimum_500_ebt_maximum_1_000_000_ebt') }}</small>
             </div>
 
             <!-- Expiry -->
             <div class="tw-form-group">
-              <label class="tw-label">Expiration Date <span class="label-optional">(Optional)</span></label>
+              <label class="tw-label">{{ $t('ui.expiration_date') }}<span class="label-optional">{{ $t('ui.optional_2') }}</span></label>
               <input
                 v-model="newChallenge.expires_at"
                 type="datetime-local"
@@ -266,14 +260,14 @@
         </div>
 
         <div class="tw-modal__footer">
-          <button type="button" class="tw-btn tw-btn--secondary" @click="closeCreateModal">Cancel</button>
+          <button type="button" class="tw-btn tw-btn--secondary" @click="closeCreateModal">{{ $t('common.cancel') }}</button>
           <button
             type="submit"
             form="challenge-form"
             class="tw-btn tw-btn--primary"
             :disabled="creating || (challengeType === 'direct' && !selectedOpponent) || !newChallenge.game"
           >
-            <span v-if="creating"><i class="fas fa-spinner fa-spin me-2"></i>Creating...</span>
+            <span v-if="creating"><i class="fas fa-spinner fa-spin me-2"></i>{{ $t('ui.creating') }}</span>
             <span v-else>{{ challengeType === 'direct' ? 'Send Challenge' : 'Create Challenge' }}</span>
           </button>
         </div>
@@ -285,6 +279,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted, onUnmounted, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import apiClient from "@/utils/axios";

@@ -10,7 +10,7 @@
                   class="top_matches__title d-flex align-items-center gap-2 mb-4 mb-md-5"
                 >
                   <img :src="liveMatch" width="{32}" height="{32}" alt="Icon" />
-                  <h3>Live Matches</h3>
+                  <h3>{{ $t('betting.live_matches') }}</h3>
                 </div>
                 <div class="top_matches__content">
                   <div class="top_matches__cmncard p2-bg p-4 rounded-3 mb-4">
@@ -28,7 +28,7 @@
                                 alt="Icon"
                               />
                               <span class="fs-eight cpoint"
-                                >Modus Super Series</span
+                                >{{ $t('ui.modus_super_series') }}</span
                               >
                             </div>
                             <div
@@ -38,13 +38,13 @@
                                 :src="live"
                                 width="{16}"
                                 height="{16}"
-                                alt="icon"
+                                :alt="$t('ui.icon')"
                               />
                               <img
                                 :src="play"
                                 width="{16}"
                                 height="{16}"
-                                alt="icon"
+                                :alt="$t('ui.icon')"
                               />
                               <span class="fs-eight cpoint">56′ 2nd half</span>
                             </div>
@@ -62,7 +62,7 @@
                                   alt="Icon"
                                 />
                                 <span class="fs-seven cpoint"
-                                  >Gorilla Grodd</span
+                                  >{{ $t('ui.gorilla_grodd') }}</span
                                 >
                               </div>
                               <div class="d-flex align-items-center gap-2">
@@ -73,7 +73,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">Sub-Zero</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.sub_zero') }}</span>
                               </div>
                             </div>
                             <div
@@ -119,7 +119,7 @@
                               <thead>
                                 <tr class="text-start">
                                   <th scope="col">
-                                    <span class="fs-eight ms-16">Winner </span>
+                                    <span class="fs-eight ms-16">{{ $t('betting.winner') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -169,6 +169,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import liveMatch from "@/assets/images/icon/live-match.png";
 import live from "@/assets/images/icon/live.png";
 import chart from "@/assets/images/icon/line-chart.png";

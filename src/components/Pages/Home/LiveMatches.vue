@@ -10,7 +10,7 @@
                   class="top_matches__title d-flex align-items-center gap-2 mb-4"
                 >
                   <img width="{32}" height="{32}" :src="liveMatch" alt="Icon" />
-                  <h3>Live Matches</h3>
+                  <h3>{{ $t('betting.live_matches') }}</h3>
                 </div>
                 <div class="top_matches__content">
                   <div class="singletab">
@@ -21,7 +21,7 @@
                         <Tab
                           as="template"
                           v-slot="{ selected }"
-                          v-for="{ imgSrc, buttonName, id } in tabTwo"
+                          v-for="{ imgSrc, sportKey, id } in tabTwo"
                           :key="id"
                         >
                           <button
@@ -37,7 +37,7 @@
                               :src="imgSrc"
                               alt="Icon"
                             />
-                            {{ buttonName }}
+                            {{ $t('sports.' + sportKey) }}
                           </button>
                         </Tab>
                       </TabList>
@@ -70,7 +70,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >Turkiye . Super Lig</span
+                                        >{{ $t('ui.turkiye_super_lig_2') }}</span
                                       >
                                     </div>
                                     <div
@@ -171,15 +171,15 @@
                                       <thead>
                                         <tr class="text-center">
                                           <th scope="col">
-                                            <span class="fs-eight">1x2</span>
+                                            <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Double chance</span
+                                              >{{ $t('betting.double_chance') }}</span
                                             >
                                           </th>
                                           <th scope="col">
-                                            <span class="fs-eight">Total</span>
+                                            <span class="fs-eight">{{ $t('betting.total') }}</span>
                                           </th>
                                         </tr>
                                       </thead>
@@ -205,7 +205,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2 text-nowrap"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -233,7 +233,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2 text-nowrap"
-                                                  >1 or draw</span
+                                                  >{{ $t('betting.1_or_draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >1.39</span
@@ -244,7 +244,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2 text-nowrap"
-                                                  >1 or 2</span
+                                                  >{{ $t('betting.1_or_2') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -255,7 +255,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2 text-nowrap"
-                                                  >draw or 2</span
+                                                  >{{ $t('betting.draw_or_2') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >2.45</span
@@ -328,7 +328,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >Oceania Pacific Games</span
+                                        >{{ $t('ui.oceania_pacific_games') }}</span
                                       >
                                     </div>
                                     <div
@@ -369,7 +369,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Fiji</span
+                                          >{{ $t('ui.fiji') }}</span
                                         >
                                       </div>
                                       <div
@@ -382,7 +382,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Solomon Islands</span
+                                          >{{ $t('ui.solomon_islands') }}</span
                                         >
                                       </div>
                                     </div>
@@ -444,7 +444,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2 text-nowrap py-5 w-100"
-                                                  >No Markets Available</span
+                                                  >{{ $t('ui.no_markets_available') }}</span
                                                 >
                                               </div>
                                             </div>
@@ -479,7 +479,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >Oceania Pacific Games</span
+                                        >{{ $t('ui.oceania_pacific_games') }}</span
                                       >
                                     </div>
                                     <div
@@ -520,7 +520,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Fiji</span
+                                          >{{ $t('ui.fiji') }}</span
                                         >
                                       </div>
                                       <div
@@ -533,7 +533,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Solomon Islands</span
+                                          >{{ $t('ui.solomon_islands') }}</span
                                         >
                                       </div>
                                     </div>
@@ -583,7 +583,7 @@
                                           <th scope="col">
                                             {/*
                                             <span class="fs-eight"
-                                              >Double chance</span
+                                              >{{ $t('betting.double_chance') }}</span
                                             >
                                             */}
                                           </th>
@@ -603,7 +603,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2 text-nowrap py-5 w-100"
-                                                  >No Markets Available</span
+                                                  >{{ $t('ui.no_markets_available') }}</span
                                                 >
                                               </div>
                                             </div>
@@ -635,7 +635,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >Oceania Pacific Games</span
+                                        >{{ $t('ui.oceania_pacific_games') }}</span
                                       >
                                     </div>
                                     <div
@@ -676,7 +676,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Fiji</span
+                                          >{{ $t('ui.fiji') }}</span
                                         >
                                       </div>
                                       <div
@@ -689,7 +689,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Solomon Islands</span
+                                          >{{ $t('ui.solomon_islands') }}</span
                                         >
                                       </div>
                                     </div>
@@ -737,7 +737,7 @@
                                         <tr>
                                           <th scope="col">
                                             <span class="fs-eight ms-20 ps-4"
-                                              >Total</span
+                                              >{{ $t('betting.total') }}</span
                                             >
                                           </th>
                                         </tr>
@@ -807,7 +807,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >Turkiye . Super Lig</span
+                                        >{{ $t('ui.turkiye_super_lig_2') }}</span
                                       >
                                     </div>
                                     <div
@@ -908,15 +908,15 @@
                                       <thead>
                                         <tr class="text-center">
                                           <th scope="col">
-                                            <span class="fs-eight">1x2</span>
+                                            <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Double chance</span
+                                              >{{ $t('betting.double_chance') }}</span
                                             >
                                           </th>
                                           <th scope="col">
-                                            <span class="fs-eight">Total</span>
+                                            <span class="fs-eight">{{ $t('betting.total') }}</span>
                                           </th>
                                         </tr>
                                       </thead>
@@ -942,7 +942,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2 text-nowrap"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -970,7 +970,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2 text-nowrap"
-                                                  >1 or draw</span
+                                                  >{{ $t('betting.1_or_draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >1.39</span
@@ -981,7 +981,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2 text-nowrap"
-                                                  >1 or 2</span
+                                                  >{{ $t('betting.1_or_2') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -992,7 +992,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2 text-nowrap"
-                                                  >draw or 2</span
+                                                  >{{ $t('betting.draw_or_2') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >2.45</span
@@ -1069,7 +1069,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >Turkiye . Super Lig</span
+                                        >{{ $t('ui.turkiye_super_lig_2') }}</span
                                       >
                                     </div>
                                     <div
@@ -1110,7 +1110,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >CF Tigres UANL</span
+                                          >{{ $t('ui.cf_tigres_uanl') }}</span
                                         >
                                       </div>
                                       <div
@@ -1123,7 +1123,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Club America</span
+                                          >{{ $t('ui.club_america') }}</span
                                         >
                                       </div>
                                     </div>
@@ -1170,15 +1170,15 @@
                                       <thead>
                                         <tr class="text-center">
                                           <th scope="col">
-                                            <span class="fs-eight">1x2</span>
+                                            <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Double chance</span
+                                              >{{ $t('betting.double_chance') }}</span
                                             >
                                           </th>
                                           <th scope="col">
-                                            <span class="fs-eight">Total</span>
+                                            <span class="fs-eight">{{ $t('betting.total') }}</span>
                                           </th>
                                         </tr>
                                       </thead>
@@ -1204,7 +1204,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2 text-nowrap"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -1232,7 +1232,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2 text-nowrap"
-                                                  >1 or draw</span
+                                                  >{{ $t('betting.1_or_draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >1.39</span
@@ -1243,7 +1243,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2 text-nowrap"
-                                                  >1 or 2</span
+                                                  >{{ $t('betting.1_or_2') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -1254,7 +1254,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2 text-nowrap"
-                                                  >draw or 2</span
+                                                  >{{ $t('betting.draw_or_2') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >2.45</span
@@ -1328,7 +1328,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >Women, Apertura</span
+                                        >{{ $t('ui.women_apertura') }}</span
                                       >
                                     </div>
                                     <div
@@ -1370,7 +1370,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Dortmund</span
+                                          >{{ $t('ui.dortmund') }}</span
                                         >
                                       </div>
                                       <div
@@ -1384,7 +1384,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Mainz</span
+                                          >{{ $t('ui.mainz') }}</span
                                         >
                                       </div>
                                     </div>
@@ -1431,11 +1431,11 @@
                                       <thead>
                                         <tr class="text-center">
                                           <th scope="col">
-                                            <!-- <span class="fs-eight">1x2</span> -->
+                                            <!-- <span class="fs-eight">{{ $t('betting.1x2') }}</span> -->
                                           </th>
                                           <th scope="col">
                                             <!-- <span class="fs-eight"
-                                              >Double chance</span
+                                              >{{ $t('betting.double_chance') }}</span
                                             > -->
                                           </th>
                                           <th scope="col">
@@ -1454,7 +1454,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2 text-nowrap py-5 w-100"
-                                                  >No Markets Available</span
+                                                  >{{ $t('ui.no_markets_available') }}</span
                                                 >
                                               </div>
                                             </div>
@@ -1486,7 +1486,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >England League</span
+                                        >{{ $t('ui.england_league') }}</span
                                       >
                                     </div>
                                     <div
@@ -1527,7 +1527,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Manchester City</span
+                                          >{{ $t('ui.manchester_city') }}</span
                                         >
                                       </div>
                                       <div
@@ -1540,7 +1540,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Man. United</span
+                                          >{{ $t('ui.man_united') }}</span
                                         >
                                       </div>
                                     </div>
@@ -1588,7 +1588,7 @@
                                         <tr>
                                           <th scope="col">
                                             <span class="fs-eight ms-20 ps-4"
-                                              >Total</span
+                                              >{{ $t('betting.total') }}</span
                                             >
                                           </th>
                                         </tr>
@@ -1650,7 +1650,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >Turkiye . Super Lig</span
+                                        >{{ $t('ui.turkiye_super_lig_2') }}</span
                                       >
                                     </div>
                                     <div
@@ -1691,7 +1691,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >CF Tigres UANL</span
+                                          >{{ $t('ui.cf_tigres_uanl') }}</span
                                         >
                                       </div>
                                       <div
@@ -1704,7 +1704,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Club America</span
+                                          >{{ $t('ui.club_america') }}</span
                                         >
                                       </div>
                                     </div>
@@ -1751,16 +1751,16 @@
                                       <thead>
                                         <tr class="text-center">
                                           <th scope="col">
-                                            <span class="fs-eight">Winner</span>
+                                            <span class="fs-eight">{{ $t('betting.winner') }}</span>
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >First set-winner</span
+                                              >{{ $t('betting.first_set_winner') }}</span
                                             >
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Second set-winner</span
+                                              >{{ $t('ui.second_set_winner') }}</span
                                             >
                                           </th>
                                         </tr>
@@ -1911,7 +1911,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >Turkiye . Super Lig</span
+                                        >{{ $t('ui.turkiye_super_lig_2') }}</span
                                       >
                                     </div>
                                     <div
@@ -1952,7 +1952,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >CF Tigres UANL</span
+                                          >{{ $t('ui.cf_tigres_uanl') }}</span
                                         >
                                       </div>
                                       <div
@@ -1965,7 +1965,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Club America</span
+                                          >{{ $t('ui.club_america') }}</span
                                         >
                                       </div>
                                     </div>
@@ -2012,16 +2012,16 @@
                                       <thead>
                                         <tr class="text-center">
                                           <th scope="col">
-                                            <span class="fs-eight">Winner</span>
+                                            <span class="fs-eight">{{ $t('betting.winner') }}</span>
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >First set-winner</span
+                                              >{{ $t('betting.first_set_winner') }}</span
                                             >
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Second set-winner</span
+                                              >{{ $t('ui.second_set_winner') }}</span
                                             >
                                           </th>
                                         </tr>
@@ -2172,7 +2172,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >Turkiye . Super Lig</span
+                                        >{{ $t('ui.turkiye_super_lig_2') }}</span
                                       >
                                     </div>
                                     <div
@@ -2213,7 +2213,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >CF Tigres UANL</span
+                                          >{{ $t('ui.cf_tigres_uanl') }}</span
                                         >
                                       </div>
                                       <div
@@ -2226,7 +2226,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Club America</span
+                                          >{{ $t('ui.club_america') }}</span
                                         >
                                       </div>
                                     </div>
@@ -2273,15 +2273,15 @@
                                       <thead>
                                         <tr class="text-center">
                                           <th scope="col">
-                                            <span class="fs-eight">Win</span>
+                                            <span class="fs-eight">{{ $t('ui.win_2') }}</span>
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >First set-winner</span
+                                              >{{ $t('betting.first_set_winner') }}</span
                                             >
                                           </th>
                                           <th scope="col">
-                                            <span class="fs-eight">Total</span>
+                                            <span class="fs-eight">{{ $t('betting.total') }}</span>
                                           </th>
                                         </tr>
                                       </thead>
@@ -2307,7 +2307,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2 text-nowrap"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -2335,7 +2335,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2 text-nowrap"
-                                                  >1 or draw</span
+                                                  >{{ $t('betting.1_or_draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >1.39</span
@@ -2346,7 +2346,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2 text-nowrap"
-                                                  >1 or 2</span
+                                                  >{{ $t('betting.1_or_2') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -2357,7 +2357,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2 text-nowrap"
-                                                  >draw or 2</span
+                                                  >{{ $t('betting.draw_or_2') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >2.45</span
@@ -2434,7 +2434,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >International Euroleague</span
+                                        >{{ $t('ui.international_euroleague') }}</span
                                       >
                                     </div>
                                     <div
@@ -2444,7 +2444,7 @@
                                         src="@/assets/images/icon/live.png"
                                         width="{16}"
                                         height="{16}"
-                                        alt="icon"
+                                        :alt="$t('ui.icon')"
                                       />
                                       <span class="fs-eight cpoint"
                                         >Today, 23:00</span
@@ -2466,7 +2466,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Sacramento Kings</span
+                                          >{{ $t('ui.sacramento_kings') }}</span
                                         >
                                       </div>
                                       <div
@@ -2480,7 +2480,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Golden Warriors</span
+                                          >{{ $t('ui.golden_warriors') }}</span
                                         >
                                       </div>
                                     </div>
@@ -2521,15 +2521,14 @@
                                         <tr class="text-center">
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Winner (incl. overtime)
-                                            </span>
+                                              >{{ $t('betting.winner_incl_overtime_2') }}</span>
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"></span>
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Handicap (incl overtime)</span
+                                              >{{ $t('betting.handicap_incl_overtime') }}</span
                                             >
                                           </th>
                                         </tr>
@@ -2651,7 +2650,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >International. Euroleague</span
+                                        >{{ $t('ui.international_euroleague_2') }}</span
                                       >
                                     </div>
                                     <div
@@ -2692,7 +2691,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Sivasspor</span
+                                          >{{ $t('ui.sivasspor') }}</span
                                         >
                                       </div>
                                       <div
@@ -2705,7 +2704,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Trabzonspor</span
+                                          >{{ $t('ui.trabzonspor') }}</span
                                         >
                                       </div>
                                     </div>
@@ -2742,15 +2741,15 @@
                                       <thead>
                                         <tr class="text-center">
                                           <th scope="col">
-                                            <span class="fs-eight">1x2</span>
+                                            <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Double chance</span
+                                              >{{ $t('betting.double_chance') }}</span
                                             >
                                           </th>
                                           <th scope="col">
-                                            <span class="fs-eight">Total</span>
+                                            <span class="fs-eight">{{ $t('betting.total') }}</span>
                                           </th>
                                         </tr>
                                       </thead>
@@ -2765,7 +2764,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -2776,7 +2775,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -2787,46 +2786,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
-                                                >
-                                                <span class="fw-bold d-block"
-                                                  >3.45</span
-                                                >
-                                              </div>
-                                            </div>
-                                          </td>
-                                          <td class="pt-4">
-                                            <div
-                                              class="top_matches__innercount d-flex align-items-center gap-2"
-                                            >
-                                              <div
-                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                              >
-                                                <span
-                                                  class="fs-seven d-block mb-2"
-                                                  >draw</span
-                                                >
-                                                <span class="fw-bold d-block"
-                                                  >3.45</span
-                                                >
-                                              </div>
-                                              <div
-                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                              >
-                                                <span
-                                                  class="fs-seven d-block mb-2"
-                                                  >draw</span
-                                                >
-                                                <span class="fw-bold d-block"
-                                                  >3.45</span
-                                                >
-                                              </div>
-                                              <div
-                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                              >
-                                                <span
-                                                  class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -2843,7 +2803,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -2854,7 +2814,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -2865,7 +2825,46 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
+                                                >
+                                                <span class="fw-bold d-block"
+                                                  >3.45</span
+                                                >
+                                              </div>
+                                            </div>
+                                          </td>
+                                          <td class="pt-4">
+                                            <div
+                                              class="top_matches__innercount d-flex align-items-center gap-2"
+                                            >
+                                              <div
+                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                              >
+                                                <span
+                                                  class="fs-seven d-block mb-2"
+                                                  >{{ $t('betting.draw') }}</span
+                                                >
+                                                <span class="fw-bold d-block"
+                                                  >3.45</span
+                                                >
+                                              </div>
+                                              <div
+                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                              >
+                                                <span
+                                                  class="fs-seven d-block mb-2"
+                                                  >{{ $t('betting.draw') }}</span
+                                                >
+                                                <span class="fw-bold d-block"
+                                                  >3.45</span
+                                                >
+                                              </div>
+                                              <div
+                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                              >
+                                                <span
+                                                  class="fs-seven d-block mb-2"
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -2898,7 +2897,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >USA. NBA</span
+                                        >{{ $t('ui.usa_nba') }}</span
                                       >
                                     </div>
                                     <div
@@ -2939,7 +2938,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Istanbul Basaksehir</span
+                                          >{{ $t('ui.istanbul_basaksehir') }}</span
                                         >
                                       </div>
                                       <div
@@ -2952,7 +2951,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Pendikspor</span
+                                          >{{ $t('ui.pendikspor') }}</span
                                         >
                                       </div>
                                     </div>
@@ -2989,15 +2988,15 @@
                                       <thead>
                                         <tr class="text-center">
                                           <th scope="col">
-                                            <span class="fs-eight">1x2</span>
+                                            <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Double chance</span
+                                              >{{ $t('betting.double_chance') }}</span
                                             >
                                           </th>
                                           <th scope="col">
-                                            <span class="fs-eight">Total</span>
+                                            <span class="fs-eight">{{ $t('betting.total') }}</span>
                                           </th>
                                         </tr>
                                       </thead>
@@ -3012,7 +3011,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -3023,7 +3022,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -3034,46 +3033,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
-                                                >
-                                                <span class="fw-bold d-block"
-                                                  >3.45</span
-                                                >
-                                              </div>
-                                            </div>
-                                          </td>
-                                          <td class="pt-4">
-                                            <div
-                                              class="top_matches__innercount d-flex align-items-center gap-2"
-                                            >
-                                              <div
-                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                              >
-                                                <span
-                                                  class="fs-seven d-block mb-2"
-                                                  >draw</span
-                                                >
-                                                <span class="fw-bold d-block"
-                                                  >3.45</span
-                                                >
-                                              </div>
-                                              <div
-                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                              >
-                                                <span
-                                                  class="fs-seven d-block mb-2"
-                                                  >draw</span
-                                                >
-                                                <span class="fw-bold d-block"
-                                                  >3.45</span
-                                                >
-                                              </div>
-                                              <div
-                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                              >
-                                                <span
-                                                  class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -3090,7 +3050,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -3101,7 +3061,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -3112,7 +3072,46 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
+                                                >
+                                                <span class="fw-bold d-block"
+                                                  >3.45</span
+                                                >
+                                              </div>
+                                            </div>
+                                          </td>
+                                          <td class="pt-4">
+                                            <div
+                                              class="top_matches__innercount d-flex align-items-center gap-2"
+                                            >
+                                              <div
+                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                              >
+                                                <span
+                                                  class="fs-seven d-block mb-2"
+                                                  >{{ $t('betting.draw') }}</span
+                                                >
+                                                <span class="fw-bold d-block"
+                                                  >3.45</span
+                                                >
+                                              </div>
+                                              <div
+                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                              >
+                                                <span
+                                                  class="fs-seven d-block mb-2"
+                                                  >{{ $t('betting.draw') }}</span
+                                                >
+                                                <span class="fw-bold d-block"
+                                                  >3.45</span
+                                                >
+                                              </div>
+                                              <div
+                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                              >
+                                                <span
+                                                  class="fs-seven d-block mb-2"
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -3149,7 +3148,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >Bangladesh vs NewZealand</span
+                                        >{{ $t('ui.bangladesh_vs_newzealand') }}</span
                                       >
                                     </div>
                                     <div
@@ -3191,7 +3190,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Bangladesh</span
+                                          >{{ $t('ui.bangladesh') }}</span
                                         >
                                       </div>
                                       <div
@@ -3204,7 +3203,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >New Zealand</span
+                                          >{{ $t('ui.new_zealand') }}</span
                                         >
                                       </div>
                                     </div>
@@ -3244,16 +3243,16 @@
                                       <thead>
                                         <tr class="text-center">
                                           <th scope="col">
-                                            <span class="fs-eight">1x2</span>
+                                            <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Draw no bet</span
+                                              >{{ $t('betting.draw_no_bet') }}</span
                                             >
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >First innings</span
+                                              >{{ $t('betting.first_innings') }}</span
                                             >
                                           </th>
                                         </tr>
@@ -3269,7 +3268,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -3280,7 +3279,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -3291,46 +3290,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
-                                                >
-                                                <span class="fw-bold d-block"
-                                                  >3.45</span
-                                                >
-                                              </div>
-                                            </div>
-                                          </td>
-                                          <td class="pt-4">
-                                            <div
-                                              class="top_matches__innercount d-flex align-items-center gap-2"
-                                            >
-                                              <div
-                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                              >
-                                                <span
-                                                  class="fs-seven d-block mb-2"
-                                                  >draw</span
-                                                >
-                                                <span class="fw-bold d-block"
-                                                  >3.45</span
-                                                >
-                                              </div>
-                                              <div
-                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                              >
-                                                <span
-                                                  class="fs-seven d-block mb-2"
-                                                  >draw</span
-                                                >
-                                                <span class="fw-bold d-block"
-                                                  >3.45</span
-                                                >
-                                              </div>
-                                              <div
-                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                              >
-                                                <span
-                                                  class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -3347,7 +3307,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -3358,7 +3318,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -3369,7 +3329,46 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
+                                                >
+                                                <span class="fw-bold d-block"
+                                                  >3.45</span
+                                                >
+                                              </div>
+                                            </div>
+                                          </td>
+                                          <td class="pt-4">
+                                            <div
+                                              class="top_matches__innercount d-flex align-items-center gap-2"
+                                            >
+                                              <div
+                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                              >
+                                                <span
+                                                  class="fs-seven d-block mb-2"
+                                                  >{{ $t('betting.draw') }}</span
+                                                >
+                                                <span class="fw-bold d-block"
+                                                  >3.45</span
+                                                >
+                                              </div>
+                                              <div
+                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                              >
+                                                <span
+                                                  class="fs-seven d-block mb-2"
+                                                  >{{ $t('betting.draw') }}</span
+                                                >
+                                                <span class="fw-bold d-block"
+                                                  >3.45</span
+                                                >
+                                              </div>
+                                              <div
+                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                              >
+                                                <span
+                                                  class="fs-seven d-block mb-2"
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -3404,7 +3403,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >International Euroleague</span
+                                        >{{ $t('ui.international_euroleague') }}</span
                                       >
                                     </div>
                                     <div
@@ -3414,7 +3413,7 @@
                                         src="@/assets/images/icon/live.png"
                                         width="{16}"
                                         height="{16}"
-                                        alt="icon"
+                                        :alt="$t('ui.icon')"
                                       />
                                       <span class="fs-eight cpoint"
                                         >Today, 23:00</span
@@ -3423,7 +3422,7 @@
                                         src="@/assets/images/icon/updwon.png"
                                         width="{16}"
                                         height="{16}"
-                                        alt="icon"
+                                        :alt="$t('ui.icon')"
                                       />
                                     </div>
                                   </div>
@@ -3442,7 +3441,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Queensland Bulls</span
+                                          >{{ $t('ui.queensland_bulls') }}</span
                                         >
                                       </div>
                                       <div
@@ -3456,7 +3455,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Western Australia</span
+                                          >{{ $t('ui.western_australia') }}</span
                                         >
                                       </div>
                                     </div>
@@ -3499,17 +3498,16 @@
                                         <tr class="text-center">
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Draw no bet
-                                            </span>
+                                              >{{ $t('betting.draw_no_bet') }}</span>
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >First innings</span
+                                              >{{ $t('betting.first_innings') }}</span
                                             >
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >First over 96</span
+                                              >{{ $t('ui.first_over_96') }}</span
                                             >
                                           </th>
                                         </tr>
@@ -3631,7 +3629,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >India Vijay Hazare Trophy</span
+                                        >{{ $t('ui.india_vijay_hazare_trophy') }}</span
                                       >
                                     </div>
                                     <div
@@ -3641,7 +3639,7 @@
                                         src="@/assets/images/icon/live.png"
                                         width="{16}"
                                         height="{16}"
-                                        alt="icon"
+                                        :alt="$t('ui.icon')"
                                       />
                                       <span class="fs-eight cpoint"
                                         >Today, 23:00</span
@@ -3650,7 +3648,7 @@
                                         src="@/assets/images/icon/updwon.png"
                                         width="{16}"
                                         height="{16}"
-                                        alt="icon"
+                                        :alt="$t('ui.icon')"
                                       />
                                     </div>
                                   </div>
@@ -3669,7 +3667,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Auckland Aces</span
+                                          >{{ $t('ui.auckland_aces') }}</span
                                         >
                                       </div>
                                       <div
@@ -3683,7 +3681,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Otago Volts</span
+                                          >{{ $t('ui.otago_volts') }}</span
                                         >
                                       </div>
                                     </div>
@@ -3726,8 +3724,7 @@
                                         <tr class="text-center">
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Winner (incl. super over)
-                                            </span>
+                                              >{{ $t('ui.winner_incl_super_over') }}</span>
                                           </th>
                                         </tr>
                                       </thead>
@@ -3792,7 +3789,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >International Euroleague</span
+                                        >{{ $t('ui.international_euroleague') }}</span
                                       >
                                     </div>
                                     <div
@@ -3802,7 +3799,7 @@
                                         src="@/assets/images/icon/live.png"
                                         width="{16}"
                                         height="{16}"
-                                        alt="icon"
+                                        :alt="$t('ui.icon')"
                                       />
                                       <span class="fs-eight cpoint"
                                         >Today, 23:00</span
@@ -3811,7 +3808,7 @@
                                         src="@/assets/images/icon/updwon.png"
                                         width="{16}"
                                         height="{16}"
-                                        alt="icon"
+                                        :alt="$t('ui.icon')"
                                       />
                                     </div>
                                   </div>
@@ -3830,7 +3827,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Queensland Bulls</span
+                                          >{{ $t('ui.queensland_bulls') }}</span
                                         >
                                       </div>
                                       <div
@@ -3844,7 +3841,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Western Australia</span
+                                          >{{ $t('ui.western_australia') }}</span
                                         >
                                       </div>
                                     </div>
@@ -3887,17 +3884,16 @@
                                         <tr class="text-center">
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Draw no bet
-                                            </span>
+                                              >{{ $t('betting.draw_no_bet') }}</span>
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >First innings</span
+                                              >{{ $t('betting.first_innings') }}</span
                                             >
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >First over 96</span
+                                              >{{ $t('ui.first_over_96') }}</span
                                             >
                                           </th>
                                         </tr>
@@ -4022,7 +4018,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >International Euroleague</span
+                                        >{{ $t('ui.international_euroleague') }}</span
                                       >
                                     </div>
                                     <div
@@ -4032,13 +4028,13 @@
                                         src="@/assets/images/icon/live.png"
                                         width="{16}"
                                         height="{16}"
-                                        alt="icon"
+                                        :alt="$t('ui.icon')"
                                       />
                                       <img
                                         src="@/assets/images/icon/play.png"
                                         width="{16}"
                                         height="{16}"
-                                        alt="icon"
+                                        :alt="$t('ui.icon')"
                                       />
                                       <span class="fs-eight cpoint"
                                         >Today, 23:00</span
@@ -4060,7 +4056,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Queensland Bulls</span
+                                          >{{ $t('ui.queensland_bulls') }}</span
                                         >
                                       </div>
                                       <div
@@ -4074,7 +4070,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Western Australia</span
+                                          >{{ $t('ui.western_australia') }}</span
                                         >
                                       </div>
                                     </div>
@@ -4117,11 +4113,10 @@
                                         <tr class="text-center">
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Winner
-                                            </span>
+                                              >{{ $t('betting.winner') }}</span>
                                           </th>
                                           <th scope="col">
-                                            <span class="fs-eight">1x2</span>
+                                            <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                           </th>
                                         </tr>
                                       </thead>
@@ -4225,7 +4220,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >International Euroleague</span
+                                        >{{ $t('ui.international_euroleague') }}</span
                                       >
                                     </div>
                                     <div
@@ -4235,13 +4230,13 @@
                                         src="@/assets/images/icon/live.png"
                                         width="{16}"
                                         height="{16}"
-                                        alt="icon"
+                                        :alt="$t('ui.icon')"
                                       />
                                       <img
                                         src="@/assets/images/icon/play.png"
                                         width="{16}"
                                         height="{16}"
-                                        alt="icon"
+                                        :alt="$t('ui.icon')"
                                       />
                                       <span class="fs-eight cpoint"
                                         >Today, 23:00</span
@@ -4263,7 +4258,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Queensland Bulls</span
+                                          >{{ $t('ui.queensland_bulls') }}</span
                                         >
                                       </div>
                                       <div
@@ -4277,7 +4272,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Western Australia</span
+                                          >{{ $t('ui.western_australia') }}</span
                                         >
                                       </div>
                                     </div>
@@ -4320,11 +4315,10 @@
                                         <tr class="text-center">
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Winner
-                                            </span>
+                                              >{{ $t('betting.winner') }}</span>
                                           </th>
                                           <th scope="col">
-                                            <span class="fs-eight">1x2</span>
+                                            <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                           </th>
                                         </tr>
                                       </thead>
@@ -4428,7 +4422,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >World Cup (5 overs)</span
+                                        >{{ $t('ui.world_cup_5_overs') }}</span
                                       >
                                     </div>
                                     <div
@@ -4466,7 +4460,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Bangladesh</span
+                                          >{{ $t('ui.bangladesh') }}</span
                                         >
                                       </div>
                                       <div
@@ -4479,7 +4473,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >New Zealand</span
+                                          >{{ $t('ui.new_zealand') }}</span
                                         >
                                       </div>
                                     </div>
@@ -4520,12 +4514,12 @@
                                         <tr class="text-center">
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Total runs</span
+                                              >{{ $t('betting.total_runs') }}</span
                                             >
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Australia total runs</span
+                                              >{{ $t('ui.australia_total_runs') }}</span
                                             >
                                           </th>
                                         </tr>
@@ -4541,7 +4535,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -4552,7 +4546,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -4563,46 +4557,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
-                                                >
-                                                <span class="fw-bold d-block"
-                                                  >3.45</span
-                                                >
-                                              </div>
-                                            </div>
-                                          </td>
-                                          <td class="pt-4">
-                                            <div
-                                              class="top_matches__innercount d-flex align-items-center gap-2"
-                                            >
-                                              <div
-                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                              >
-                                                <span
-                                                  class="fs-seven d-block mb-2"
-                                                  >draw</span
-                                                >
-                                                <span class="fw-bold d-block"
-                                                  >3.45</span
-                                                >
-                                              </div>
-                                              <div
-                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                              >
-                                                <span
-                                                  class="fs-seven d-block mb-2"
-                                                  >draw</span
-                                                >
-                                                <span class="fw-bold d-block"
-                                                  >3.45</span
-                                                >
-                                              </div>
-                                              <div
-                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                              >
-                                                <span
-                                                  class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -4619,7 +4574,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -4630,7 +4585,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -4641,7 +4596,46 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
+                                                >
+                                                <span class="fw-bold d-block"
+                                                  >3.45</span
+                                                >
+                                              </div>
+                                            </div>
+                                          </td>
+                                          <td class="pt-4">
+                                            <div
+                                              class="top_matches__innercount d-flex align-items-center gap-2"
+                                            >
+                                              <div
+                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                              >
+                                                <span
+                                                  class="fs-seven d-block mb-2"
+                                                  >{{ $t('betting.draw') }}</span
+                                                >
+                                                <span class="fw-bold d-block"
+                                                  >3.45</span
+                                                >
+                                              </div>
+                                              <div
+                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                              >
+                                                <span
+                                                  class="fs-seven d-block mb-2"
+                                                  >{{ $t('betting.draw') }}</span
+                                                >
+                                                <span class="fw-bold d-block"
+                                                  >3.45</span
+                                                >
+                                              </div>
+                                              <div
+                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                              >
+                                                <span
+                                                  class="fs-seven d-block mb-2"
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -4676,7 +4670,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >World Cup (5 overs)</span
+                                        >{{ $t('ui.world_cup_5_overs') }}</span
                                       >
                                     </div>
                                     <div
@@ -4714,7 +4708,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Bangladesh</span
+                                          >{{ $t('ui.bangladesh') }}</span
                                         >
                                       </div>
                                       <div
@@ -4727,7 +4721,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >New Zealand</span
+                                          >{{ $t('ui.new_zealand') }}</span
                                         >
                                       </div>
                                     </div>
@@ -4768,17 +4762,17 @@
                                         <tr class="text-center">
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Total runs</span
+                                              >{{ $t('betting.total_runs') }}</span
                                             >
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Australia total runs</span
+                                              >{{ $t('ui.australia_total_runs') }}</span
                                             >
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >First innings</span
+                                              >{{ $t('betting.first_innings') }}</span
                                             >
                                           </th>
                                         </tr>
@@ -4794,7 +4788,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -4805,7 +4799,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -4816,46 +4810,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
-                                                >
-                                                <span class="fw-bold d-block"
-                                                  >3.45</span
-                                                >
-                                              </div>
-                                            </div>
-                                          </td>
-                                          <td class="pt-4">
-                                            <div
-                                              class="top_matches__innercount d-flex align-items-center gap-2"
-                                            >
-                                              <div
-                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                              >
-                                                <span
-                                                  class="fs-seven d-block mb-2"
-                                                  >draw</span
-                                                >
-                                                <span class="fw-bold d-block"
-                                                  >3.45</span
-                                                >
-                                              </div>
-                                              <div
-                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                              >
-                                                <span
-                                                  class="fs-seven d-block mb-2"
-                                                  >draw</span
-                                                >
-                                                <span class="fw-bold d-block"
-                                                  >3.45</span
-                                                >
-                                              </div>
-                                              <div
-                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                              >
-                                                <span
-                                                  class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -4872,7 +4827,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -4883,7 +4838,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -4894,7 +4849,46 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
+                                                >
+                                                <span class="fw-bold d-block"
+                                                  >3.45</span
+                                                >
+                                              </div>
+                                            </div>
+                                          </td>
+                                          <td class="pt-4">
+                                            <div
+                                              class="top_matches__innercount d-flex align-items-center gap-2"
+                                            >
+                                              <div
+                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                              >
+                                                <span
+                                                  class="fs-seven d-block mb-2"
+                                                  >{{ $t('betting.draw') }}</span
+                                                >
+                                                <span class="fw-bold d-block"
+                                                  >3.45</span
+                                                >
+                                              </div>
+                                              <div
+                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                              >
+                                                <span
+                                                  class="fs-seven d-block mb-2"
+                                                  >{{ $t('betting.draw') }}</span
+                                                >
+                                                <span class="fw-bold d-block"
+                                                  >3.45</span
+                                                >
+                                              </div>
+                                              <div
+                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                              >
+                                                <span
+                                                  class="fs-seven d-block mb-2"
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -4927,7 +4921,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >International Euroleague</span
+                                        >{{ $t('ui.international_euroleague') }}</span
                                       >
                                     </div>
                                     <div
@@ -4937,13 +4931,13 @@
                                         src="@/assets/images/icon/live.png"
                                         width="{16}"
                                         height="{16}"
-                                        alt="icon"
+                                        :alt="$t('ui.icon')"
                                       />
                                       <img
                                         src="@/assets/images/icon/play.png"
                                         width="{16}"
                                         height="{16}"
-                                        alt="icon"
+                                        :alt="$t('ui.icon')"
                                       />
                                       <span class="fs-eight cpoint"
                                         >Today, 23:00</span
@@ -4965,7 +4959,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Queensland Bulls</span
+                                          >{{ $t('ui.queensland_bulls') }}</span
                                         >
                                       </div>
                                       <div
@@ -4979,7 +4973,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Western Australia</span
+                                          >{{ $t('ui.western_australia') }}</span
                                         >
                                       </div>
                                     </div>
@@ -5022,11 +5016,10 @@
                                         <tr class="text-center">
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Winner
-                                            </span>
+                                              >{{ $t('betting.winner') }}</span>
                                           </th>
                                           <th scope="col">
-                                            <span class="fs-eight">1x2</span>
+                                            <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                           </th>
                                         </tr>
                                       </thead>
@@ -5133,7 +5126,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >International Euroleague</span
+                                        >{{ $t('ui.international_euroleague') }}</span
                                       >
                                     </div>
                                     <div
@@ -5143,13 +5136,13 @@
                                         src="@/assets/images/icon/live.png"
                                         width="{16}"
                                         height="{16}"
-                                        alt="icon"
+                                        :alt="$t('ui.icon')"
                                       />
                                       <img
                                         src="@/assets/images/icon/play.png"
                                         width="{16}"
                                         height="{16}"
-                                        alt="icon"
+                                        :alt="$t('ui.icon')"
                                       />
                                       <span class="fs-eight cpoint"
                                         >Today, 23:00</span
@@ -5171,7 +5164,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Queensland Bulls</span
+                                          >{{ $t('ui.queensland_bulls') }}</span
                                         >
                                       </div>
                                       <div
@@ -5185,7 +5178,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Western Australia</span
+                                          >{{ $t('ui.western_australia') }}</span
                                         >
                                       </div>
                                     </div>
@@ -5228,11 +5221,10 @@
                                         <tr class="text-center">
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Winner
-                                            </span>
+                                              >{{ $t('betting.winner') }}</span>
                                           </th>
                                           <th scope="col">
-                                            <span class="fs-eight">1x2</span>
+                                            <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                           </th>
                                         </tr>
                                       </thead>
@@ -5336,7 +5328,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >International Euroleague</span
+                                        >{{ $t('ui.international_euroleague') }}</span
                                       >
                                     </div>
                                     <div
@@ -5346,13 +5338,13 @@
                                         src="@/assets/images/icon/live.png"
                                         width="{16}"
                                         height="{16}"
-                                        alt="icon"
+                                        :alt="$t('ui.icon')"
                                       />
                                       <img
                                         src="@/assets/images/icon/play.png"
                                         width="{16}"
                                         height="{16}"
-                                        alt="icon"
+                                        :alt="$t('ui.icon')"
                                       />
                                       <span class="fs-eight cpoint"
                                         >Today, 23:00</span
@@ -5374,7 +5366,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Queensland Bulls</span
+                                          >{{ $t('ui.queensland_bulls') }}</span
                                         >
                                       </div>
                                       <div
@@ -5388,7 +5380,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Western Australia</span
+                                          >{{ $t('ui.western_australia') }}</span
                                         >
                                       </div>
                                     </div>
@@ -5431,11 +5423,10 @@
                                         <tr class="text-center">
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Winner
-                                            </span>
+                                              >{{ $t('betting.winner') }}</span>
                                           </th>
                                           <th scope="col">
-                                            <span class="fs-eight">1x2</span>
+                                            <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                           </th>
                                         </tr>
                                       </thead>
@@ -5539,7 +5530,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >World Cup (5 overs)</span
+                                        >{{ $t('ui.world_cup_5_overs') }}</span
                                       >
                                     </div>
                                     <div
@@ -5577,7 +5568,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Bangladesh</span
+                                          >{{ $t('ui.bangladesh') }}</span
                                         >
                                       </div>
                                       <div
@@ -5590,7 +5581,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >New Zealand</span
+                                          >{{ $t('ui.new_zealand') }}</span
                                         >
                                       </div>
                                     </div>
@@ -5631,12 +5622,12 @@
                                         <tr class="text-center">
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Total runs</span
+                                              >{{ $t('betting.total_runs') }}</span
                                             >
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Australia total runs</span
+                                              >{{ $t('ui.australia_total_runs') }}</span
                                             >
                                           </th>
                                         </tr>
@@ -5652,7 +5643,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -5663,7 +5654,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -5674,46 +5665,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
-                                                >
-                                                <span class="fw-bold d-block"
-                                                  >3.45</span
-                                                >
-                                              </div>
-                                            </div>
-                                          </td>
-                                          <td class="pt-4">
-                                            <div
-                                              class="top_matches__innercount d-flex align-items-center gap-2"
-                                            >
-                                              <div
-                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                              >
-                                                <span
-                                                  class="fs-seven d-block mb-2"
-                                                  >draw</span
-                                                >
-                                                <span class="fw-bold d-block"
-                                                  >3.45</span
-                                                >
-                                              </div>
-                                              <div
-                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                              >
-                                                <span
-                                                  class="fs-seven d-block mb-2"
-                                                  >draw</span
-                                                >
-                                                <span class="fw-bold d-block"
-                                                  >3.45</span
-                                                >
-                                              </div>
-                                              <div
-                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                              >
-                                                <span
-                                                  class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -5730,7 +5682,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -5741,7 +5693,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -5752,7 +5704,46 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
+                                                >
+                                                <span class="fw-bold d-block"
+                                                  >3.45</span
+                                                >
+                                              </div>
+                                            </div>
+                                          </td>
+                                          <td class="pt-4">
+                                            <div
+                                              class="top_matches__innercount d-flex align-items-center gap-2"
+                                            >
+                                              <div
+                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                              >
+                                                <span
+                                                  class="fs-seven d-block mb-2"
+                                                  >{{ $t('betting.draw') }}</span
+                                                >
+                                                <span class="fw-bold d-block"
+                                                  >3.45</span
+                                                >
+                                              </div>
+                                              <div
+                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                              >
+                                                <span
+                                                  class="fs-seven d-block mb-2"
+                                                  >{{ $t('betting.draw') }}</span
+                                                >
+                                                <span class="fw-bold d-block"
+                                                  >3.45</span
+                                                >
+                                              </div>
+                                              <div
+                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                              >
+                                                <span
+                                                  class="fs-seven d-block mb-2"
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -5787,7 +5778,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >World Cup (5 overs)</span
+                                        >{{ $t('ui.world_cup_5_overs') }}</span
                                       >
                                     </div>
                                     <div
@@ -5825,7 +5816,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Bangladesh</span
+                                          >{{ $t('ui.bangladesh') }}</span
                                         >
                                       </div>
                                       <div
@@ -5838,7 +5829,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >New Zealand</span
+                                          >{{ $t('ui.new_zealand') }}</span
                                         >
                                       </div>
                                     </div>
@@ -5879,17 +5870,17 @@
                                         <tr class="text-center">
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Total runs</span
+                                              >{{ $t('betting.total_runs') }}</span
                                             >
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Australia total runs</span
+                                              >{{ $t('ui.australia_total_runs') }}</span
                                             >
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >First innings</span
+                                              >{{ $t('betting.first_innings') }}</span
                                             >
                                           </th>
                                         </tr>
@@ -5905,7 +5896,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -5916,7 +5907,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -5927,46 +5918,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
-                                                >
-                                                <span class="fw-bold d-block"
-                                                  >3.45</span
-                                                >
-                                              </div>
-                                            </div>
-                                          </td>
-                                          <td class="pt-4">
-                                            <div
-                                              class="top_matches__innercount d-flex align-items-center gap-2"
-                                            >
-                                              <div
-                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                              >
-                                                <span
-                                                  class="fs-seven d-block mb-2"
-                                                  >draw</span
-                                                >
-                                                <span class="fw-bold d-block"
-                                                  >3.45</span
-                                                >
-                                              </div>
-                                              <div
-                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                              >
-                                                <span
-                                                  class="fs-seven d-block mb-2"
-                                                  >draw</span
-                                                >
-                                                <span class="fw-bold d-block"
-                                                  >3.45</span
-                                                >
-                                              </div>
-                                              <div
-                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                              >
-                                                <span
-                                                  class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -5983,7 +5935,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -5994,7 +5946,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6005,7 +5957,46 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
+                                                >
+                                                <span class="fw-bold d-block"
+                                                  >3.45</span
+                                                >
+                                              </div>
+                                            </div>
+                                          </td>
+                                          <td class="pt-4">
+                                            <div
+                                              class="top_matches__innercount d-flex align-items-center gap-2"
+                                            >
+                                              <div
+                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                              >
+                                                <span
+                                                  class="fs-seven d-block mb-2"
+                                                  >{{ $t('betting.draw') }}</span
+                                                >
+                                                <span class="fw-bold d-block"
+                                                  >3.45</span
+                                                >
+                                              </div>
+                                              <div
+                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                              >
+                                                <span
+                                                  class="fs-seven d-block mb-2"
+                                                  >{{ $t('betting.draw') }}</span
+                                                >
+                                                <span class="fw-bold d-block"
+                                                  >3.45</span
+                                                >
+                                              </div>
+                                              <div
+                                                class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                              >
+                                                <span
+                                                  class="fs-seven d-block mb-2"
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6038,7 +6029,7 @@
                                         alt="Icon"
                                       />
                                       <span class="fs-eight cpoint"
-                                        >International Euroleague</span
+                                        >{{ $t('ui.international_euroleague') }}</span
                                       >
                                     </div>
                                     <div
@@ -6048,13 +6039,13 @@
                                         src="@/assets/images/icon/live.png"
                                         width="{16}"
                                         height="{16}"
-                                        alt="icon"
+                                        :alt="$t('ui.icon')"
                                       />
                                       <img
                                         src="@/assets/images/icon/play.png"
                                         width="{16}"
                                         height="{16}"
-                                        alt="icon"
+                                        :alt="$t('ui.icon')"
                                       />
                                       <span class="fs-eight cpoint"
                                         >Today, 23:00</span
@@ -6076,7 +6067,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Queensland Bulls</span
+                                          >{{ $t('ui.queensland_bulls') }}</span
                                         >
                                       </div>
                                       <div
@@ -6090,7 +6081,7 @@
                                           alt="Icon"
                                         />
                                         <span class="fs-seven cpoint"
-                                          >Western Australia</span
+                                          >{{ $t('ui.western_australia') }}</span
                                         >
                                       </div>
                                     </div>
@@ -6133,11 +6124,10 @@
                                         <tr class="text-center">
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Winner
-                                            </span>
+                                              >{{ $t('betting.winner') }}</span>
                                           </th>
                                           <th scope="col">
-                                            <span class="fs-eight">1x2</span>
+                                            <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                           </th>
                                         </tr>
                                       </thead>
@@ -6339,10 +6329,10 @@
                                       <thead>
                                         <tr class="text-center">
                                           <th scope="col">
-                                            <span class="fs-eight">1x2</span>
+                                            <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                           </th>
                                           <th scope="col">
-                                            <span class="fs-eight">Total</span>
+                                            <span class="fs-eight">{{ $t('betting.total') }}</span>
                                           </th>
                                         </tr>
                                       </thead>
@@ -6357,7 +6347,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6368,7 +6358,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6379,7 +6369,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6396,7 +6386,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6407,7 +6397,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6418,7 +6408,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6429,7 +6419,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6440,7 +6430,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6451,7 +6441,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6584,10 +6574,10 @@
                                       <thead>
                                         <tr class="text-center">
                                           <th scope="col">
-                                            <span class="fs-eight">1x2</span>
+                                            <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                           </th>
                                           <th scope="col">
-                                            <span class="fs-eight">Total</span>
+                                            <span class="fs-eight">{{ $t('betting.total') }}</span>
                                           </th>
                                         </tr>
                                       </thead>
@@ -6602,7 +6592,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6613,7 +6603,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6624,7 +6614,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6641,7 +6631,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6652,7 +6642,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6663,7 +6653,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6674,7 +6664,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6685,7 +6675,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6696,7 +6686,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6826,10 +6816,10 @@
                                       <thead>
                                         <tr class="text-center">
                                           <th scope="col">
-                                            <span class="fs-eight">1x2</span>
+                                            <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                           </th>
                                           <th scope="col">
-                                            <span class="fs-eight">Total</span>
+                                            <span class="fs-eight">{{ $t('betting.total') }}</span>
                                           </th>
                                         </tr>
                                       </thead>
@@ -6844,7 +6834,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6855,7 +6845,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6866,7 +6856,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6883,7 +6873,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6894,7 +6884,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6905,7 +6895,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6916,7 +6906,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6927,7 +6917,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6938,7 +6928,7 @@
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                  >draw</span
+                                                  >{{ $t('betting.draw') }}</span
                                                 >
                                                 <span class="fw-bold d-block"
                                                   >3.45</span
@@ -6969,6 +6959,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 import liveMatch from "@/assets/images/icon/live-match.png";
 import {

@@ -15,7 +15,7 @@
                     height="{32}"
                     alt="Icon"
                   />
-                  <h3>International</h3>
+                  <h3>{{ $t('ui.international') }}</h3>
                 </div>
                 <div class="top_matches__content">
                   <div class="top_matches__cmncard p2-bg p-4 rounded-3 mb-4">
@@ -33,7 +33,7 @@
                                 alt="Icon"
                               />
                               <span class="fs-eight cpoint"
-                                >Poland Ekstraklasa</span
+                                >{{ $t('ui.poland_ekstraklasa') }}</span
                               >
                             </div>
                             <div
@@ -56,7 +56,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">Bsf Bochnia</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.bsf_bochnia') }}</span>
                               </div>
                               <div class="d-flex align-items-center gap-2">
                                 <img
@@ -66,7 +66,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">Przemysl</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.przemysl') }}</span>
                               </div>
                             </div>
                             <div
@@ -102,7 +102,7 @@
                               <thead>
                                 <tr class="text-start">
                                   <th scope="col">
-                                    <span class="fs-eight ms-17">Winner</span>
+                                    <span class="fs-eight ms-17">{{ $t('betting.winner') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -157,7 +157,7 @@
                                 alt="Icon"
                               />
                               <span class="fs-eight cpoint"
-                                >Poland Ekstraklasa</span
+                                >{{ $t('ui.poland_ekstraklasa') }}</span
                               >
                             </div>
                             <div
@@ -180,7 +180,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">Bsf Bochnia</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.bsf_bochnia') }}</span>
                               </div>
                               <div class="d-flex align-items-center gap-2">
                                 <img
@@ -190,7 +190,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">Przemysl</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.przemysl') }}</span>
                               </div>
                             </div>
                             <div
@@ -226,7 +226,7 @@
                               <thead>
                                 <tr class="text-start">
                                   <th scope="col">
-                                    <span class="fs-eight ms-17">Winner</span>
+                                    <span class="fs-eight ms-17">{{ $t('betting.winner') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -281,7 +281,7 @@
                                 alt="Icon"
                               />
                               <span class="fs-eight cpoint"
-                                >Poland Ekstraklasa</span
+                                >{{ $t('ui.poland_ekstraklasa') }}</span
                               >
                             </div>
                             <div
@@ -305,7 +305,7 @@
                                   alt="Icon"
                                 />
                                 <span class="fs-seven cpoint"
-                                  >AZS Uw Wilanow</span
+                                  >{{ $t('ui.azs_uw_wilanow') }}</span
                                 >
                               </div>
                               <div class="d-flex align-items-center gap-2">
@@ -316,7 +316,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">Widzew Lodz</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.widzew_lodz') }}</span>
                               </div>
                             </div>
                             <div
@@ -352,7 +352,7 @@
                               <thead>
                                 <tr class="text-start">
                                   <th scope="col">
-                                    <span class="fs-eight ms-17">Winner</span>
+                                    <span class="fs-eight ms-17">{{ $t('betting.winner') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -407,7 +407,7 @@
                                 alt="Icon"
                               />
                               <span class="fs-eight cpoint"
-                                >Poland Ekstraklasa</span
+                                >{{ $t('ui.poland_ekstraklasa') }}</span
                               >
                             </div>
                             <div
@@ -430,7 +430,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">Bsf Bochnia</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.bsf_bochnia') }}</span>
                               </div>
                               <div class="d-flex align-items-center gap-2">
                                 <img
@@ -440,7 +440,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">Przemysl</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.przemysl') }}</span>
                               </div>
                             </div>
                           </div>
@@ -455,7 +455,7 @@
                               <thead>
                                 <tr class="text-start">
                                   <th scope="col">
-                                    <span class="fs-eight ms-17">Winner</span>
+                                    <span class="fs-eight ms-17">{{ $t('betting.winner') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -506,6 +506,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import chart from "@/assets/images/icon/line-chart.png";
 import star from "@/assets/images/icon/star2.png";
 import darts from "@/assets/images/icon/darts.png";

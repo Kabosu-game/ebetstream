@@ -1,31 +1,31 @@
 <template>
   <div class="pay_method__paymethod p-3 p-md-4 p-lg-6 p2-bg rounded-8">
     <div class="pay_method__paymethod-title mb-5 mb-md-6">
-      <h2 class="text-white fw-bold mb-2">Bet Management</h2>
-      <p class="text-white-50">Manage all bets and finalize pending bets</p>
+      <h2 class="text-white fw-bold mb-2">{{ $t('ui.bet_management') }}</h2>
+      <p class="text-white-50">{{ $t('ui.manage_all_bets_and_finalize_pending_bets') }}</p>
     </div>
 
     <!-- Filters -->
     <div class="d-flex gap-3 mb-4 flex-wrap">
       <select v-model="filterStatus" class="form-select n11-bg text-white border-secondary" style="max-width: 200px;">
-        <option value="">All Statuses</option>
-        <option value="pending">Pending</option>
-        <option value="won">Won</option>
-        <option value="lost">Lost</option>
-        <option value="cancelled">Cancelled</option>
+        <option value="">{{ $t('ui.all_statuses') }}</option>
+        <option value="pending">{{ $t('common.pending') }}</option>
+        <option value="won">{{ $t('ui.won') }}</option>
+        <option value="lost">{{ $t('ui.lost') }}</option>
+        <option value="cancelled">{{ $t('common.cancelled') }}</option>
       </select>
       <input 
         v-model="searchQuery" 
         type="text" 
         class="form-control n11-bg text-white border-secondary" 
-        placeholder="Search by user or match..."
+        :placeholder="$t('ui.search_by_user_or_match')"
         style="max-width: 300px;"
       />
     </div>
 
     <div v-if="loading" class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+        <span class="visually-hidden">{{ $t('common.loading') }}</span>
       </div>
     </div>
 
@@ -34,16 +34,16 @@
         <table class="w-100 text-center p2-bg">
           <thead>
             <tr>
-              <th class="text-white p-3">ID</th>
-              <th class="text-white p-3">User</th>
-              <th class="text-white p-3">Match</th>
-              <th class="text-white p-3">Bet Type</th>
-              <th class="text-white p-3">Amount</th>
-              <th class="text-white p-3">Odds</th>
-              <th class="text-white p-3">Potential Win</th>
-              <th class="text-white p-3">Status</th>
-              <th class="text-white p-3">Date</th>
-              <th class="text-white p-3">Actions</th>
+              <th class="text-white p-3">{{ $t('common.id') }}</th>
+              <th class="text-white p-3">{{ $t('common.user') }}</th>
+              <th class="text-white p-3">{{ $t('ui.match') }}</th>
+              <th class="text-white p-3">{{ $t('ui.bet_type') }}</th>
+              <th class="text-white p-3">{{ $t('ui.amount') }}</th>
+              <th class="text-white p-3">{{ $t('ui.odds') }}</th>
+              <th class="text-white p-3">{{ $t('ui.potential_win') }}</th>
+              <th class="text-white p-3">{{ $t('common.status') }}</th>
+              <th class="text-white p-3">{{ $t('common.date') }}</th>
+              <th class="text-white p-3">{{ $t('common.actions') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -95,7 +95,7 @@
               </td>
             </tr>
             <tr v-if="filteredBets.length === 0">
-              <td colspan="10" class="text-white p-5 text-center">No bets found</td>
+              <td colspan="10" class="text-white p-5 text-center">{{ $t('ui.no_bets_found') }}</td>
             </tr>
           </tbody>
         </table>
@@ -128,6 +128,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, computed, onMounted } from 'vue';
 import apiClient from '@/utils/axios';
 

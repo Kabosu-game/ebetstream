@@ -21,7 +21,7 @@
                       />
                       <div class="top_matches__winnercard-obi">
                         <span class="mb-3 n4-color">Jan 1, 2024, 10:00</span>
-                        <h5>Paris - Roubaix - Winner</h5>
+                        <h5>{{ $t('ui.paris_roubaix_winner') }}</h5>
                       </div>
                     </div>
                     <div class="row gy-2">
@@ -30,19 +30,19 @@
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Van Aert, Wout</span>
+                            <span>{{ $t('ui.van_aert_wout') }}</span>
                             <span>4.5</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Pedersen, Mads</span>
+                            <span>{{ $t('ui.pedersen_mads') }}</span>
                             <span>7.5</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3"
                           >
-                            <span>van Baarle, Dylan</span>
+                            <span>{{ $t('ui.van_baarle_dylan') }}</span>
                             <span>19.0</span>
                           </div>
                         </div>
@@ -52,19 +52,19 @@
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>van der Poel, Mathieu</span>
+                            <span>{{ $t('ui.van_der_poel_mathieu') }}</span>
                             <span>6.5</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Pogacar, Tadej</span>
+                            <span>{{ $t('ui.pogacar_tadej') }}</span>
                             <span>8.0</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3"
                           >
-                            <span>Degenkolb, John</span>
+                            <span>{{ $t('ui.degenkolb_john') }}</span>
                             <span>23.0</span>
                           </div>
                         </div>
@@ -74,19 +74,19 @@
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Philipsen, Jasper</span>
+                            <span>{{ $t('ui.philipsen_jasper') }}</span>
                             <span>6.5</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Laporte, Christophe</span>
+                            <span>{{ $t('ui.laporte_christophe') }}</span>
                             <span>8.0</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3"
                           >
-                            <span>Ganna, Filippo</span>
+                            <span>{{ $t('ui.ganna_filippo') }}</span>
                             <span>23.0</span>
                           </div>
                         </div>
@@ -95,7 +95,7 @@
                         <div
                           class="top_matches__winnercard-singe d-flex align-items-center justify-content-center n11-bg rounded-2 py-1 px-3 mb-2 gap-2 mt-2"
                         >
-                          <span class="cpoint">Show more</span>
+                          <span class="cpoint">{{ $t('common.show_more') }}</span>
                           <i class="ti ti-arrow-badge-down cpoint mt-1"></i>
                         </div>
                       </div>
@@ -112,6 +112,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import cyclingBig from "@/assets/images/icon/cycling-big.png";
 </script>
 

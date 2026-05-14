@@ -2,12 +2,11 @@
   <div class="pay_method__paymethod p-3 p-md-4 p-lg-6 p2-bg rounded-8">
     <div class="pay_method__paymethod-title mb-5 mb-md-6 d-flex justify-content-between align-items-center flex-wrap gap-3">
       <div>
-        <h2 class="text-white fw-bold mb-2">Promo Codes</h2>
-        <p class="text-white-50">Manage welcome codes and promo codes</p>
+        <h2 class="text-white fw-bold mb-2">{{ $t('ui.promo_codes') }}</h2>
+        <p class="text-white-50">{{ $t('ui.manage_welcome_codes_and_promo_codes') }}</p>
       </div>
       <button class="btn_primary" @click="showCreateModal = true; resetForm()">
-        <i class="fas fa-plus me-2"  ></i>New Code
-      </button>
+        <i class="fas fa-plus me-2"  ></i>{{ $t('ui.new_code') }}</button>
     </div>
 
     <!-- Filters -->
@@ -16,25 +15,25 @@
         v-model="searchQuery" 
         type="text" 
         class="form-control n11-bg text-white border-secondary" 
-        placeholder="Search for a code..."
+        :placeholder="$t('ui.search_for_a_code')"
         style="max-width: 300px;"
       />
       <select v-model="filterType" class="form-select n11-bg text-white border-secondary" style="max-width: 200px;">
-        <option value="">All Types</option>
-        <option value="welcome">Welcome Codes</option>
-        <option value="personal">Personal Codes</option>
+        <option value="">{{ $t('ui.all_types') }}</option>
+        <option value="welcome">{{ $t('ui.welcome_codes') }}</option>
+        <option value="personal">{{ $t('ui.personal_codes') }}</option>
       </select>
       <select v-model="filterActive" class="form-select n11-bg text-white border-secondary" style="max-width: 200px;">
-        <option value="">All Statuses</option>
-        <option value="true">Active</option>
-        <option value="false">Inactive</option>
+        <option value="">{{ $t('ui.all_statuses') }}</option>
+        <option value="true">{{ $t('common.active') }}</option>
+        <option value="false">{{ $t('common.inactive') }}</option>
       </select>
     </div>
 
     <!-- Loading -->
     <div v-if="loading" class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+        <span class="visually-hidden">{{ $t('common.loading') }}</span>
       </div>
     </div>
 
@@ -50,14 +49,14 @@
             <div>
               <h4 class="text-white mb-1">{{ code.code }}</h4>
               <div class="d-flex flex-wrap gap-2 mb-2">
-                <span v-if="code.type === 'user_personal'" class="badge bg-info me-2">Personal Code</span>
-                <span v-else-if="code.is_welcome_code" class="badge bg-success me-2">Welcome Code</span>
+                <span v-if="code.type === 'user_personal'" class="badge bg-info me-2">{{ $t('ui.personal_code') }}</span>
+                <span v-else-if="code.is_welcome_code" class="badge bg-success me-2">{{ $t('ui.welcome_code') }}</span>
                 <span :class="['badge', code.is_active !== false ? 'bg-success' : 'bg-secondary']">
                   {{ code.is_active !== false ? 'Active' : 'Inactive' }}
                 </span>
               </div>
               <div v-if="code.type === 'user_personal' && code.username" class="mt-2">
-                <small class="text-white-50 d-block">User: <strong class="text-white">{{ code.username }}</strong></small>
+                <small class="text-white-50 d-block">{{ $t('ui.user') }}<strong class="text-white">{{ code.username }}</strong></small>
                 <small class="text-white-50 d-block">Email: {{ code.email }}</small>
               </div>
             </div>
@@ -86,27 +85,27 @@
             <template v-if="code.type !== 'user_personal'">
               <div v-if="code.welcome_bonus && code.welcome_bonus > 0" class="promo_bonus">
                 <p class="text-white-50 small mb-0">
-                  <strong class="text-white">Registration Bonus:</strong> ${{ formatNumber(code.welcome_bonus) }}
+                  <strong class="text-white">{{ $t('ui.registration_bonus') }}</strong> ${{ formatNumber(code.welcome_bonus) }}
                 </p>
               </div>
               <div v-if="code.first_deposit_bonus_percentage && code.first_deposit_bonus_percentage > 0" class="promo_bonus">
                 <p class="text-white-50 small mb-0">
-                  <strong class="text-white">First Deposit Bonus:</strong> {{ code.first_deposit_bonus_percentage }}%
+                  <strong class="text-white">{{ $t('ui.first_deposit_bonus') }}</strong> {{ code.first_deposit_bonus_percentage }}%
                 </p>
               </div>
               <div v-if="code.premium_days && code.premium_days > 0" class="promo_bonus">
                 <p class="text-white-50 small mb-0">
-                  <strong class="text-white">Premium Access:</strong> {{ code.premium_days }} days
+                  <strong class="text-white">{{ $t('ui.premium_access') }}</strong> {{ code.premium_days }} days
                 </p>
               </div>
               <div class="promo_usage mt-2">
                 <p class="text-white-50 small mb-0">
-                  <strong>Uses:</strong> {{ code.used_count || 0 }} / {{ code.usage_limit || '∞' }}
+                  <strong>{{ $t('ui.uses') }}</strong> {{ code.used_count || 0 }} / {{ code.usage_limit || '∞' }}
                 </p>
               </div>
               <div v-if="code.expires_at" class="promo_expiry mt-2">
                 <p class="text-white-50 small mb-0">
-                  <strong>Expires on:</strong> {{ formatDate(code.expires_at) }}
+                  <strong>{{ $t('ui.expires_on') }}</strong> {{ formatDate(code.expires_at) }}
                 </p>
               </div>
             </template>
@@ -114,10 +113,10 @@
             <template v-else>
               <div class="promo_usage mt-2">
                 <p class="text-white-50 small mb-0">
-                  <strong>Uses:</strong> {{ code.used_count || 0 }} times
+                  <strong>{{ $t('ui.uses') }}</strong> {{ code.used_count || 0 }} times
                 </p>
                 <p class="text-white-50 small mb-0 mt-1">
-                  <strong>Created on:</strong> {{ code.created_at ? formatDate(code.created_at) : 'N/A' }}
+                  <strong>{{ $t('ui.created_on') }}</strong> {{ code.created_at ? formatDate(code.created_at) : 'N/A' }}
                 </p>
               </div>
             </template>
@@ -126,7 +125,7 @@
       </div>
       <div v-if="filteredCodes.length === 0" class="col-12">
         <div class="text-center py-5">
-          <p class="text-white-50">No promo codes available</p>
+          <p class="text-white-50">{{ $t('ui.no_promo_codes_available') }}</p>
         </div>
       </div>
     </div>
@@ -140,17 +139,17 @@
         <form @submit.prevent="saveCode">
           <div v-if="editingCode && editingCode.type === 'user_personal'" class="alert alert-info mb-3">
             <small class="text-white-50">
-              <strong>User:</strong> {{ editingCode.username }} ({{ editingCode.email }})<br>
+              <strong>{{ $t('ui.user') }}</strong> {{ editingCode.username }} ({{ editingCode.email }})<br>
               This code can be modified but cannot be converted to a welcome code.
             </small>
           </div>
           <div class="form-group mb-3">
-            <label class="text-white mb-2">Code</label>
+            <label class="text-white mb-2">{{ $t('ui.code') }}</label>
             <input 
               v-model="formData.code" 
               type="text" 
               class="form-control n11-bg text-white border-secondary" 
-              placeholder="Ex: WELCOME2024"
+              :placeholder="$t('ui.ex_welcome2024')"
               required
               :disabled="!!editingCode && editingCode.type !== 'user_personal'"
             />
@@ -158,12 +157,12 @@
           <!-- Fields for welcome codes only -->
           <template v-if="!editingCode || editingCode.type !== 'user_personal'">
             <div class="form-group mb-3">
-              <label class="text-white mb-2">Description (optional)</label>
+              <label class="text-white mb-2">{{ $t('ui.description_optional') }}</label>
               <textarea 
                 v-model="formData.description" 
                 class="form-control n11-bg text-white border-secondary" 
                 rows="2"
-                placeholder="Promo code description"
+                :placeholder="$t('ui.promo_code_description')"
               ></textarea>
             </div>
             <div class="form-group mb-3">
@@ -180,7 +179,7 @@
               </div>
             </div>
             <div class="form-group mb-3">
-              <label class="text-white mb-2">Registration Bonus ($)</label>
+              <label class="text-white mb-2">{{ $t('ui.registration_bonus_2') }}</label>
               <input 
                 v-model.number="formData.welcome_bonus" 
                 type="number" 
@@ -189,10 +188,10 @@
                 class="form-control n11-bg text-white border-secondary" 
                 placeholder="0.00"
               />
-              <small class="text-white-50 d-block mt-1">Amount automatically credited upon registration</small>
+              <small class="text-white-50 d-block mt-1">{{ $t('ui.amount_automatically_credited_upon_registration') }}</small>
             </div>
             <div class="form-group mb-3">
-              <label class="text-white mb-2">First Deposit Bonus (%)</label>
+              <label class="text-white mb-2">{{ $t('ui.first_deposit_bonus_2') }}</label>
               <input 
                 v-model.number="formData.first_deposit_bonus_percentage" 
                 type="number" 
@@ -202,10 +201,10 @@
                 class="form-control n11-bg text-white border-secondary" 
                 placeholder="0.00"
               />
-              <small class="text-white-50 d-block mt-1">Bonus percentage on first deposit amount</small>
+              <small class="text-white-50 d-block mt-1">{{ $t('ui.bonus_percentage_on_first_deposit_amount') }}</small>
             </div>
             <div class="form-group mb-3">
-              <label class="text-white mb-2">Premium Access Days</label>
+              <label class="text-white mb-2">{{ $t('ui.premium_access_days') }}</label>
               <input 
                 v-model.number="formData.premium_days" 
                 type="number" 
@@ -213,10 +212,10 @@
                 class="form-control n11-bg text-white border-secondary" 
                 placeholder="0"
               />
-              <small class="text-white-50 d-block mt-1">Number of days of access to premium features</small>
+              <small class="text-white-50 d-block mt-1">{{ $t('ui.number_of_days_of_access_to_premium_features') }}</small>
             </div>
             <div class="form-group mb-3">
-              <label class="text-white mb-2">Usage Limit</label>
+              <label class="text-white mb-2">{{ $t('ui.usage_limit') }}</label>
               <input 
                 v-model.number="formData.usage_limit" 
                 type="number" 
@@ -224,10 +223,10 @@
                 class="form-control n11-bg text-white border-secondary" 
                 placeholder="1"
               />
-              <small class="text-white-50 d-block mt-1">Maximum number of uses (0 = unlimited)</small>
+              <small class="text-white-50 d-block mt-1">{{ $t('ui.maximum_number_of_uses_0_unlimited') }}</small>
             </div>
             <div class="form-group mb-3">
-              <label class="text-white mb-2">Expiration Date (optional)</label>
+              <label class="text-white mb-2">{{ $t('ui.expiration_date_optional') }}</label>
               <input 
                 v-model="formData.expires_at" 
                 type="datetime-local" 
@@ -258,8 +257,7 @@
             <button type="submit" class="btn_primary" :disabled="saving">
               <span v-if="!saving">{{ editingCode ? 'Update' : 'Create' }}</span>
               <span v-else>
-                <i class="fas fa-spinner fa-spin me-2"></i>Saving...
-              </span>
+                <i class="fas fa-spinner fa-spin me-2"></i>{{ $t('common.saving') }}</span>
             </button>
           </div>
         </form>
@@ -269,6 +267,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, computed, onMounted } from 'vue';
 import apiClient from '@/utils/axios';
 interface PromoCode {

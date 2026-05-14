@@ -33,7 +33,7 @@
                                 alt="Icon"
                               />
                               <span class="fs-eight cpoint"
-                                >Rise World Series</span
+                                >{{ $t('ui.rise_world_series') }}</span
                               >
                             </div>
                             <div
@@ -56,7 +56,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">P. Kiatmoo9</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.p_kiatmoo9') }}</span>
                               </div>
                               <div class="d-flex align-items-center gap-2">
                                 <img
@@ -67,7 +67,7 @@
                                   alt="Icon"
                                 />
                                 <span class="fs-seven cpoint"
-                                  >Collins, Chadd</span
+                                  >{{ $t('ui.collins_chadd') }}</span
                                 >
                               </div>
                             </div>
@@ -90,7 +90,7 @@
                               <thead>
                                 <tr class="text-start">
                                   <th scope="col">
-                                    <span class="fs-eight ms-15">Winner</span>
+                                    <span class="fs-eight ms-15">{{ $t('betting.winner') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -146,7 +146,7 @@
                                 alt="Icon"
                               />
                               <span class="fs-eight cpoint"
-                                >Rise World Series</span
+                                >{{ $t('ui.rise_world_series') }}</span
                               >
                             </div>
                             <div
@@ -169,7 +169,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">P. Kiatmoo9</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.p_kiatmoo9') }}</span>
                               </div>
                               <div class="d-flex align-items-center gap-2">
                                 <img
@@ -180,7 +180,7 @@
                                   alt="Icon"
                                 />
                                 <span class="fs-seven cpoint"
-                                  >Collins, Chadd</span
+                                  >{{ $t('ui.collins_chadd') }}</span
                                 >
                               </div>
                             </div>
@@ -203,7 +203,7 @@
                               <thead>
                                 <tr class="text-start">
                                   <th scope="col">
-                                    <span class="fs-eight ms-15">Winner</span>
+                                    <span class="fs-eight ms-15">{{ $t('betting.winner') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -257,6 +257,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import rise from "@/assets/images/icon/rise.png";
 import mma from "@/assets/images/icon/mma.png";
 import mma2 from "@/assets/images/icon/mma2.png";

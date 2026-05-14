@@ -4,7 +4,7 @@
     <div class="tw-section-header">
       <div class="tw-section-header__left">
         <i class="ti ti-trophy tw-section-icon"></i>
-        <h2 class="tw-section-title">Matchs du championnat</h2>
+        <h2 class="tw-section-title">{{ $t('ui.matchs_du_championnat') }}</h2>
       </div>
       <router-link to="/championships" class="tw-see-all">
         Voir tout <i class="fas fa-chevron-right"></i>
@@ -33,7 +33,7 @@
     <!-- No matches -->
     <div v-else-if="allMatches.length === 0" class="tw-empty-state">
       <i class="ti ti-calendar-off tw-empty-state__icon"></i>
-      <p>No scheduled matches available at the moment.</p>
+      <p>{{ $t('ui.no_scheduled_matches_available_at_the_moment') }}</p>
     </div>
 
     <!-- Matches -->
@@ -45,31 +45,28 @@
           :class="{ 'tw-tab--active': activeTab === 'division1' }"
           @click="activeTab = 'division1'"
         >
-          <i class="fas fa-trophy"></i> Division 1
-          <span class="tw-tab-count" v-if="division1Matches.length">{{ division1Matches.length }}</span>
+          <i class="fas fa-trophy"></i>{{ $t('ui.division_1') }}<span class="tw-tab-count" v-if="division1Matches.length">{{ division1Matches.length }}</span>
         </button>
         <button
           class="tw-tab"
           :class="{ 'tw-tab--active': activeTab === 'division2' }"
           @click="activeTab = 'division2'"
         >
-          <i class="fas fa-medal"></i> Division 2
-          <span class="tw-tab-count" v-if="division2Matches.length">{{ division2Matches.length }}</span>
+          <i class="fas fa-medal"></i>{{ $t('ui.division_2') }}<span class="tw-tab-count" v-if="division2Matches.length">{{ division2Matches.length }}</span>
         </button>
         <button
           class="tw-tab"
           :class="{ 'tw-tab--active': activeTab === 'division3' }"
           @click="activeTab = 'division3'"
         >
-          <i class="fas fa-award"></i> Division 3
-          <span class="tw-tab-count" v-if="division3Matches.length">{{ division3Matches.length }}</span>
+          <i class="fas fa-award"></i>{{ $t('ui.division_3') }}<span class="tw-tab-count" v-if="division3Matches.length">{{ division3Matches.length }}</span>
         </button>
       </div>
 
       <!-- Tab content -->
       <template v-for="(divMatches, divKey) in { division1: division1Matches, division2: division2Matches, division3: division3Matches }" :key="divKey">
         <div v-if="activeTab === divKey">
-          <p v-if="divMatches.length === 0" class="tw-tab-empty">No matches in this division.</p>
+          <p v-if="divMatches.length === 0" class="tw-tab-empty">{{ $t('ui.no_matches_in_this_division') }}</p>
 
           <div v-else class="tw-match-grid">
             <div
@@ -94,7 +91,7 @@
                     <img
                       v-if="match.player1?.team_logo"
                       :src="getTeamLogoUrl(match.player1.team_logo)"
-                      :alt="match.player1?.team_name"
+                      :alt="$t('ui.match_player1_team_name')"
                     />
                     <i v-else class="fas fa-users"></i>
                   </div>
@@ -110,7 +107,7 @@
                     <img
                       v-if="match.player2?.team_logo"
                       :src="getTeamLogoUrl(match.player2.team_logo)"
-                      :alt="match.player2?.team_name"
+                      :alt="$t('ui.match_player2_team_name')"
                     />
                     <i v-else class="fas fa-users"></i>
                   </div>
@@ -135,7 +132,7 @@
                   @click.stop="selectBet(match, 'draw', getOddsNumber(match.draw_odds, 3.00))"
                   :disabled="!isAuthenticated"
                 >
-                  <span>Draw</span>
+                  <span>{{ $t('betting.draw_2') }}</span>
                   <span class="tw-bet-odds">{{ formatOdds(match.draw_odds, 3.00) }}x</span>
                 </button>
                 <button
@@ -164,7 +161,7 @@
   <div v-if="showBetModal" class="tw-modal-overlay" @click.self="closeBetModal">
     <div class="tw-modal">
       <div class="tw-modal__header">
-        <h3 class="tw-modal__title">Place a Bet</h3>
+        <h3 class="tw-modal__title">{{ $t('ui.place_a_bet') }}</h3>
         <button class="tw-modal__close" @click="closeBetModal">
           <i class="fas fa-times"></i>
         </button>
@@ -175,7 +172,7 @@
           {{ selectedMatch.player1?.team_name || 'Team 1' }} vs {{ selectedMatch.player2?.team_name || 'Team 2' }}
         </p>
         <div class="tw-modal__row">
-          <span class="tw-modal__label">Your choice</span>
+          <span class="tw-modal__label">{{ $t('ui.your_choice') }}</span>
           <span class="tw-modal__value">
             {{ selectedBetType === 'player1_win'
                 ? (selectedMatch.player1?.team_name || 'Team 1') + ' (Win)'
@@ -185,12 +182,12 @@
           </span>
         </div>
         <div class="tw-modal__row">
-          <span class="tw-modal__label">Odds</span>
+          <span class="tw-modal__label">{{ $t('ui.odds') }}</span>
           <span class="tw-modal__odds">{{ formatOdds(selectedOdds) }}x</span>
         </div>
 
         <div class="tw-modal__input-group">
-          <label class="tw-modal__input-label">Bet Amount (EBT)</label>
+          <label class="tw-modal__input-label">{{ $t('ui.bet_amount_ebt') }}</label>
           <input
             v-model.number="betAmount"
             type="number"
@@ -211,7 +208,7 @@
       </div>
 
       <div class="tw-modal__footer">
-        <button class="tw-btn tw-btn--secondary" @click="closeBetModal">Cancel</button>
+        <button class="tw-btn tw-btn--secondary" @click="closeBetModal">{{ $t('common.cancel') }}</button>
         <button
           class="tw-btn tw-btn--primary"
           @click="placeBet"
@@ -225,6 +222,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient from '@/utils/axios';

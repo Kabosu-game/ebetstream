@@ -2,12 +2,11 @@
   <div class="pay_method__paymethod p-3 p-md-4 p-lg-6 p2-bg rounded-8">
     <div class="pay_method__paymethod-title mb-5 mb-md-6 d-flex justify-content-between align-items-center">
       <div>
-        <h2 class="text-white fw-bold mb-2">User Management</h2>
-        <p class="text-white-50">Manage all platform users</p>
+        <h2 class="text-white fw-bold mb-2">{{ $t('ui.user_management') }}</h2>
+        <p class="text-white-50">{{ $t('ui.manage_all_platform_users') }}</p>
       </div>
       <button class="btn_primary" @click="showCreateModal = true">
-        <i class="fas fa-plus me-2"  ></i>New User
-      </button>
+        <i class="fas fa-plus me-2"  ></i>{{ $t('ui.new_user') }}</button>
     </div>
 
     <!-- Filters -->
@@ -16,20 +15,20 @@
         v-model="searchQuery" 
         type="text" 
         class="form-control n11-bg text-white border-secondary" 
-        placeholder="Search for a user..."
+        :placeholder="$t('ui.search_for_a_user')"
         style="max-width: 300px;"
       />
       <select v-model="filterRole" class="form-select n11-bg text-white border-secondary" style="max-width: 200px;">
-        <option value="">Tous les rôles</option>
-        <option value="user">Utilisateur</option>
-        <option value="admin">Admin</option>
+        <option value="">{{ $t('ui.tous_les_r_les') }}</option>
+        <option value="user">{{ $t('ui.utilisateur') }}</option>
+        <option value="admin">{{ $t('common.admin') }}</option>
       </select>
     </div>
 
     <!-- Loading -->
     <div v-if="loading" class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+        <span class="visually-hidden">{{ $t('common.loading') }}</span>
       </div>
     </div>
 
@@ -39,15 +38,15 @@
         <table class="w-100 text-center p2-bg">
           <thead>
             <tr>
-              <th class="text-white p-3">ID</th>
-              <th class="text-white p-3">Name</th>
-              <th class="text-white p-3">Email</th>
-              <th class="text-white p-3">Username</th>
-              <th class="text-white p-3">Role</th>
-              <th class="text-white p-3">eBetStar</th>
-              <th class="text-white p-3">Balance</th>
-              <th class="text-white p-3">Registration Date</th>
-              <th class="text-white p-3">Actions</th>
+              <th class="text-white p-3">{{ $t('common.id') }}</th>
+              <th class="text-white p-3">{{ $t('common.name') }}</th>
+              <th class="text-white p-3">{{ $t('common.email') }}</th>
+              <th class="text-white p-3">{{ $t('ui.username') }}</th>
+              <th class="text-white p-3">{{ $t('ui.role') }}</th>
+              <th class="text-white p-3">{{ $t('ui.ebetstar') }}</th>
+              <th class="text-white p-3">{{ $t('ui.balance') }}</th>
+              <th class="text-white p-3">{{ $t('ui.registration_date') }}</th>
+              <th class="text-white p-3">{{ $t('common.actions') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -63,8 +62,7 @@
               </td>
               <td class="p-3">
                 <span v-if="(user as any).is_ebetstar" class="badge bg-warning text-dark">
-                  <i class="fas fa-star"></i> eBetStar
-                </span>
+                  <i class="fas fa-star"></i>{{ $t('ui.ebetstar') }}</span>
                 <span v-else class="text-white-50">-</span>
               </td>
               <td class="text-white p-3">{{ formatNumber(user.balance || 0) }} EBT</td>
@@ -84,7 +82,7 @@
               </td>
             </tr>
             <tr v-if="users.length === 0 && !loading">
-              <td colspan="9" class="text-white p-5 text-center">No users found</td>
+              <td colspan="9" class="text-white p-5 text-center">{{ $t('ui.no_users_found') }}</td>
             </tr>
           </tbody>
         </table>
@@ -124,14 +122,14 @@
           Modify Balance
         </h3>
         <div class="mb-4 p-3 rounded n11-bg border border-secondary">
-          <p class="text-white-50 mb-1 small">User</p>
+          <p class="text-white-50 mb-1 small">{{ $t('common.user') }}</p>
           <p class="text-white mb-0 fw-bold">{{ selectedUser.name || selectedUser.email }}</p>
-          <p class="text-white-50 mb-1 small mt-2">Current Balance</p>
+          <p class="text-white-50 mb-1 small mt-2">{{ $t('ui.current_balance') }}</p>
           <p class="text-white mb-0 fw-bold fs-4">{{ formatNumber(selectedUser.balance || 0) }} EBT</p>
         </div>
         <form @submit.prevent="updateBalance">
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Operation Type</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.operation_type') }}</label>
             <div class="d-flex gap-3">
               <div class="form-check">
                 <input 
@@ -160,7 +158,7 @@
             </div>
           </div>
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Amount (EBT)</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.amount_ebt') }}</label>
             <input 
               v-model.number="balanceForm.amount"
               type="number" 
@@ -172,12 +170,12 @@
             />
           </div>
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Reason (optional)</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.reason_optional') }}</label>
             <textarea 
               v-model="balanceForm.reason"
               class="form-control n11-bg text-white border-secondary" 
               rows="3"
-              placeholder="Ex: Balance adjustment, Discount, etc."
+              :placeholder="$t('ui.ex_balance_adjustment_discount_etc')"
             ></textarea>
           </div>
           <div v-if="balanceError" class="alert alert-danger mb-4">{{ balanceError }}</div>
@@ -190,10 +188,10 @@
               class="btn_primary flex-fill" 
               :disabled="savingBalance || (balanceForm.type === 'subtract' && selectedUser.balance !== undefined && selectedUser.balance < balanceForm.amount)"
             >
-              <span v-if="savingBalance">Saving...</span>
+              <span v-if="savingBalance">{{ $t('common.saving') }}</span>
               <span v-else>{{ balanceForm.type === 'add' ? 'Add' : 'Subtract' }}</span>
             </button>
-            <button type="button" class="btn_secondary" @click="closeBalanceModal">Cancel</button>
+            <button type="button" class="btn_secondary" @click="closeBalanceModal">{{ $t('common.cancel') }}</button>
           </div>
         </form>
       </div>
@@ -207,7 +205,7 @@
         </h3>
         <form @submit.prevent="saveUser">
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Name (optional)</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.name_optional') }}</label>
             <input 
               v-model="userForm.name"
               type="text" 
@@ -215,7 +213,7 @@
             />
           </div>
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Email</label>
+            <label class="text-white mb-2 d-block">{{ $t('common.email') }}</label>
             <input 
               v-model="userForm.email"
               type="email" 
@@ -224,7 +222,7 @@
             />
           </div>
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Username</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.username') }}</label>
             <input 
               v-model="userForm.username"
               type="text" 
@@ -232,10 +230,10 @@
             />
           </div>
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Role</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.role') }}</label>
             <select v-model="userForm.role" class="form-select n11-bg text-white border-secondary">
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
+              <option value="user">{{ $t('common.user') }}</option>
+              <option value="admin">{{ $t('common.admin') }}</option>
             </select>
           </div>
           <div class="form-group mb-4">
@@ -250,10 +248,10 @@
                 Mark as eBetStar
               </label>
             </div>
-            <small class="text-white-50 d-block mt-1">eBetStars are featured players displayed on the eBetStars page</small>
+            <small class="text-white-50 d-block mt-1">{{ $t('ui.ebetstars_are_featured_players_displayed_on_the_ebetstars_pa') }}</small>
           </div>
           <div v-if="!editingUser" class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Password</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.password') }}</label>
             <input 
               v-model="userForm.password"
               type="password" 
@@ -264,10 +262,10 @@
           <div v-if="error" class="alert alert-danger mb-4">{{ error }}</div>
           <div class="d-flex gap-3">
             <button type="submit" class="btn_primary flex-fill" :disabled="saving">
-              <span v-if="saving">Saving...</span>
-              <span v-else>Save</span>
+              <span v-if="saving">{{ $t('common.saving') }}</span>
+              <span v-else>{{ $t('common.save') }}</span>
             </button>
-            <button type="button" class="btn_secondary" @click="closeModal">Cancel</button>
+            <button type="button" class="btn_secondary" @click="closeModal">{{ $t('common.cancel') }}</button>
           </div>
         </form>
       </div>
@@ -276,6 +274,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, computed, onMounted, watch } from 'vue';
 import apiClient from '@/utils/axios';
 

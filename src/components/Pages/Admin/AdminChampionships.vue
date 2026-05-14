@@ -2,37 +2,36 @@
   <div class="pay_method__paymethod p-3 p-md-4 p-lg-6 p2-bg rounded-8">
     <div class="pay_method__paymethod-title mb-5 mb-md-6 d-flex justify-content-between align-items-center flex-wrap gap-3">
       <div>
-        <h2 class="text-white fw-bold mb-2">Championship Management</h2>
-        <p class="text-white-50">Manage championships, registrations, matches and results</p>
+        <h2 class="text-white fw-bold mb-2">{{ $t('ui.championship_management') }}</h2>
+        <p class="text-white-50">{{ $t('ui.manage_championships_registrations_matches_and_results') }}</p>
       </div>
       <button @click="showCreateModal = true" class="btn btn-primary">
-        <i class="fas fa-plus me-2"></i>Create Championship
-      </button>
+        <i class="fas fa-plus me-2"></i>{{ $t('ui.create_championship') }}</button>
     </div>
 
     <!-- Statistics -->
     <div class="row g-3 mb-4">
       <div class="col-md-3 col-sm-6">
         <div class="stat-card n11-bg rounded-8 p-3">
-          <div class="text-white-50 small mb-1">Total Championships</div>
+          <div class="text-white-50 small mb-1">{{ $t('ui.total_championships') }}</div>
           <div class="text-white fw-bold fs-4">{{ stats.total || 0 }}</div>
         </div>
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="stat-card n11-bg rounded-8 p-3">
-          <div class="text-white-50 small mb-1">Registration Open</div>
+          <div class="text-white-50 small mb-1">{{ $t('ui.registration_open') }}</div>
           <div class="text-success fw-bold fs-4">{{ stats.registrationOpen || 0 }}</div>
         </div>
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="stat-card n11-bg rounded-8 p-3">
-          <div class="text-white-50 small mb-1">Live Championships</div>
+          <div class="text-white-50 small mb-1">{{ $t('ui.live_championships') }}</div>
           <div class="text-danger fw-bold fs-4">{{ stats.started || 0 }}</div>
         </div>
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="stat-card n11-bg rounded-8 p-3">
-          <div class="text-white-50 small mb-1">Finished</div>
+          <div class="text-white-50 small mb-1">{{ $t('ui.finished') }}</div>
           <div class="text-secondary fw-bold fs-4">{{ stats.finished || 0 }}</div>
         </div>
       </div>
@@ -42,35 +41,35 @@
     <div class="row g-3 mb-4">
       <div class="col-md-3">
         <select v-model="filters.status" @change="loadChampionships" class="form-select n11-bg text-white border-secondary">
-          <option value="">All Status</option>
-          <option value="draft">Draft</option>
-          <option value="registration_open">Registration Open</option>
-          <option value="registration_closed">Registration Closed</option>
-          <option value="validated">Validated</option>
-          <option value="started">Started</option>
-          <option value="finished">Finished</option>
-          <option value="cancelled">Cancelled</option>
+          <option value="">{{ $t('ui.all_status') }}</option>
+          <option value="draft">{{ $t('ui.draft') }}</option>
+          <option value="registration_open">{{ $t('ui.registration_open') }}</option>
+          <option value="registration_closed">{{ $t('ui.registration_closed') }}</option>
+          <option value="validated">{{ $t('ui.validated') }}</option>
+          <option value="started">{{ $t('ui.started') }}</option>
+          <option value="finished">{{ $t('ui.finished') }}</option>
+          <option value="cancelled">{{ $t('common.cancelled') }}</option>
         </select>
       </div>
       <div class="col-md-3">
         <select v-model="filters.division" @change="loadChampionships" class="form-select n11-bg text-white border-secondary">
-          <option value="">All Divisions</option>
-          <option value="1">Division 1</option>
-          <option value="2">Division 2</option>
-          <option value="3">Division 3</option>
+          <option value="">{{ $t('ui.all_divisions') }}</option>
+          <option value="1">{{ $t('ui.division_1') }}</option>
+          <option value="2">{{ $t('ui.division_2') }}</option>
+          <option value="3">{{ $t('ui.division_3') }}</option>
         </select>
       </div>
       <div class="col-md-3">
         <select v-model="filters.game" @change="loadChampionships" class="form-select n11-bg text-white border-secondary">
-          <option value="">All Games</option>
-          <option value="COD Mobile">COD Mobile</option>
-          <option value="Free Fire">Free Fire</option>
-          <option value="PUBG Mobile">PUBG Mobile</option>
-          <option value="Mobile Legends">Mobile Legends</option>
-          <option value="eFootball / FC / DLS">eFootball / FC / DLS</option>
-          <option value="Clash Royale">Clash Royale</option>
-          <option value="Brawl Stars">Brawl Stars</option>
-          <option value="Stumble Guys">Stumble Guys</option>
+          <option value="">{{ $t('ui.all_games') }}</option>
+          <option value="COD Mobile">{{ $t('ui.cod_mobile') }}</option>
+          <option value="Free Fire">{{ $t('ui.free_fire') }}</option>
+          <option value="PUBG Mobile">{{ $t('ui.pubg_mobile') }}</option>
+          <option value="Mobile Legends">{{ $t('ui.mobile_legends') }}</option>
+          <option value="eFootball / FC / DLS">{{ $t('ui.efootball_fc_dls') }}</option>
+          <option value="Clash Royale">{{ $t('ui.clash_royale') }}</option>
+          <option value="Brawl Stars">{{ $t('ui.brawl_stars') }}</option>
+          <option value="Stumble Guys">{{ $t('ui.stumble_guys') }}</option>
         </select>
       </div>
       <div class="col-md-3">
@@ -78,7 +77,7 @@
           v-model="filters.search" 
           @input="loadChampionships" 
           type="text" 
-          placeholder="Search..." 
+          :placeholder="$t('ui.search')" 
           class="form-control n11-bg text-white border-secondary"
         />
       </div>
@@ -88,7 +87,7 @@
     <div class="mb-4">
       <div v-if="loading" class="text-center py-5">
         <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
+          <span class="visually-hidden">{{ $t('common.loading') }}</span>
         </div>
       </div>
       <div v-else class="pay_method__table">
@@ -96,14 +95,14 @@
           <table class="w-100 text-center p2-bg">
             <thead>
               <tr>
-                <th class="text-white p-3">ID</th>
-                <th class="text-white p-3">Name</th>
-                <th class="text-white p-3">Game</th>
-                <th class="text-white p-3">Division</th>
-                <th class="text-white p-3">Status</th>
-                <th class="text-white p-3">Participants</th>
-                <th class="text-white p-3">Start Date</th>
-                <th class="text-white p-3">Actions</th>
+                <th class="text-white p-3">{{ $t('common.id') }}</th>
+                <th class="text-white p-3">{{ $t('common.name') }}</th>
+                <th class="text-white p-3">{{ $t('common.game') }}</th>
+                <th class="text-white p-3">{{ $t('ui.division') }}</th>
+                <th class="text-white p-3">{{ $t('common.status') }}</th>
+                <th class="text-white p-3">{{ $t('ui.participants') }}</th>
+                <th class="text-white p-3">{{ $t('ui.start_date') }}</th>
+                <th class="text-white p-3">{{ $t('common.actions') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -183,84 +182,84 @@
         <form @submit.prevent="saveChampionship">
           <div class="row g-3">
             <div class="col-md-6">
-              <label class="text-white mb-2">Name *</label>
+              <label class="text-white mb-2">{{ $t('ui.name') }}</label>
               <input v-model="championshipForm.name" type="text" class="form-control n11-bg text-white border-secondary" required />
             </div>
             <div class="col-md-6">
-              <label class="text-white mb-2">Game *</label>
+              <label class="text-white mb-2">{{ $t('ui.game_2') }}</label>
               <select v-model="championshipForm.game" class="form-select n11-bg text-white border-secondary" required>
-                <option value="COD Mobile">COD Mobile</option>
-                <option value="Free Fire">Free Fire</option>
-                <option value="PUBG Mobile">PUBG Mobile</option>
-                <option value="Mobile Legends">Mobile Legends</option>
-                <option value="eFootball / FC / DLS">eFootball / FC / DLS</option>
-                <option value="Clash Royale">Clash Royale</option>
-                <option value="Brawl Stars">Brawl Stars</option>
-                <option value="Stumble Guys">Stumble Guys</option>
+                <option value="COD Mobile">{{ $t('ui.cod_mobile') }}</option>
+                <option value="Free Fire">{{ $t('ui.free_fire') }}</option>
+                <option value="PUBG Mobile">{{ $t('ui.pubg_mobile') }}</option>
+                <option value="Mobile Legends">{{ $t('ui.mobile_legends') }}</option>
+                <option value="eFootball / FC / DLS">{{ $t('ui.efootball_fc_dls') }}</option>
+                <option value="Clash Royale">{{ $t('ui.clash_royale') }}</option>
+                <option value="Brawl Stars">{{ $t('ui.brawl_stars') }}</option>
+                <option value="Stumble Guys">{{ $t('ui.stumble_guys') }}</option>
               </select>
             </div>
             <div class="col-md-6">
-              <label class="text-white mb-2">Division *</label>
+              <label class="text-white mb-2">{{ $t('ui.division_4') }}</label>
               <select v-model="championshipForm.division" class="form-select n11-bg text-white border-secondary" required>
-                <option value="1">Division 1</option>
-                <option value="2">Division 2</option>
-                <option value="3">Division 3</option>
+                <option value="1">{{ $t('ui.division_1') }}</option>
+                <option value="2">{{ $t('ui.division_2') }}</option>
+                <option value="3">{{ $t('ui.division_3') }}</option>
               </select>
             </div>
             <div class="col-md-6">
-              <label class="text-white mb-2">Status *</label>
+              <label class="text-white mb-2">{{ $t('ui.status_2') }}</label>
               <select v-model="championshipForm.status" class="form-select n11-bg text-white border-secondary" required>
-                <option value="draft">Draft</option>
-                <option value="registration_open">Registration Open</option>
-                <option value="registration_closed">Registration Closed</option>
-                <option value="validated">Validated</option>
-                <option value="started">Started</option>
-                <option value="finished">Finished</option>
-                <option value="cancelled">Cancelled</option>
+                <option value="draft">{{ $t('ui.draft') }}</option>
+                <option value="registration_open">{{ $t('ui.registration_open') }}</option>
+                <option value="registration_closed">{{ $t('ui.registration_closed') }}</option>
+                <option value="validated">{{ $t('ui.validated') }}</option>
+                <option value="started">{{ $t('ui.started') }}</option>
+                <option value="finished">{{ $t('ui.finished') }}</option>
+                <option value="cancelled">{{ $t('common.cancelled') }}</option>
               </select>
             </div>
             <div class="col-md-12">
-              <label class="text-white mb-2">Description</label>
+              <label class="text-white mb-2">{{ $t('common.description') }}</label>
               <textarea v-model="championshipForm.description" rows="3" class="form-control n11-bg text-white border-secondary"></textarea>
             </div>
             <div class="col-md-12">
-              <label class="text-white mb-2">Rules</label>
+              <label class="text-white mb-2">{{ $t('ui.rules') }}</label>
               <textarea v-model="championshipForm.rules" rows="4" class="form-control n11-bg text-white border-secondary"></textarea>
             </div>
             <div class="col-md-6">
-              <label class="text-white mb-2">Registration Fee *</label>
+              <label class="text-white mb-2">{{ $t('ui.registration_fee') }}</label>
               <input v-model.number="championshipForm.registration_fee" type="number" step="0.01" min="0" class="form-control n11-bg text-white border-secondary" required />
             </div>
             <div class="col-md-6">
-              <label class="text-white mb-2">Total Prize Pool</label>
+              <label class="text-white mb-2">{{ $t('ui.total_prize_pool') }}</label>
               <input v-model.number="championshipForm.total_prize_pool" type="number" step="0.01" min="0" class="form-control n11-bg text-white border-secondary" />
             </div>
             <div class="col-md-6">
-              <label class="text-white mb-2">Min Participants *</label>
+              <label class="text-white mb-2">{{ $t('ui.min_participants') }}</label>
               <input v-model.number="championshipForm.min_participants" type="number" min="2" class="form-control n11-bg text-white border-secondary" required />
             </div>
             <div class="col-md-6">
-              <label class="text-white mb-2">Max Participants *</label>
+              <label class="text-white mb-2">{{ $t('ui.max_participants') }}</label>
               <input v-model.number="championshipForm.max_participants" type="number" min="2" class="form-control n11-bg text-white border-secondary" required />
             </div>
             <div class="col-md-4">
-              <label class="text-white mb-2">Registration Start Date *</label>
+              <label class="text-white mb-2">{{ $t('ui.registration_start_date') }}</label>
               <input v-model="championshipForm.registration_start_date" type="datetime-local" class="form-control n11-bg text-white border-secondary" required />
             </div>
             <div class="col-md-4">
-              <label class="text-white mb-2">Registration End Date *</label>
+              <label class="text-white mb-2">{{ $t('ui.registration_end_date') }}</label>
               <input v-model="championshipForm.registration_end_date" type="datetime-local" class="form-control n11-bg text-white border-secondary" required />
             </div>
             <div class="col-md-4">
-              <label class="text-white mb-2">Start Date *</label>
+              <label class="text-white mb-2">{{ $t('ui.start_date_2') }}</label>
               <input v-model="championshipForm.start_date" type="datetime-local" class="form-control n11-bg text-white border-secondary" required />
             </div>
             <div class="col-md-6">
-              <label class="text-white mb-2">End Date</label>
+              <label class="text-white mb-2">{{ $t('ui.end_date') }}</label>
               <input v-model="championshipForm.end_date" type="datetime-local" class="form-control n11-bg text-white border-secondary" />
             </div>
             <div class="col-md-6">
-              <label class="text-white mb-2">Prize Distribution (JSON)</label>
+              <label class="text-white mb-2">{{ $t('ui.prize_distribution_json') }}</label>
               <textarea v-model="championshipForm.prize_distribution_json" rows="3" class="form-control n11-bg text-white border-secondary" placeholder='{"1st": 1000, "2nd": 500, "3rd": 250}'></textarea>
             </div>
           </div>
@@ -268,10 +267,10 @@
           <div v-if="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
           <div class="d-flex gap-3 mt-4">
             <button type="submit" class="btn btn-primary" :disabled="saving">
-              <span v-if="saving">Saving...</span>
-              <span v-else>Save</span>
+              <span v-if="saving">{{ $t('common.saving') }}</span>
+              <span v-else>{{ $t('common.save') }}</span>
             </button>
-            <button type="button" class="btn btn-secondary" @click="closeModal">Cancel</button>
+            <button type="button" class="btn btn-secondary" @click="closeModal">{{ $t('common.cancel') }}</button>
           </div>
         </form>
       </div>
@@ -281,7 +280,7 @@
     <div v-if="viewingChampionship" class="modal-overlay" @click.self="viewingChampionship = null">
       <div class="modal-content n11-bg rounded-8 p-4" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 class="text-white fw-bold">Championship Details</h3>
+          <h3 class="text-white fw-bold">{{ $t('ui.championship_details') }}</h3>
           <button @click="viewingChampionship = null" class="btn btn-sm btn-secondary">
             <i class="fas fa-times"></i>
           </button>
@@ -289,27 +288,27 @@
         <div v-if="championshipDetails">
           <div class="row g-3 mb-4">
             <div class="col-md-6">
-              <strong class="text-white">Name:</strong>
+              <strong class="text-white">{{ $t('ui.name_2') }}</strong>
               <p class="text-white-50">{{ championshipDetails.name }}</p>
             </div>
             <div class="col-md-6">
-              <strong class="text-white">Game:</strong>
+              <strong class="text-white">{{ $t('ui.game') }}</strong>
               <p class="text-white-50">{{ championshipDetails.game }}</p>
             </div>
             <div class="col-md-6">
-              <strong class="text-white">Division:</strong>
+              <strong class="text-white">{{ $t('ui.division_5') }}</strong>
               <p class="text-white-50">Division {{ championshipDetails.division }}</p>
             </div>
             <div class="col-md-6">
-              <strong class="text-white">Status:</strong>
+              <strong class="text-white">{{ $t('ui.status') }}</strong>
               <p><span :class="['badge', getStatusClass(championshipDetails.status)]">{{ getStatusLabel(championshipDetails.status) }}</span></p>
             </div>
             <div class="col-md-6">
-              <strong class="text-white">Participants:</strong>
+              <strong class="text-white">{{ $t('ui.participants_2') }}</strong>
               <p class="text-white-50">{{ championshipDetails.validated_registrations_count || 0 }}/{{ championshipDetails.max_participants }}</p>
             </div>
             <div class="col-md-6">
-              <strong class="text-white">Registration Fee:</strong>
+              <strong class="text-white">{{ $t('ui.registration_fee_2') }}</strong>
               <p class="text-white-50">{{ championshipDetails.registration_fee }} EBT</p>
             </div>
           </div>
@@ -321,7 +320,7 @@
     <div v-if="managingRegistrations" class="modal-overlay" @click.self="managingRegistrations = null">
       <div class="modal-content n11-bg rounded-8 p-4" style="max-width: 1000px; max-height: 90vh; overflow-y: auto;">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 class="text-white fw-bold">Manage Registrations</h3>
+          <h3 class="text-white fw-bold">{{ $t('ui.manage_registrations') }}</h3>
           <button @click="managingRegistrations = null" class="btn btn-sm btn-secondary">
             <i class="fas fa-times"></i>
           </button>
@@ -334,12 +333,12 @@
             <table class="w-100 text-center p2-bg">
               <thead>
                 <tr>
-                  <th class="text-white p-3">ID</th>
-                  <th class="text-white p-3">Player Name</th>
-                  <th class="text-white p-3">User</th>
-                  <th class="text-white p-3">Status</th>
-                  <th class="text-white p-3">Registered</th>
-                  <th class="text-white p-3">Actions</th>
+                  <th class="text-white p-3">{{ $t('common.id') }}</th>
+                  <th class="text-white p-3">{{ $t('ui.player_name') }}</th>
+                  <th class="text-white p-3">{{ $t('common.user') }}</th>
+                  <th class="text-white p-3">{{ $t('common.status') }}</th>
+                  <th class="text-white p-3">{{ $t('ui.registered') }}</th>
+                  <th class="text-white p-3">{{ $t('common.actions') }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -356,11 +355,9 @@
                   <td class="p-3">
                     <div v-if="registration.status === 'paid'" class="d-flex gap-2 justify-content-center">
                       <button @click="validateRegistration(registration.id, true)" class="btn btn-sm btn-success">
-                        <i class="fas fa-check"></i> Validate
-                      </button>
+                        <i class="fas fa-check"></i>{{ $t('ui.validate') }}</button>
                       <button @click="validateRegistration(registration.id, false)" class="btn btn-sm btn-danger">
-                        <i class="fas fa-times"></i> Reject
-                      </button>
+                        <i class="fas fa-times"></i>{{ $t('ui.reject') }}</button>
                     </div>
                     <span v-else class="text-white-50">-</span>
                   </td>
@@ -376,7 +373,7 @@
     <div v-if="managingMatches" class="modal-overlay" @click.self="managingMatches = null">
       <div class="modal-content n11-bg rounded-8 p-4" style="max-width: 1000px; max-height: 90vh; overflow-y: auto;">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 class="text-white fw-bold">Manage Matches</h3>
+          <h3 class="text-white fw-bold">{{ $t('ui.manage_matches') }}</h3>
           <button @click="managingMatches = null" class="btn btn-sm btn-secondary">
             <i class="fas fa-times"></i>
           </button>
@@ -389,13 +386,13 @@
             <table class="w-100 text-center p2-bg">
               <thead>
                 <tr>
-                  <th class="text-white p-3">Round</th>
-                  <th class="text-white p-3">Player 1</th>
-                  <th class="text-white p-3">Player 2</th>
-                  <th class="text-white p-3">Score</th>
-                  <th class="text-white p-3">Winner</th>
-                  <th class="text-white p-3">Status</th>
-                  <th class="text-white p-3">Actions</th>
+                  <th class="text-white p-3">{{ $t('ui.round') }}</th>
+                  <th class="text-white p-3">{{ $t('ui.player_1') }}</th>
+                  <th class="text-white p-3">{{ $t('ui.player_2') }}</th>
+                  <th class="text-white p-3">{{ $t('ui.score') }}</th>
+                  <th class="text-white p-3">{{ $t('betting.winner') }}</th>
+                  <th class="text-white p-3">{{ $t('common.status') }}</th>
+                  <th class="text-white p-3">{{ $t('common.actions') }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -426,8 +423,7 @@
                       @click="showMatchResultModal(match)" 
                       class="btn btn-sm btn-primary"
                     >
-                      <i class="fas fa-edit"></i> Set Result
-                    </button>
+                      <i class="fas fa-edit"></i>{{ $t('ui.set_result') }}</button>
                     <span v-else class="text-white-50">-</span>
                   </td>
                 </tr>
@@ -441,24 +437,24 @@
     <!-- Match Result Modal -->
     <div v-if="editingMatch" class="modal-overlay" @click.self="editingMatch = null">
       <div class="modal-content n11-bg rounded-8 p-4" style="max-width: 600px;">
-        <h3 class="text-white fw-bold mb-4">Set Match Result</h3>
+        <h3 class="text-white fw-bold mb-4">{{ $t('ui.set_match_result') }}</h3>
         <form @submit.prevent="saveMatchResult">
           <div class="mb-3">
-            <label class="text-white mb-2">Player 1 Score *</label>
+            <label class="text-white mb-2">{{ $t('ui.player_1_score') }}</label>
             <input v-model.number="matchResultForm.player1_score" type="number" min="0" class="form-control n11-bg text-white border-secondary" required />
           </div>
           <div class="mb-3">
-            <label class="text-white mb-2">Player 2 Score *</label>
+            <label class="text-white mb-2">{{ $t('ui.player_2_score') }}</label>
             <input v-model.number="matchResultForm.player2_score" type="number" min="0" class="form-control n11-bg text-white border-secondary" required />
           </div>
           <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
           <div v-if="successMessage" class="alert alert-success">{{ successMessage }}</div>
           <div class="d-flex gap-3 mt-4">
             <button type="submit" class="btn btn-primary" :disabled="saving">
-              <span v-if="saving">Saving...</span>
-              <span v-else>Save</span>
+              <span v-if="saving">{{ $t('common.saving') }}</span>
+              <span v-else>{{ $t('common.save') }}</span>
             </button>
-            <button type="button" class="btn btn-secondary" @click="editingMatch = null">Cancel</button>
+            <button type="button" class="btn btn-secondary" @click="editingMatch = null">{{ $t('common.cancel') }}</button>
           </div>
         </form>
       </div>
@@ -467,6 +463,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, reactive, onMounted, computed } from 'vue';
 import apiClient from '@/utils/axios';
 

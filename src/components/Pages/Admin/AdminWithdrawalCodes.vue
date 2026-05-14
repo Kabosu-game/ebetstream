@@ -2,10 +2,9 @@
   <div class="admin-withdrawal-codes">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h4 class="mb-0">Withdrawal Codes Management</h4>
+      <h4 class="mb-0">{{ $t('ui.withdrawal_codes_management') }}</h4>
       <button class="btn btn-primary" @click="refreshData">
-        <i class="fas fa-sync-alt me-2"></i>Refresh
-      </button>
+        <i class="fas fa-sync-alt me-2"></i>{{ $t('ui.refresh') }}</button>
     </div>
 
     <!-- Statistics Cards -->
@@ -13,7 +12,7 @@
       <div class="col-md-3">
         <div class="card bg-primary text-white">
           <div class="card-body">
-            <h5 class="card-title">Total Codes</h5>
+            <h5 class="card-title">{{ $t('ui.total_codes') }}</h5>
             <h3>{{ stats.total }}</h3>
           </div>
         </div>
@@ -21,7 +20,7 @@
       <div class="col-md-3">
         <div class="card bg-warning text-white">
           <div class="card-body">
-            <h5 class="card-title">Pending</h5>
+            <h5 class="card-title">{{ $t('common.pending') }}</h5>
             <h3>{{ stats.pending }}</h3>
           </div>
         </div>
@@ -29,7 +28,7 @@
       <div class="col-md-3">
         <div class="card bg-success text-white">
           <div class="card-body">
-            <h5 class="card-title">Completed</h5>
+            <h5 class="card-title">{{ $t('common.completed') }}</h5>
             <h3>{{ stats.completed }}</h3>
           </div>
         </div>
@@ -37,7 +36,7 @@
       <div class="col-md-3">
         <div class="card bg-danger text-white">
           <div class="card-body">
-            <h5 class="card-title">Expired</h5>
+            <h5 class="card-title">{{ $t('ui.expired') }}</h5>
             <h3>{{ stats.expired }}</h3>
           </div>
         </div>
@@ -49,30 +48,30 @@
       <div class="card-body">
         <div class="row">
           <div class="col-md-3">
-            <label class="form-label">Status Filter</label>
+            <label class="form-label">{{ $t('ui.status_filter') }}</label>
             <select v-model="filters.status" class="form-select" @change="loadCodes">
-              <option value="">All Status</option>
-              <option value="pending">Pending</option>
-              <option value="completed">Completed</option>
-              <option value="cancelled">Cancelled</option>
-              <option value="expired">Expired</option>
+              <option value="">{{ $t('ui.all_status') }}</option>
+              <option value="pending">{{ $t('common.pending') }}</option>
+              <option value="completed">{{ $t('common.completed') }}</option>
+              <option value="cancelled">{{ $t('common.cancelled') }}</option>
+              <option value="expired">{{ $t('ui.expired') }}</option>
             </select>
           </div>
           <div class="col-md-3">
-            <label class="form-label">Agent Filter</label>
+            <label class="form-label">{{ $t('ui.agent_filter') }}</label>
             <select v-model="filters.agent_id" class="form-select" @change="loadCodes">
-              <option value="">All Agents</option>
+              <option value="">{{ $t('ui.all_agents') }}</option>
               <option v-for="agent in agents" :key="agent.id" :value="agent.id">
                 {{ agent.name }} (ID: {{ agent.agent_id }})
               </option>
             </select>
           </div>
           <div class="col-md-3">
-            <label class="form-label">Date From</label>
+            <label class="form-label">{{ $t('ui.date_from') }}</label>
             <input type="date" v-model="filters.date_from" class="form-control" @change="loadCodes">
           </div>
           <div class="col-md-3">
-            <label class="form-label">Date To</label>
+            <label class="form-label">{{ $t('ui.date_to') }}</label>
             <input type="date" v-model="filters.date_to" class="form-control" @change="loadCodes">
           </div>
         </div>
@@ -84,7 +83,7 @@
       <div class="card-body">
         <div v-if="loading" class="text-center py-4">
           <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
+            <span class="visually-hidden">{{ $t('common.loading') }}</span>
           </div>
         </div>
         
@@ -92,14 +91,14 @@
           <table class="table table-striped">
             <thead>
               <tr>
-                <th>Code</th>
-                <th>User</th>
-                <th>Agent</th>
-                <th>Amount (USD)</th>
-                <th>Status</th>
-                <th>Created</th>
-                <th>Expires</th>
-                <th>Actions</th>
+                <th>{{ $t('ui.code') }}</th>
+                <th>{{ $t('common.user') }}</th>
+                <th>{{ $t('ui.agent') }}</th>
+                <th>{{ $t('ui.amount_usd') }}</th>
+                <th>{{ $t('common.status') }}</th>
+                <th>{{ $t('ui.created_2') }}</th>
+                <th>{{ $t('ui.expires_2') }}</th>
+                <th>{{ $t('common.actions') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -149,7 +148,7 @@
                 </td>
               </tr>
               <tr v-if="codes.length === 0">
-                <td colspan="8" class="text-center py-4">No withdrawal codes found</td>
+                <td colspan="8" class="text-center py-4">{{ $t('ui.no_withdrawal_codes_found') }}</td>
               </tr>
             </tbody>
           </table>
@@ -162,24 +161,24 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Withdrawal Code Details</h5>
+            <h5 class="modal-title">{{ $t('ui.withdrawal_code_details') }}</h5>
             <button type="button" class="btn-close" @click="showDetailsModal = false"></button>
           </div>
           <div class="modal-body" v-if="selectedCode">
             <div class="row">
               <div class="col-md-6">
-                <h6>Code Information</h6>
+                <h6>{{ $t('ui.code_information') }}</h6>
                 <table class="table table-sm">
                   <tr>
-                    <td><strong>Code:</strong></td>
+                    <td><strong>{{ $t('ui.code_2') }}</strong></td>
                     <td><code>{{ selectedCode.code }}</code></td>
                   </tr>
                   <tr>
-                    <td><strong>Amount:</strong></td>
+                    <td><strong>{{ $t('ui.amount_2') }}</strong></td>
                     <td>{{ formatNumber(selectedCode.amount / 600) }} EBT</td>
                   </tr>
                   <tr>
-                    <td><strong>Status:</strong></td>
+                    <td><strong>{{ $t('ui.status') }}</strong></td>
                     <td>
                       <span :class="['badge', getStatusClass(selectedCode.status)]">
                         {{ selectedCode.status }}
@@ -187,68 +186,66 @@
                     </td>
                   </tr>
                   <tr>
-                    <td><strong>Created:</strong></td>
+                    <td><strong>{{ $t('ui.created') }}</strong></td>
                     <td>{{ formatDate(selectedCode.created_at) }}</td>
                   </tr>
                   <tr>
-                    <td><strong>Expires:</strong></td>
+                    <td><strong>{{ $t('ui.expires') }}</strong></td>
                     <td>{{ formatDate(selectedCode.expires_at) }}</td>
                   </tr>
                 </table>
               </div>
               <div class="col-md-6">
-                <h6>User Information</h6>
+                <h6>{{ $t('ui.user_information') }}</h6>
                 <table class="table table-sm">
                   <tr>
-                    <td><strong>Username:</strong></td>
+                    <td><strong>{{ $t('ui.username_2') }}</strong></td>
                     <td>{{ selectedCode.user?.username || 'N/A' }}</td>
                   </tr>
                   <tr>
-                    <td><strong>Email:</strong></td>
+                    <td><strong>{{ $t('ui.email') }}</strong></td>
                     <td>{{ selectedCode.user?.email || 'N/A' }}</td>
                   </tr>
                 </table>
                 
-                <h6 class="mt-3">Agent Information</h6>
+                <h6 class="mt-3">{{ $t('ui.agent_information') }}</h6>
                 <table class="table table-sm">
                   <tr>
-                    <td><strong>Name:</strong></td>
+                    <td><strong>{{ $t('ui.name_2') }}</strong></td>
                     <td>{{ selectedCode.recharge_agent?.name }}</td>
                   </tr>
                   <tr>
-                    <td><strong>ID:</strong></td>
+                    <td><strong>{{ $t('ui.id') }}</strong></td>
                     <td>{{ selectedCode.recharge_agent?.agent_id }}</td>
                   </tr>
                   <tr>
-                    <td><strong>Phone:</strong></td>
+                    <td><strong>{{ $t('ui.phone') }}</strong></td>
                     <td>{{ selectedCode.recharge_agent?.phone }}</td>
                   </tr>
                 </table>
               </div>
             </div>
             <div v-if="selectedCode.notes" class="mt-3">
-              <h6>Notes</h6>
+              <h6>{{ $t('ui.notes') }}</h6>
               <p class="text-muted">{{ selectedCode.notes }}</p>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" @click="showDetailsModal = false">Close</button>
+            <button type="button" class="btn btn-secondary" @click="showDetailsModal = false">{{ $t('common.close') }}</button>
             <button 
               v-if="selectedCode?.status === 'pending'"
               type="button" 
               class="btn btn-success" 
               @click="completeCode(selectedCode)"
             >
-              <i class="fas fa-check me-2"></i>Mark as Completed
-            </button>
+              <i class="fas fa-check me-2"></i>{{ $t('ui.mark_as_completed') }}</button>
             <button 
               v-if="selectedCode?.status === 'pending'"
               type="button" 
               class="btn btn-danger" 
               @click="cancelCode(selectedCode)"
             >
-              <i class="fas fa-times me-2"></i>Cancel Code
-            </button>
+              <i class="fas fa-times me-2"></i>{{ $t('ui.cancel_code') }}</button>
           </div>
         </div>
       </div>
@@ -257,6 +254,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted } from 'vue';
 import apiClient from '@/utils/axios';
 

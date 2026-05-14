@@ -15,7 +15,7 @@
                     height="{32}"
                     alt="Icon"
                   />
-                  <h3>Upcoming Events</h3>
+                  <h3>{{ $t('betting.upcoming_events') }}</h3>
                 </div>
                 <div class="top_matches__content">
                   <div
@@ -120,17 +120,17 @@
                                 <tr class="text-center">
                                   <th scope="col">
                                     <span class="fs-eight"
-                                      >Winner (incl. overtime)</span
+                                      >{{ $t('betting.winner_incl_overtime_2') }}</span
                                     >
                                   </th>
                                   <th scope="col">
                                     <span class="fs-eight"
-                                      >Handicap (incl. overtime)</span
+                                      >{{ $t('betting.handicap_incl_overtime_2') }}</span
                                     >
                                   </th>
                                   <th scope="col">
                                     <span class="fs-eight"
-                                      >Total (incl overtime)</span
+                                      >{{ $t('betting.total_incl_overtime') }}</span
                                     >
                                   </th>
                                 </tr>
@@ -279,6 +279,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { basketballUpCE } from "../../../assets/data/tabThree";
 import clock from "@/assets/images/icon/clock-icon.png";
 </script>

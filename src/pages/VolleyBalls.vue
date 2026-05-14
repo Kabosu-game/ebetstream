@@ -10,7 +10,7 @@
                   class="top_matches__title d-flex align-items-center gap-2 mb-4 mb-md-5"
                 >
                   <img :src="clock" width="{32}" height="{32}" alt="Icon" />
-                  <h3>Upcoming Events</h3>
+                  <h3>{{ $t('betting.upcoming_events') }}</h3>
                 </div>
                 <div class="top_matches__content">
                   <div
@@ -110,13 +110,13 @@
                               <thead>
                                 <tr class="text-center">
                                   <th scope="col">
-                                    <span class="fs-eight">1x2</span>
+                                    <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">Double chance</span>
+                                    <span class="fs-eight">{{ $t('betting.double_chance') }}</span>
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">Total</span>
+                                    <span class="fs-eight">{{ $t('betting.total') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -143,7 +143,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >draw</span
+                                          >{{ $t('betting.draw') }}</span
                                         >
                                         <span
                                           class="fw-bold d-block text-nowrap"
@@ -173,7 +173,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >1 or draw</span
+                                          >{{ $t('betting.1_or_draw') }}</span
                                         >
                                         <span class="fw-bold d-block"
                                           >3.45</span
@@ -184,7 +184,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >1 or 2</span
+                                          >{{ $t('betting.1_or_2') }}</span
                                         >
                                         <span class="fw-bold d-block"
                                           >3.45</span
@@ -195,7 +195,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >draw or 2</span
+                                          >{{ $t('betting.draw_or_2') }}</span
                                         >
                                         <span class="fw-bold d-block"
                                           >3.45</span
@@ -264,6 +264,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { upCmVballData } from "../assets/data/allPageData";
 import clock from "@/assets/images/icon/clock-icon.png";
 </script>

@@ -2,19 +2,18 @@
   <div class="pay_method__paymethod p-3 p-md-4 p-lg-6 p2-bg rounded-8">
     <div class="pay_method__paymethod-title mb-5 mb-md-6 d-flex justify-content-between align-items-center flex-wrap gap-3">
       <div>
-        <h2 class="text-white fw-bold mb-2">Gestion des agents de recharge</h2>
-        <p class="text-white-50">Solde, suspension, modification et suppression des agents crypto</p>
+        <h2 class="text-white fw-bold mb-2">{{ $t('ui.gestion_des_agents_de_recharge') }}</h2>
+        <p class="text-white-50">{{ $t('ui.solde_suspension_modification_et_suppression_des_agents_cryp') }}</p>
       </div>
       <button class="btn btn-primary admin-accent-btn" @click="openAdd">
-        <i class="fas fa-plus me-2"></i> Nouvel agent
-      </button>
+        <i class="fas fa-plus me-2"></i>{{ $t('ui.nouvel_agent') }}</button>
     </div>
 
     <div class="row g-3 mb-4">
-      <div class="col-md-3"><div class="stat-card n11-bg rounded-8 p-3"><div class="text-white-50 small">Total</div><div class="text-white fw-bold fs-4">{{ stats.total }}</div></div></div>
-      <div class="col-md-3"><div class="stat-card n11-bg rounded-8 p-3"><div class="text-white-50 small">Actifs</div><div class="text-success fw-bold fs-4">{{ stats.active }}</div></div></div>
-      <div class="col-md-3"><div class="stat-card n11-bg rounded-8 p-3"><div class="text-white-50 small">Suspendus</div><div class="text-warning fw-bold fs-4">{{ stats.suspended }}</div></div></div>
-      <div class="col-md-3"><div class="stat-card n11-bg rounded-8 p-3"><div class="text-white-50 small">Inactifs</div><div class="text-danger fw-bold fs-4">{{ stats.inactive }}</div></div></div>
+      <div class="col-md-3"><div class="stat-card n11-bg rounded-8 p-3"><div class="text-white-50 small">{{ $t('betting.total') }}</div><div class="text-white fw-bold fs-4">{{ stats.total }}</div></div></div>
+      <div class="col-md-3"><div class="stat-card n11-bg rounded-8 p-3"><div class="text-white-50 small">{{ $t('ui.actifs') }}</div><div class="text-success fw-bold fs-4">{{ stats.active }}</div></div></div>
+      <div class="col-md-3"><div class="stat-card n11-bg rounded-8 p-3"><div class="text-white-50 small">{{ $t('ui.suspendus') }}</div><div class="text-warning fw-bold fs-4">{{ stats.suspended }}</div></div></div>
+      <div class="col-md-3"><div class="stat-card n11-bg rounded-8 p-3"><div class="text-white-50 small">{{ $t('ui.inactifs') }}</div><div class="text-danger fw-bold fs-4">{{ stats.inactive }}</div></div></div>
     </div>
 
     <div v-if="loading" class="text-center py-5"><div class="spinner-border text-primary"></div></div>
@@ -24,14 +23,14 @@
         <table class="w-100 text-center p2-bg">
           <thead>
             <tr>
-              <th class="text-white p-3">Code</th>
-              <th class="text-white p-3">Nom</th>
-              <th class="text-white p-3">WhatsApp</th>
-              <th class="text-white p-3">Compte lié</th>
-              <th class="text-white p-3">Solde USDT</th>
-              <th class="text-white p-3">Niveau</th>
-              <th class="text-white p-3">Statut</th>
-              <th class="text-white p-3">Actions</th>
+              <th class="text-white p-3">{{ $t('ui.code') }}</th>
+              <th class="text-white p-3">{{ $t('ui.nom') }}</th>
+              <th class="text-white p-3">{{ $t('ui.whatsapp') }}</th>
+              <th class="text-white p-3">{{ $t('ui.compte_li') }}</th>
+              <th class="text-white p-3">{{ $t('ui.solde_usdt') }}</th>
+              <th class="text-white p-3">{{ $t('ui.niveau') }}</th>
+              <th class="text-white p-3">{{ $t('ui.statut') }}</th>
+              <th class="text-white p-3">{{ $t('common.actions') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -41,7 +40,7 @@
               <td class="text-white p-3">{{ agent.phone }}</td>
               <td class="text-white p-3">
                 <span v-if="agent.user">{{ agent.user.username }}<br><small class="text-white-50">{{ agent.user.email }}</small></span>
-                <span v-else class="text-white-50">Non lié</span>
+                <span v-else class="text-white-50">{{ $t('ui.non_li') }}</span>
               </td>
               <td class="text-white p-3">
                 <strong>{{ formatNum(agent.wallet_balance) }}</strong>
@@ -59,7 +58,7 @@
                 </div>
               </td>
             </tr>
-            <tr v-if="agents.length === 0"><td colspan="8" class="text-white p-5">Aucun agent</td></tr>
+            <tr v-if="agents.length === 0"><td colspan="8" class="text-white p-5">{{ $t('ui.aucun_agent') }}</td></tr>
           </tbody>
         </table>
       </div>
@@ -71,23 +70,23 @@
         <h3 class="text-white mb-4">{{ showEditModal ? 'Modifier l\'agent' : 'Nouvel agent' }}</h3>
         <form @submit.prevent="submitAgent">
           <div class="mb-3">
-            <label class="form-label text-white">Nom *</label>
+            <label class="form-label text-white">{{ $t('ui.nom_2') }}</label>
             <input v-model="agentForm.name" class="form-control n11-bg text-white border-secondary" required />
           </div>
           <div class="mb-3">
-            <label class="form-label text-white">WhatsApp *</label>
+            <label class="form-label text-white">{{ $t('ui.whatsapp_3') }}</label>
             <input v-model="agentForm.phone" class="form-control n11-bg text-white border-secondary" required />
           </div>
           <div class="mb-3">
-            <label class="form-label text-white">Statut *</label>
+            <label class="form-label text-white">{{ $t('ui.statut_2') }}</label>
             <select v-model="agentForm.status" class="form-control n11-bg text-white border-secondary" required>
-              <option value="active">Actif</option>
-              <option value="suspended">Suspendu</option>
-              <option value="inactive">Inactif</option>
+              <option value="active">{{ $t('ui.actif') }}</option>
+              <option value="suspended">{{ $t('ui.suspendu') }}</option>
+              <option value="inactive">{{ $t('ui.inactif') }}</option>
             </select>
           </div>
           <div class="mb-3">
-            <label class="form-label text-white">Description</label>
+            <label class="form-label text-white">{{ $t('common.description') }}</label>
             <textarea v-model="agentForm.description" rows="3" class="form-control n11-bg text-white border-secondary"></textarea>
           </div>
           <button type="submit" class="btn btn-primary w-100 admin-accent-btn" :disabled="processing">
@@ -107,22 +106,22 @@
         </p>
         <form @submit.prevent="submitWallet">
           <div class="mb-3">
-            <label class="form-label text-white">Action</label>
+            <label class="form-label text-white">{{ $t('ui.action') }}</label>
             <select v-model="walletForm.action" class="form-control n11-bg text-white border-secondary">
-              <option value="credit">Créditer (+)</option>
-              <option value="debit">Débiter (−)</option>
-              <option value="set">Définir le solde exact</option>
+              <option value="credit">{{ $t('ui.cr_diter') }}</option>
+              <option value="debit">{{ $t('ui.d_biter') }}</option>
+              <option value="set">{{ $t('ui.d_finir_le_solde_exact') }}</option>
             </select>
           </div>
           <div class="mb-3">
-            <label class="form-label text-white">Montant (USDT)</label>
+            <label class="form-label text-white">{{ $t('ui.montant_usdt') }}</label>
             <input v-model.number="walletForm.amount" type="number" min="0" step="0.01" class="form-control n11-bg text-white border-secondary" required />
           </div>
           <div class="mb-3">
-            <label class="form-label text-white">Solde bloqué (optionnel)</label>
+            <label class="form-label text-white">{{ $t('ui.solde_bloqu_optionnel') }}</label>
             <input v-model.number="walletForm.locked_balance" type="number" min="0" step="0.01" class="form-control n11-bg text-white border-secondary" />
           </div>
-          <button type="submit" class="btn btn-primary w-100 admin-accent-btn" :disabled="processing">Appliquer</button>
+          <button type="submit" class="btn btn-primary w-100 admin-accent-btn" :disabled="processing">{{ $t('ui.appliquer') }}</button>
         </form>
       </div>
     </div>
@@ -130,15 +129,15 @@
     <!-- Delete -->
     <div v-if="showDeleteModal && selectedAgent" class="modal-overlay" @click.self="showDeleteModal = false">
       <div class="popup-box p-5 rounded-4 n11-bg" style="max-width: 500px;">
-        <h3 class="text-white mb-3">Supprimer l'agent</h3>
-        <p class="text-white-50 mb-3">Supprimer <strong>{{ selectedAgent.name }}</strong> ? Cette action est irréversible.</p>
+        <h3 class="text-white mb-3">{{ $t('ui.supprimer_lagent') }}</h3>
+        <p class="text-white-50 mb-3">{{ $t('ui.supprimer') }}<strong>{{ selectedAgent.name }}</strong>{{ $t('ui.cette_action_est_irr_versible') }}</p>
         <label class="d-flex align-items-center gap-2 text-white mb-4">
           <input v-model="revokeUserRole" type="checkbox" />
           Retirer aussi le rôle agent du compte utilisateur lié
         </label>
         <div class="d-flex gap-3">
-          <button class="btn btn-danger flex-fill" :disabled="processing" @click="confirmDelete">Supprimer</button>
-          <button class="btn_secondary" @click="showDeleteModal = false">Annuler</button>
+          <button class="btn btn-danger flex-fill" :disabled="processing" @click="confirmDelete">{{ $t('ui.supprimer') }}</button>
+          <button class="btn_secondary" @click="showDeleteModal = false">{{ $t('ui.annuler') }}</button>
         </div>
       </div>
     </div>
@@ -146,6 +145,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted } from 'vue';
 import apiClient from '@/utils/axios';
 

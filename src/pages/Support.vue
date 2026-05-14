@@ -3,28 +3,28 @@
     <!-- Hero -->
     <section class="tw-page-hero">
       <div class="hero-inner">
-        <p class="tw-page-hero__sub"><i class="fas fa-headset me-2"></i>Support</p>
-        <h1 class="tw-page-hero__title">Support <span class="accent">Center</span></h1>
-        <p class="hero-desc">Our support team is available 24/7 to help you. Choose the contact method that works best for you.</p>
+        <p class="tw-page-hero__sub"><i class="fas fa-headset me-2"></i>{{ $t('ui.support') }}</p>
+        <h1 class="tw-page-hero__title">{{ $t('ui.support') }}<span class="accent">{{ $t('ui.center') }}</span></h1>
+        <p class="hero-desc">{{ $t('ui.our_support_team_is_available_24_7_to_help_you_choose_the_co') }}</p>
       </div>
     </section>
 
     <div class="tw-page-body">
       <!-- Support method cards -->
       <section class="page-section">
-        <h2 class="section-title">Get in Touch</h2>
+        <h2 class="section-title">{{ $t('ui.get_in_touch') }}</h2>
         <div class="tw-grid-3">
           <!-- Email -->
           <div class="tw-card support-card">
             <div class="support-icon">
               <i class="fas fa-envelope"></i>
             </div>
-            <h3 class="support-title">Email Support</h3>
-            <p class="support-desc">Send us an email and we will respond within 24 hours.</p>
+            <h3 class="support-title">{{ $t('ui.email_support') }}</h3>
+            <p class="support-desc">{{ $t('ui.send_us_an_email_and_we_will_respond_within_24_hours') }}</p>
             <a href="mailto:support@acmpt.online" class="support-link">
               support@acmpt.online <i class="fas fa-external-link-alt ms-1"></i>
             </a>
-            <div class="support-meta">Response within 24h</div>
+            <div class="support-meta">{{ $t('ui.response_within_24h') }}</div>
           </div>
 
           <!-- Chat -->
@@ -32,12 +32,11 @@
             <div class="support-icon">
               <i class="fas fa-comments"></i>
             </div>
-            <h3 class="support-title">Live Chat</h3>
-            <p class="support-desc">Chat with our team in real-time. Available 24/7.</p>
+            <h3 class="support-title">{{ $t('ui.live_chat') }}</h3>
+            <p class="support-desc">{{ $t('ui.chat_with_our_team_in_real_time_available_24_7') }}</p>
             <button class="tw-btn tw-btn--primary" @click="openChat">
-              <i class="fas fa-comment-dots me-2"></i>Open Chat
-            </button>
-            <div class="support-meta online"><span class="dot"></span> Available now</div>
+              <i class="fas fa-comment-dots me-2"></i>{{ $t('ui.open_chat') }}</button>
+            <div class="support-meta online"><span class="dot"></span>{{ $t('ui.available_now') }}</div>
           </div>
 
           <!-- Phone -->
@@ -45,12 +44,12 @@
             <div class="support-icon">
               <i class="fas fa-phone"></i>
             </div>
-            <h3 class="support-title">Phone Support</h3>
-            <p class="support-desc">Call us for immediate assistance.</p>
+            <h3 class="support-title">{{ $t('ui.phone_support') }}</h3>
+            <p class="support-desc">{{ $t('ui.call_us_for_immediate_assistance') }}</p>
             <a href="tel:+1234567890" class="support-link">
               +1 (234) 567-890 <i class="fas fa-external-link-alt ms-1"></i>
             </a>
-            <div class="support-meta">Mon–Fri: 9am–6pm (UTC)</div>
+            <div class="support-meta">{{ $t('ui.mon_fri_9am_6pm_utc') }}</div>
           </div>
         </div>
       </section>
@@ -61,11 +60,11 @@
       <section class="bottom-row">
         <!-- Quick links -->
         <div class="tw-card links-card">
-          <h4 class="card-heading">Useful Resources</h4>
+          <h4 class="card-heading">{{ $t('ui.useful_resources') }}</h4>
           <div class="quick-links">
             <router-link to="/help" class="quick-link">
               <i class="fas fa-question-circle quick-link__icon"></i>
-              <span>Help Center</span>
+              <span>{{ $t('ui.help_center') }}</span>
               <i class="fas fa-chevron-right quick-link__arrow"></i>
             </router-link>
             <router-link to="/faq" class="quick-link">
@@ -75,12 +74,12 @@
             </router-link>
             <router-link to="/contact" class="quick-link">
               <i class="fas fa-envelope quick-link__icon"></i>
-              <span>Contact Form</span>
+              <span>{{ $t('ui.contact_form') }}</span>
               <i class="fas fa-chevron-right quick-link__arrow"></i>
             </router-link>
             <router-link to="/privacy" class="quick-link">
               <i class="fas fa-shield-alt quick-link__icon"></i>
-              <span>Privacy</span>
+              <span>{{ $t('ui.privacy') }}</span>
               <i class="fas fa-chevron-right quick-link__arrow"></i>
             </router-link>
           </div>
@@ -88,24 +87,24 @@
 
         <!-- Service status -->
         <div class="tw-card status-card">
-          <h4 class="card-heading">Service Status</h4>
+          <h4 class="card-heading">{{ $t('ui.service_status') }}</h4>
           <div class="status-list">
             <div class="status-row">
-              <span class="status-name">Platform</span>
-              <span class="status-badge operational"><i class="fas fa-circle me-1"></i>Operational</span>
+              <span class="status-name">{{ $t('ui.platform') }}</span>
+              <span class="status-badge operational"><i class="fas fa-circle me-1"></i>{{ $t('ui.operational') }}</span>
             </div>
             <div class="tw-divider mini-divider"></div>
             <div class="status-row">
-              <span class="status-name">Payments</span>
-              <span class="status-badge operational"><i class="fas fa-circle me-1"></i>Operational</span>
+              <span class="status-name">{{ $t('ui.payments') }}</span>
+              <span class="status-badge operational"><i class="fas fa-circle me-1"></i>{{ $t('ui.operational') }}</span>
             </div>
             <div class="tw-divider mini-divider"></div>
             <div class="status-row">
-              <span class="status-name">Streaming</span>
-              <span class="status-badge operational"><i class="fas fa-circle me-1"></i>Operational</span>
+              <span class="status-name">{{ $t('ui.streaming') }}</span>
+              <span class="status-badge operational"><i class="fas fa-circle me-1"></i>{{ $t('ui.operational') }}</span>
             </div>
           </div>
-          <p class="status-footer">All systems normal</p>
+          <p class="status-footer">{{ $t('ui.all_systems_normal') }}</p>
         </div>
       </section>
     </div>
@@ -113,6 +112,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 const openChat = () => {
   // Simulate opening chat
   alert('Chat feature coming soon. In the meantime, please use the contact form or email.');

@@ -3,9 +3,8 @@
     <!-- Hero -->
     <div class="tw-page-hero">
       <div class="contact-eyebrow">
-        <i class="fas fa-envelope"></i> Contact
-      </div>
-      <h1 class="tw-page-hero__title">Contact Us</h1>
+        <i class="fas fa-envelope"></i>{{ $t('ui.contact') }}</div>
+      <h1 class="tw-page-hero__title">{{ $t('ui.contact_us') }}</h1>
       <p class="tw-page-hero__sub">
         We are here to help you. Feel free to reach out for any questions, suggestions, or issues.
         Our team will respond as soon as possible.
@@ -17,59 +16,59 @@
       <!-- Form column -->
       <div class="contact-form-col">
         <div class="tw-card contact-form-card">
-          <h3 class="contact-form-card__heading">Send us a Message</h3>
+          <h3 class="contact-form-card__heading">{{ $t('ui.send_us_a_message') }}</h3>
 
           <form @submit.prevent="handleSubmit" class="contact-form">
             <!-- Name -->
             <div class="contact-form__field">
-              <label class="tw-label">Full Name</label>
+              <label class="tw-label">{{ $t('ui.full_name_2') }}</label>
               <input
                 v-model="form.name"
                 type="text"
                 class="tw-input"
-                placeholder="Your name"
+                :placeholder="$t('ui.your_name')"
                 required
               />
             </div>
 
             <!-- Email -->
             <div class="contact-form__field">
-              <label class="tw-label">Email</label>
+              <label class="tw-label">{{ $t('common.email') }}</label>
               <input
                 v-model="form.email"
                 type="email"
                 class="tw-input"
-                placeholder="your@email.com"
+                :placeholder="$t('ui.your_email_com')"
                 required
               />
             </div>
 
             <!-- Subject -->
             <div class="contact-form__field">
-              <label class="tw-label">Subject</label>
+              <label class="tw-label">{{ $t('ui.subject') }}</label>
               <select
                 v-model="form.subject"
                 class="tw-input tw-select"
                 required
               >
-                <option value="">Select a subject</option>
-                <option value="support">Technical Support</option>
-                <option value="account">Account Issue</option>
-                <option value="payment">Payment Question</option>
-                <option value="challenge">Challenge Question</option>
-                <option value="event">Event Question</option>
-                <option value="other">Other</option>
+                <option value="">{{ $t('ui.select_a_subject') }}</option>
+                <option value="support">{{ $t('ui.technical_support') }}</option>
+                <option value="account">{{ $t('ui.account_issue') }}</option>
+                <option value="payment">{{ $t('ui.payment_question') }}</option>
+                <option value="challenge">{{ $t('ui.challenge_question') }}</option>
+                <option value="event">{{ $t('ui.event_question') }}</option>
+                <option value="other">{{ $t('ui.other') }}</option>
               </select>
             </div>
 
             <!-- Message -->
             <div class="contact-form__field">
-              <label class="tw-label">Message</label>
+              <label class="tw-label">{{ $t('ui.message') }}</label>
               <textarea
                 v-model="form.message"
                 class="tw-textarea"
                 rows="6"
-                placeholder="Your message..."
+                :placeholder="$t('ui.your_message')"
                 required
               ></textarea>
             </div>
@@ -110,8 +109,8 @@
               <i class="fas fa-envelope"></i>
             </span>
             <div>
-              <h5 class="contact-info-card__title">Email</h5>
-              <p class="contact-info-card__value">support@acmpt.online</p>
+              <h5 class="contact-info-card__title">{{ $t('common.email') }}</h5>
+              <p class="contact-info-card__value">{{ $t('ui.support_acmpt_online') }}</p>
             </div>
           </div>
         </div>
@@ -123,8 +122,8 @@
               <i class="fas fa-headset"></i>
             </span>
             <div>
-              <h5 class="contact-info-card__title">Support</h5>
-              <p class="contact-info-card__value">Available 24/7</p>
+              <h5 class="contact-info-card__title">{{ $t('ui.support') }}</h5>
+              <p class="contact-info-card__value">{{ $t('ui.available_24_7') }}</p>
             </div>
           </div>
         </div>
@@ -136,15 +135,15 @@
               <i class="fas fa-clock"></i>
             </span>
             <div>
-              <h5 class="contact-info-card__title">Response Time</h5>
-              <p class="contact-info-card__value">Within 24 hours</p>
+              <h5 class="contact-info-card__title">{{ $t('ui.response_time') }}</h5>
+              <p class="contact-info-card__value">{{ $t('ui.within_24_hours') }}</p>
             </div>
           </div>
         </div>
 
         <!-- Resources card -->
         <div class="tw-card contact-resources">
-          <h5 class="contact-resources__heading">Other Resources</h5>
+          <h5 class="contact-resources__heading">{{ $t('ui.other_resources') }}</h5>
           <div class="tw-divider"></div>
           <nav class="contact-resources__links">
             <router-link to="/help" class="contact-resource-link">
@@ -167,6 +166,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref } from 'vue';
 
 const form = ref({

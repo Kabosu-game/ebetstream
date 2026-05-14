@@ -10,7 +10,7 @@
                   class="top_matches__title d-flex align-items-center gap-2 mb-4 mb-md-5"
                 >
                   <img :src="liveMatch" width="{32}" height="{32}" alt="Icon" />
-                  <h3>Live Matches</h3>
+                  <h3>{{ $t('betting.live_matches') }}</h3>
                 </div>
                 <div class="top_matches__content">
                   <div
@@ -52,9 +52,9 @@
                                 :src="live"
                                 width="{16}"
                                 height="{16}"
-                                alt="icon"
+                                :alt="$t('ui.icon')"
                               />
-                              <span class="fs-eight cpoint">5th set</span>
+                              <span class="fs-eight cpoint">{{ $t('ui.5th_set') }}</span>
                             </div>
                           </div>
                           <div
@@ -122,13 +122,13 @@
                               <thead>
                                 <tr class="text-center">
                                   <th scope="col">
-                                    <span class="fs-eight">Winner </span>
+                                    <span class="fs-eight">{{ $t('betting.winner') }}</span>
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">Point handicap</span>
+                                    <span class="fs-eight">{{ $t('ui.point_handicap') }}</span>
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">Total points</span>
+                                    <span class="fs-eight">{{ $t('ui.total_points') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -231,6 +231,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { liveTableTannis } from "../../../assets/data/allPageData";
 import liveMatch from "@/assets/images/icon/live-match.png";
 </script>

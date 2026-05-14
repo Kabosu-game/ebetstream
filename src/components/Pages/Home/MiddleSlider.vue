@@ -30,10 +30,9 @@
                         <div class="col-lg-6 col-md-7">
                           <div class="hero_content" data-aos="fade-right">
                   <span class="hero_badge mb-3 d-inline-block">
-                    <i class="fas fa-fire me-2"></i>EXCLUSIVE OFFER
-                  </span>
+                    <i class="fas fa-fire me-2"></i>{{ $t('ui.exclusive_offer') }}</span>
                   <h1 class="hero_title mb-4">
-                    Boosted <span class="text_gradient">Odds</span><br />
+                    Boosted <span class="text_gradient">{{ $t('ui.odds') }}</span><br />
                     up to 200%
                   </h1>
                   <p class="hero_subtitle mb-5">
@@ -42,12 +41,12 @@
                   </p>
                   <div class="hero_actions d-flex flex-wrap gap-3">
                     <button class="btn_primary">
-                      <span>Bet Now</span>
+                      <span>{{ $t('ui.bet_now') }}</span>
                       <i class="fas fa-arrow-right ms-2"></i>
                     </button>
                     <button class="btn_secondary">
                       <i class="fas fa-play me-2"></i>
-                      <span>View Matches</span>
+                      <span>{{ $t('ui.view_matches') }}</span>
                     </button>
                   </div>
                 </div>
@@ -63,8 +62,8 @@
                   <div class="floating_card card_1">
                     <div class="card_icon">⚽</div>
                     <div class="card_content">
-                      <span class="card_label">Boosted Odds</span>
-                      <span class="card_value">2.50 → 5.00</span>
+                      <span class="card_label">{{ $t('ui.boosted_odds') }}</span>
+                      <span class="card_value">{{ $t('ui.2_50_5_00') }}</span>
                     </div>
                   </div>
                 </div>
@@ -86,10 +85,9 @@
                         <div class="col-lg-6 col-md-7">
                           <div class="hero_content" data-aos="fade-right">
                   <span class="hero_badge mb-3 d-inline-block">
-                    <i class="fas fa-gift me-2"></i>NEW PLAYER
-                  </span>
+                    <i class="fas fa-gift me-2"></i>{{ $t('ui.new_player') }}</span>
                   <h1 class="hero_title mb-4">
-                    Welcome <span class="text_gradient">Bonus</span><br />
+                    Welcome <span class="text_gradient">{{ $t('ui.bonus') }}</span><br />
                     100 EBT Offered
                   </h1>
                   <p class="hero_subtitle mb-5">
@@ -98,22 +96,22 @@
                   </p>
                   <div class="hero_actions d-flex flex-wrap gap-3">
                     <button class="btn_primary">
-                      <span>Create Account</span>
+                      <span>{{ $t('ui.create_account') }}</span>
                       <i class="fas fa-user-plus ms-2"></i>
                     </button>
                     <button class="btn_secondary">
                       <i class="fas fa-info-circle me-2"></i>
-                      <span>Learn More</span>
+                      <span>{{ $t('ui.learn_more') }}</span>
                     </button>
                   </div>
                   <div class="hero_stats mt-5">
                     <div class="stat_item">
-                      <h3 class="stat_value">50K+</h3>
-                      <p class="stat_label">Active Bettors</p>
+                      <h3 class="stat_value">{{ $t('ui.50k') }}</h3>
+                      <p class="stat_label">{{ $t('ui.active_bettors') }}</p>
                     </div>
                     <div class="stat_item">
                       <h3 class="stat_value">98%</h3>
-                      <p class="stat_label">Satisfaction Rate</p>
+                      <p class="stat_label">{{ $t('ui.satisfaction_rate') }}</p>
                     </div>
                   </div>
                 </div>
@@ -127,10 +125,10 @@
           <div class="col-lg-6 col-md-5 d-none d-md-block">
             <div class="hero_image" data-aos="fade-left">
                   <div class="floating_card card_2">
-                    <div class="card_icon">🎁</div>
+                    <div class="card_icon">{{ $t('ui.text_3') }}</div>
                     <div class="card_content">
-                      <span class="card_label">Bonus</span>
-                      <span class="card_value">100 EBT</span>
+                      <span class="card_label">{{ $t('ui.bonus') }}</span>
+                      <span class="card_value">{{ $t('ui.100_ebt') }}</span>
                     </div>
                   </div>
                 </div>
@@ -154,8 +152,7 @@
                   <span class="hero_badge mb-3 d-inline-block">
                     <i class="fas fa-bolt me-2"></i>LIVE
                   </span>
-                  <h1 class="hero_title mb-4">
-                    Live <span class="text_gradient">Betting</span><br />
+                  <h1 class="hero_title mb-4">{{ $t('betting.live') }}<span class="text_gradient">{{ $t('ui.betting') }}</span><br />
                     in Real Time
                   </h1>
                   <p class="hero_subtitle mb-5">
@@ -164,12 +161,12 @@
                   </p>
                   <div class="hero_actions d-flex flex-wrap gap-3">
                     <button class="btn_primary">
-                      <span>Live Matches</span>
+                      <span>{{ $t('betting.live_matches') }}</span>
                       <i class="fas fa-broadcast-tower ms-2"></i>
                     </button>
                     <button class="btn_secondary">
                       <i class="fas fa-calendar me-2"></i>
-                      <span>Schedule</span>
+                      <span>{{ $t('ui.schedule') }}</span>
                     </button>
                   </div>
                   <div class="live_matches mt-5">
@@ -191,10 +188,10 @@
           <div class="col-lg-6 col-md-5 d-none d-md-block">
             <div class="hero_image" data-aos="fade-left">
                   <div class="floating_card card_3">
-                    <div class="card_icon">📡</div>
+                    <div class="card_icon">{{ $t('ui.text_8') }}</div>
                     <div class="card_content">
-                      <span class="card_label">Live</span>
-                      <span class="card_value">120+ Matches</span>
+                      <span class="card_label">{{ $t('betting.live') }}</span>
+                      <span class="card_value">{{ $t('ui.120_matches') }}</span>
                     </div>
                   </div>
                 </div>
@@ -216,10 +213,9 @@
                         <div class="col-lg-6 col-md-7">
                           <div class="hero_content" data-aos="fade-right">
                   <span class="hero_badge mb-3 d-inline-block">
-                    <i class="fas fa-shield-alt me-2"></i>SÉCURISÉ
-                  </span>
+                    <i class="fas fa-shield-alt me-2"></i>{{ $t('ui.s_curis') }}</span>
                   <h1 class="hero_title mb-4">
-                    <span class="text_gradient">Cash Out</span><br />
+                    <span class="text_gradient">{{ $t('ui.cash_out') }}</span><br />
                     Sécurisez vos Gains
                   </h1>
                   <p class="hero_subtitle mb-5">
@@ -228,26 +224,26 @@
                   </p>
                   <div class="hero_actions d-flex flex-wrap gap-3">
                     <button class="btn_primary">
-                      <span>Découvrir Cash Out</span>
+                      <span>{{ $t('ui.d_couvrir_cash_out') }}</span>
                       <i class="fas fa-money-bill-wave ms-2"></i>
                     </button>
                     <button class="btn_secondary">
                       <i class="fas fa-question-circle me-2"></i>
-                      <span>Comment ça marche</span>
+                      <span>{{ $t('ui.comment_a_marche') }}</span>
                     </button>
                   </div>
                   <div class="hero_features mt-5">
                     <div class="feature_item">
                       <i class="fas fa-check-circle"></i>
-                      <span>Paiement Instantané</span>
+                      <span>{{ $t('ui.paiement_instantan') }}</span>
                     </div>
                     <div class="feature_item">
                       <i class="fas fa-check-circle"></i>
-                      <span>Disponible 24/7</span>
+                      <span>{{ $t('ui.disponible_24_7') }}</span>
                     </div>
                     <div class="feature_item">
                       <i class="fas fa-check-circle"></i>
-                      <span>100% Secure</span>
+                      <span>{{ $t('ui.100_secure') }}</span>
                     </div>
                   </div>
                 </div>
@@ -263,8 +259,8 @@
                   <div class="floating_card card_4">
                     <div class="card_icon"><i class="fas fa-coins"></i></div>
                     <div class="card_content">
-                      <span class="card_label">Cash Out</span>
-                      <span class="card_value">Instantané</span>
+                      <span class="card_label">{{ $t('ui.cash_out') }}</span>
+                      <span class="card_value">{{ $t('ui.instantan') }}</span>
                     </div>
                   </div>
                 </div>
@@ -322,14 +318,14 @@
                       <swiper-slide>
                         <div class="hero_area__topslider-card swiper-slide p-4 p-md-6">
                           <div class="hero_area__topslider-cardtop text-center mb-4 mb-md-6">
-                            <span class="fs-ten d-block mb-1">Stamford Bridge</span>
-                            <span class="n3-color cpoint">Week 10</span>
+                            <span class="fs-ten d-block mb-1">{{ $t('ui.stamford_bridge') }}</span>
+                            <span class="n3-color cpoint">{{ $t('ui.week_10') }}</span>
                           </div>
                           <div class="hero_area__topslider-cardbody d-flex align-items-center justify-content-between mb-4 mb-md-6">
                             <div class="hero_area__topslider-flag d-center flex-column">
                               <img class="mb-2" :src="chelsea" width="64" height="64" alt="Icon" />
-                              <span class="cpoint fs-seven mb-1">Chelsea</span>
-                              <span class="n3-color fs-eight">Home</span>
+                              <span class="cpoint fs-seven mb-1">{{ $t('ui.chelsea') }}</span>
+                              <span class="n3-color fs-eight">{{ $t('common.home') }}</span>
                             </div>
                             <div class="hero_area__topslider-scr">
                               <h3 class="mb-2">1 : 1</h3>
@@ -337,8 +333,8 @@
                             </div>
                             <div class="hero_area__topslider-flag text-end d-flex flex-column justify-content-center align-items-center">
                               <img class="mb-2" :src="manUtd" width="64" height="64" alt="Icon" />
-                              <span class="cpoint fs-seven mb-1">Man Utd</span>
-                              <span class="n3-color fs-eight">Away</span>
+                              <span class="cpoint fs-seven mb-1">{{ $t('ui.man_utd') }}</span>
+                              <span class="n3-color fs-eight">{{ $t('ui.away') }}</span>
                             </div>
                           </div>
                         </div>
@@ -356,6 +352,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Autoplay, Pagination, EffectFade } from "swiper/modules";
 import "swiper/css";

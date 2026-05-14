@@ -9,9 +9,9 @@
               <!-- Colonne texte -->
               <div class="col-lg-6 col-md-7">
                 <div class="defis_content" data-aos="fade-right">
-                  <span class="hero_badge mb-3 d-inline-block"><i class="fas fa-star"></i> Joueurs EbetStar</span>
+                  <span class="hero_badge mb-3 d-inline-block"><i class="fas fa-star"></i>{{ $t('ui.joueurs_ebetstar') }}</span>
                   <h2 class="hero_title mb-4">
-                    Découvrez nos <span class="text_gradient">Meilleurs Joueurs</span><br />
+                    Découvrez nos <span class="text_gradient">{{ $t('ui.meilleurs_joueurs') }}</span><br />
                     et leurs statistiques !
                   </h2>
                   <p class="hero_subtitle mb-5">
@@ -19,7 +19,7 @@
                   </p>
                   <div class="hero_actions d-flex flex-wrap gap-3">
                     <button class="btn_primary">
-                      <span>Voir tous les joueurs</span>
+                      <span>{{ $t('ui.voir_tous_les_joueurs') }}</span>
                       <i class="fas fa-arrow-right ms-2"></i>
                     </button>
                   </div>
@@ -32,8 +32,8 @@
                   <div class="floating_card card_defis">
                     <div class="card_icon"><i class="fas fa-gamepad"></i></div>
                     <div class="card_content">
-                      <span class="card_label">Top Player</span>
-                      <span class="card_value">EbetStar</span>
+                      <span class="card_label">{{ $t('ui.top_player') }}</span>
+                      <span class="card_value">{{ $t('ui.ebetstar_2') }}</span>
                     </div>
                   </div>
                 </div>
@@ -54,7 +54,7 @@
                   <!-- Jeu préféré -->
                   <div class="mb-3">
                     <span class="fs-eight n10-color">
-                      <i class="fas fa-gamepad"></i> Jeu préféré : <strong>{{ joueur.jeu }}</strong>
+                      <i class="fas fa-gamepad"></i>{{ $t('ui.jeu_pr_f_r') }}<strong>{{ joueur.jeu }}</strong>
                     </span>
                   </div>
 
@@ -92,6 +92,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 interface Joueur {
   nom: string
   jeu: string

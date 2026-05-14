@@ -56,12 +56,12 @@ onBeforeUnmount(() => document.body.removeEventListener("click", handleOutside))
   <aside class="left-nav-area" :class="{ 'mobile-open': sidebarOpen }">
     <div class="logo-area">
       <router-link class="navbar-brand" to="/" @click="closeSidebar">
-        <img class="logo" :src="logo" alt="eBetStream" />
+        <img class="logo" :src="logo" :alt="$t('ui.ebetstream_2')" />
       </router-link>
     </div>
     <div class="nav_aside">
       <div class="nav-clsoeicon">
-        <button class="tw-icon-btn" @click="closeSidebar" aria-label="Close">
+        <button class="tw-icon-btn" @click="closeSidebar" :aria-label="$t('common.close')">
           <i class="fas fa-times"></i>
         </button>
       </div>
@@ -76,7 +76,7 @@ onBeforeUnmount(() => document.body.removeEventListener("click", handleOutside))
     <nav class="navbar">
 
       <!-- Hamburger (mobile) -->
-      <button class="navbar-toggler tw-mobile-toggle" @click.stop="toggleSidebar" aria-label="Menu">
+      <button class="navbar-toggler tw-mobile-toggle" @click.stop="toggleSidebar" :aria-label="$t('ui.menu')">
         <i class="fas fa-bars"></i>
       </button>
 
@@ -106,7 +106,7 @@ onBeforeUnmount(() => document.body.removeEventListener("click", handleOutside))
             {{ t('common.signUp') }}
           </router-link>
           <!-- Mobile: icon-only login -->
-          <router-link to="/login" class="hdr-icon-btn hdr-btn-icon-only" aria-label="Login">
+          <router-link to="/login" class="hdr-icon-btn hdr-btn-icon-only" :aria-label="$t('common.login')">
             <i class="fas fa-user"></i>
           </router-link>
         </template>
@@ -118,7 +118,7 @@ onBeforeUnmount(() => document.body.removeEventListener("click", handleOutside))
             v-if="isAgent"
             to="/agent-dashboard"
             class="cmn-btn hdr-btn-text"
-          >Espace Agent</router-link>
+          >{{ $t('nav.espace_agent') }}</router-link>
           <router-link
             v-else-if="!isAdmin"
             to="/dashboard"
@@ -128,7 +128,7 @@ onBeforeUnmount(() => document.body.removeEventListener("click", handleOutside))
             v-else
             to="/admin"
             class="cmn-btn hdr-btn-text"
-          >Admin</router-link>
+          >{{ $t('common.admin') }}</router-link>
 
           <button class="cmn-btn second-alt hdr-btn-text" @click="logout">
             {{ t('common.logout') }}
@@ -146,7 +146,7 @@ onBeforeUnmount(() => document.body.removeEventListener("click", handleOutside))
                 @click="closeUserMenu"
               >
                 <i class="fas fa-user-shield"></i>
-                <span>Espace Agent</span>
+                <span>{{ $t('nav.espace_agent') }}</span>
               </router-link>
               <router-link
                 v-else-if="!isAdmin"
@@ -164,7 +164,7 @@ onBeforeUnmount(() => document.body.removeEventListener("click", handleOutside))
                 @click="closeUserMenu"
               >
                 <i class="fas fa-shield-alt"></i>
-                <span>Admin</span>
+                <span>{{ $t('common.admin') }}</span>
               </router-link>
               <div class="hdr-user__divider"></div>
               <button class="hdr-user__item hdr-user__item--danger" @click="logout">

@@ -27,7 +27,7 @@
       <div class="tw-empty__icon">
         <i class="fas fa-spinner fa-spin"></i>
       </div>
-      <p class="tw-empty__title">Loading ambassadors...</p>
+      <p class="tw-empty__title">{{ $t('ui.loading_ambassadors') }}</p>
     </div>
 
     <!-- Ambassador grid -->
@@ -55,7 +55,7 @@
             <img
               v-if="ambassador.avatar_url"
               :src="ambassador.avatar_url"
-              :alt="ambassador.name"
+              :alt="$t('ui.ambassador_name')"
             />
             <span v-else class="amb-avatar__fallback">
               <i class="fas fa-user"></i>
@@ -85,12 +85,15 @@
       <div class="tw-empty__icon">
         <i class="fas fa-users-slash"></i>
       </div>
-      <p class="tw-empty__title">No ambassadors available at the moment.</p>
+      <p class="tw-empty__title">{{ $t('ui.no_ambassadors_available_at_the_moment') }}</p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient from '@/utils/axios';

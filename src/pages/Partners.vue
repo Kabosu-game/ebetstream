@@ -11,10 +11,9 @@
                 <div class="col-lg-6 col-md-7">
                   <div class="defis_content" data-aos="fade-right">
                     <span class="hero_badge mb-3 d-inline-block">
-                      <i class="fas fa-gamepad me-2"></i>Partners
-                    </span>
+                      <i class="fas fa-gamepad me-2"></i>{{ $t('ui.partners') }}</span>
                     <h2 class="hero_title mb-4">
-                      Our Developer <span class="text_gradient">Partners</span>
+                      Our Developer <span class="text_gradient">{{ $t('ui.partners') }}</span>
                     </h2>
                     <p class="hero_subtitle mb-5">
                       Discover the game developers who collaborate with us to create unique experiences.
@@ -28,7 +27,7 @@
                     <div class="floating_card card_defis">
                       <div class="card_icon"><i class="fas fa-gamepad"></i></div>
                       <div class="card_content">
-                        <span class="card_label">Top 10</span>
+                        <span class="card_label">{{ $t('ui.top_10') }}</span>
                         <span class="card_value">{{ partners.length }} Partners</span>
                       </div>
                     </div>
@@ -40,7 +39,7 @@
               <div v-if="loading" class="row mt-5">
                 <div class="col-12 text-center py-5">
                   <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-                    <span class="visually-hidden">Loading...</span>
+                    <span class="visually-hidden">{{ $t('common.loading') }}</span>
                   </div>
                 </div>
               </div>
@@ -58,8 +57,7 @@
                          target="_blank" 
                          class="btn btn-sm btn-warning text-dark fw-bold"
                          @click.stop>
-                        <i class="fas fa-external-link-alt me-1"></i>Visit
-                      </a>
+                        <i class="fas fa-external-link-alt me-1"></i>{{ $t('ui.visit') }}</a>
                     </div>
                     
                     <div class="d-flex align-items-center gap-3 mb-3">
@@ -68,7 +66,7 @@
                         <img 
                           v-if="partner.avatar_url" 
                           :src="partner.avatar_url" 
-                          :alt="partner.name"
+                          :alt="$t('ui.partner_name')"
                           class="w-100 h-100"
                           style="object-fit: cover;"
                           @error="handleImageError"
@@ -107,7 +105,7 @@
               </div>
               <div v-else class="row mt-5">
                 <div class="col-12 text-center py-5">
-                  <p class="text-white" style="opacity: 0.7;">No partners available at the moment.</p>
+                  <p class="text-white" style="opacity: 0.7;">{{ $t('ui.no_partners_available_at_the_moment') }}</p>
                 </div>
               </div>
               <!-- /Liste des partenaires -->
@@ -120,6 +118,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient, { getApiErrorMessage } from '@/utils/axios';

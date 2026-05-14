@@ -4,7 +4,7 @@
     <div class="tw-section-header">
       <div class="tw-section-header__left">
         <i class="ti ti-swords tw-section-icon"></i>
-        <h2 class="tw-section-title">Défis</h2>
+        <h2 class="tw-section-title">{{ $t('ui.d_fis') }}</h2>
         <span class="tw-badge-count" v-if="defis.length > 0">{{ defis.length }}</span>
       </div>
       <div class="tw-section-header__right">
@@ -19,12 +19,12 @@
       <div class="tw-auth-cta__inner">
         <i class="ti ti-lock tw-auth-cta__icon"></i>
         <div>
-          <p class="tw-auth-cta__title">Sign in to view challenges</p>
-          <p class="tw-auth-cta__sub">Join duels, bet on matches, and prove your dominance.</p>
+          <p class="tw-auth-cta__title">{{ $t('ui.sign_in_to_view_challenges') }}</p>
+          <p class="tw-auth-cta__sub">{{ $t('ui.join_duels_bet_on_matches_and_prove_your_dominance') }}</p>
         </div>
         <div class="tw-auth-cta__actions">
-          <router-link to="/login" class="tw-btn tw-btn--primary">Log In</router-link>
-          <router-link to="/create-account" class="tw-btn tw-btn--secondary">Sign Up</router-link>
+          <router-link to="/login" class="tw-btn tw-btn--primary">{{ $t('ui.log_in') }}</router-link>
+          <router-link to="/create-account" class="tw-btn tw-btn--secondary">{{ $t('common.sign_up') }}</router-link>
         </div>
       </div>
     </div>
@@ -89,7 +89,7 @@
           <span class="tw-challenge-amount">
             <i class="fas fa-coins"></i> {{ defi.bet_amount.toLocaleString() }} EBT
           </span>
-          <span class="tw-challenge-action">View <i class="fas fa-arrow-right"></i></span>
+          <span class="tw-challenge-action">{{ $t('common.view') }}<i class="fas fa-arrow-right"></i></span>
         </div>
       </div>
     </div>
@@ -97,15 +97,17 @@
     <!-- Empty (authenticated) -->
     <div v-else class="tw-empty-state">
       <i class="ti ti-swords tw-empty-state__icon"></i>
-      <p>No challenges available. Be the first to create one!</p>
+      <p>{{ $t('ui.no_challenges_available_be_the_first_to_create_one') }}</p>
       <button class="tw-btn tw-btn--primary mt-3" @click="createChallenge">
-        <i class="ti ti-plus me-1"></i> Create Challenge
-      </button>
+        <i class="ti ti-plus me-1"></i>{{ $t('ui.create_challenge') }}</button>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import apiClient from "@/utils/axios";

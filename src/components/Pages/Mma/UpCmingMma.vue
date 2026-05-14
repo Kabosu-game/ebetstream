@@ -37,7 +37,7 @@
                                 alt="Icon"
                               />
                               <span class="fs-eight cpoint"
-                                >International Euroleague</span
+                                >{{ $t('ui.international_euroleague') }}</span
                               >
                             </div>
                             <div
@@ -94,10 +94,10 @@
                               <thead>
                                 <tr class="text-center">
                                   <th scope="col">
-                                    <span class="fs-eight">Winner </span>
+                                    <span class="fs-eight">{{ $t('betting.winner') }}</span>
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">Total</span>
+                                    <span class="fs-eight">{{ $t('betting.total') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -174,6 +174,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { mmaData } from "../../../assets/data/allPageData";
 import union from "@/assets/images/icon/rugby-union.png";
 </script>

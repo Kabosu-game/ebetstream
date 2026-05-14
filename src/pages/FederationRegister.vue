@@ -12,9 +12,8 @@
                   Retour aux fédérations
                 </button>
                 <span class="hero_badge mb-3 d-inline-block">
-                  <i class="fas fa-trophy"></i> Inscrivez votre fédération
-                </span>
-                <h1 class="text-white fw-bold mb-3">Rejoignez EBETSTREAM</h1>
+                  <i class="fas fa-trophy"></i>{{ $t('ui.inscrivez_votre_f_d_ration') }}</span>
+                <h1 class="text-white fw-bold mb-3">{{ $t('ui.rejoignez_ebetstream') }}</h1>
                 <p class="text-white-50">
                   Créez votre compte fédération et organisez vos championnats sur notre plateforme
                 </p>
@@ -33,37 +32,37 @@
                     </div>
 
                     <div class="col-12">
-                      <label class="form-label text-white">Nom de la fédération *</label>
+                      <label class="form-label text-white">{{ $t('ui.nom_de_la_f_d_ration') }}</label>
                       <input
                         v-model="form.name"
                         type="text"
                         class="form-control n11-bg text-white border-secondary"
-                        placeholder="Ex: Fédération Française d'Esport"
+                        :placeholder="$t('ui.ex_f_d_ration_fran_aise_desport')"
                         required
                       />
                     </div>
 
                     <div class="col-12">
-                      <label class="form-label text-white">Description</label>
+                      <label class="form-label text-white">{{ $t('common.description') }}</label>
                       <textarea
                         v-model="form.description"
                         class="form-control n11-bg text-white border-secondary"
                         rows="4"
-                        placeholder="Décrivez votre fédération, ses objectifs, ses activités..."
+                        :placeholder="$t('ui.d_crivez_votre_f_d_ration_ses_objectifs_ses_activit_s')"
                       ></textarea>
                     </div>
 
                     <div class="col-12">
-                      <label class="form-label text-white">Logo de la fédération</label>
+                      <label class="form-label text-white">{{ $t('ui.logo_de_la_f_d_ration') }}</label>
                       <input
                         type="file"
                         accept="image/*"
                         @change="handleLogoChange"
                         class="form-control n11-bg text-white border-secondary"
                       />
-                      <small class="text-white-50">Format: JPG, PNG, GIF, WEBP (max 5MB)</small>
+                      <small class="text-white-50">{{ $t('ui.format_jpg_png_gif_webp_max_5mb') }}</small>
                       <div v-if="logoPreview" class="mt-3">
-                        <img :src="logoPreview" alt="Logo preview" class="rounded" style="max-width: 200px; max-height: 200px;" />
+                        <img :src="logoPreview" :alt="$t('ui.logo_preview')" class="rounded" style="max-width: 200px; max-height: 200px;" />
                       </div>
                     </div>
 
@@ -76,27 +75,27 @@
                     </div>
 
                     <div class="col-md-6">
-                      <label class="form-label text-white">Site web</label>
+                      <label class="form-label text-white">{{ $t('ui.site_web') }}</label>
                       <input
                         v-model="form.website"
                         type="url"
                         class="form-control n11-bg text-white border-secondary"
-                        placeholder="https://example.com"
+                        :placeholder="$t('ui.https_example_com')"
                       />
                     </div>
 
                     <div class="col-md-6">
-                      <label class="form-label text-white">Email</label>
+                      <label class="form-label text-white">{{ $t('common.email') }}</label>
                       <input
                         v-model="form.email"
                         type="email"
                         class="form-control n11-bg text-white border-secondary"
-                        placeholder="contact@federation.com"
+                        :placeholder="$t('ui.contact_federation_com')"
                       />
                     </div>
 
                     <div class="col-md-6">
-                      <label class="form-label text-white">Téléphone</label>
+                      <label class="form-label text-white">{{ $t('ui.t_l_phone') }}</label>
                       <input
                         v-model="form.phone"
                         type="tel"
@@ -114,32 +113,32 @@
                     </div>
 
                     <div class="col-md-6">
-                      <label class="form-label text-white">Pays</label>
+                      <label class="form-label text-white">{{ $t('ui.pays') }}</label>
                       <input
                         v-model="form.country"
                         type="text"
                         class="form-control n11-bg text-white border-secondary"
-                        placeholder="France"
+                        :placeholder="$t('ui.france')"
                       />
                     </div>
 
                     <div class="col-md-6">
-                      <label class="form-label text-white">Ville</label>
+                      <label class="form-label text-white">{{ $t('ui.ville') }}</label>
                       <input
                         v-model="form.city"
                         type="text"
                         class="form-control n11-bg text-white border-secondary"
-                        placeholder="Paris"
+                        :placeholder="$t('ui.paris')"
                       />
                     </div>
 
                     <div class="col-12">
-                      <label class="form-label text-white">Adresse complète</label>
+                      <label class="form-label text-white">{{ $t('ui.adresse_compl_te') }}</label>
                       <textarea
                         v-model="form.address"
                         class="form-control n11-bg text-white border-secondary"
                         rows="2"
-                        placeholder="123 Rue Example, 75001 Paris"
+                        :placeholder="$t('ui.123_rue_example_75001_paris')"
                       ></textarea>
                     </div>
 
@@ -189,6 +188,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import apiClient from "@/utils/axios";
@@ -235,7 +237,7 @@ const submitForm = async () => {
     // Check authentication
     const token = localStorage.getItem("auth_token");
     if (!token) {
-      error.value = "Vous devez être connecté pour créer une fédération";
+      error.value = t('errors.mustBeLoggedInFederation');
       setTimeout(() => {
         router.push("/login");
       }, 2000);
@@ -271,7 +273,7 @@ const submitForm = async () => {
   } catch (err: any) {
     console.error("Error submitting federation:", err);
     if (err.response?.status === 401) {
-      error.value = "Vous devez être connecté pour créer une fédération";
+      error.value = t('errors.mustBeLoggedInFederation');
       setTimeout(() => {
         router.push("/login");
       }, 2000);

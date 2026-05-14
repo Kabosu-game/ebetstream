@@ -2,24 +2,24 @@
   <div class="pay_method__paymethod p-3 p-md-4 p-lg-6 p2-bg rounded-8">
     <div class="pay_method__paymethod-title mb-5 mb-md-6 d-flex justify-content-between align-items-center flex-wrap gap-3">
       <div>
-        <h2 class="text-white fw-bold mb-2">Certification Requests</h2>
-        <p class="text-white-50">Manage certification requests from users</p>
+        <h2 class="text-white fw-bold mb-2">{{ $t('ui.certification_requests') }}</h2>
+        <p class="text-white-50">{{ $t('ui.manage_certification_requests_from_users') }}</p>
       </div>
       <div class="d-flex gap-2">
         <select v-model="filterType" class="form-select n11-bg text-white border-secondary" style="max-width: 200px;">
-          <option value="">All Types</option>
-          <option value="organizer">Organizer</option>
-          <option value="referee">Referee</option>
-          <option value="ambassador">Ambassador</option>
+          <option value="">{{ $t('ui.all_types') }}</option>
+          <option value="organizer">{{ $t('ui.organizer') }}</option>
+          <option value="referee">{{ $t('ui.referee') }}</option>
+          <option value="ambassador">{{ $t('ui.ambassador') }}</option>
         </select>
         <select v-model="filterStatus" class="form-select n11-bg text-white border-secondary" style="max-width: 200px;">
-          <option value="">All Status</option>
-          <option value="pending">Pending</option>
-          <option value="under_review">Under Review</option>
-          <option value="test_pending">Test Pending</option>
-          <option value="interview_pending">Interview Pending</option>
-          <option value="approved">Approved</option>
-          <option value="rejected">Rejected</option>
+          <option value="">{{ $t('ui.all_status') }}</option>
+          <option value="pending">{{ $t('common.pending') }}</option>
+          <option value="under_review">{{ $t('ui.under_review') }}</option>
+          <option value="test_pending">{{ $t('ui.test_pending') }}</option>
+          <option value="interview_pending">{{ $t('ui.interview_pending') }}</option>
+          <option value="approved">{{ $t('common.approved') }}</option>
+          <option value="rejected">{{ $t('common.rejected') }}</option>
         </select>
       </div>
     </div>
@@ -28,25 +28,25 @@
     <div class="row g-3 mb-4">
       <div class="col-md-3 col-sm-6">
         <div class="stat-card n11-bg rounded-8 p-3">
-          <div class="text-white-50 small mb-1">Total Requests</div>
+          <div class="text-white-50 small mb-1">{{ $t('ui.total_requests') }}</div>
           <div class="text-white fw-bold fs-4">{{ stats.total || 0 }}</div>
         </div>
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="stat-card n11-bg rounded-8 p-3">
-          <div class="text-white-50 small mb-1">Pending</div>
+          <div class="text-white-50 small mb-1">{{ $t('common.pending') }}</div>
           <div class="text-warning fw-bold fs-4">{{ stats.pending || 0 }}</div>
         </div>
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="stat-card n11-bg rounded-8 p-3">
-          <div class="text-white-50 small mb-1">Approved</div>
+          <div class="text-white-50 small mb-1">{{ $t('common.approved') }}</div>
           <div class="text-success fw-bold fs-4">{{ stats.approved || 0 }}</div>
         </div>
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="stat-card n11-bg rounded-8 p-3">
-          <div class="text-white-50 small mb-1">Rejected</div>
+          <div class="text-white-50 small mb-1">{{ $t('common.rejected') }}</div>
           <div class="text-danger fw-bold fs-4">{{ stats.rejected || 0 }}</div>
         </div>
       </div>
@@ -54,7 +54,7 @@
 
     <div v-if="loading" class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+        <span class="visually-hidden">{{ $t('common.loading') }}</span>
       </div>
     </div>
 
@@ -63,14 +63,14 @@
         <table class="w-100 text-center p2-bg">
           <thead>
             <tr>
-              <th class="text-white p-3">ID</th>
-              <th class="text-white p-3">User</th>
-              <th class="text-white p-3">Type</th>
-              <th class="text-white p-3">Status</th>
-              <th class="text-white p-3">Full Name</th>
-              <th class="text-white p-3">Email</th>
-              <th class="text-white p-3">Submitted</th>
-              <th class="text-white p-3">Actions</th>
+              <th class="text-white p-3">{{ $t('common.id') }}</th>
+              <th class="text-white p-3">{{ $t('common.user') }}</th>
+              <th class="text-white p-3">{{ $t('common.type') }}</th>
+              <th class="text-white p-3">{{ $t('common.status') }}</th>
+              <th class="text-white p-3">{{ $t('ui.full_name_2') }}</th>
+              <th class="text-white p-3">{{ $t('common.email') }}</th>
+              <th class="text-white p-3">{{ $t('ui.submitted') }}</th>
+              <th class="text-white p-3">{{ $t('common.actions') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -122,7 +122,7 @@
               </td>
             </tr>
             <tr v-if="requests.length === 0">
-              <td colspan="8" class="text-white p-5 text-center">No certification requests found</td>
+              <td colspan="8" class="text-white p-5 text-center">{{ $t('ui.no_certification_requests_found') }}</td>
             </tr>
           </tbody>
         </table>
@@ -133,7 +133,7 @@
     <div v-if="showDetailsModal" class="modal-overlay" @click.self="showDetailsModal = false">
       <div class="modal-content n11-bg rounded-8 p-4" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 class="text-white mb-0">Certification Request Details</h3>
+          <h3 class="text-white mb-0">{{ $t('ui.certification_request_details') }}</h3>
           <button class="btn-close btn-close-white" @click="showDetailsModal = false"></button>
         </div>
 
@@ -168,42 +168,42 @@
           <div v-if="activeTab === 'overview'" class="row g-4">
             <div class="col-md-6">
               <div class="n11-bg rounded-8 p-4">
-                <h5 class="text-white mb-3">Personal Information</h5>
+                <h5 class="text-white mb-3">{{ $t('ui.personal_information') }}</h5>
                 <div class="mb-2">
-                  <small class="text-white-50">Full Name:</small>
+                  <small class="text-white-50">{{ $t('ui.full_name') }}</small>
                   <p class="text-white mb-0">{{ requestDetails.full_name }}</p>
                 </div>
                 <div class="mb-2">
-                  <small class="text-white-50">Username:</small>
+                  <small class="text-white-50">{{ $t('ui.username_2') }}</small>
                   <p class="text-white mb-0">{{ requestDetails.username }}</p>
                 </div>
                 <div class="mb-2">
-                  <small class="text-white-50">Email:</small>
+                  <small class="text-white-50">{{ $t('ui.email') }}</small>
                   <p class="text-white mb-0">{{ requestDetails.professional_email }}</p>
                 </div>
                 <div class="mb-2">
-                  <small class="text-white-50">Phone:</small>
+                  <small class="text-white-50">{{ $t('ui.phone') }}</small>
                   <p class="text-white mb-0">{{ requestDetails.phone }}</p>
                 </div>
                 <div v-if="requestDetails.birth_date" class="mb-2">
-                  <small class="text-white-50">Birth Date:</small>
+                  <small class="text-white-50">{{ $t('ui.birth_date') }}</small>
                   <p class="text-white mb-0">{{ formatDate(requestDetails.birth_date) }}</p>
                 </div>
                 <div v-if="requestDetails.country" class="mb-2">
-                  <small class="text-white-50">Country:</small>
+                  <small class="text-white-50">{{ $t('ui.country') }}</small>
                   <p class="text-white mb-0">{{ requestDetails.country }}</p>
                 </div>
                 <div v-if="requestDetails.city" class="mb-2">
-                  <small class="text-white-50">City:</small>
+                  <small class="text-white-50">{{ $t('ui.city_2') }}</small>
                   <p class="text-white mb-0">{{ requestDetails.city }}</p>
                 </div>
               </div>
             </div>
             <div class="col-md-6">
               <div class="n11-bg rounded-8 p-4">
-                <h5 class="text-white mb-3">Professional Information</h5>
+                <h5 class="text-white mb-3">{{ $t('ui.professional_information') }}</h5>
                 <div class="mb-2">
-                  <small class="text-white-50">Type:</small>
+                  <small class="text-white-50">{{ $t('ui.type') }}</small>
                   <p class="mb-0">
                     <span :class="['badge', getTypeClass(requestDetails.type)]">
                       {{ getTypeLabel(requestDetails.type) }}
@@ -211,7 +211,7 @@
                   </p>
                 </div>
                 <div class="mb-2">
-                  <small class="text-white-50">Status:</small>
+                  <small class="text-white-50">{{ $t('ui.status') }}</small>
                   <p class="mb-0">
                     <span :class="['badge', getStatusClass(requestDetails.status)]">
                       {{ getStatusLabel(requestDetails.status) }}
@@ -219,15 +219,15 @@
                   </p>
                 </div>
                 <div v-if="requestDetails.experience" class="mb-2">
-                  <small class="text-white-50">Experience:</small>
+                  <small class="text-white-50">{{ $t('ui.experience') }}</small>
                   <p class="text-white mb-0" style="white-space: pre-wrap;">{{ requestDetails.experience }}</p>
                 </div>
                 <div v-if="requestDetails.availability" class="mb-2">
-                  <small class="text-white-50">Availability:</small>
+                  <small class="text-white-50">{{ $t('ui.availability') }}</small>
                   <p class="text-white mb-0" style="white-space: pre-wrap;">{{ requestDetails.availability }}</p>
                 </div>
                 <div v-if="requestDetails.technical_skills" class="mb-2">
-                  <small class="text-white-50">Technical Skills:</small>
+                  <small class="text-white-50">{{ $t('ui.technical_skills') }}</small>
                   <p class="text-white mb-0" style="white-space: pre-wrap;">{{ requestDetails.technical_skills }}</p>
                 </div>
               </div>
@@ -236,13 +236,13 @@
             <!-- Type-specific information -->
             <div class="col-12" v-if="requestDetails.type === 'organizer'">
               <div class="n11-bg rounded-8 p-4">
-                <h5 class="text-white mb-3">Organizer Specific Information</h5>
+                <h5 class="text-white mb-3">{{ $t('ui.organizer_specific_information') }}</h5>
                 <div v-if="requestDetails.event_proof" class="mb-3">
-                  <small class="text-white-50">Event Proof:</small>
+                  <small class="text-white-50">{{ $t('ui.event_proof') }}</small>
                   <p class="text-white mb-0" style="white-space: pre-wrap;">{{ requestDetails.event_proof }}</p>
                 </div>
                 <div v-if="requestDetails.professional_contacts" class="mb-3">
-                  <small class="text-white-50">Professional Contacts:</small>
+                  <small class="text-white-50">{{ $t('ui.professional_contacts') }}</small>
                   <p class="text-white mb-0" style="white-space: pre-wrap;">{{ requestDetails.professional_contacts }}</p>
                 </div>
               </div>
@@ -250,13 +250,13 @@
 
             <div class="col-12" v-if="requestDetails.type === 'referee'">
               <div class="n11-bg rounded-8 p-4">
-                <h5 class="text-white mb-3">Referee Specific Information</h5>
+                <h5 class="text-white mb-3">{{ $t('ui.referee_specific_information') }}</h5>
                 <div v-if="requestDetails.mini_cv" class="mb-3">
-                  <small class="text-white-50">Mini CV:</small>
+                  <small class="text-white-50">{{ $t('ui.mini_cv') }}</small>
                   <p class="text-white mb-0" style="white-space: pre-wrap;">{{ requestDetails.mini_cv }}</p>
                 </div>
                 <div v-if="requestDetails.presentation_video" class="mb-3">
-                  <small class="text-white-50">Presentation Video:</small>
+                  <small class="text-white-50">{{ $t('ui.presentation_video') }}</small>
                   <p class="text-white mb-0">
                     <a :href="requestDetails.presentation_video" target="_blank" class="text-warning">
                       {{ requestDetails.presentation_video }}
@@ -264,7 +264,7 @@
                   </p>
                 </div>
                 <div v-if="requestDetails.community_proof" class="mb-3">
-                  <small class="text-white-50">Community Proof:</small>
+                  <small class="text-white-50">{{ $t('ui.community_proof') }}</small>
                   <p class="text-white mb-0" style="white-space: pre-wrap;">{{ requestDetails.community_proof }}</p>
                 </div>
               </div>
@@ -272,17 +272,17 @@
 
             <div class="col-12" v-if="requestDetails.type === 'ambassador'">
               <div class="n11-bg rounded-8 p-4">
-                <h5 class="text-white mb-3">Ambassador Specific Information</h5>
+                <h5 class="text-white mb-3">{{ $t('ui.ambassador_specific_information') }}</h5>
                 <div v-if="requestDetails.social_media_links" class="mb-3">
-                  <small class="text-white-50">Social Media Links:</small>
+                  <small class="text-white-50">{{ $t('ui.social_media_links') }}</small>
                   <p class="text-white mb-0" style="white-space: pre-wrap;">{{ requestDetails.social_media_links }}</p>
                 </div>
                 <div v-if="requestDetails.audience_stats" class="mb-3">
-                  <small class="text-white-50">Audience Stats:</small>
+                  <small class="text-white-50">{{ $t('ui.audience_stats') }}</small>
                   <p class="text-white mb-0" style="white-space: pre-wrap;">{{ requestDetails.audience_stats }}</p>
                 </div>
                 <div v-if="requestDetails.previous_media" class="mb-3">
-                  <small class="text-white-50">Previous Media:</small>
+                  <small class="text-white-50">{{ $t('ui.previous_media') }}</small>
                   <p class="text-white mb-0" style="white-space: pre-wrap;">{{ requestDetails.previous_media }}</p>
                 </div>
               </div>
@@ -291,60 +291,56 @@
 
           <!-- Documents Tab -->
           <div v-if="activeTab === 'documents'" class="n11-bg rounded-8 p-4">
-            <h5 class="text-white mb-3">Identity Documents</h5>
+            <h5 class="text-white mb-3">{{ $t('ui.identity_documents') }}</h5>
             <div class="row g-3 mb-4">
               <div class="col-md-6">
                 <div class="mb-3">
-                  <small class="text-white-50 d-block mb-2">ID Card Front</small>
+                  <small class="text-white-50 d-block mb-2">{{ $t('ui.id_card_front') }}</small>
                   <a 
                     v-if="requestDetails.id_card_front" 
                     :href="getDocumentUrl(requestDetails.id_card_front)" 
                     target="_blank"
                     class="btn btn-sm btn-outline-light"
                   >
-                    <i class="fas fa-eye me-2"></i>View
-                  </a>
-                  <span v-else class="text-white-50">Not provided</span>
+                    <i class="fas fa-eye me-2"></i>{{ $t('common.view') }}</a>
+                  <span v-else class="text-white-50">{{ $t('ui.not_provided') }}</span>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mb-3">
-                  <small class="text-white-50 d-block mb-2">ID Card Back</small>
+                  <small class="text-white-50 d-block mb-2">{{ $t('ui.id_card_back') }}</small>
                   <a 
                     v-if="requestDetails.id_card_back" 
                     :href="getDocumentUrl(requestDetails.id_card_back)" 
                     target="_blank"
                     class="btn btn-sm btn-outline-light"
                   >
-                    <i class="fas fa-eye me-2"></i>View
-                  </a>
-                  <span v-else class="text-white-50">Not provided</span>
+                    <i class="fas fa-eye me-2"></i>{{ $t('common.view') }}</a>
+                  <span v-else class="text-white-50">{{ $t('ui.not_provided') }}</span>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mb-3">
-                  <small class="text-white-50 d-block mb-2">Selfie</small>
+                  <small class="text-white-50 d-block mb-2">{{ $t('ui.selfie') }}</small>
                   <a 
                     v-if="requestDetails.selfie" 
                     :href="getDocumentUrl(requestDetails.selfie)" 
                     target="_blank"
                     class="btn btn-sm btn-outline-light"
                   >
-                    <i class="fas fa-eye me-2"></i>View
-                  </a>
-                  <span v-else class="text-white-50">Not provided</span>
+                    <i class="fas fa-eye me-2"></i>{{ $t('common.view') }}</a>
+                  <span v-else class="text-white-50">{{ $t('ui.not_provided') }}</span>
                 </div>
               </div>
               <div class="col-md-6" v-if="requestDetails.type === 'organizer' && requestDetails.tournament_structure">
                 <div class="mb-3">
-                  <small class="text-white-50 d-block mb-2">Tournament Structure</small>
+                  <small class="text-white-50 d-block mb-2">{{ $t('ui.tournament_structure') }}</small>
                   <a 
                     :href="getDocumentUrl(requestDetails.tournament_structure)" 
                     target="_blank"
                     class="btn btn-sm btn-outline-light"
                   >
-                    <i class="fas fa-eye me-2"></i>View
-                  </a>
+                    <i class="fas fa-eye me-2"></i>{{ $t('common.view') }}</a>
                 </div>
               </div>
             </div>
@@ -357,7 +353,7 @@
     <div v-if="showApproveModal && selectedRequest" class="modal-overlay" @click.self="showApproveModal = false">
       <div class="popup-box p-5 rounded-4 shadow-lg n11-bg" style="max-width: 600px;">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 class="fw-bold mb-0 text-white">Approve Certification Request</h3>
+          <h3 class="fw-bold mb-0 text-white">{{ $t('ui.approve_certification_request') }}</h3>
           <button class="btn-close btn-close-white" @click="showApproveModal = false"></button>
         </div>
         <p class="text-white-50 mb-4">
@@ -369,10 +365,10 @@
             @click="approveRequest"
             :disabled="processing"
           >
-            <span v-if="processing">Processing...</span>
-            <span v-else>Approve</span>
+            <span v-if="processing">{{ $t('common.processing') }}</span>
+            <span v-else>{{ $t('ui.approve') }}</span>
           </button>
-          <button type="button" class="btn_secondary" @click="showApproveModal = false">Cancel</button>
+          <button type="button" class="btn_secondary" @click="showApproveModal = false">{{ $t('common.cancel') }}</button>
         </div>
       </div>
     </div>
@@ -381,16 +377,16 @@
     <div v-if="showRejectModal && selectedRequest" class="modal-overlay" @click.self="showRejectModal = false">
       <div class="popup-box p-5 rounded-4 shadow-lg n11-bg" style="max-width: 600px;">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 class="fw-bold mb-0 text-white">Reject Certification Request</h3>
+          <h3 class="fw-bold mb-0 text-white">{{ $t('ui.reject_certification_request') }}</h3>
           <button class="btn-close btn-close-white" @click="showRejectModal = false"></button>
         </div>
         <div class="mb-4">
-          <label class="form-label text-white">Rejection Reason *</label>
+          <label class="form-label text-white">{{ $t('ui.rejection_reason') }}</label>
           <textarea 
             v-model="rejectionReason" 
             class="form-control n11-bg text-white border-secondary" 
             rows="4"
-            placeholder="Enter the reason for rejection..."
+            :placeholder="$t('ui.enter_the_reason_for_rejection')"
             required
           ></textarea>
         </div>
@@ -400,10 +396,10 @@
             @click="rejectRequest"
             :disabled="processing || !rejectionReason.trim()"
           >
-            <span v-if="processing">Processing...</span>
-            <span v-else>Reject</span>
+            <span v-if="processing">{{ $t('common.processing') }}</span>
+            <span v-else>{{ $t('ui.reject') }}</span>
           </button>
-          <button type="button" class="btn_secondary" @click="showRejectModal = false">Cancel</button>
+          <button type="button" class="btn_secondary" @click="showRejectModal = false">{{ $t('common.cancel') }}</button>
         </div>
       </div>
     </div>
@@ -411,6 +407,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted, watch } from 'vue';
 import apiClient from '@/utils/axios';
 import { getStorageUrl } from '@/config/api';

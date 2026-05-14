@@ -29,51 +29,51 @@ export const tabTwo = [
   {
     id: "1",
     imgSrc: soccer,
-    buttonName: "Soccer",
+    sportKey: "soccer",
   },
   {
     id: "2",
     imgSrc: volta,
-    buttonName: "FIFA",
+    sportKey: "fifa",
   },
   {
     id: "3",
     imgSrc: tennis,
-    buttonName: "Tennis",
+    sportKey: "tennis",
   },
   {
     id: "4",
     imgSrc: basketball,
-    buttonName: "Basketball",
+    sportKey: "basketball",
   },
   {
     id: "5",
     imgSrc: cricket,
-    buttonName: "Cricket",
+    sportKey: "cricket",
   },
   {
     id: "6",
     imgSrc: eCricket,
-    buttonName: "eCricket",
+    sportKey: "ecricket",
   },
   {
     id: "7",
     imgSrc: amiricanFootball,
-    buttonName: "American Football",
+    sportKey: "american_football",
   },
   {
     id: "8",
     imgSrc: iceHockey,
-    buttonName: "Ice Hockey",
+    sportKey: "ice_hockey",
   },
   {
     imgSrc: iconNBA,
-    buttonName: "NBA 2K",
+    sportKey: "nba_2k",
   },
   {
     id: "9",
     imgSrc: volta,
-    buttonName: "FIFA: Volta",
+    sportKey: "fifa_volta",
   },
 ];
 

@@ -3,9 +3,8 @@
     <!-- Hero -->
     <div class="tw-page-hero">
       <div class="careers-eyebrow">
-        <i class="fas fa-briefcase"></i> Careers
-      </div>
-      <h1 class="tw-page-hero__title">Join Our <span class="careers-accent">Team</span></h1>
+        <i class="fas fa-briefcase"></i>{{ $t('ui.careers') }}</div>
+      <h1 class="tw-page-hero__title">{{ $t('ui.join_our') }}<span class="careers-accent">{{ $t('ui.team') }}</span></h1>
       <p class="tw-page-hero__sub">
         We are looking for passionate talents to grow our competitive gaming platform.
         If you share our vision, we would love to meet you!
@@ -23,33 +22,33 @@
     <div class="tw-grid-3">
       <div class="tw-card careers-benefit">
         <span class="careers-benefit__icon"><i class="fas fa-microchip"></i></span>
-        <h4 class="tw-card__title">Innovative Environment</h4>
-        <p class="tw-card__sub">Work on cutting-edge technologies in the gaming industry.</p>
+        <h4 class="tw-card__title">{{ $t('ui.innovative_environment') }}</h4>
+        <p class="tw-card__sub">{{ $t('ui.work_on_cutting_edge_technologies_in_the_gaming_industry') }}</p>
       </div>
       <div class="tw-card careers-benefit">
         <span class="careers-benefit__icon"><i class="fas fa-chart-line"></i></span>
-        <h4 class="tw-card__title">Professional Growth</h4>
-        <p class="tw-card__sub">Opportunities for advancement and skill development.</p>
+        <h4 class="tw-card__title">{{ $t('ui.professional_growth') }}</h4>
+        <p class="tw-card__sub">{{ $t('ui.opportunities_for_advancement_and_skill_development') }}</p>
       </div>
       <div class="tw-card careers-benefit">
         <span class="careers-benefit__icon"><i class="fas fa-fire"></i></span>
-        <h4 class="tw-card__title">Passionate Team</h4>
-        <p class="tw-card__sub">Join a team of passionate and motivated gamers.</p>
+        <h4 class="tw-card__title">{{ $t('ui.passionate_team') }}</h4>
+        <p class="tw-card__sub">{{ $t('ui.join_a_team_of_passionate_and_motivated_gamers') }}</p>
       </div>
       <div class="tw-card careers-benefit">
         <span class="careers-benefit__icon"><i class="fas fa-globe"></i></span>
-        <h4 class="tw-card__title">Real Impact</h4>
-        <p class="tw-card__sub">Contribute to shaping the future of competitive gaming.</p>
+        <h4 class="tw-card__title">{{ $t('ui.real_impact') }}</h4>
+        <p class="tw-card__sub">{{ $t('ui.contribute_to_shaping_the_future_of_competitive_gaming') }}</p>
       </div>
       <div class="tw-card careers-benefit">
         <span class="careers-benefit__icon"><i class="fas fa-home"></i></span>
-        <h4 class="tw-card__title">Remote Friendly</h4>
-        <p class="tw-card__sub">Flexible work-from-anywhere policy for most positions.</p>
+        <h4 class="tw-card__title">{{ $t('ui.remote_friendly') }}</h4>
+        <p class="tw-card__sub">{{ $t('ui.flexible_work_from_anywhere_policy_for_most_positions') }}</p>
       </div>
       <div class="tw-card careers-benefit">
         <span class="careers-benefit__icon"><i class="fas fa-medal"></i></span>
-        <h4 class="tw-card__title">Competitive Pay</h4>
-        <p class="tw-card__sub">We reward exceptional talent with market-leading compensation.</p>
+        <h4 class="tw-card__title">{{ $t('ui.competitive_pay') }}</h4>
+        <p class="tw-card__sub">{{ $t('ui.we_reward_exceptional_talent_with_market_leading_compensatio') }}</p>
       </div>
     </div>
 
@@ -66,17 +65,14 @@
       <div class="tw-card position-card">
         <div class="position-card__header">
           <div>
-            <h4 class="position-card__title">Full Stack Developer</h4>
+            <h4 class="position-card__title">{{ $t('ui.full_stack_developer') }}</h4>
             <div class="position-card__meta">
               <span class="tw-badge position-badge">
-                <i class="fas fa-code"></i> Engineering
-              </span>
+                <i class="fas fa-code"></i>{{ $t('ui.engineering') }}</span>
               <span class="position-meta-item">
-                <i class="fas fa-map-marker-alt"></i> Remote / Hybrid
-              </span>
+                <i class="fas fa-map-marker-alt"></i>{{ $t('ui.remote_hybrid') }}</span>
               <span class="position-meta-item">
-                <i class="fas fa-clock"></i> Full-time
-              </span>
+                <i class="fas fa-clock"></i>{{ $t('ui.full_time') }}</span>
             </div>
           </div>
           <button class="tw-btn tw-btn--primary position-card__apply">
@@ -94,17 +90,14 @@
       <div class="tw-card position-card">
         <div class="position-card__header">
           <div>
-            <h4 class="position-card__title">UX / UI Designer</h4>
+            <h4 class="position-card__title">{{ $t('ui.ux_ui_designer') }}</h4>
             <div class="position-card__meta">
               <span class="tw-badge position-badge">
-                <i class="fas fa-paint-brush"></i> Design
-              </span>
+                <i class="fas fa-paint-brush"></i>{{ $t('ui.design') }}</span>
               <span class="position-meta-item">
-                <i class="fas fa-map-marker-alt"></i> Remote / Hybrid
-              </span>
+                <i class="fas fa-map-marker-alt"></i>{{ $t('ui.remote_hybrid') }}</span>
               <span class="position-meta-item">
-                <i class="fas fa-clock"></i> Full-time
-              </span>
+                <i class="fas fa-clock"></i>{{ $t('ui.full_time') }}</span>
             </div>
           </div>
           <button class="tw-btn tw-btn--primary position-card__apply">
@@ -122,17 +115,14 @@
       <div class="tw-card position-card">
         <div class="position-card__header">
           <div>
-            <h4 class="position-card__title">Community Manager</h4>
+            <h4 class="position-card__title">{{ $t('ui.community_manager') }}</h4>
             <div class="position-card__meta">
               <span class="tw-badge position-badge">
-                <i class="fas fa-users"></i> Community
-              </span>
+                <i class="fas fa-users"></i>{{ $t('ui.community') }}</span>
               <span class="position-meta-item">
-                <i class="fas fa-map-marker-alt"></i> Remote
-              </span>
+                <i class="fas fa-map-marker-alt"></i>{{ $t('ui.remote') }}</span>
               <span class="position-meta-item">
-                <i class="fas fa-clock"></i> Full-time
-              </span>
+                <i class="fas fa-clock"></i>{{ $t('ui.full_time') }}</span>
             </div>
           </div>
           <button class="tw-btn tw-btn--primary position-card__apply">
@@ -152,7 +142,7 @@
       <div class="careers-cta__icon">
         <i class="fas fa-paper-plane"></i>
       </div>
-      <h2 class="careers-cta__heading">Don't Find the Perfect Position?</h2>
+      <h2 class="careers-cta__heading">{{ $t('ui.dont_find_the_perfect_position') }}</h2>
       <p class="careers-cta__sub">
         Send us your spontaneous application. We always keep an eye on promising talents!
       </p>
@@ -171,6 +161,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 </script>
 
 <style scoped>

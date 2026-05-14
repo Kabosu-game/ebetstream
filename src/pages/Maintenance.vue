@@ -8,7 +8,7 @@
         </div>
 
         <!-- Title -->
-        <h1 class="maintenance-title">Site en Maintenance</h1>
+        <h1 class="maintenance-title">{{ $t('ui.site_en_maintenance') }}</h1>
 
         <!-- Message -->
         <p class="maintenance-message">
@@ -37,6 +37,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 // Page de maintenance - Pas de logique nécessaire
 </script>
 

@@ -11,10 +11,9 @@
             </button>
             <div class="defis_content text-center mb-4">
               <span class="hero_badge mb-3 d-inline-block" style="font-size: 1.2rem;">
-                <i class="fas fa-trophy"></i> Résultats Ballon d'Or EBETSTREAM
-              </span>
+                <i class="fas fa-trophy"></i>{{ $t('ui.r_sultats_ballon_dor_ebetstream') }}</span>
               <h2 class="hero_title mb-4">
-                <span class="text_gradient">Les Gagnants de la Saison</span>
+                <span class="text_gradient">{{ $t('ui.les_gagnants_de_la_saison') }}</span>
               </h2>
               <div v-if="season" class="d-flex justify-content-center">
                 <span class="badge bg-primary px-4 py-2">
@@ -28,7 +27,7 @@
         <!-- Loading State -->
         <div v-if="loading" class="text-center py-5">
           <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-            <span class="visually-hidden">Loading...</span>
+            <span class="visually-hidden">{{ $t('common.loading') }}</span>
           </div>
         </div>
 
@@ -165,6 +164,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted, computed } from "vue";
 import apiClient from "@/utils/axios";
 

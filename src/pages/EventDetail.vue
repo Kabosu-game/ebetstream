@@ -26,8 +26,7 @@
                     
                     <div class="tw-page-hero mb-4">
                       <p class="tw-page-hero__eyebrow">
-                        <i class="fas fa-calendar-alt me-2"></i>Event Details
-                      </p>
+                        <i class="fas fa-calendar-alt me-2"></i>{{ $t('ui.event_details') }}</p>
                       <h1 class="tw-page-hero__title">
                         <span>{{ event.title }}</span>
                       </h1>
@@ -60,7 +59,7 @@
                     <div v-if="eventImageUrl && !imageError" class="tw-detail-thumb mb-4">
                       <img 
                         :src="eventImageUrl" 
-                        :alt="event.title"
+                        :alt="$t('ui.event_title_2')"
                         class="w-100 h-100"
                         style="object-fit: cover;"
                         @error="handleImageError"
@@ -73,8 +72,7 @@
                     <!-- Description Section -->
                     <div class="tw-content-block mb-4">
                       <h4 class="fw-bold mb-3">
-                        <i class="fas fa-info-circle me-2"></i>Description
-                      </h4>
+                        <i class="fas fa-info-circle me-2"></i>{{ $t('common.description') }}</h4>
                       <p v-if="event.description" class="text-white" style="opacity: 0.9; line-height: 1.8; font-size: 1.05rem; white-space: pre-line;">
                         {{ event.description }}
                       </p>
@@ -86,14 +84,13 @@
                     <!-- Additional Info -->
                     <div class="tw-content-block">
                       <h4 class="fw-bold mb-4">
-                        <i class="fas fa-calendar-check me-2"></i>Information
-                      </h4>
+                        <i class="fas fa-calendar-check me-2"></i>{{ $t('ui.information') }}</h4>
                       <div class="row g-3">
                         <div class="col-md-6">
                           <div class="info_item">
                             <i class="fas fa-clock text-warning me-2"></i>
                             <div>
-                              <strong class="text-white">Start Date</strong>
+                              <strong class="text-white">{{ $t('ui.start_date') }}</strong>
                               <p class="text-white mb-0" style="opacity: 0.8;">
                                 {{ formatDateTime(event.start_at) }}
                               </p>
@@ -104,7 +101,7 @@
                           <div class="info_item">
                             <i class="fas fa-flag-checkered text-warning me-2"></i>
                             <div>
-                              <strong class="text-white">End Date</strong>
+                              <strong class="text-white">{{ $t('ui.end_date') }}</strong>
                               <p class="text-white mb-0" style="opacity: 0.8;">
                                 {{ formatDateTime(event.end_at) }}
                               </p>
@@ -115,7 +112,7 @@
                           <div class="info_item">
                             <i class="fas fa-map-marker-alt text-warning me-2"></i>
                             <div>
-                              <strong class="text-white">Location</strong>
+                              <strong class="text-white">{{ $t('ui.location') }}</strong>
                               <p class="text-white mb-0" style="opacity: 0.8;">
                                 {{ event.location }}
                               </p>
@@ -126,7 +123,7 @@
                           <div class="info_item">
                             <i class="fas fa-users text-warning me-2"></i>
                             <div>
-                              <strong class="text-white">Max Participants</strong>
+                              <strong class="text-white">{{ $t('ui.max_participants_2') }}</strong>
                               <p class="text-white mb-0" style="opacity: 0.8;">
                                 {{ event.max_participants }} participants
                               </p>
@@ -137,7 +134,7 @@
                           <div class="info_item">
                             <i class="fas fa-calendar-times text-warning me-2"></i>
                             <div>
-                              <strong class="text-white">Registration Deadline</strong>
+                              <strong class="text-white">{{ $t('ui.registration_deadline') }}</strong>
                               <p class="text-white mb-0" style="opacity: 0.8;">
                                 {{ formatDateTime(event.registration_deadline) }}
                               </p>
@@ -152,35 +149,34 @@
                   <div class="col-lg-4">
                     <div class="tw-content-block tw-detail-sidebar">
                       <h4 class="fw-bold mb-4">
-                        <i class="fas fa-info me-2"></i>Summary
-                      </h4>
+                        <i class="fas fa-info me-2"></i>{{ $t('ui.summary') }}</h4>
                       
                       <div class="mb-4">
                         <div class="d-flex align-items-center gap-2 mb-3">
                           <i class="fas fa-calendar text-warning"></i>
                           <div>
-                            <p class="tw-muted mb-0">Date</p>
+                            <p class="tw-muted mb-0">{{ $t('common.date') }}</p>
                             <p class="text-white mb-0 fw-bold">{{ formatDate(event.start_at) }}</p>
                           </div>
                         </div>
                         <div v-if="event.location" class="d-flex align-items-center gap-2 mb-3">
                           <i class="fas fa-map-marker-alt text-warning"></i>
                           <div>
-                            <p class="tw-muted mb-0">Location</p>
+                            <p class="tw-muted mb-0">{{ $t('ui.location') }}</p>
                             <p class="text-white mb-0 fw-bold">{{ event.location }}</p>
                           </div>
                         </div>
                         <div v-if="event.type" class="d-flex align-items-center gap-2 mb-3">
                           <i class="fas fa-tag text-warning"></i>
                           <div>
-                            <p class="tw-muted mb-0">Type</p>
+                            <p class="tw-muted mb-0">{{ $t('common.type') }}</p>
                             <p class="text-white mb-0 fw-bold">{{ event.type }}</p>
                           </div>
                         </div>
                         <div class="d-flex align-items-center gap-2 mb-3">
                           <i class="fas fa-users text-warning"></i>
                           <div>
-                            <p class="tw-muted mb-0">Registered</p>
+                            <p class="tw-muted mb-0">{{ $t('ui.registered') }}</p>
                             <p class="text-white mb-0 fw-bold">
                               {{ event.registrations_count || 0 }}
                               <span v-if="event.max_participants" style="opacity: 0.7;">
@@ -193,9 +189,7 @@
 
                       <div v-if="event.is_upcoming" class="d-grid gap-2">
                         <button class="tw-btn tw-btn--primary w-100 py-3" @click="showRegistrationModal = true">
-                          <i class="fas fa-user-plus me-2"></i>
-                          Register for Event
-                        </button>
+                          <i class="fas fa-user-plus me-2"></i>{{ $t('ui.register_for_event') }}</button>
                       </div>
                       <div v-else-if="event.is_ongoing" class="d-grid gap-2">
                         <button class="tw-btn tw-btn--primary w-100 py-3">
@@ -222,7 +216,7 @@
     <div v-if="showRegistrationModal" class="tw-modal-overlay" @click.self="showRegistrationModal = false">
       <div class="tw-modal">
         <div class="tw-modal__header">
-          <h3 class="tw-modal__title">Register for Event</h3>
+          <h3 class="tw-modal__title">{{ $t('ui.register_for_event') }}</h3>
           <button class="tw-modal__close" @click="showRegistrationModal = false">
             <i class="fas fa-times"></i>
           </button>
@@ -230,29 +224,29 @@
         <div class="tw-modal__body">
           <form @submit.prevent="handleRegistration">
             <div class="mb-3">
-              <label for="pseudo" class="tw-label">Username *</label>
+              <label for="pseudo" class="tw-label">{{ $t('ui.username_3') }}</label>
               <input
                 type="text"
                 id="pseudo"
                 v-model="registrationForm.pseudo"
                 class="tw-input"
                 required
-                placeholder="Your username"
+                :placeholder="$t('ui.your_username')"
               />
             </div>
             <div class="mb-3">
-              <label for="email" class="tw-label">Email *</label>
+              <label for="email" class="tw-label">{{ $t('ui.email_2') }}</label>
               <input
                 type="email"
                 id="email"
                 v-model="registrationForm.email"
                 class="tw-input"
                 required
-                placeholder="your@email.com"
+                :placeholder="$t('ui.your_email_com')"
               />
             </div>
             <div class="mb-3">
-              <label for="phone" class="tw-label">Phone</label>
+              <label for="phone" class="tw-label">{{ $t('ui.phone_2') }}</label>
               <input
                 type="tel"
                 id="phone"
@@ -262,13 +256,13 @@
               />
             </div>
             <div class="mb-3">
-              <label for="country" class="tw-label">Country</label>
+              <label for="country" class="tw-label">{{ $t('common.country') }}</label>
               <input
                 type="text"
                 id="country"
                 v-model="registrationForm.country"
                 class="tw-input"
-                placeholder="United States"
+                :placeholder="$t('ui.united_states')"
               />
             </div>
             <div v-if="registrationError" class="alert alert-danger mb-3">
@@ -277,11 +271,9 @@
             <div class="d-grid gap-2">
               <button type="submit" class="tw-btn tw-btn--primary w-100 py-3" :disabled="registering">
                 <span v-if="registering">
-                  <i class="fas fa-spinner fa-spin me-2"></i>Registering...
-                </span>
+                  <i class="fas fa-spinner fa-spin me-2"></i>{{ $t('ui.registering') }}</span>
                 <span v-else>
-                  <i class="fas fa-check me-2"></i>Confirm Registration
-                </span>
+                  <i class="fas fa-check me-2"></i>{{ $t('ui.confirm_registration') }}</span>
               </button>
               <button type="button" class="tw-btn tw-btn--secondary w-100 py-2" @click="showRegistrationModal = false">
                 Cancel
@@ -295,6 +287,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import apiClient, { getApiErrorMessage } from '@/utils/axios';

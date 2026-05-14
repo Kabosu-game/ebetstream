@@ -774,7 +774,7 @@ onMounted(() => {
             <Tab as="template" v-slot="{ selected }">
               <button class="tw-tab db-tab-btn" :class="{ active: selected }">
                 <i class="fas fa-wallet"></i>
-                <span>Deposit</span>
+                <span>{{ $t('ui.deposit_2') }}</span>
               </button>
             </Tab>
 
@@ -802,7 +802,7 @@ onMounted(() => {
             <Tab as="template" v-slot="{ selected }">
               <button class="tw-tab db-tab-btn" :class="{ active: selected }">
                 <i class="fas fa-cog"></i>
-                <span>Profile</span>
+                <span>{{ $t('ui.profile') }}</span>
               </button>
             </Tab>
           </TabList>
@@ -824,8 +824,8 @@ onMounted(() => {
                     <i class="fas fa-wallet"></i>
                   </div>
                   <div>
-                    <h2 class="db-panel-title__h">Deposit Funds</h2>
-                    <p class="db-panel-title__sub">Add funds to your eBetStream wallet</p>
+                    <h2 class="db-panel-title__h">{{ $t('ui.deposit_funds') }}</h2>
+                    <p class="db-panel-title__sub">{{ $t('ui.add_funds_to_your_ebetstream_wallet') }}</p>
                   </div>
                 </div>
 
@@ -866,7 +866,7 @@ onMounted(() => {
                   <!-- Loading payment methods -->
                   <div v-if="loadingPaymentMethods" class="db-loading-state">
                     <span class="db-spinner"></span>
-                    <span class="db-loading-state__text">Loading payment methods…</span>
+                    <span class="db-loading-state__text">{{ $t('ui.loading_payment_methods') }}</span>
                   </div>
 
                   <!-- No crypto methods available -->
@@ -1038,7 +1038,7 @@ onMounted(() => {
                   </div>
                   <div>
                     <h2 class="db-panel-title__h">{{ $t('dashboard.withdrawal') }}</h2>
-                    <p class="db-panel-title__sub">Withdraw your winnings securely</p>
+                    <p class="db-panel-title__sub">{{ $t('ui.withdraw_your_winnings_securely') }}</p>
                   </div>
                 </div>
 
@@ -1292,12 +1292,12 @@ onMounted(() => {
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="20 6 9 17 4 12"></polyline>
                       </svg>
-                      <span>Withdrawal Code Generated</span>
+                      <span>{{ $t('ui.withdrawal_code_generated') }}</span>
                     </div>
 
                     <div class="db-code-result__body">
                       <div class="db-code-result__row">
-                        <span class="db-code-result__key">Code</span>
+                        <span class="db-code-result__key">{{ $t('ui.code') }}</span>
                         <div class="db-code-result__code-wrap">
                           <code class="db-code-result__code">{{ generatedWithdrawalCode.code }}</code>
                           <button
@@ -1310,25 +1310,25 @@ onMounted(() => {
                         </div>
                       </div>
                       <div class="db-code-result__row">
-                        <span class="db-code-result__key">Amount</span>
+                        <span class="db-code-result__key">{{ $t('ui.amount') }}</span>
                         <span class="db-code-result__val">{{ formatNumber(generatedWithdrawalCode.amountUSD || convertToUSD(generatedWithdrawalCode.amount)) }} EBT</span>
                       </div>
                       <div class="db-code-result__row">
-                        <span class="db-code-result__key">Agent</span>
+                        <span class="db-code-result__key">{{ $t('ui.agent') }}</span>
                         <span class="db-code-result__val">{{ generatedWithdrawalCode.agent_name }}</span>
                       </div>
                       <div class="db-code-result__row">
-                        <span class="db-code-result__key">Agent Phone</span>
+                        <span class="db-code-result__key">{{ $t('ui.agent_phone') }}</span>
                         <span class="db-code-result__val">{{ generatedWithdrawalCode.agent_phone }}</span>
                       </div>
                       <div class="db-code-result__row">
-                        <span class="db-code-result__key">Expires</span>
+                        <span class="db-code-result__key">{{ $t('ui.expires_2') }}</span>
                         <span class="db-code-result__val">{{ formatDate(generatedWithdrawalCode.expires_at) }}</span>
                       </div>
                     </div>
 
                     <div v-if="generatedWithdrawalCode.instructions?.length" class="db-code-result__instructions">
-                      <h6>Instructions</h6>
+                      <h6>{{ $t('ui.instructions') }}</h6>
                       <ol>
                         <li v-for="instruction in generatedWithdrawalCode.instructions" :key="instruction">
                           {{ instruction }}
@@ -1342,18 +1342,18 @@ onMounted(() => {
 
                     <!-- Balance reminder -->
                     <div class="db-balance-reminder">
-                      <span class="db-balance-reminder__label">Available Balance</span>
+                      <span class="db-balance-reminder__label">{{ $t('ui.available_balance') }}</span>
                       <span class="db-balance-reminder__value">{{ formatNumber(walletBalance) }} EBT</span>
                     </div>
 
                     <div class="tw-form-group">
-                      <label class="tw-label">Select Withdrawal Agent *</label>
+                      <label class="tw-label">{{ $t('ui.select_withdrawal_agent') }}</label>
                       <select
                         v-model="selectedWithdrawalAgent"
                         class="tw-select"
                         :disabled="withdrawalLoading"
                       >
-                        <option :value="null">Choose an agent…</option>
+                        <option :value="null">{{ $t('ui.choose_an_agent') }}</option>
                         <option
                           v-for="agent in withdrawalAgents"
                           :key="agent.id"
@@ -1365,17 +1365,17 @@ onMounted(() => {
                     </div>
 
                     <div class="tw-form-group">
-                      <label class="tw-label">Withdrawal Amount (USD) *</label>
+                      <label class="tw-label">{{ $t('ui.withdrawal_amount_usd') }}</label>
                       <input
                         v-model="withdrawalAmount"
                         type="number"
                         class="tw-input"
                         min="1"
                         max="10000"
-                        placeholder="Enter amount (min: $1 USD)"
+                        :placeholder="$t('ui.enter_amount_min_1_usd')"
                         :disabled="withdrawalLoading"
                       />
-                      <span class="db-hint">Minimum: $1 USD — Maximum: $10,000 USD</span>
+                      <span class="db-hint">{{ $t('ui.minimum_1_usd_maximum_10_000_usd') }}</span>
                       <div v-if="withdrawalAmount && parseFloat(withdrawalAmount) > walletBalance"
                            class="tw-alert tw-alert--error" style="margin-top: 0.5rem;">
                         Insufficient balance. Available: {{ formatNumber(walletBalance) }} EBT
@@ -1408,7 +1408,7 @@ onMounted(() => {
                   </div>
                   <div>
                     <h2 class="db-panel-title__h">{{ $t('dashboard.balanceHistory') }}</h2>
-                    <p class="db-panel-title__sub">All your deposits and withdrawals</p>
+                    <p class="db-panel-title__sub">{{ $t('ui.all_your_deposits_and_withdrawals') }}</p>
                   </div>
                 </div>
                 <div v-if="loadingHistory" class="db-loading-state">
@@ -1542,8 +1542,8 @@ onMounted(() => {
                     <i class="fas fa-cog"></i>
                   </div>
                   <div>
-                    <h2 class="db-panel-title__h">My Profile</h2>
-                    <p class="db-panel-title__sub">Manage your personal information and settings</p>
+                    <h2 class="db-panel-title__h">{{ $t('ui.my_profile') }}</h2>
+                    <p class="db-panel-title__sub">{{ $t('ui.manage_your_personal_information_and_settings') }}</p>
                   </div>
                 </div>
                 <ProfileComponent />

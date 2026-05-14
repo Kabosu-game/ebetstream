@@ -2,8 +2,8 @@
   <div class="pay_method__paymethod p-3 p-md-4 p-lg-6 p2-bg rounded-8">
     <div class="pay_method__paymethod-title mb-5 mb-md-6 d-flex justify-content-between align-items-center flex-wrap gap-3">
       <div>
-        <h2 class="text-white fw-bold mb-2">Clan Management</h2>
-        <p class="text-white-50">Manage all platform clans</p>
+        <h2 class="text-white fw-bold mb-2">{{ $t('ui.clan_management') }}</h2>
+        <p class="text-white-50">{{ $t('ui.manage_all_platform_clans') }}</p>
       </div>
     </div>
 
@@ -13,7 +13,7 @@
         <div class="stat-card n11-bg rounded-8 p-3">
           <div class="d-flex align-items-center justify-content-between">
             <div>
-              <p class="text-white-50 small mb-1">Total Clans</p>
+              <p class="text-white-50 small mb-1">{{ $t('ui.total_clans') }}</p>
               <h3 class="text-white mb-0">{{ stats.total_clans || 0 }}</h3>
             </div>
             <div class="stat-icon bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
@@ -26,7 +26,7 @@
         <div class="stat-card n11-bg rounded-8 p-3">
           <div class="d-flex align-items-center justify-content-between">
             <div>
-              <p class="text-white-50 small mb-1">Active Clans</p>
+              <p class="text-white-50 small mb-1">{{ $t('ui.active_clans') }}</p>
               <h3 class="text-success mb-0">{{ stats.active_clans || 0 }}</h3>
             </div>
             <div class="stat-icon bg-success rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
@@ -39,7 +39,7 @@
         <div class="stat-card n11-bg rounded-8 p-3">
           <div class="d-flex align-items-center justify-content-between">
             <div>
-              <p class="text-white-50 small mb-1">Total Members</p>
+              <p class="text-white-50 small mb-1">{{ $t('ui.total_members') }}</p>
               <h3 class="text-white mb-0">{{ stats.total_members || 0 }}</h3>
             </div>
             <div class="stat-icon bg-info rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
@@ -52,7 +52,7 @@
         <div class="stat-card n11-bg rounded-8 p-3">
           <div class="d-flex align-items-center justify-content-between">
             <div>
-              <p class="text-white-50 small mb-1">Pending Candidates</p>
+              <p class="text-white-50 small mb-1">{{ $t('ui.pending_candidates') }}</p>
               <h3 class="text-warning mb-0">{{ stats.pending_candidates || 0 }}</h3>
             </div>
             <div class="stat-icon bg-warning rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
@@ -69,19 +69,19 @@
         v-model="searchQuery" 
         type="text" 
         class="form-control n11-bg text-white border-secondary" 
-        placeholder="Search by name, leader..."
+        :placeholder="$t('ui.search_by_name_leader')"
         style="max-width: 300px;"
       />
       <select v-model="filterStatus" class="form-select n11-bg text-white border-secondary" style="max-width: 200px;">
-        <option value="">All Status</option>
-        <option value="active">Active</option>
-        <option value="inactive">Inactive</option>
+        <option value="">{{ $t('ui.all_status') }}</option>
+        <option value="active">{{ $t('common.active') }}</option>
+        <option value="inactive">{{ $t('common.inactive') }}</option>
       </select>
     </div>
 
     <div v-if="loading" class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+        <span class="visually-hidden">{{ $t('common.loading') }}</span>
       </div>
     </div>
 
@@ -90,14 +90,14 @@
         <table class="w-100 text-center p2-bg">
           <thead>
             <tr>
-              <th class="text-white p-3">ID</th>
-              <th class="text-white p-3">Name</th>
-              <th class="text-white p-3">Leader</th>
-              <th class="text-white p-3">Members</th>
-              <th class="text-white p-3">Candidates</th>
-              <th class="text-white p-3">Status</th>
-              <th class="text-white p-3">Created</th>
-              <th class="text-white p-3">Actions</th>
+              <th class="text-white p-3">{{ $t('common.id') }}</th>
+              <th class="text-white p-3">{{ $t('common.name') }}</th>
+              <th class="text-white p-3">{{ $t('ui.leader') }}</th>
+              <th class="text-white p-3">{{ $t('ui.members') }}</th>
+              <th class="text-white p-3">{{ $t('ui.candidates') }}</th>
+              <th class="text-white p-3">{{ $t('common.status') }}</th>
+              <th class="text-white p-3">{{ $t('ui.created_2') }}</th>
+              <th class="text-white p-3">{{ $t('common.actions') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -113,7 +113,7 @@
               </td>
               <td class="text-white p-3">
                 <span v-if="clan.leader">{{ clan.leader.username }}</span>
-                <span v-else class="text-white-50">No leader</span>
+                <span v-else class="text-white-50">{{ $t('ui.no_leader') }}</span>
               </td>
               <td class="text-white p-3">
                 <span class="badge bg-info">
@@ -190,7 +190,7 @@
     <div v-if="showDetailsModal" class="modal-overlay" @click.self="showDetailsModal = false">
       <div class="modal-content n11-bg rounded-8 p-4" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 class="text-white mb-0">Clan Details</h3>
+          <h3 class="text-white mb-0">{{ $t('ui.clan_details') }}</h3>
           <button class="btn-close btn-close-white" @click="showDetailsModal = false"></button>
         </div>
 
@@ -202,20 +202,20 @@
           <div class="row g-4 mb-4">
             <div class="col-md-6">
               <div class="n11-bg rounded-8 p-4">
-                <h5 class="text-white mb-3">Information</h5>
+                <h5 class="text-white mb-3">{{ $t('ui.information') }}</h5>
                 <div class="mb-2">
-                  <small class="text-white-50">Name:</small>
+                  <small class="text-white-50">{{ $t('ui.name_2') }}</small>
                   <p class="text-white mb-0">{{ clanDetails.name }}</p>
                 </div>
                 <div class="mb-2">
-                  <small class="text-white-50">Leader:</small>
+                  <small class="text-white-50">{{ $t('ui.leader_2') }}</small>
                   <p class="text-white mb-0">
                     {{ clanDetails.leader?.username || 'No leader' }}
                     <span v-if="clanDetails.leader?.email" class="text-white-50">({{ clanDetails.leader.email }})</span>
                   </p>
                 </div>
                 <div class="mb-2">
-                  <small class="text-white-50">Status:</small>
+                  <small class="text-white-50">{{ $t('ui.status') }}</small>
                   <p class="mb-0">
                     <span :class="['badge', clanDetails.status === 'active' ? 'bg-success' : 'bg-secondary']">
                       {{ clanDetails.status === 'active' ? 'Active' : 'Inactive' }}
@@ -223,32 +223,32 @@
                   </p>
                 </div>
                 <div class="mb-2">
-                  <small class="text-white-50">Members:</small>
+                  <small class="text-white-50">{{ $t('ui.members_2') }}</small>
                   <p class="text-white mb-0">{{ clanDetails.members_count || 0 }}/{{ clanDetails.max_members || 50 }}</p>
                 </div>
                 <div v-if="clanDetails.description">
-                  <small class="text-white-50">Description:</small>
+                  <small class="text-white-50">{{ $t('ui.description') }}</small>
                   <p class="text-white mb-0">{{ clanDetails.description }}</p>
                 </div>
               </div>
             </div>
             <div class="col-md-6">
               <div class="n11-bg rounded-8 p-4">
-                <h5 class="text-white mb-3">Statistics</h5>
+                <h5 class="text-white mb-3">{{ $t('ui.statistics') }}</h5>
                 <div class="mb-2">
-                  <small class="text-white-50">Total Members:</small>
+                  <small class="text-white-50">{{ $t('ui.total_members_2') }}</small>
                   <p class="text-white mb-0">{{ clanStats.total_members || 0 }}</p>
                 </div>
                 <div class="mb-2">
-                  <small class="text-white-50">Pending Candidates:</small>
+                  <small class="text-white-50">{{ $t('ui.pending_candidates_2') }}</small>
                   <p class="text-white mb-0">{{ clanStats.pending_candidates || 0 }}</p>
                 </div>
                 <div class="mb-2">
-                  <small class="text-white-50">Total Messages:</small>
+                  <small class="text-white-50">{{ $t('ui.total_messages') }}</small>
                   <p class="text-white mb-0">{{ clanStats.total_messages || 0 }}</p>
                 </div>
                 <div class="mb-2">
-                  <small class="text-white-50">Total Votes:</small>
+                  <small class="text-white-50">{{ $t('ui.total_votes_2') }}</small>
                   <p class="text-white mb-0">{{ clanStats.total_votes || 0 }}</p>
                 </div>
               </div>
@@ -294,8 +294,7 @@
                   <div>
                     <strong class="text-white">{{ member.username }}</strong>
                     <span v-if="clanDetails.leader_id === member.id" class="badge bg-warning ms-2">
-                      <i class="fas fa-crown"></i> Leader
-                    </span>
+                      <i class="fas fa-crown"></i>{{ $t('ui.leader') }}</span>
                     <p class="text-white-50 small mb-0">{{ member.email }}</p>
                   </div>
                   <button 
@@ -342,8 +341,7 @@
                     @click="approveLeader(candidate.id)"
                     title="Approve as Leader"
                   >
-                    <i class="fas fa-check me-1"  ></i> Approve
-                  </button>
+                    <i class="fas fa-check me-1"  ></i>{{ $t('ui.approve') }}</button>
                 </div>
               </div>
             </div>
@@ -379,13 +377,13 @@
     <div v-if="showEditModal" class="modal-overlay" @click.self="showEditModal = false">
       <div class="modal-content n11-bg rounded-8 p-4" style="max-width: 600px;">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 class="text-white mb-0">Edit Clan</h3>
+          <h3 class="text-white mb-0">{{ $t('ui.edit_clan') }}</h3>
           <button class="btn-close btn-close-white" @click="showEditModal = false"></button>
         </div>
 
         <form @submit.prevent="saveClan">
           <div class="mb-3">
-            <label class="text-white mb-2 d-block fw-bold">Name *</label>
+            <label class="text-white mb-2 d-block fw-bold">{{ $t('ui.name') }}</label>
             <input 
               v-model="editForm.name"
               type="text" 
@@ -396,7 +394,7 @@
           </div>
 
           <div class="mb-3">
-            <label class="text-white mb-2 d-block fw-bold">Logo URL</label>
+            <label class="text-white mb-2 d-block fw-bold">{{ $t('ui.logo_url') }}</label>
             <input 
               v-model="editForm.logo"
               type="url" 
@@ -406,7 +404,7 @@
           </div>
 
           <div class="mb-3">
-            <label class="text-white mb-2 d-block fw-bold">Description</label>
+            <label class="text-white mb-2 d-block fw-bold">{{ $t('common.description') }}</label>
             <textarea 
               v-model="editForm.description"
               class="form-control n11-bg text-white border-secondary" 
@@ -416,15 +414,15 @@
           </div>
 
           <div class="mb-3">
-            <label class="text-white mb-2 d-block fw-bold">Status</label>
+            <label class="text-white mb-2 d-block fw-bold">{{ $t('common.status') }}</label>
             <select v-model="editForm.status" class="form-select n11-bg text-white border-secondary">
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
+              <option value="active">{{ $t('common.active') }}</option>
+              <option value="inactive">{{ $t('common.inactive') }}</option>
             </select>
           </div>
 
           <div class="mb-3">
-            <label class="text-white mb-2 d-block fw-bold">Max Members</label>
+            <label class="text-white mb-2 d-block fw-bold">{{ $t('ui.max_members') }}</label>
             <input 
               v-model.number="editForm.max_members"
               type="number" 
@@ -443,8 +441,8 @@
               class="btn_primary flex-fill" 
               :disabled="saving"
             >
-              <span v-if="saving">Saving...</span>
-              <span v-else>Save Changes</span>
+              <span v-if="saving">{{ $t('common.saving') }}</span>
+              <span v-else>{{ $t('ui.save_changes') }}</span>
             </button>
             <button 
               type="button" 
@@ -462,6 +460,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted, computed } from "vue";
 import apiClient from "@/utils/axios";
 

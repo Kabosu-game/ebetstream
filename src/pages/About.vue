@@ -3,8 +3,7 @@
     <!-- Hero -->
     <div class="tw-page-hero">
       <p class="tw-page-hero__eyebrow">
-        <i class="fas fa-info-circle"></i> EBETSTREAM — Investor Pitch
-      </p>
+        <i class="fas fa-info-circle"></i>{{ $t('ui.ebetstream_investor_pitch') }}</p>
       <h1 class="tw-page-hero__title">
         Plateforme de Streaming Compétitif et d'Engagement Communautaire
       </h1>
@@ -13,10 +12,10 @@
         et à l'interaction entre créateurs de contenu gaming et leur communauté.
       </p>
       <div class="about-tagline">
-        <span>Play.</span>
-        <span>Stream.</span>
-        <span class="about-tagline__accent">Bet.</span>
-        <span>Win.</span>
+        <span>{{ $t('ui.play') }}</span>
+        <span>{{ $t('ui.stream') }}</span>
+        <span class="about-tagline__accent">{{ $t('ui.bet_2') }}</span>
+        <span>{{ $t('ui.win') }}</span>
       </div>
     </div>
 
@@ -26,7 +25,7 @@
         <i class="fas fa-broadcast-tower"></i>
       </div>
       <div class="about-mission__body">
-        <h2 class="about-mission__heading">Présentation Générale</h2>
+        <h2 class="about-mission__heading">{{ $t('ui.pr_sentation_g_n_rale') }}</h2>
         <p class="about-mission__text">
           Elle permet aux joueurs (streamers) de partager leurs performances en direct,
           de développer leur audience et de générer des revenus grâce à leur talent,
@@ -44,26 +43,26 @@
     <div class="tw-section-header">
       <div class="tw-section-header__left">
         <span class="tw-section-icon"><i class="fas fa-bullseye"></i></span>
-        <h2 class="tw-section-title">Objectif de la Plateforme</h2>
+        <h2 class="tw-section-title">{{ $t('ui.objectif_de_la_plateforme') }}</h2>
       </div>
     </div>
 
     <div class="tw-grid-2 about-goals">
       <div class="tw-info-box">
         <i class="fas fa-star"></i>
-        <p>Valoriser les compétences des joueurs</p>
+        <p>{{ $t('ui.valoriser_les_comp_tences_des_joueurs') }}</p>
       </div>
       <div class="tw-info-box">
         <i class="fas fa-shield-alt"></i>
-        <p>Offrir un espace de diffusion compétitif sécurisé</p>
+        <p>{{ $t('ui.offrir_un_espace_de_diffusion_comp_titif_s_curis') }}</p>
       </div>
       <div class="tw-info-box">
         <i class="fas fa-comments"></i>
-        <p>Encourager l'interaction positive entre créateurs et spectateurs</p>
+        <p>{{ $t('ui.encourager_linteraction_positive_entre_cr_ateurs_et_spectate') }}</p>
       </div>
       <div class="tw-info-box">
         <i class="fas fa-chart-line"></i>
-        <p>Créer un écosystème digital basé sur la performance et l'engagement</p>
+        <p>{{ $t('ui.cr_er_un_cosyst_me_digital_bas_sur_la_performance_et_lengage') }}</p>
       </div>
     </div>
 
@@ -76,35 +75,35 @@
     <div class="tw-section-header" style="margin-top: 2rem;">
       <div class="tw-section-header__left">
         <span class="tw-section-icon"><i class="fas fa-puzzle-piece"></i></span>
-        <h2 class="tw-section-title">Fonctionnalités Clés</h2>
+        <h2 class="tw-section-title">{{ $t('ui.fonctionnalit_s_cl_s') }}</h2>
       </div>
     </div>
 
     <div class="tw-grid-2">
       <div class="tw-card value-card">
         <span class="value-card__icon"><i class="fas fa-video"></i></span>
-        <h4 class="tw-card__title">Streaming en Direct</h4>
+        <h4 class="tw-card__title">{{ $t('ui.streaming_en_direct') }}</h4>
         <p class="tw-card__sub">
           Diffusez vos parties en temps réel et interagissez avec votre audience via chat et réactions.
         </p>
       </div>
       <div class="tw-card value-card">
         <span class="value-card__icon"><i class="fas fa-trophy"></i></span>
-        <h4 class="tw-card__title">Défis et Événements Compétitifs</h4>
+        <h4 class="tw-card__title">{{ $t('ui.d_fis_et_v_nements_comp_titifs') }}</h4>
         <p class="tw-card__sub">
           Matchs, défis et tournois structurés pour stimuler l'engagement et promouvoir le talent des joueurs.
         </p>
       </div>
       <div class="tw-card value-card">
         <span class="value-card__icon"><i class="fas fa-level-up-alt"></i></span>
-        <h4 class="tw-card__title">Système de Progression</h4>
+        <h4 class="tw-card__title">{{ $t('ui.syst_me_de_progression') }}</h4>
         <p class="tw-card__sub">
           Évoluez à travers différents niveaux selon votre audience et votre activité, avec des avantages à chaque palier.
         </p>
       </div>
       <div class="tw-card value-card">
         <span class="value-card__icon"><i class="fas fa-heart"></i></span>
-        <h4 class="tw-card__title">Soutien Communautaire</h4>
+        <h4 class="tw-card__title">{{ $t('ui.soutien_communautaire') }}</h4>
         <p class="tw-card__sub">
           Les spectateurs soutiennent leurs streamers préférés via des contributions volontaires et des interactions intégrées.
         </p>
@@ -115,7 +114,7 @@
     <div class="tw-section-header" style="margin-top: 2rem;">
       <div class="tw-section-header__left">
         <span class="tw-section-icon"><i class="fas fa-coins"></i></span>
-        <h2 class="tw-section-title">Modèle Économique</h2>
+        <h2 class="tw-section-title">{{ $t('ui.mod_le_conomique') }}</h2>
       </div>
     </div>
 
@@ -123,24 +122,24 @@
       <div class="about-feature">
         <span class="about-feature__icon"><i class="fas fa-hand-holding-heart"></i></span>
         <div>
-          <h5 class="about-feature__title">Contributions volontaires des spectateurs</h5>
-          <p class="about-feature__desc">Un modèle basé sur le soutien communautaire et la reconnaissance du talent.</p>
+          <h5 class="about-feature__title">{{ $t('ui.contributions_volontaires_des_spectateurs') }}</h5>
+          <p class="about-feature__desc">{{ $t('ui.un_mod_le_bas_sur_le_soutien_communautaire_et_la_reconnaissa') }}</p>
         </div>
       </div>
       <div class="tw-divider"></div>
       <div class="about-feature">
         <span class="about-feature__icon"><i class="fas fa-handshake"></i></span>
         <div>
-          <h5 class="about-feature__title">Participation à des événements sponsorisés</h5>
-          <p class="about-feature__desc">Des opportunités de visibilité et de revenus via des partenariats structurés.</p>
+          <h5 class="about-feature__title">{{ $t('ui.participation_des_v_nements_sponsoris_s') }}</h5>
+          <p class="about-feature__desc">{{ $t('ui.des_opportunit_s_de_visibilit_et_de_revenus_via_des_partenar') }}</p>
         </div>
       </div>
       <div class="tw-divider"></div>
       <div class="about-feature">
         <span class="about-feature__icon"><i class="fas fa-award"></i></span>
         <div>
-          <h5 class="about-feature__title">Systèmes internes de soutien et de reconnaissance</h5>
-          <p class="about-feature__desc">Valorisation de la performance, de la créativité et de l'engagement communautaire.</p>
+          <h5 class="about-feature__title">{{ $t('ui.syst_mes_internes_de_soutien_et_de_reconnaissance') }}</h5>
+          <p class="about-feature__desc">{{ $t('ui.valorisation_de_la_performance_de_la_cr_ativit_et_de_lengage') }}</p>
         </div>
       </div>
     </div>
@@ -157,26 +156,26 @@
     <div class="tw-section-header" style="margin-top: 2rem;">
       <div class="tw-section-header__left">
         <span class="tw-section-icon"><i class="fas fa-desktop"></i></span>
-        <h2 class="tw-section-title">Expérience Utilisateur</h2>
+        <h2 class="tw-section-title">{{ $t('ui.exp_rience_utilisateur') }}</h2>
       </div>
     </div>
 
     <div class="tw-grid-4">
       <div class="tw-stat-card">
         <span class="value-card__icon" style="margin: 0 auto 8px;"><i class="fas fa-mouse-pointer"></i></span>
-        <span class="tw-stat-card__label">Interface intuitive et moderne</span>
+        <span class="tw-stat-card__label">{{ $t('ui.interface_intuitive_et_moderne') }}</span>
       </div>
       <div class="tw-stat-card">
         <span class="value-card__icon" style="margin: 0 auto 8px;"><i class="fas fa-route"></i></span>
-        <span class="tw-stat-card__label">Navigation fluide entre streams et événements</span>
+        <span class="tw-stat-card__label">{{ $t('ui.navigation_fluide_entre_streams_et_v_nements') }}</span>
       </div>
       <div class="tw-stat-card">
         <span class="value-card__icon" style="margin: 0 auto 8px;"><i class="fas fa-bolt"></i></span>
-        <span class="tw-stat-card__label">Expérience interactive en temps réel</span>
+        <span class="tw-stat-card__label">{{ $t('ui.exp_rience_interactive_en_temps_r_el') }}</span>
       </div>
       <div class="tw-stat-card">
         <span class="value-card__icon" style="margin: 0 auto 8px;"><i class="fas fa-users"></i></span>
-        <span class="tw-stat-card__label">Environnement inclusif et accessible</span>
+        <span class="tw-stat-card__label">{{ $t('ui.environnement_inclusif_et_accessible') }}</span>
       </div>
     </div>
 
@@ -184,30 +183,30 @@
     <div class="tw-section-header" style="margin-top: 2rem;">
       <div class="tw-section-header__left">
         <span class="tw-section-icon"><i class="fas fa-lock"></i></span>
-        <h2 class="tw-section-title">Sécurité et Conformité</h2>
+        <h2 class="tw-section-title">{{ $t('ui.s_curit_et_conformit') }}</h2>
       </div>
     </div>
 
     <div class="tw-grid-2">
       <div class="tw-card value-card">
         <span class="value-card__icon"><i class="fas fa-user-check"></i></span>
-        <h4 class="tw-card__title">Vérification des comptes</h4>
-        <p class="tw-card__sub">Authentification et validation des utilisateurs pour un environnement fiable.</p>
+        <h4 class="tw-card__title">{{ $t('ui.v_rification_des_comptes') }}</h4>
+        <p class="tw-card__sub">{{ $t('ui.authentification_et_validation_des_utilisateurs_pour_un_envi') }}</p>
       </div>
       <div class="tw-card value-card">
         <span class="value-card__icon"><i class="fas fa-gavel"></i></span>
-        <h4 class="tw-card__title">Modération et arbitrage</h4>
-        <p class="tw-card__sub">Système de modération actif et arbitrage des litiges compétitifs.</p>
+        <h4 class="tw-card__title">{{ $t('ui.mod_ration_et_arbitrage') }}</h4>
+        <p class="tw-card__sub">{{ $t('ui.syst_me_de_mod_ration_actif_et_arbitrage_des_litiges_comp_ti') }}</p>
       </div>
       <div class="tw-card value-card">
         <span class="value-card__icon"><i class="fas fa-ban"></i></span>
-        <h4 class="tw-card__title">Lutte contre la fraude</h4>
-        <p class="tw-card__sub">Détection et prévention des comportements abusifs sur la plateforme.</p>
+        <h4 class="tw-card__title">{{ $t('ui.lutte_contre_la_fraude') }}</h4>
+        <p class="tw-card__sub">{{ $t('ui.d_tection_et_pr_vention_des_comportements_abusifs_sur_la_pla') }}</p>
       </div>
       <div class="tw-card value-card">
         <span class="value-card__icon"><i class="fas fa-user-shield"></i></span>
-        <h4 class="tw-card__title">Protection des données</h4>
-        <p class="tw-card__sub">Respect des standards de confidentialité et conformité aux politiques digitales.</p>
+        <h4 class="tw-card__title">{{ $t('ui.protection_des_donn_es') }}</h4>
+        <p class="tw-card__sub">{{ $t('ui.respect_des_standards_de_confidentialit_et_conformit_aux_pol') }}</p>
       </div>
     </div>
 
@@ -217,22 +216,22 @@
         <i class="fas fa-globe-americas"></i>
       </div>
       <div class="about-mission__body">
-        <h2 class="about-mission__heading">Vision et Développement</h2>
+        <h2 class="about-mission__heading">{{ $t('ui.vision_et_d_veloppement') }}</h2>
         <p class="about-mission__text">
           Ebetstream ambitionne de devenir un acteur majeur du streaming compétitif à l'échelle internationale.
         </p>
         <ul class="about-vision-list">
-          <li><i class="fas fa-check-circle"></i> Croissance significative de la communauté</li>
-          <li><i class="fas fa-check-circle"></i> Partenariats avec des acteurs du gaming</li>
-          <li><i class="fas fa-check-circle"></i> Expansion vers de nouveaux marchés</li>
-          <li><i class="fas fa-check-circle"></i> Amélioration continue des fonctionnalités</li>
+          <li><i class="fas fa-check-circle"></i>{{ $t('ui.croissance_significative_de_la_communaut') }}</li>
+          <li><i class="fas fa-check-circle"></i>{{ $t('ui.partenariats_avec_des_acteurs_du_gaming') }}</li>
+          <li><i class="fas fa-check-circle"></i>{{ $t('ui.expansion_vers_de_nouveaux_march_s') }}</li>
+          <li><i class="fas fa-check-circle"></i>{{ $t('ui.am_lioration_continue_des_fonctionnalit_s') }}</li>
         </ul>
       </div>
     </div>
 
     <!-- Conclusion + CTA -->
     <div class="about-cta">
-      <h2 class="about-cta__heading">Conclusion</h2>
+      <h2 class="about-cta__heading">{{ $t('ui.conclusion') }}</h2>
       <p class="about-cta__sub">
         Ebetstream représente une nouvelle approche du streaming gaming, centrée sur la performance,
         la créativité et l'engagement communautaire. En combinant technologie, divertissement et
@@ -240,10 +239,10 @@
         crée des opportunités économiques durables dans un cadre sécurisé et responsable.
       </p>
       <div class="about-tagline about-tagline--cta">
-        <span>Play.</span>
-        <span>Stream.</span>
-        <span class="about-tagline__accent">Bet.</span>
-        <span>Win.</span>
+        <span>{{ $t('ui.play') }}</span>
+        <span>{{ $t('ui.stream') }}</span>
+        <span class="about-tagline__accent">{{ $t('ui.bet_2') }}</span>
+        <span>{{ $t('ui.win') }}</span>
       </div>
       <div class="tw-page-hero__actions" style="justify-content: center; margin-top: 1.5rem;">
         <router-link to="/create-account" class="tw-btn tw-btn--primary">
@@ -260,6 +259,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 </script>
 
 <style scoped>

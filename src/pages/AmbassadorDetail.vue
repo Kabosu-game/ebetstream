@@ -9,19 +9,16 @@
       <div class="tw-empty__icon"><i class="fas fa-exclamation-triangle"></i></div>
       <p class="tw-empty__title">{{ error }}</p>
       <button class="tw-btn tw-btn--primary" @click="$router.push('/ambassadors')">
-        <i class="fas fa-arrow-left"></i> Retour aux ambassadeurs
-      </button>
+        <i class="fas fa-arrow-left"></i>{{ $t('ui.retour_aux_ambassadeurs') }}</button>
     </div>
 
     <template v-else-if="ambassador">
       <button class="tw-btn tw-btn--secondary tw-detail-back" @click="$router.push('/ambassadors')">
-        <i class="fas fa-arrow-left"></i> Retour
-      </button>
+        <i class="fas fa-arrow-left"></i>{{ $t('ui.retour') }}</button>
 
       <div class="tw-page-hero">
         <p class="tw-page-hero__eyebrow">
-          <i class="fas fa-user-tie"></i> Profil Ambassadeur
-        </p>
+          <i class="fas fa-user-tie"></i>{{ $t('ui.profil_ambassadeur') }}</p>
         <h1 class="tw-page-hero__title">{{ ambassador.name }}</h1>
         <p class="tw-page-hero__sub">@{{ ambassador.username }}</p>
       </div>
@@ -34,7 +31,7 @@
                 <img
                   v-if="ambassador.avatar_url"
                   :src="ambassador.avatar_url"
-                  :alt="ambassador.name"
+                  :alt="$t('ui.ambassador_name')"
                   class="w-100 h-100"
                   style="object-fit: cover;"
                 />
@@ -54,59 +51,59 @@
               <span class="tw-badge tw-badge--ongoing" style="font-size: 1rem; padding: 8px 16px;">
                 {{ ambassador.score }} pts
               </span>
-              <p class="tw-muted mt-2 mb-0">Score cette semaine</p>
+              <p class="tw-muted mt-2 mb-0">{{ $t('ui.score_cette_semaine') }}</p>
             </div>
           </div>
 
           <div v-if="ambassador.bio" class="mb-4">
-            <h4 class="mb-3"><i class="fas fa-info-circle me-2 tw-accent"></i>À propos</h4>
+            <h4 class="mb-3"><i class="fas fa-info-circle me-2 tw-accent"></i>{{ $t('ui.propos') }}</h4>
             <p style="line-height: 1.8;">{{ ambassador.bio }}</p>
           </div>
 
           <div class="tw-grid-3">
             <div class="tw-stat-card">
               <span class="tw-stat-card__value">{{ ambassador.score }}</span>
-              <span class="tw-stat-card__label">Points</span>
+              <span class="tw-stat-card__label">{{ $t('ui.points') }}</span>
             </div>
             <div class="tw-stat-card">
-              <span class="tw-stat-card__value" style="font-size: 18px;">Ambassadeur</span>
-              <span class="tw-stat-card__label">Statut</span>
+              <span class="tw-stat-card__value" style="font-size: 18px;">{{ $t('ui.ambassadeur') }}</span>
+              <span class="tw-stat-card__label">{{ $t('ui.statut') }}</span>
             </div>
             <div class="tw-stat-card">
               <span class="tw-stat-card__value" style="font-size: 18px;">{{ ambassador.country || 'N/A' }}</span>
-              <span class="tw-stat-card__label">Pays</span>
+              <span class="tw-stat-card__label">{{ $t('ui.pays') }}</span>
             </div>
           </div>
         </div>
 
         <div>
           <div class="tw-content-block mb-4">
-            <h5 class="mb-4"><i class="fas fa-info-circle me-2 tw-accent"></i>Informations</h5>
+            <h5 class="mb-4"><i class="fas fa-info-circle me-2 tw-accent"></i>{{ $t('ui.informations') }}</h5>
             <div class="tw-detail-info">
-              <div class="tw-detail-info__label">Nom complet</div>
+              <div class="tw-detail-info__label">{{ $t('ui.nom_complet') }}</div>
               <div class="tw-detail-info__value">{{ ambassador.name }}</div>
             </div>
             <div class="tw-detail-info">
-              <div class="tw-detail-info__label">Nom d'utilisateur</div>
+              <div class="tw-detail-info__label">{{ $t('ui.nom_dutilisateur') }}</div>
               <div class="tw-detail-info__value">@{{ ambassador.username }}</div>
             </div>
             <div v-if="ambassador.country" class="tw-detail-info">
-              <div class="tw-detail-info__label">Pays</div>
+              <div class="tw-detail-info__label">{{ $t('ui.pays') }}</div>
               <div class="tw-detail-info__value">
                 <i class="fas fa-map-marker-alt me-1"></i>{{ ambassador.country }}
               </div>
             </div>
             <div class="tw-detail-info">
-              <div class="tw-detail-info__label">Score</div>
+              <div class="tw-detail-info__label">{{ $t('ui.score') }}</div>
               <div class="tw-detail-info__value tw-accent">{{ ambassador.score }} pts</div>
             </div>
           </div>
 
           <div class="tw-content-block">
-            <h5 class="mb-4"><i class="fas fa-crown me-2 tw-accent"></i>Classement</h5>
+            <h5 class="mb-4"><i class="fas fa-crown me-2 tw-accent"></i>{{ $t('ui.classement') }}</h5>
             <div class="text-center">
               <div class="tw-detail-rank mb-3">#{{ ambassadorRank }}</div>
-              <p class="tw-muted">Position in ambassadors ranking</p>
+              <p class="tw-muted">{{ $t('ui.position_in_ambassadors_ranking') }}</p>
             </div>
           </div>
         </div>
@@ -116,6 +113,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import apiClient from '@/utils/axios';
@@ -163,9 +163,9 @@ const loadAmbassador = async () => {
   } catch (err: any) {
     console.error('Error loading ambassador:', err);
     if (err.response?.status === 404) {
-      error.value = 'Ambassadeur non trouvé';
+      error.value = t('errors.ambassadorNotFound');
     } else {
-      error.value = 'Erreur lors du chargement de l\'ambassadeur';
+      error.value = t('errors.loadAmbassadorError');
     }
   } finally {
     loading.value = false;

@@ -10,7 +10,7 @@
                   class="top_matches__title d-flex align-items-center gap-2 mb-4 mb-md-5"
                 >
                   <img :src="clock" width="{32}" height="{32}" alt="Icon" />
-                  <h3>Upcoming Events</h3>
+                  <h3>{{ $t('betting.upcoming_events') }}</h3>
                 </div>
                 <div class="top_matches__content">
                   <div
@@ -51,9 +51,9 @@
                                 :src="live"
                                 width="{16}"
                                 height="{16}"
-                                alt="icon"
+                                :alt="$t('ui.icon')"
                               />
-                              <span class="fs-eight cpoint">2nd set</span>
+                              <span class="fs-eight cpoint">{{ $t('ui.2nd_set') }}</span>
                             </div>
                           </div>
                           <div
@@ -121,10 +121,10 @@
                               <thead>
                                 <tr class="text-center">
                                   <th scope="col">
-                                    <span class="fs-eight">Winner </span>
+                                    <span class="fs-eight">{{ $t('betting.winner') }}</span>
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">Point handicap</span>
+                                    <span class="fs-eight">{{ $t('ui.point_handicap') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -199,6 +199,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { UpCmingEfighting } from "../assets/data/allPageData";
 import clock from "@/assets/images/icon/clock-icon.png";
 import star from "@/assets/images/icon/star2.png";

@@ -15,7 +15,7 @@
                     height="{32}"
                     alt="Icon"
                   />
-                  <h3>Upcoming Events</h3>
+                  <h3>{{ $t('betting.upcoming_events') }}</h3>
                 </div>
                 <div class="top_matches__content">
                   <div
@@ -121,11 +121,11 @@
                               <thead>
                                 <tr class="text-center">
                                   <th scope="col">
-                                    <span class="fs-eight">Winner</span>
+                                    <span class="fs-eight">{{ $t('betting.winner') }}</span>
                                   </th>
                                   <th scope="col">
                                     <span class="fs-eight"
-                                      >First set-winner</span
+                                      >{{ $t('betting.first_set_winner') }}</span
                                     >
                                   </th>
                                 </tr>
@@ -205,6 +205,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { tennisUpCE } from "../../../assets/data/tabThree";
 import clock from "@/assets/images/icon/clock-icon.png";
 </script>

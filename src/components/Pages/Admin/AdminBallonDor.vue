@@ -2,37 +2,36 @@
   <div class="pay_method__paymethod p-3 p-md-4 p-lg-6 p2-bg rounded-8">
     <div class="pay_method__paymethod-title mb-5 mb-md-6 d-flex justify-content-between align-items-center flex-wrap gap-3">
       <div>
-        <h2 class="text-white fw-bold mb-2">Ballon d'Or Management</h2>
-        <p class="text-white-50">Manage seasons, nominations and voting</p>
+        <h2 class="text-white fw-bold mb-2">{{ $t('ui.ballon_dor_management') }}</h2>
+        <p class="text-white-50">{{ $t('ui.manage_seasons_nominations_and_voting') }}</p>
       </div>
       <button @click="showCreateSeasonModal = true" class="btn btn-primary">
-        <i class="fas fa-plus me-2"></i>Create Season
-      </button>
+        <i class="fas fa-plus me-2"></i>{{ $t('ui.create_season') }}</button>
     </div>
 
     <!-- Statistics -->
     <div class="row g-3 mb-4">
       <div class="col-md-3 col-sm-6">
         <div class="stat-card n11-bg rounded-8 p-3">
-          <div class="text-white-50 small mb-1">Total Seasons</div>
+          <div class="text-white-50 small mb-1">{{ $t('ui.total_seasons') }}</div>
           <div class="text-white fw-bold fs-4">{{ stats.totalSeasons || 0 }}</div>
         </div>
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="stat-card n11-bg rounded-8 p-3">
-          <div class="text-white-50 small mb-1">Active Season</div>
+          <div class="text-white-50 small mb-1">{{ $t('ui.active_season') }}</div>
           <div class="text-success fw-bold fs-4">{{ stats.activeSeason || 0 }}</div>
         </div>
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="stat-card n11-bg rounded-8 p-3">
-          <div class="text-white-50 small mb-1">Total Nominations</div>
+          <div class="text-white-50 small mb-1">{{ $t('ui.total_nominations') }}</div>
           <div class="text-warning fw-bold fs-4">{{ stats.totalNominations || 0 }}</div>
         </div>
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="stat-card n11-bg rounded-8 p-3">
-          <div class="text-white-50 small mb-1">Total Votes</div>
+          <div class="text-white-50 small mb-1">{{ $t('ui.total_votes') }}</div>
           <div class="text-info fw-bold fs-4">{{ stats.totalVotes || 0 }}</div>
         </div>
       </div>
@@ -40,10 +39,10 @@
 
     <!-- Seasons List -->
     <div class="mb-4">
-      <h4 class="text-white mb-3">Seasons</h4>
+      <h4 class="text-white mb-3">{{ $t('ui.seasons') }}</h4>
       <div v-if="loading" class="text-center py-5">
         <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
+          <span class="visually-hidden">{{ $t('common.loading') }}</span>
         </div>
       </div>
       <div v-else class="pay_method__table">
@@ -51,13 +50,13 @@
           <table class="w-100 text-center p2-bg">
             <thead>
               <tr>
-                <th class="text-white p-3">ID</th>
-                <th class="text-white p-3">Name</th>
-                <th class="text-white p-3">Start Date</th>
-                <th class="text-white p-3">End Date</th>
-                <th class="text-white p-3">Status</th>
-                <th class="text-white p-3">Nominations</th>
-                <th class="text-white p-3">Actions</th>
+                <th class="text-white p-3">{{ $t('common.id') }}</th>
+                <th class="text-white p-3">{{ $t('common.name') }}</th>
+                <th class="text-white p-3">{{ $t('ui.start_date') }}</th>
+                <th class="text-white p-3">{{ $t('ui.end_date') }}</th>
+                <th class="text-white p-3">{{ $t('common.status') }}</th>
+                <th class="text-white p-3">{{ $t('ui.nominations') }}</th>
+                <th class="text-white p-3">{{ $t('common.actions') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -66,7 +65,7 @@
                 <td class="text-white p-3">
                   <div class="text-start">
                     <strong>{{ season.name }}</strong>
-                    <span v-if="season.is_current" class="badge bg-success ms-2">Current</span>
+                    <span v-if="season.is_current" class="badge bg-success ms-2">{{ $t('ui.current') }}</span>
                   </div>
                 </td>
                 <td class="text-white p-3">{{ formatDate(season.start_date) }}</td>
@@ -101,18 +100,17 @@
       <h4 class="text-white mb-3">Nominations - {{ (selectedSeason as any)?.name }}</h4>
       <div class="d-flex gap-3 mb-3 flex-wrap">
         <select v-model="filterCategory" class="form-select n11-bg text-white border-secondary" style="max-width: 200px;" @change="loadNominations">
-          <option value="">All Categories</option>
-          <option value="player">Player</option>
-          <option value="clan">Clan</option>
-          <option value="team">Team</option>
+          <option value="">{{ $t('ui.all_categories') }}</option>
+          <option value="player">{{ $t('ui.player') }}</option>
+          <option value="clan">{{ $t('ui.clan') }}</option>
+          <option value="team">{{ $t('ui.team') }}</option>
         </select>
         <button @click="showCreateNominationModal = true" class="btn btn-primary">
-          <i class="fas fa-plus me-2"></i>Add Nomination
-        </button>
+          <i class="fas fa-plus me-2"></i>{{ $t('ui.add_nomination') }}</button>
       </div>
       <div v-if="loadingNominations" class="text-center py-5">
         <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
+          <span class="visually-hidden">{{ $t('common.loading') }}</span>
         </div>
       </div>
       <div v-else class="pay_method__table">
@@ -120,12 +118,12 @@
           <table class="w-100 text-center p2-bg">
             <thead>
               <tr>
-                <th class="text-white p-3">ID</th>
-                <th class="text-white p-3">Category</th>
-                <th class="text-white p-3">Nominee</th>
-                <th class="text-white p-3">Votes</th>
-                <th class="text-white p-3">Winner</th>
-                <th class="text-white p-3">Actions</th>
+                <th class="text-white p-3">{{ $t('common.id') }}</th>
+                <th class="text-white p-3">{{ $t('ui.category') }}</th>
+                <th class="text-white p-3">{{ $t('ui.nominee') }}</th>
+                <th class="text-white p-3">{{ $t('ui.votes') }}</th>
+                <th class="text-white p-3">{{ $t('betting.winner') }}</th>
+                <th class="text-white p-3">{{ $t('common.actions') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -139,7 +137,7 @@
                 </td>
                 <td class="text-white p-3">{{ (nomination as any).vote_count || 0 }}</td>
                 <td class="p-3">
-                  <span v-if="(nomination as any).is_winner" class="badge bg-success">Winner</span>
+                  <span v-if="(nomination as any).is_winner" class="badge bg-success">{{ $t('betting.winner') }}</span>
                   <span v-else class="text-white-50">-</span>
                 </td>
                 <td class="p-3">
@@ -162,6 +160,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted } from 'vue';
 import apiClient from '@/utils/axios';
 

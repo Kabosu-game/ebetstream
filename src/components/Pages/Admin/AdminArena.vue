@@ -2,32 +2,31 @@
   <div class="pay_method__paymethod p-3 p-md-4 p-lg-6 p2-bg rounded-8">
     <div class="pay_method__paymethod-title mb-5 mb-md-6 d-flex justify-content-between align-items-center flex-wrap gap-3">
       <div>
-        <h2 class="text-white fw-bold mb-2">EBETSTREAM ARENA™</h2>
-        <p class="text-white-50">Gestion des matchs, résultats et paris ESBS</p>
+        <h2 class="text-white fw-bold mb-2">{{ $t('ui.ebetstream_arena') }}</h2>
+        <p class="text-white-50">{{ $t('ui.gestion_des_matchs_r_sultats_et_paris_esbs') }}</p>
       </div>
       <button class="btn btn-primary admin-accent-btn" @click="openCreate">
-        <i class="fas fa-plus me-2"></i> Nouveau match
-      </button>
+        <i class="fas fa-plus me-2"></i>{{ $t('ui.nouveau_match') }}</button>
     </div>
 
     <div class="row g-3 mb-4">
-      <div class="col-md-2"><div class="stat-card n11-bg rounded-8 p-3"><div class="text-white-50 small">Total</div><div class="text-white fw-bold fs-4">{{ stats.total }}</div></div></div>
-      <div class="col-md-2"><div class="stat-card n11-bg rounded-8 p-3"><div class="text-white-50 small">Live</div><div class="text-danger fw-bold fs-4">{{ stats.live }}</div></div></div>
-      <div class="col-md-2"><div class="stat-card n11-bg rounded-8 p-3"><div class="text-white-50 small">Programmés</div><div class="text-warning fw-bold fs-4">{{ stats.scheduled }}</div></div></div>
-      <div class="col-md-2"><div class="stat-card n11-bg rounded-8 p-3"><div class="text-white-50 small">En attente</div><div class="text-info fw-bold fs-4">{{ stats.waiting }}</div></div></div>
-      <div class="col-md-2"><div class="stat-card n11-bg rounded-8 p-3"><div class="text-white-50 small">Terminés</div><div class="text-success fw-bold fs-4">{{ stats.completed }}</div></div></div>
+      <div class="col-md-2"><div class="stat-card n11-bg rounded-8 p-3"><div class="text-white-50 small">{{ $t('betting.total') }}</div><div class="text-white fw-bold fs-4">{{ stats.total }}</div></div></div>
+      <div class="col-md-2"><div class="stat-card n11-bg rounded-8 p-3"><div class="text-white-50 small">{{ $t('betting.live') }}</div><div class="text-danger fw-bold fs-4">{{ stats.live }}</div></div></div>
+      <div class="col-md-2"><div class="stat-card n11-bg rounded-8 p-3"><div class="text-white-50 small">{{ $t('ui.programm_s') }}</div><div class="text-warning fw-bold fs-4">{{ stats.scheduled }}</div></div></div>
+      <div class="col-md-2"><div class="stat-card n11-bg rounded-8 p-3"><div class="text-white-50 small">{{ $t('ui.en_attente') }}</div><div class="text-info fw-bold fs-4">{{ stats.waiting }}</div></div></div>
+      <div class="col-md-2"><div class="stat-card n11-bg rounded-8 p-3"><div class="text-white-50 small">{{ $t('ui.termin_s') }}</div><div class="text-success fw-bold fs-4">{{ stats.completed }}</div></div></div>
     </div>
 
     <div class="d-flex gap-3 mb-4 flex-wrap">
       <select v-model="filterStatus" class="form-select n11-bg text-white border-secondary" style="max-width:180px" @change="loadMatches">
-        <option value="">Tous statuts</option>
-        <option value="live">Live</option>
-        <option value="scheduled">Programmés</option>
-        <option value="waiting">En attente</option>
-        <option value="completed">Terminés</option>
-        <option value="cancelled">Annulés</option>
+        <option value="">{{ $t('ui.tous_statuts') }}</option>
+        <option value="live">{{ $t('betting.live') }}</option>
+        <option value="scheduled">{{ $t('ui.programm_s') }}</option>
+        <option value="waiting">{{ $t('ui.en_attente') }}</option>
+        <option value="completed">{{ $t('ui.termin_s') }}</option>
+        <option value="cancelled">{{ $t('ui.annul_s') }}</option>
       </select>
-      <input v-model="search" type="text" class="form-control n11-bg text-white border-secondary" placeholder="Rechercher équipe..." style="max-width:260px" @input="debouncedSearch" />
+      <input v-model="search" type="text" class="form-control n11-bg text-white border-secondary" :placeholder="$t('ui.rechercher_quipe')" style="max-width:260px" @input="debouncedSearch" />
     </div>
 
     <div v-if="loading" class="text-center py-5"><div class="spinner-border text-primary"></div></div>
@@ -37,21 +36,21 @@
         <table class="w-100 text-center p2-bg">
           <thead>
             <tr>
-              <th class="text-white p-3">ID</th>
-              <th class="text-white p-3">Match</th>
-              <th class="text-white p-3">Mode</th>
-              <th class="text-white p-3">Statut</th>
-              <th class="text-white p-3">Joueurs</th>
-              <th class="text-white p-3">Paris</th>
-              <th class="text-white p-3">Score</th>
-              <th class="text-white p-3">Actions</th>
+              <th class="text-white p-3">{{ $t('common.id') }}</th>
+              <th class="text-white p-3">{{ $t('ui.match') }}</th>
+              <th class="text-white p-3">{{ $t('ui.mode') }}</th>
+              <th class="text-white p-3">{{ $t('ui.statut') }}</th>
+              <th class="text-white p-3">{{ $t('ui.joueurs') }}</th>
+              <th class="text-white p-3">{{ $t('ui.paris') }}</th>
+              <th class="text-white p-3">{{ $t('ui.score') }}</th>
+              <th class="text-white p-3">{{ $t('common.actions') }}</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="m in matches" :key="m.id" class="border-top border-secondary">
               <td class="text-white p-3">#{{ m.id }}</td>
               <td class="text-white p-3 text-start">
-                <strong>{{ m.team1_name }}</strong> vs <strong>{{ m.team2_name }}</strong>
+                <strong>{{ m.team1_name }}</strong>{{ $t('betting.vs') }}<strong>{{ m.team2_name }}</strong>
                 <br><small class="text-white-50">{{ formatDate(m.scheduled_at) }}</small>
               </td>
               <td class="text-white p-3">{{ modeLabel(m.mode) }}</td>
@@ -71,7 +70,7 @@
                 </div>
               </td>
             </tr>
-            <tr v-if="matches.length === 0"><td colspan="8" class="text-white p-5">Aucun match</td></tr>
+            <tr v-if="matches.length === 0"><td colspan="8" class="text-white p-5">{{ $t('ui.aucun_match') }}</td></tr>
           </tbody>
         </table>
       </div>
@@ -80,23 +79,23 @@
     <!-- Create -->
     <div v-if="showCreate" class="modal-overlay" @click.self="showCreate = false">
       <div class="modal-content n11-bg rounded-8 p-4" style="max-width:560px">
-        <h3 class="text-white mb-4">Nouveau match Arena</h3>
-        <div class="mb-3"><label class="text-white">Équipe 1</label><input v-model="form.team1_name" class="form-control n11-bg text-white border-secondary" /></div>
-        <div class="mb-3"><label class="text-white">Équipe 2</label><input v-model="form.team2_name" class="form-control n11-bg text-white border-secondary" /></div>
-        <div class="mb-3"><label class="text-white">Mode</label>
+        <h3 class="text-white mb-4">{{ $t('ui.nouveau_match_arena') }}</h3>
+        <div class="mb-3"><label class="text-white">{{ $t('ui.quipe_1') }}</label><input v-model="form.team1_name" class="form-control n11-bg text-white border-secondary" /></div>
+        <div class="mb-3"><label class="text-white">{{ $t('ui.quipe_2') }}</label><input v-model="form.team2_name" class="form-control n11-bg text-white border-secondary" /></div>
+        <div class="mb-3"><label class="text-white">{{ $t('ui.mode') }}</label>
           <select v-model="form.mode" class="form-control n11-bg text-white border-secondary">
-            <option value="quick_match">Quick Match</option>
-            <option value="ranked">Ranked</option>
-            <option value="tournament">Tournoi</option>
-            <option value="private_match">Privé</option>
+            <option value="quick_match">{{ $t('ui.quick_match') }}</option>
+            <option value="ranked">{{ $t('ui.ranked') }}</option>
+            <option value="tournament">{{ $t('ui.tournoi') }}</option>
+            <option value="private_match">{{ $t('ui.priv') }}</option>
           </select>
         </div>
         <div class="row g-3 mb-3">
-          <div class="col-6"><label class="text-white">Cote équipe 1</label><input v-model.number="form.team1_odds" type="number" step="0.01" class="form-control n11-bg text-white border-secondary" /></div>
-          <div class="col-6"><label class="text-white">Cote équipe 2</label><input v-model.number="form.team2_odds" type="number" step="0.01" class="form-control n11-bg text-white border-secondary" /></div>
+          <div class="col-6"><label class="text-white">{{ $t('ui.cote_quipe_1') }}</label><input v-model.number="form.team1_odds" type="number" step="0.01" class="form-control n11-bg text-white border-secondary" /></div>
+          <div class="col-6"><label class="text-white">{{ $t('ui.cote_quipe_2') }}</label><input v-model.number="form.team2_odds" type="number" step="0.01" class="form-control n11-bg text-white border-secondary" /></div>
         </div>
-        <div class="mb-3"><label class="text-white">Date programmée</label><input v-model="form.scheduled_at" type="datetime-local" class="form-control n11-bg text-white border-secondary" /></div>
-        <button class="btn btn-primary w-100 admin-accent-btn" :disabled="processing" @click="createMatch">Créer</button>
+        <div class="mb-3"><label class="text-white">{{ $t('ui.date_programm_e') }}</label><input v-model="form.scheduled_at" type="datetime-local" class="form-control n11-bg text-white border-secondary" /></div>
+        <button class="btn btn-primary w-100 admin-accent-btn" :disabled="processing" @click="createMatch">{{ $t('ui.cr_er') }}</button>
       </div>
     </div>
 
@@ -104,12 +103,12 @@
     <div v-if="showResult && selected" class="modal-overlay" @click.self="showResult = false">
       <div class="modal-content n11-bg rounded-8 p-4" style="max-width:480px">
         <h3 class="text-white mb-2">Résultat — {{ selected.team1_name }} vs {{ selected.team2_name }}</h3>
-        <p class="text-white-50 mb-4">Les paris ESBS et les stats joueurs seront mis à jour automatiquement.</p>
+        <p class="text-white-50 mb-4">{{ $t('ui.les_paris_esbs_et_les_stats_joueurs_seront_mis_jour_automati') }}</p>
         <div class="row g-3 mb-3">
           <div class="col-6"><label class="text-white">{{ selected.team1_name }}</label><input v-model.number="resultForm.team1_score" type="number" min="0" class="form-control n11-bg text-white border-secondary" /></div>
           <div class="col-6"><label class="text-white">{{ selected.team2_name }}</label><input v-model.number="resultForm.team2_score" type="number" min="0" class="form-control n11-bg text-white border-secondary" /></div>
         </div>
-        <button class="btn btn-success w-100" :disabled="processing" @click="submitResult">Valider le résultat</button>
+        <button class="btn btn-success w-100" :disabled="processing" @click="submitResult">{{ $t('ui.valider_le_r_sultat') }}</button>
       </div>
     </div>
 
@@ -119,8 +118,8 @@
         <h3 class="text-white mb-3">Match #{{ selected.id }}</h3>
         <p class="text-white">{{ selected.team1_name }} vs {{ selected.team2_name }}</p>
         <p class="text-white-50">Mode : {{ modeLabel(selected.mode) }} · {{ statusLabel(selected.status) }}</p>
-        <h5 class="text-white mt-4 mb-2">Joueurs</h5>
-        <div v-if="!detailPlayers.length" class="text-white-50">Aucun joueur</div>
+        <h5 class="text-white mt-4 mb-2">{{ $t('ui.joueurs') }}</h5>
+        <div v-if="!detailPlayers.length" class="text-white-50">{{ $t('ui.aucun_joueur') }}</div>
         <div v-for="p in detailPlayers" :key="p.id" class="text-white mb-1">
           {{ p.user?.username }} — {{ p.team }} ({{ p.player_class }})
         </div>
@@ -134,6 +133,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted } from 'vue';
 import apiClient from '@/utils/axios';
 

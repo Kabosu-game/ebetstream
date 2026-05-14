@@ -2,16 +2,14 @@
   <div class="pay_method__paymethod p-3 p-md-4 p-lg-6 p2-bg rounded-8">
     <div class="pay_method__paymethod-title mb-5 mb-md-6 d-flex justify-content-between align-items-center flex-wrap gap-3">
       <div>
-        <h2 class="text-white fw-bold mb-2">Payment Methods</h2>
-        <p class="text-white-50">Manage available deposit and withdrawal methods</p>
+        <h2 class="text-white fw-bold mb-2">{{ $t('ui.payment_methods') }}</h2>
+        <p class="text-white-50">{{ $t('ui.manage_available_deposit_and_withdrawal_methods') }}</p>
       </div>
       <div class="d-flex gap-2">
         <button class="btn_primary" @click="showCreateModal = true; paymentMethodType = 'deposit'">
-          <i class="fas fa-plus me-2"  ></i>Add Deposit
-        </button>
+          <i class="fas fa-plus me-2"  ></i>{{ $t('ui.add_deposit') }}</button>
         <button class="btn_secondary" @click="showCreateModal = true; paymentMethodType = 'withdrawal'">
-          <i class="fas fa-plus me-2"  ></i>Add Withdrawal
-        </button>
+          <i class="fas fa-plus me-2"  ></i>{{ $t('ui.add_withdrawal') }}</button>
       </div>
     </div>
 
@@ -22,21 +20,19 @@
         :class="{ 'active': activeTab === 'deposits' }"
         @click="activeTab = 'deposits'"
       >
-        <i class="fas fa-wallet me-2"  ></i>Deposit Methods
-      </button>
+        <i class="fas fa-wallet me-2"  ></i>{{ $t('ui.deposit_methods') }}</button>
       <button 
         class="btn_tab" 
         :class="{ 'active': activeTab === 'withdrawals' }"
         @click="activeTab = 'withdrawals'"
       >
-        <i class="fas fa-credit-card me-2"  ></i>Withdrawal Methods
-      </button>
+        <i class="fas fa-credit-card me-2"  ></i>{{ $t('ui.withdrawal_methods') }}</button>
     </div>
 
     <!-- Loading -->
     <div v-if="loading" class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+        <span class="visually-hidden">{{ $t('common.loading') }}</span>
       </div>
     </div>
 
@@ -82,7 +78,7 @@
           </div>
           <div v-if="method.crypto_address" class="method_info mb-2">
             <p class="text-white-50 small mb-0">
-              <strong>Address:</strong> 
+              <strong>{{ $t('ui.address') }}</strong> 
               <span class="text-white" style="font-family: monospace; font-size: 0.75rem;">
                 {{ method.crypto_address.substring(0, 20) }}...
               </span>
@@ -90,12 +86,12 @@
           </div>
           <div v-if="method.mobile_money_provider" class="method_info mb-2">
             <p class="text-white-50 small mb-0">
-              <strong>Provider:</strong> {{ method.mobile_money_provider }}
+              <strong>{{ $t('ui.provider') }}</strong> {{ method.mobile_money_provider }}
             </p>
           </div>
           <div v-if="method.min_amount || method.max_amount" class="method_limits">
             <p class="text-white-50 small mb-0">
-              <strong>Limits:</strong> 
+              <strong>{{ $t('ui.limits') }}</strong> 
               <span v-if="method.min_amount">Min: ${{ method.min_amount }}</span>
               <span v-if="method.min_amount && method.max_amount"> - </span>
               <span v-if="method.max_amount">Max: ${{ method.max_amount }}</span>
@@ -103,7 +99,7 @@
           </div>
           <div v-if="method.fee_percentage || method.fee_fixed" class="method_fees mt-2">
             <p class="text-white-50 small mb-0">
-              <strong>Fees:</strong>
+              <strong>{{ $t('ui.fees') }}</strong>
               <span v-if="method.fee_percentage">{{ method.fee_percentage }}%</span>
               <span v-if="method.fee_percentage && method.fee_fixed"> + </span>
               <span v-if="method.fee_fixed">${{ method.fee_fixed }}</span>
@@ -130,25 +126,25 @@
 
         <form @submit.prevent="saveMethod">
           <div class="form-group mb-3">
-            <label class="text-white mb-2 d-block">Type</label>
+            <label class="text-white mb-2 d-block">{{ $t('common.type') }}</label>
             <select 
               v-model="formData.type" 
               class="form-select n11-bg text-white border-secondary"
               required
               :disabled="!!editingMethod"
             >
-              <option value="deposit">Deposit</option>
-              <option value="withdrawal">Withdrawal</option>
+              <option value="deposit">{{ $t('ui.deposit_2') }}</option>
+              <option value="withdrawal">{{ $t('ui.withdrawal_2') }}</option>
             </select>
           </div>
 
           <div class="form-group mb-3">
-            <label class="text-white mb-2 d-block">Method Name</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.method_name') }}</label>
             <input 
               v-model="formData.name" 
               type="text" 
               class="form-control n11-bg text-white border-secondary" 
-              :placeholder="formData.type === 'deposit' ? 'Ex: USDT (TRC20), Bitcoin, Cash...' : 'Ex: USDT (TRC20), Bank Transfer, MTN Mobile Money...'"
+              :placeholder="$t('ui.formdata_type_deposit_ex_usdt_trc20_bitcoin_cash_ex_usdt_trc')"
               required
             />
             <small class="text-white-50 d-block mt-1">
@@ -162,17 +158,17 @@
           </div>
 
           <div class="form-group mb-3">
-            <label class="text-white mb-2 d-block">Method Key</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.method_key') }}</label>
             <select 
               v-model="formData.method_key" 
               class="form-select n11-bg text-white border-secondary"
               required
             >
-              <option v-if="formData.type === 'deposit'" value="crypto">Crypto</option>
-              <option v-if="formData.type === 'deposit'" value="cash">Cash (Agents)</option>
-              <option v-if="formData.type === 'withdrawal'" value="crypto">Crypto</option>
-              <option v-if="formData.type === 'withdrawal'" value="bank_transfer">Bank Transfer</option>
-              <option v-if="formData.type === 'withdrawal'" value="mobile_money">Mobile Money</option>
+              <option v-if="formData.type === 'deposit'" value="crypto">{{ $t('ui.crypto') }}</option>
+              <option v-if="formData.type === 'deposit'" value="cash">{{ $t('ui.cash_agents') }}</option>
+              <option v-if="formData.type === 'withdrawal'" value="crypto">{{ $t('ui.crypto') }}</option>
+              <option v-if="formData.type === 'withdrawal'" value="bank_transfer">{{ $t('ui.bank_transfer') }}</option>
+              <option v-if="formData.type === 'withdrawal'" value="mobile_money">{{ $t('ui.mobile_money') }}</option>
             </select>
             <small class="text-white-50 d-block mt-1">
               Method type used in the system
@@ -180,68 +176,68 @@
           </div>
 
           <div class="form-group mb-3">
-            <label class="text-white mb-2 d-block">Description</label>
+            <label class="text-white mb-2 d-block">{{ $t('common.description') }}</label>
             <textarea 
               v-model="formData.description" 
               class="form-control n11-bg text-white border-secondary" 
               rows="3"
-              placeholder="Payment method description..."
+              :placeholder="$t('ui.payment_method_description')"
             ></textarea>
           </div>
 
           <!-- Crypto specific fields -->
           <div v-if="formData.method_key === 'crypto'" class="row g-3 mb-3">
             <div class="col-md-6">
-              <label class="text-white mb-2 d-block">Crypto Address (for deposits)</label>
+              <label class="text-white mb-2 d-block">{{ $t('ui.crypto_address_for_deposits') }}</label>
               <input 
                 v-model="formData.crypto_address" 
                 type="text" 
                 class="form-control n11-bg text-white border-secondary" 
-                placeholder="Ex: TSf7x19gfn72Jk4Ah4RWVYuGxvYt5HMWqc"
+                :placeholder="$t('ui.ex_tsf7x19gfn72jk4ah4rwvyugxvyt5hmwqc')"
               />
               <small class="text-white-50 d-block mt-1">
                 Wallet address for crypto deposits
               </small>
             </div>
             <div class="col-md-6">
-              <label class="text-white mb-2 d-block">Network</label>
+              <label class="text-white mb-2 d-block">{{ $t('ui.network') }}</label>
               <input 
                 v-model="formData.crypto_network" 
                 type="text" 
                 class="form-control n11-bg text-white border-secondary" 
-                placeholder="Ex: TRON, Ethereum, Bitcoin"
+                :placeholder="$t('ui.ex_tron_ethereum_bitcoin')"
               />
             </div>
           </div>
 
           <!-- Mobile Money specific fields -->
           <div v-if="formData.method_key === 'mobile_money'" class="form-group mb-3">
-            <label class="text-white mb-2 d-block">Mobile Money Provider</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.mobile_money_provider') }}</label>
             <select 
               v-model="formData.mobile_money_provider" 
               class="form-select n11-bg text-white border-secondary"
             >
-              <option value="">Select a provider</option>
-              <option value="MTN">MTN Mobile Money</option>
-              <option value="Orange">Orange Money</option>
-              <option value="Moov">Moov Money</option>
+              <option value="">{{ $t('ui.select_a_provider') }}</option>
+              <option value="MTN">{{ $t('ui.mtn_mobile_money') }}</option>
+              <option value="Orange">{{ $t('ui.orange_money') }}</option>
+              <option value="Moov">{{ $t('ui.moov_money') }}</option>
             </select>
           </div>
 
           <!-- Bank Transfer specific fields -->
           <div v-if="formData.method_key === 'bank_transfer'" class="form-group mb-3">
-            <label class="text-white mb-2 d-block">Bank Name (optional)</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.bank_name_optional') }}</label>
             <input 
               v-model="formData.bank_name" 
               type="text" 
               class="form-control n11-bg text-white border-secondary" 
-              placeholder="Ex: Bank of America, BNP Paribas..."
+              :placeholder="$t('ui.ex_bank_of_america_bnp_paribas')"
             />
           </div>
 
           <div class="row g-3 mb-3">
             <div class="col-md-6">
-              <label class="text-white mb-2 d-block">Minimum Amount ($)</label>
+              <label class="text-white mb-2 d-block">{{ $t('ui.minimum_amount') }}</label>
               <input 
                 v-model.number="formData.min_amount" 
                 type="number" 
@@ -251,7 +247,7 @@
               />
             </div>
             <div class="col-md-6">
-              <label class="text-white mb-2 d-block">Maximum Amount ($)</label>
+              <label class="text-white mb-2 d-block">{{ $t('ui.maximum_amount') }}</label>
               <input 
                 v-model.number="formData.max_amount" 
                 type="number" 
@@ -264,7 +260,7 @@
 
           <div class="row g-3 mb-3">
             <div class="col-md-6">
-              <label class="text-white mb-2 d-block">Fee Percentage (%)</label>
+              <label class="text-white mb-2 d-block">{{ $t('ui.fee_percentage') }}</label>
               <input 
                 v-model.number="formData.fee_percentage" 
                 type="number" 
@@ -274,7 +270,7 @@
               />
             </div>
             <div class="col-md-6">
-              <label class="text-white mb-2 d-block">Fixed Fee ($)</label>
+              <label class="text-white mb-2 d-block">{{ $t('ui.fixed_fee') }}</label>
               <input 
                 v-model.number="formData.fee_fixed" 
                 type="number" 
@@ -306,8 +302,7 @@
             <button type="submit" class="btn_primary" :disabled="saving">
               <span v-if="!saving">{{ editingMethod ? 'Update' : 'Add' }}</span>
               <span v-else>
-                <i class="fas fa-spinner fa-spin me-2"></i>Saving...
-              </span>
+                <i class="fas fa-spinner fa-spin me-2"></i>{{ $t('common.saving') }}</span>
             </button>
           </div>
         </form>
@@ -317,6 +312,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, computed, onMounted } from 'vue';
 import apiClient from '@/utils/axios';
 interface PaymentMethod {

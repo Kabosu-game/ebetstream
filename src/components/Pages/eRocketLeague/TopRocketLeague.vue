@@ -10,7 +10,7 @@
                   class="top_matches__title d-flex align-items-center gap-2 mb-4 mb-md-5"
                 >
                   <img :src="liveMatch" width="{32}" height="{32}" alt="Icon" />
-                  <h3>Live Matches</h3>
+                  <h3>{{ $t('betting.live_matches') }}</h3>
                 </div>
                 <div class="top_matches__content">
                   <div
@@ -135,13 +135,13 @@
                               <thead>
                                 <tr class="text-center">
                                   <th scope="col">
-                                    <span class="fs-eight">1x2</span>
+                                    <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">Double chance</span>
+                                    <span class="fs-eight">{{ $t('betting.double_chance') }}</span>
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">Total</span>
+                                    <span class="fs-eight">{{ $t('betting.total') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -167,7 +167,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >draw</span
+                                          >{{ $t('betting.draw') }}</span
                                         >
                                         <span class="fw-bold d-block"
                                           >3.45</span
@@ -195,7 +195,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >1 or draw</span
+                                          >{{ $t('betting.1_or_draw') }}</span
                                         >
                                         <span class="fw-bold d-block"
                                           >1.39</span
@@ -206,7 +206,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >1 or 2</span
+                                          >{{ $t('betting.1_or_2') }}</span
                                         >
                                         <span class="fw-bold d-block"
                                           >3.45</span
@@ -217,7 +217,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >draw or 2</span
+                                          >{{ $t('betting.draw_or_2') }}</span
                                         >
                                         <span class="fw-bold d-block"
                                           >2.45</span
@@ -283,6 +283,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { liveSoccerMatch } from "../../../assets/data/tabTwo";
 import liveMatch from "@/assets/images/icon/live-match.png";
 </script>

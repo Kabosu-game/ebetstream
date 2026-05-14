@@ -5,7 +5,7 @@
         <!-- Image -->
         <div class="col-6 d-none d-lg-block">
           <div class="login_section__thumb">
-            <img class="w-100" width="720" height="900" :src="login" alt="Image" />
+            <img class="w-100" width="720" height="900" :src="login" :alt="$t('ui.image')" />
           </div>
         </div>
 
@@ -15,7 +15,7 @@
             <div class="row justify-content-start">
               <div class="col-xxl-10">
                 <div class="pb-10 pt-8 mb-7 mt-12 mt-lg-0 px-4 px-sm-10">
-                  <h3 class="mb-6 mb-md-8">Reset Password</h3>
+                  <h3 class="mb-6 mb-md-8">{{ $t('ui.reset_password') }}</h3>
                   <p class="mb-10 mb-md-15">
                     Enter your new password below.
                   </p>
@@ -41,7 +41,7 @@
                       <input
                         :type="showPassword ? 'text' : 'password'"
                         class="n11-bg"
-                        placeholder="New Password"
+                        :placeholder="$t('ui.new_password')"
                         v-model="form.password"
                         required
                         minlength="6"
@@ -56,7 +56,7 @@
                       <input
                         :type="showConfirmPassword ? 'text' : 'password'"
                         class="n11-bg"
-                        placeholder="Confirm New Password"
+                        :placeholder="$t('ui.confirm_new_password')"
                         v-model="form.password_confirmation"
                         required
                         minlength="6"
@@ -71,8 +71,8 @@
                       type="submit"
                       :disabled="loading"
                     >
-                      <span v-if="loading">Resetting...</span>
-                      <span v-else>Reset Password</span>
+                      <span v-if="loading">{{ $t('ui.resetting') }}</span>
+                      <span v-else>{{ $t('ui.reset_password') }}</span>
                     </button>
                   </form>
 
@@ -92,6 +92,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import apiClient, { getApiErrorMessage } from "@/utils/axios";

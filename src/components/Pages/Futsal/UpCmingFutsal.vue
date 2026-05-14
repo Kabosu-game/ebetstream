@@ -10,7 +10,7 @@
                   class="top_matches__title d-flex align-items-center gap-2 mb-4 mb-md-6"
                 >
                   <img :src="russia" width="{32}" height="{32}" alt="Icon" />
-                  <h3>Russia</h3>
+                  <h3>{{ $t('ui.russia') }}</h3>
                 </div>
                 <div class="top_matches__content">
                   <div class="top_matches__cmncard p2-bg p-4 rounded-3 mb-4">
@@ -28,14 +28,14 @@
                                 alt="Icon"
                               />
                               <span class="fs-eight cpoint"
-                                >Poland Ekstraklasa</span
+                                >{{ $t('ui.poland_ekstraklasa') }}</span
                               >
                             </div>
                             <div
                               class="d-flex align-items-center gap-4 pe-xl-15 flex-nowrap flex-xl-wrap"
                             >
                               <span class="fs-eight cpoint me-xl-6"
-                                >In 2 days, 00:00</span
+                                >{{ $t('ui.in_2_days_00_00') }}</span
                               >
                             </div>
                           </div>
@@ -51,7 +51,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">Bsf Bochnia</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.bsf_bochnia') }}</span>
                               </div>
                               <div class="d-flex align-items-center gap-2">
                                 <img
@@ -61,7 +61,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">Przemysl</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.przemysl') }}</span>
                               </div>
                             </div>
                             <div
@@ -97,7 +97,7 @@
                               <thead>
                                 <tr class="text-center">
                                   <th scope="col">
-                                    <span class="fs-eight">1x2</span>
+                                    <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -162,7 +162,7 @@
                                 height="{16}"
                                 alt="Icon"
                               />
-                              <span class="fs-eight cpoint">Rugby Pro D2</span>
+                              <span class="fs-eight cpoint">{{ $t('ui.rugby_pro_d2') }}</span>
                             </div>
                             <div
                               class="d-flex align-items-center gap-4 pe-xl-15 flex-nowrap flex-xl-wrap"
@@ -185,7 +185,7 @@
                                   alt="Icon"
                                 />
                                 <span class="fs-seven cpoint"
-                                  >Colomiers Rugby</span
+                                  >{{ $t('ui.colomiers_rugby') }}</span
                                 >
                               </div>
                               <div class="d-flex align-items-center gap-2">
@@ -196,7 +196,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">AC Brive</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.ac_brive') }}</span>
                               </div>
                             </div>
                             <div
@@ -232,10 +232,10 @@
                               <thead>
                                 <tr class="text-center">
                                   <th scope="col">
-                                    <span class="fs-eight">1x2</span>
+                                    <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">Draw no bet</span>
+                                    <span class="fs-eight">{{ $t('betting.draw_no_bet') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -326,7 +326,7 @@
                                 height="{16}"
                                 alt="Icon"
                               />
-                              <span class="fs-eight cpoint">Rugby Pro D2</span>
+                              <span class="fs-eight cpoint">{{ $t('ui.rugby_pro_d2') }}</span>
                             </div>
                             <div
                               class="d-flex align-items-center gap-4 pe-xl-15 flex-nowrap flex-xl-wrap"
@@ -348,7 +348,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">Uson Nevers</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.uson_nevers') }}</span>
                               </div>
                               <div class="d-flex align-items-center gap-2">
                                 <img
@@ -359,7 +359,7 @@
                                   alt="Icon"
                                 />
                                 <span class="fs-seven cpoint"
-                                  >Stade Montois Rugby</span
+                                  >{{ $t('ui.stade_montois_rugby') }}</span
                                 >
                               </div>
                             </div>
@@ -396,10 +396,10 @@
                               <thead>
                                 <tr class="text-center">
                                   <th scope="col">
-                                    <span class="fs-eight">1x2</span>
+                                    <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">Draw no bet</span>
+                                    <span class="fs-eight">{{ $t('betting.draw_no_bet') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -486,6 +486,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import russia from "@/assets/images/icon/russia.png";
 import futsal from "@/assets/images/icon/futsal.png";
 import futsalLeague from "@/assets/images/icon/futsal-league.png";

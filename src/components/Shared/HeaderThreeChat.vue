@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref } from "vue";
 
 import flores from "@/assets/images/flores.png";
@@ -22,7 +25,7 @@ const mesgToggleCard = () => {
     <button
       @click="mesgToggleCard"
       type="button"
-      aria-label="Shopping Button"
+      :aria-label="$t('ui.shopping_button')"
       class="common_toggles2 py-1 px-2 n11-bg rounded-5 position-relative"
     >
       <i class="fas fa-comment-dots slide-toggle2 fs-four" height="24" width="24" ></i>
@@ -45,7 +48,7 @@ const mesgToggleCard = () => {
               class="ti ti-menu-2 fs-four n5-color"
             />
           </button>
-          <h5 class="fs-five">Chat</h5>
+          <h5 class="fs-five">{{ $t('ui.chat') }}</h5>
         </div>
         <div @click="mesgToggleCard" class="common_toggles3">
           <i class="fas fa-times ti ti-x fs-four cpoint n5-color" ></i>
@@ -64,7 +67,7 @@ const mesgToggleCard = () => {
           </div>
           <div class="cmns_msgarea__head-conent">
             <div class="d-flex align-items-center gap-2">
-              <h6>Flores, Juanita</h6>
+              <h6>{{ $t('ui.flores_juanita') }}</h6>
               <span class="n3-color seven">Dec 30 21:28</span>
             </div>
             <p>
@@ -84,7 +87,7 @@ const mesgToggleCard = () => {
           </div>
           <div class="cmns_msgarea__head-conent">
             <div class="d-flex align-items-center gap-2">
-              <h6>Miles, Esther</h6>
+              <h6>{{ $t('ui.miles_esther') }}</h6>
               <span class="n3-color seven">Aug 15 10:29</span>
             </div>
             <p>
@@ -104,7 +107,7 @@ const mesgToggleCard = () => {
           </div>
           <div class="cmns_msgarea__head-conent">
             <div class="d-flex align-items-center gap-2">
-              <h6>Nguyen, Shane</h6>
+              <h6>{{ $t('ui.nguyen_shane') }}</h6>
               <span class="n3-color seven">Apr 11 18:30</span>
             </div>
             <p>
@@ -124,7 +127,7 @@ const mesgToggleCard = () => {
           </div>
           <div class="cmns_msgarea__head-conent">
             <div class="d-flex align-items-center gap-2">
-              <h6>Cooper, Kristin</h6>
+              <h6>{{ $t('ui.cooper_kristin') }}</h6>
               <span class="n3-color seven">Apr 11 18:30</span>
             </div>
             <p>
@@ -144,7 +147,7 @@ const mesgToggleCard = () => {
           </div>
           <div class="cmns_msgarea__head-conent">
             <div class="d-flex align-items-center gap-2">
-              <h6>Miles, Esther</h6>
+              <h6>{{ $t('ui.miles_esther') }}</h6>
               <span class="n3-color seven">May 22 04:43</span>
             </div>
             <p class="mb-2">
@@ -170,7 +173,7 @@ const mesgToggleCard = () => {
           </div>
           <div class="cmns_msgarea__head-conent">
             <div class="d-flex align-items-center gap-2">
-              <h6>Nguyen, Shane</h6>
+              <h6>{{ $t('ui.nguyen_shane') }}</h6>
               <span class="n3-color seven">Jul 25 17:09</span>
             </div>
             <p>
@@ -190,7 +193,7 @@ const mesgToggleCard = () => {
           </div>
           <div class="cmns_msgarea__head-conent">
             <div class="d-flex align-items-center gap-2">
-              <h6>Henry, Arthur</h6>
+              <h6>{{ $t('ui.henry_arthur') }}</h6>
               <span class="n3-color seven">Sep 4 06:53</span>
             </div>
             <p>
@@ -210,7 +213,7 @@ const mesgToggleCard = () => {
           </div>
           <div class="cmns_msgarea__head-conent">
             <div class="d-flex align-items-center gap-2">
-              <h6>Henry, Arthur</h6>
+              <h6>{{ $t('ui.henry_arthur') }}</h6>
               <span class="n3-color seven">May 22 04:43</span>
             </div>
             <p class="mb-2">
@@ -236,7 +239,7 @@ const mesgToggleCard = () => {
           </div>
           <div class="cmns_msgarea__head-conent">
             <div class="d-flex align-items-center gap-2">
-              <h6>Flores, Juanita</h6>
+              <h6>{{ $t('ui.flores_juanita') }}</h6>
               <span class="n3-color seven">Jul 25 17:09</span>
             </div>
             <p>
@@ -256,7 +259,7 @@ const mesgToggleCard = () => {
           </div>
           <div class="cmns_msgarea__head-conent">
             <div class="d-flex align-items-center gap-2">
-              <h6>Nguyen, Shane</h6>
+              <h6>{{ $t('ui.nguyen_shane') }}</h6>
               <span class="n3-color seven">Jul 25 17:09</span>
             </div>
             <p>
@@ -276,7 +279,7 @@ const mesgToggleCard = () => {
           </div>
           <div class="cmns_msgarea__head-conent">
             <div class="d-flex align-items-center gap-2">
-              <h6>Henry, Arthur</h6>
+              <h6>{{ $t('ui.henry_arthur') }}</h6>
               <span class="n3-color seven">May 22 04:43</span>
             </div>
             <p class="mb-2">
@@ -302,7 +305,7 @@ const mesgToggleCard = () => {
           </div>
           <div class="cmns_msgarea__head-conent">
             <div class="d-flex align-items-center gap-2">
-              <h6>Nguyen, Shane</h6>
+              <h6>{{ $t('ui.nguyen_shane') }}</h6>
               <span class="n3-color seven">Jul 25 17:09</span>
             </div>
             <p>
@@ -322,7 +325,7 @@ const mesgToggleCard = () => {
           </div>
           <div class="cmns_msgarea__head-conent">
             <div class="d-flex align-items-center gap-2">
-              <h6>Black, Marvin</h6>
+              <h6>{{ $t('ui.black_marvin') }}</h6>
               <span class="n3-color seven">Jun 23 14:31</span>
             </div>
             <p>
@@ -342,7 +345,7 @@ const mesgToggleCard = () => {
           </div>
           <div class="cmns_msgarea__head-conent">
             <div class="d-flex align-items-center gap-2">
-              <h6>Flores, Juanita</h6>
+              <h6>{{ $t('ui.flores_juanita') }}</h6>
               <span class="n3-color seven">Jan 31 09:53</span>
             </div>
             <p>
@@ -360,7 +363,7 @@ const mesgToggleCard = () => {
           <div
             class="cmns_msgarea__footer-fileup d-flex align-items-center py-1 pe-3 gap-sm-1"
           >
-            <input type="text" placeholder="Send message" />
+            <input type="text" :placeholder="$t('ui.send_message')" />
             <label>
               <IconPhotoPlus
                 width="{24}"

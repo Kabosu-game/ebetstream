@@ -8,18 +8,18 @@
               <router-link to="/admin" class="text-decoration-none">
                 <h4 class="text-white mb-0 fw-bold d-flex align-items-center">
                   <i class="fas fa-shield-alt me-2 text-warning"  ></i>
-                  Admin Dashboard
+                  {{ $t('admin.overview') }} Dashboard
                 </h4>
               </router-link>
             </div>
             <div class="d-flex align-items-center gap-3">
               <router-link to="/" class="btn btn-sm btn-outline-light d-flex align-items-center">
                 <i class="fas fa-home me-1"  ></i>
-                Site
+                {{ $t('common.home') }}
               </router-link>
               <button class="btn btn-sm btn-outline-danger d-flex align-items-center" @click="logout">
                 <i class="fas fa-sign-out-alt me-1"  ></i>
-                Déconnexion
+                {{ $t('common.logout') }}
               </button>
             </div>
           </div>
@@ -31,7 +31,9 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const router = useRouter();
 
 const logout = () => {

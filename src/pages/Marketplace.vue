@@ -14,7 +14,7 @@
                       🛒 Team Marketplace
                     </span>
                     <h2 class="hero_title mb-4">
-                      Buy or Loan <span class="text_gradient">Teams</span><br />
+                      Buy or Loan <span class="text_gradient">{{ $t('ui.teams') }}</span><br />
                       from other players!
                     </h2>
                     <p class="hero_subtitle mb-5">
@@ -27,7 +27,7 @@
                         @click="showCreateModal = true"
                       >
                         <i class="fas fa-plus-circle me-2"></i>
-                        <span>List Your Team</span>
+                        <span>{{ $t('ui.list_your_team') }}</span>
                       </button>
                     </div>
                   </div>
@@ -37,9 +37,9 @@
                 <div class="col-lg-6 col-md-5 d-none d-md-block">
                   <div class="defis_image" data-aos="fade-left">
                     <div class="floating_card card_defis">
-                      <div class="card_icon">🛒</div>
+                      <div class="card_icon">{{ $t('ui.text_9') }}</div>
                       <div class="card_content">
-                        <span class="card_label">Available</span>
+                        <span class="card_label">{{ $t('ui.available') }}</span>
                         <span class="card_value">{{ listings.length }} Teams</span>
                       </div>
                     </div>
@@ -60,23 +60,19 @@
                   class="btn_secondary"
                   :class="{ 'active': filterType === 'sale' }"
                   @click="filterType = 'sale'; loadListings()"
-                >
-                  For Sale
-                </button>
+                >{{ $t('ui.for_sale') }}</button>
                 <button 
                   class="btn_secondary"
                   :class="{ 'active': filterType === 'loan' }"
                   @click="filterType = 'loan'; loadListings()"
-                >
-                  For Loan
-                </button>
+                >{{ $t('ui.for_loan') }}</button>
               </div>
 
               <!-- Loading State -->
               <div v-if="loading" class="row mt-5">
                 <div class="col-12 text-center py-5">
                   <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-                    <span class="visually-hidden">Loading...</span>
+                    <span class="visually-hidden">{{ $t('common.loading') }}</span>
                   </div>
                 </div>
               </div>
@@ -103,7 +99,7 @@
                       <img 
                         v-if="listing.team?.logo" 
                         :src="listing.team.logo" 
-                        :alt="listing.team.name"
+                        :alt="$t('ui.listing_team_name')"
                         class="rounded-circle"
                         style="width: 100px; height: 100px; object-fit: cover;"
                       />
@@ -155,16 +151,14 @@
                         @click="buyTeam(listing)"
                         :disabled="processing || !isAuthenticated || listing.seller_id === currentUserId"
                       >
-                        <i class="fas fa-shopping-cart me-2"></i>Buy
-                      </button>
+                        <i class="fas fa-shopping-cart me-2"></i>{{ $t('ui.buy') }}</button>
                       <button 
                         v-else
                         class="btn_primary flex-fill py-2"
                         @click="loanTeam(listing)"
                         :disabled="processing || !isAuthenticated || listing.seller_id === currentUserId"
                       >
-                        <i class="fas fa-hand-holding me-2"></i>Loan
-                      </button>
+                        <i class="fas fa-hand-holding me-2"></i>{{ $t('ui.loan') }}</button>
                       <button 
                         class="btn_secondary py-2 px-3"
                         @click="viewDetails(listing.id)"
@@ -180,14 +174,14 @@
               <div v-else class="row mt-5">
                 <div class="col-12 text-center py-5">
                   <i class="fas fa-store fs-1 text-white-50 mb-3"></i>
-                  <p class="text-white-50">No teams available at the moment.</p>
+                  <p class="text-white-50">{{ $t('ui.no_teams_available_at_the_moment') }}</p>
                   <button 
                     v-if="isAuthenticated"
                     class="btn_primary mt-3"
                     @click="showCreateModal = true"
                   >
                     <i class="fas fa-plus-circle me-2"></i>
-                    <span>List First Team</span>
+                    <span>{{ $t('ui.list_first_team') }}</span>
                   </button>
                 </div>
               </div>
@@ -200,10 +194,10 @@
     <!-- Create Listing Modal -->
     <div v-if="showCreateModal" class="popup-overlay" @click.self="showCreateModal = false">
       <div class="popup-box p-5 rounded-4 shadow-lg n11-bg" style="max-width: 600px;">
-        <h3 class="fw-bold mb-4 text-center text-white">List Your Team</h3>
+        <h3 class="fw-bold mb-4 text-center text-white">{{ $t('ui.list_your_team') }}</h3>
         <form @submit.prevent="createListing">
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Listing Type *</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.listing_type') }}</label>
             <div class="d-flex gap-3">
               <button 
                 type="button"
@@ -211,27 +205,25 @@
                 :class="listingForm.listing_type === 'sale' ? 'btn-warning' : 'btn-secondary'"
                 @click="listingForm.listing_type = 'sale'"
               >
-                <i class="fas fa-shopping-cart me-2"></i>For Sale
-              </button>
+                <i class="fas fa-shopping-cart me-2"></i>{{ $t('ui.for_sale') }}</button>
               <button 
                 type="button"
                 class="btn flex-fill"
                 :class="listingForm.listing_type === 'loan' ? 'btn-warning' : 'btn-secondary'"
                 @click="listingForm.listing_type = 'loan'"
               >
-                <i class="fas fa-hand-holding me-2"></i>For Loan
-              </button>
+                <i class="fas fa-hand-holding me-2"></i>{{ $t('ui.for_loan') }}</button>
             </div>
           </div>
 
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Select Team *</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.select_team') }}</label>
             <select 
               v-model="listingForm.team_id"
               class="form-control n11-bg text-white border-secondary"
               required
             >
-              <option value="">Select a team or clan...</option>
+              <option value="">{{ $t('ui.select_a_team_or_clan') }}</option>
               <option v-for="team in myTeams" :key="`${team.type}-${team.id}`" :value="team.id">
                 {{ team.name }} ({{ team.type === 'clan' ? 'Clan' : 'Team' }})
               </option>
@@ -239,12 +231,12 @@
           </div>
 
           <div v-if="listingForm.listing_type === 'sale'" class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Sale Price (EBT) *</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.sale_price_ebt') }}</label>
             <input 
               v-model.number="listingForm.price"
               type="number" 
               class="form-control n11-bg text-white border-secondary" 
-              placeholder="Enter sale price"
+              :placeholder="$t('ui.enter_sale_price')"
               min="0"
               step="0.01"
               required
@@ -252,22 +244,22 @@
           </div>
 
           <div v-else class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Loan Fee (EBT) *</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.loan_fee_ebt') }}</label>
             <input 
               v-model.number="listingForm.loan_fee"
               type="number" 
               class="form-control n11-bg text-white border-secondary" 
-              placeholder="Enter loan fee"
+              :placeholder="$t('ui.enter_loan_fee')"
               min="0"
               step="0.01"
               required
             />
-            <label class="text-white mb-2 d-block mt-3">Duration (days) *</label>
+            <label class="text-white mb-2 d-block mt-3">{{ $t('ui.duration_days') }}</label>
             <input 
               v-model.number="listingForm.loan_duration_days"
               type="number" 
               class="form-control n11-bg text-white border-secondary" 
-              placeholder="Enter loan duration"
+              :placeholder="$t('ui.enter_loan_duration')"
               min="1"
               max="365"
               required
@@ -275,12 +267,12 @@
           </div>
 
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Conditions (optional)</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.conditions_optional') }}</label>
             <textarea 
               v-model="listingForm.conditions"
               class="form-control n11-bg text-white border-secondary"
               rows="3"
-              placeholder="Any specific conditions..."
+              :placeholder="$t('ui.any_specific_conditions')"
             ></textarea>
           </div>
 
@@ -288,7 +280,7 @@
             <button class="btn_primary flex-fill" type="submit" :disabled="processing">
               Create Listing
             </button>
-            <button type="button" class="btn_secondary" @click="closeCreateModal">Cancel</button>
+            <button type="button" class="btn_secondary" @click="closeCreateModal">{{ $t('common.cancel') }}</button>
           </div>
         </form>
       </div>
@@ -297,6 +289,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted, computed } from "vue";
 import apiClient from "@/utils/axios";
 

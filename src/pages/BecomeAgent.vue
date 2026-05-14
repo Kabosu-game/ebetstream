@@ -8,8 +8,7 @@
       <p class="tw-page-hero__sub">{{ $t('becomeAgent.subtitle') }}</p>
       <div class="tw-page-hero__actions">
         <router-link to="/agents-crypto" class="tw-btn tw-btn--secondary">
-          <i class="ti ti-info-circle"></i> En savoir plus sur le réseau
-        </router-link>
+          <i class="ti ti-info-circle"></i>{{ $t('ui.en_savoir_plus_sur_le_r_seau') }}</router-link>
       </div>
     </div>
 
@@ -52,8 +51,7 @@
       <form @submit.prevent="submitRequest" class="agent-form">
         <div class="agent-form__section">
           <h3 class="agent-form__section-title">
-            <i class="ti ti-user"></i> Informations personnelles
-          </h3>
+            <i class="ti ti-user"></i>{{ $t('ui.informations_personnelles') }}</h3>
           <div class="agent-form__grid">
             <div class="tw-form-group">
               <label class="tw-label">{{ $t('becomeAgent.name') }} *</label>
@@ -111,8 +109,7 @@
 
         <div class="agent-form__section">
           <h3 class="agent-form__section-title">
-            <i class="ti ti-briefcase"></i> Informations professionnelles
-          </h3>
+            <i class="ti ti-briefcase"></i>{{ $t('ui.informations_professionnelles') }}</h3>
           <div class="agent-form__grid">
             <div class="tw-form-group">
               <label class="tw-label">{{ $t('becomeAgent.occupation') }}</label>
@@ -147,8 +144,7 @@
 
         <div class="agent-form__section">
           <h3 class="agent-form__section-title">
-            <i class="ti ti-clock"></i> Disponibilité
-          </h3>
+            <i class="ti ti-clock"></i>{{ $t('ui.disponibilit') }}</h3>
           <div class="agent-form__grid">
             <div class="tw-form-group">
               <label class="tw-label">{{ $t('becomeAgent.availability') }}</label>
@@ -174,8 +170,7 @@
 
         <div class="agent-form__section">
           <h3 class="agent-form__section-title">
-            <i class="ti ti-heart"></i> Motivation
-          </h3>
+            <i class="ti ti-heart"></i>{{ $t('ui.motivation') }}</h3>
           <div class="agent-form__grid">
             <div class="tw-form-group agent-form__full">
               <label class="tw-label">{{ $t('becomeAgent.motivation') }} *</label>
@@ -201,8 +196,7 @@
 
         <div class="agent-form__section">
           <h3 class="agent-form__section-title">
-            <i class="ti ti-file-text"></i> Documents
-          </h3>
+            <i class="ti ti-file-text"></i>{{ $t('ui.documents') }}</h3>
           <div class="agent-form__grid">
             <div class="tw-form-group">
               <label class="tw-label">{{ $t('becomeAgent.hasIdCard') }}</label>

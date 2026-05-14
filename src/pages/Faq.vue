@@ -4,8 +4,8 @@
     <section class="tw-page-hero">
       <div class="hero-inner">
         <p class="tw-page-hero__sub"><i class="fas fa-list-alt me-2"></i>FAQ</p>
-        <h1 class="tw-page-hero__title">Frequently Asked <span class="accent">Questions</span></h1>
-        <p class="hero-desc">Quickly find answers to the most common questions about eBetStream.</p>
+        <h1 class="tw-page-hero__title">{{ $t('ui.frequently_asked') }}<span class="accent">{{ $t('ui.questions') }}</span></h1>
+        <p class="hero-desc">{{ $t('ui.quickly_find_answers_to_the_most_common_questions_about_ebet') }}</p>
       </div>
     </section>
 
@@ -40,8 +40,8 @@
       <section class="cta-section">
         <div class="tw-card cta-card">
           <div class="cta-icon"><i class="fas fa-headset"></i></div>
-          <h3 class="cta-title">Can't Find the Answer?</h3>
-          <p class="cta-desc">Our support team is here to help you around the clock.</p>
+          <h3 class="cta-title">{{ $t('ui.cant_find_the_answer') }}</h3>
+          <p class="cta-desc">{{ $t('ui.our_support_team_is_here_to_help_you_around_the_clock') }}</p>
           <router-link to="/contact" class="tw-btn tw-btn--primary">
             Contact Us <i class="fas fa-arrow-right ms-2"></i>
           </router-link>
@@ -52,6 +52,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref } from 'vue';
 
 const activeFaq = ref<number | null>(0);

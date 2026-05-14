@@ -21,7 +21,7 @@
                       />
                       <div class="top_matches__winnercard-obi">
                         <span class="mb-3 n4-color">Jan 1, 2024, 10:00</span>
-                        <h5>Tour de France - Winner</h5>
+                        <h5>{{ $t('ui.tour_de_france_winner') }}</h5>
                       </div>
                     </div>
                     <div class="row gy-2">
@@ -30,19 +30,19 @@
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Vingegaard, Jonas</span>
+                            <span>{{ $t('ui.vingegaard_jonas') }}</span>
                             <span>4.5</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Evenepoel, Remco</span>
+                            <span>{{ $t('ui.evenepoel_remco') }}</span>
                             <span>7.5</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3"
                           >
-                            <span>Yates, Adam</span>
+                            <span>{{ $t('ui.yates_adam') }}</span>
                             <span>19.0</span>
                           </div>
                         </div>
@@ -52,19 +52,19 @@
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Pogacar, Tadej</span>
+                            <span>{{ $t('ui.pogacar_tadej') }}</span>
                             <span>6.5</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Ayuso Pesquera, Juan</span>
+                            <span>{{ $t('ui.ayuso_pesquera_juan') }}</span>
                             <span>8.0</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3"
                           >
-                            <span>Rodriguez Cano, Carlos</span>
+                            <span>{{ $t('ui.rodriguez_cano_carlos') }}</span>
                             <span>23.0</span>
                           </div>
                         </div>
@@ -74,19 +74,19 @@
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Roglic, Primoz</span>
+                            <span>{{ $t('ui.roglic_primoz') }}</span>
                             <span>6.5</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Kuss, Sepp</span>
+                            <span>{{ $t('ui.kuss_sepp') }}</span>
                             <span>8.0</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3"
                           >
-                            <span>Hindley, Jai</span>
+                            <span>{{ $t('ui.hindley_jai') }}</span>
                             <span>23.0</span>
                           </div>
                         </div>
@@ -95,7 +95,7 @@
                         <div
                           class="top_matches__winnercard-singe d-flex align-items-center justify-content-center n11-bg rounded-2 py-1 px-3 mb-2 gap-2 mt-2"
                         >
-                          <span class="cpoint">Show more</span>
+                          <span class="cpoint">{{ $t('common.show_more') }}</span>
                           <i class="ti ti-arrow-badge-down cpoint mt-1"></i>
                         </div>
                       </div>
@@ -112,6 +112,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import cyclingBig from "@/assets/images/icon/cycling-big.png";
 </script>
 

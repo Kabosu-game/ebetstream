@@ -10,7 +10,7 @@
                   class="top_matches__title d-flex align-items-center gap-2 mb-4 mb-md-5"
                 >
                   <img :src="king" width="{32}" height="{32}" alt="Icon" />
-                  <h3>Top Soccer</h3>
+                  <h3>{{ $t('betting.top_soccer') }}</h3>
                 </div>
                 <div class="top_matches__content">
                   <div class="top_matches__cmncard p2-bg p-4 rounded-3 mb-4">
@@ -28,7 +28,7 @@
                                 alt="Icon"
                               />
                               <span class="fs-eight cpoint"
-                                >USA NBA All-time</span
+                                >{{ $t('ui.usa_nba_all_time') }}</span
                               >
                             </div>
                             <div
@@ -65,7 +65,7 @@
                                   alt="Icon"
                                 />
                                 <span class="fs-seven cpoint"
-                                  >CF Tigres UANL</span
+                                  >{{ $t('ui.cf_tigres_uanl') }}</span
                                 >
                               </div>
                               <div class="d-flex align-items-center gap-2">
@@ -76,7 +76,7 @@
                                   alt="Icon"
                                 />
                                 <span class="fs-seven cpoint"
-                                  >Club America</span
+                                  >{{ $t('ui.club_america') }}</span
                                 >
                               </div>
                             </div>
@@ -106,15 +106,15 @@
                                 <tr class="text-center">
                                   <th scope="col">
                                     <span class="fs-eight"
-                                      >Winner (incl overtime)</span
+                                      >{{ $t('betting.winner_incl_overtime') }}</span
                                     >
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">1x2</span>
+                                    <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                   </th>
                                   <th scope="col">
                                     <span class="fs-eight"
-                                      >Total (incl overtime)</span
+                                      >{{ $t('betting.total_incl_overtime') }}</span
                                     >
                                   </th>
                                 </tr>
@@ -141,7 +141,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >draw</span
+                                          >{{ $t('betting.draw') }}</span
                                         >
                                         <span class="fw-bold d-block"
                                           >3.45</span
@@ -169,7 +169,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >1 or draw</span
+                                          >{{ $t('betting.1_or_draw') }}</span
                                         >
                                         <span class="fw-bold d-block"
                                           >1.39</span
@@ -180,7 +180,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >1 or 2</span
+                                          >{{ $t('betting.1_or_2') }}</span
                                         >
                                         <span class="fw-bold d-block"
                                           >3.45</span
@@ -191,7 +191,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >draw or 2</span
+                                          >{{ $t('betting.draw_or_2') }}</span
                                         >
                                         <span class="fw-bold d-block"
                                           >2.45</span
@@ -261,7 +261,7 @@
                                 alt="Icon"
                               />
                               <span class="fs-eight cpoint"
-                                >Turkiye Super Lig</span
+                                >{{ $t('ui.turkiye_super_lig') }}</span
                               >
                             </div>
                             <div
@@ -296,7 +296,7 @@
                                   alt="Icon"
                                 />
                                 <span class="fs-seven cpoint"
-                                  >Petroleros de FC</span
+                                  >{{ $t('ui.petroleros_de_fc') }}</span
                                 >
                               </div>
                               <div class="d-flex align-items-center gap-2">
@@ -307,7 +307,7 @@
                                   alt="Icon"
                                 />
                                 <span class="fs-seven cpoint"
-                                  >Escorpiones FC</span
+                                  >{{ $t('ui.escorpiones_fc') }}</span
                                 >
                               </div>
                             </div>
@@ -337,14 +337,14 @@
                                 <tr class="text-center">
                                   <th scope="col">
                                     <span class="fs-eight"
-                                      >Winner (incl overtime)</span
+                                      >{{ $t('betting.winner_incl_overtime') }}</span
                                     >
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">1x2</span>
+                                    <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">Total</span>
+                                    <span class="fs-eight">{{ $t('betting.total') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -370,7 +370,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >draw</span
+                                          >{{ $t('betting.draw') }}</span
                                         >
                                         <span class="fw-bold d-block"
                                           >3.45</span
@@ -398,7 +398,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >1 or draw</span
+                                          >{{ $t('betting.1_or_draw') }}</span
                                         >
                                         <span class="fw-bold d-block"
                                           >1.39</span
@@ -409,7 +409,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >1 or 2</span
+                                          >{{ $t('betting.1_or_2') }}</span
                                         >
                                         <span class="fw-bold d-block"
                                           >3.45</span
@@ -420,7 +420,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >draw or 2</span
+                                          >{{ $t('betting.draw_or_2') }}</span
                                         >
                                         <span class="fw-bold d-block"
                                           >2.45</span
@@ -490,7 +490,7 @@
                                 alt="Icon"
                               />
                               <span class="fs-eight cpoint"
-                                >Belarus League A</span
+                                >{{ $t('ui.belarus_league_a') }}</span
                               >
                             </div>
                             <div
@@ -512,7 +512,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">Mogilev</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.mogilev') }}</span>
                               </div>
                               <div class="d-flex align-items-center gap-2">
                                 <img
@@ -521,7 +521,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">Pinsk</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.pinsk') }}</span>
                               </div>
                             </div>
                             <div
@@ -550,15 +550,15 @@
                                 <tr class="text-center">
                                   <th scope="col">
                                     <span class="fs-eight"
-                                      >Winner (incl overtime)</span
+                                      >{{ $t('betting.winner_incl_overtime') }}</span
                                     >
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">1x2</span>
+                                    <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                   </th>
                                   <th scope="col">
                                     <span class="fs-eight"
-                                      >Total (incl overtime)</span
+                                      >{{ $t('betting.total_incl_overtime') }}</span
                                     >
                                   </th>
                                 </tr>
@@ -585,7 +585,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >draw</span
+                                          >{{ $t('betting.draw') }}</span
                                         >
                                         <span class="fw-bold d-block"
                                           >3.45</span
@@ -613,7 +613,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >1 or draw</span
+                                          >{{ $t('betting.1_or_draw') }}</span
                                         >
                                         <span class="fw-bold d-block"
                                           >1.39</span
@@ -624,7 +624,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >1 or 2</span
+                                          >{{ $t('betting.1_or_2') }}</span
                                         >
                                         <span class="fw-bold d-block"
                                           >3.45</span
@@ -635,7 +635,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >draw or 2</span
+                                          >{{ $t('betting.draw_or_2') }}</span
                                         >
                                         <span class="fw-bold d-block"
                                           >2.45</span
@@ -701,6 +701,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import king from "@/assets/images/icon/king.png";
 import volta from "@/assets/images/icon/fifa-volta.png";
 import live from "@/assets/images/icon/live.png";

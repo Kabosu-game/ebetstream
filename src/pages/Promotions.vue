@@ -17,7 +17,7 @@
       >
         <!-- Promo image -->
         <div class="promo-card__thumb">
-          <img :src="imgSrc" :alt="title" />
+          <img :src="imgSrc" :alt="$t('ui.title_3')" />
           <div class="promo-card__overlay"></div>
         </div>
 
@@ -36,6 +36,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { promotionData } from "../assets/data/allPageData";
 </script>
 

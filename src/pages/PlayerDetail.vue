@@ -10,7 +10,7 @@
               <!-- Loading State -->
               <div v-if="loading" class="text-center py-5">
                 <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-                  <span class="visually-hidden">Chargement...</span>
+                  <span class="visually-hidden">{{ $t('ui.chargement') }}</span>
                 </div>
               </div>
 
@@ -37,8 +37,7 @@
                     
                     <div class="defis_content">
                       <span class="hero_badge mb-3 d-inline-block">
-                        <i class="fas fa-trophy me-2"></i>Profil Joueur
-                      </span>
+                        <i class="fas fa-trophy me-2"></i>{{ $t('ui.profil_joueur') }}</span>
                       <h2 class="hero_title mb-4">
                         <span class="text_gradient">{{ player.name }}</span>
                       </h2>
@@ -62,7 +61,7 @@
                             <img 
                               v-if="player.avatar_url" 
                               :src="correctAvatarUrl(player.avatar_url)" 
-                              :alt="player.name"
+                              :alt="$t('ui.player_name_2')"
                               class="w-100 h-100"
                               style="object-fit: cover;"
                               @error="handleImageError($event)"
@@ -76,14 +75,12 @@
                             <h3 class="fw-bold text-white mb-2">
                               {{ player.name }}
                               <span v-if="player.certifications && player.certifications.includes('Ebetstream')" class="badge bg-success ms-2">
-                                <i class="fas fa-certificate me-1"></i>Certifié
-                              </span>
+                                <i class="fas fa-certificate me-1"></i>{{ $t('ui.certifi') }}</span>
                             </h3>
                             <p class="text-white mb-1" style="opacity: 0.8;">
                               @{{ player.username }}
                               <span v-if="player.certifications && player.certifications.includes('Ebetstream')" class="badge bg-success ms-2" style="font-size: 0.7rem;">
-                                <i class="fas fa-certificate me-1"></i>Certifié
-                              </span>
+                                <i class="fas fa-certificate me-1"></i>{{ $t('ui.certifi') }}</span>
                             </p>
                             <p v-if="player.country" class="text-white small mb-0" style="opacity: 0.8;">
                               <i class="fas fa-map-marker-alt me-1"></i>{{ player.country }}
@@ -94,15 +91,14 @@
                           <div class="badge bg-warning text-dark px-4 py-3 mb-2" style="font-size: 1.2rem;">
                             {{ player.score }} pts
                           </div>
-                          <p class="text-white small mb-0" style="opacity: 0.8;">Score cette semaine</p>
+                          <p class="text-white small mb-0" style="opacity: 0.8;">{{ $t('ui.score_cette_semaine') }}</p>
                         </div>
                       </div>
 
                       <!-- Bio Section -->
                       <div v-if="player.bio" class="mb-4">
                         <h4 class="fw-bold mb-3 text-white">
-                          <i class="fas fa-info-circle me-2"></i>À propos
-                        </h4>
+                          <i class="fas fa-info-circle me-2"></i>{{ $t('ui.propos') }}</h4>
                         <p class="text-white" style="opacity: 0.9; line-height: 1.8; font-size: 1.05rem;">
                           {{ player.bio }}
                         </p>
@@ -116,7 +112,7 @@
                               <i class="fas fa-trophy text-warning" style="font-size: 2rem;"></i>
                             </div>
                             <div class="stat_value fw-bold text-white fs-4">{{ player.wins || 0 }}</div>
-                            <div class="stat_label text-white small" style="opacity: 0.8;">Victoires</div>
+                            <div class="stat_label text-white small" style="opacity: 0.8;">{{ $t('ui.victoires') }}</div>
                           </div>
                         </div>
                         <div class="col-md-4">
@@ -125,7 +121,7 @@
                               <i class="fas fa-times-circle text-danger" style="font-size: 2rem;"></i>
                             </div>
                             <div class="stat_value fw-bold text-white fs-4">{{ player.losses || 0 }}</div>
-                            <div class="stat_label text-white small" style="opacity: 0.8;">Losses</div>
+                            <div class="stat_label text-white small" style="opacity: 0.8;">{{ $t('ui.losses') }}</div>
                           </div>
                         </div>
                         <div class="col-md-4">
@@ -134,7 +130,7 @@
                               <i class="fas fa-chart-line text-success" style="font-size: 2rem;"></i>
                             </div>
                             <div class="stat_value fw-bold text-white fs-4">{{ (player.ratio || 0).toFixed(2) }}</div>
-                            <div class="stat_label text-white small" style="opacity: 0.8;">Ratio</div>
+                            <div class="stat_label text-white small" style="opacity: 0.8;">{{ $t('ui.ratio') }}</div>
                           </div>
                         </div>
                       </div>
@@ -142,25 +138,24 @@
                       <!-- Challenges Stats -->
                       <div v-if="player.stats" class="mt-4">
                         <h4 class="fw-bold mb-3 text-white">
-                          <i class="fas fa-gamepad me-2"></i>Challenge Statistics
-                        </h4>
+                          <i class="fas fa-gamepad me-2"></i>{{ $t('ui.challenge_statistics') }}</h4>
                         <div class="row g-3">
                           <div class="col-md-4">
                             <div class="stat_card p-3 rounded-4 text-center">
                               <div class="stat_value fw-bold text-white fs-5">{{ player.stats.total_challenges || 0 }}</div>
-                              <div class="stat_label text-white small" style="opacity: 0.8;">Total Challenges</div>
+                              <div class="stat_label text-white small" style="opacity: 0.8;">{{ $t('ui.total_challenges') }}</div>
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="stat_card p-3 rounded-4 text-center">
                               <div class="stat_value fw-bold text-success fs-5">{{ player.stats.won_challenges || 0 }}</div>
-                              <div class="stat_label text-white small" style="opacity: 0.8;">Won Challenges</div>
+                              <div class="stat_label text-white small" style="opacity: 0.8;">{{ $t('ui.won_challenges') }}</div>
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="stat_card p-3 rounded-4 text-center">
                               <div class="stat_value fw-bold text-danger fs-5">{{ player.stats.lost_challenges || 0 }}</div>
-                              <div class="stat_label text-white small" style="opacity: 0.8;">Lost Challenges</div>
+                              <div class="stat_label text-white small" style="opacity: 0.8;">{{ $t('ui.lost_challenges') }}</div>
                             </div>
                           </div>
                         </div>
@@ -172,41 +167,39 @@
                   <div class="col-lg-4">
                     <div class="defi_card n11-bg rounded-8 p-4 mb-4">
                       <h5 class="fw-bold mb-4 text-white">
-                        <i class="fas fa-info-circle me-2"></i>Informations
-                      </h5>
+                        <i class="fas fa-info-circle me-2"></i>{{ $t('ui.informations') }}</h5>
                       
                       <div class="info_item mb-3">
-                        <div class="text-white small mb-1" style="opacity: 0.7;">Nom</div>
+                        <div class="text-white small mb-1" style="opacity: 0.7;">{{ $t('ui.nom') }}</div>
                         <div class="text-white fw-semibold">{{ player.name }}</div>
                       </div>
 
                       <div class="info_item mb-3">
-                        <div class="text-white small mb-1" style="opacity: 0.7;">Nom d'utilisateur</div>
+                        <div class="text-white small mb-1" style="opacity: 0.7;">{{ $t('ui.nom_dutilisateur') }}</div>
                         <div class="text-white fw-semibold">@{{ player.username }}</div>
                       </div>
 
                       <div v-if="player.country" class="info_item mb-3">
-                        <div class="text-white small mb-1" style="opacity: 0.7;">Pays</div>
+                        <div class="text-white small mb-1" style="opacity: 0.7;">{{ $t('ui.pays') }}</div>
                         <div class="text-white fw-semibold">
                           <i class="fas fa-map-marker-alt me-1"></i>{{ player.country }}
                         </div>
                       </div>
 
                       <div class="info_item mb-3">
-                        <div class="text-white small mb-1" style="opacity: 0.7;">Score</div>
+                        <div class="text-white small mb-1" style="opacity: 0.7;">{{ $t('ui.score') }}</div>
                         <div class="text-warning fw-bold fs-5">{{ player.score }} pts</div>
                       </div>
 
                       <div class="info_item mb-3">
-                        <div class="text-white small mb-1" style="opacity: 0.7;">Score Global</div>
+                        <div class="text-white small mb-1" style="opacity: 0.7;">{{ $t('ui.score_global') }}</div>
                         <div class="text-white fw-semibold">{{ player.global_score || 0 }} pts</div>
                       </div>
                     </div>
 
                     <div class="defi_card n11-bg rounded-8 p-4">
                       <h5 class="fw-bold mb-4 text-white">
-                        <i class="fas fa-trophy me-2"></i>Classement
-                      </h5>
+                        <i class="fas fa-trophy me-2"></i>{{ $t('ui.classement') }}</h5>
                       <div class="text-center">
                         <div class="rank_display mb-3">
                           <span class="rank_number" style="font-size: 4rem; color: #FFD700; font-weight: 800;">
@@ -230,6 +223,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import apiClient from '@/utils/axios';
@@ -280,9 +276,9 @@ const loadPlayer = async () => {
   } catch (err: any) {
     console.error('Error loading player:', err);
     if (err.response?.status === 404) {
-      error.value = 'Joueur non trouvé';
+      error.value = t('errors.playerNotFound');
     } else {
-      error.value = 'Erreur lors du chargement du joueur';
+      error.value = t('errors.loadPlayerError');
     }
   } finally {
     loading.value = false;

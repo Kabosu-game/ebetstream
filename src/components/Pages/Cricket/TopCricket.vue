@@ -10,7 +10,7 @@
                   class="top_matches__title d-flex align-items-center gap-2 mb-4 mb-md-5"
                 >
                   <img :src="king" width="{32}" height="{32}" alt="Icon" />
-                  <h3>Top Soccer</h3>
+                  <h3>{{ $t('betting.top_soccer') }}</h3>
                 </div>
                 <div class="top_matches__content">
                   <div class="top_matches__cmncard p2-bg p-4 rounded-3 mb-4">
@@ -38,7 +38,7 @@
                                 :src="live"
                                 width="{16}"
                                 height="{16}"
-                                alt="icon"
+                                :alt="$t('ui.icon')"
                               />
                               <span class="fs-eight cpoint">
                                 Today, 23:00
@@ -47,7 +47,7 @@
                                 :src="updown"
                                 width="{16}"
                                 height="{16}"
-                                alt="icon"
+                                :alt="$t('ui.icon')"
                               />
                             </div>
                           </div>
@@ -118,7 +118,7 @@
                               <thead>
                                 <tr class="text-center">
                                   <th scope="col">
-                                    <span class="fs-eight"> Draw no bet </span>
+                                    <span class="fs-eight">{{ $t('betting.draw_no_bet') }}</span>
                                   </th>
                                   <th scope="col">
                                     <span class="fs-eight">
@@ -338,10 +338,10 @@
                               <thead>
                                 <tr class="text-center">
                                   <th scope="col">
-                                    <span class="fs-eight"> 1x2 </span>
+                                    <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight"> Draw no bet </span>
+                                    <span class="fs-eight">{{ $t('betting.draw_no_bet') }}</span>
                                   </th>
                                   <th scope="col">
                                     <span class="fs-eight">
@@ -493,7 +493,7 @@
                                 :src="live"
                                 width="{16}"
                                 height="{16}"
-                                alt="icon"
+                                :alt="$t('ui.icon')"
                               />
                               <span class="fs-eight cpoint">
                                 Today, 23:00
@@ -502,7 +502,7 @@
                                 :src="updown"
                                 width="{16}"
                                 height="{16}"
-                                alt="icon"
+                                :alt="$t('ui.icon')"
                               />
                             </div>
                           </div>
@@ -573,7 +573,7 @@
                               <thead>
                                 <tr class="text-center">
                                   <th scope="col">
-                                    <span class="fs-eight"> Draw no bet </span>
+                                    <span class="fs-eight">{{ $t('betting.draw_no_bet') }}</span>
                                   </th>
                                   <th scope="col">
                                     <span class="fs-eight">
@@ -714,7 +714,7 @@
                                 :src="live"
                                 width="{16}"
                                 height="{16}"
-                                alt="icon"
+                                :alt="$t('ui.icon')"
                               />
                               <span class="fs-eight cpoint">
                                 Today, 23:00
@@ -723,7 +723,7 @@
                                 :src="updown"
                                 width="{16}"
                                 height="{16}"
-                                alt="icon"
+                                :alt="$t('ui.icon')"
                               />
                             </div>
                           </div>
@@ -883,7 +883,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint"> Nigeria </span>
+                                <span class="fs-seven cpoint">{{ $t('ui.nigeria') }}</span>
                               </div>
                               <div class="d-flex align-items-center gap-2">
                                 <img
@@ -892,7 +892,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint"> Zimbabwe </span>
+                                <span class="fs-seven cpoint">{{ $t('ui.zimbabwe') }}</span>
                               </div>
                             </div>
                             <div
@@ -1117,7 +1117,7 @@
                                 :src="live"
                                 width="{16}"
                                 height="{16}"
-                                alt="icon"
+                                :alt="$t('ui.icon')"
                               />
                               <span class="fs-eight cpoint">
                                 Today, 23:00
@@ -1126,7 +1126,7 @@
                                 :src="updown"
                                 width="{16}"
                                 height="{16}"
-                                alt="icon"
+                                :alt="$t('ui.icon')"
                               />
                             </div>
                           </div>
@@ -1290,7 +1290,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint"> Nigeria </span>
+                                <span class="fs-seven cpoint">{{ $t('ui.nigeria') }}</span>
                               </div>
                               <div class="d-flex align-items-center gap-2">
                                 <img
@@ -1299,7 +1299,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint"> Zimbabwe </span>
+                                <span class="fs-seven cpoint">{{ $t('ui.zimbabwe') }}</span>
                               </div>
                             </div>
                             <div
@@ -1544,7 +1544,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint"> Nigeria </span>
+                                <span class="fs-seven cpoint">{{ $t('ui.nigeria') }}</span>
                               </div>
                               <div class="d-flex align-items-center gap-2">
                                 <img
@@ -1553,7 +1553,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint"> Zimbabwe </span>
+                                <span class="fs-seven cpoint">{{ $t('ui.zimbabwe') }}</span>
                               </div>
                             </div>
                             <div
@@ -1798,7 +1798,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint"> Nigeria </span>
+                                <span class="fs-seven cpoint">{{ $t('ui.nigeria') }}</span>
                               </div>
                               <div class="d-flex align-items-center gap-2">
                                 <img
@@ -1807,7 +1807,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint"> Zimbabwe </span>
+                                <span class="fs-seven cpoint">{{ $t('ui.zimbabwe') }}</span>
                               </div>
                             </div>
                             <div
@@ -2035,7 +2035,7 @@
                                 :src="updown"
                                 width="{16}"
                                 height="{16}"
-                                alt="icon"
+                                :alt="$t('ui.icon')"
                               />
                             </div>
                           </div>
@@ -2153,6 +2153,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import king from "@/assets/images/icon/king.png";
 import chart from "@/assets/images/icon/line-chart.png";
 import star from "@/assets/images/icon/star.png";

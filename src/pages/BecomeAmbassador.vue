@@ -3,9 +3,9 @@
     <!-- Hero -->
     <section class="tw-page-hero">
       <div class="hero-inner">
-        <p class="tw-page-hero__sub"><i class="fas fa-star me-2"></i>Certification</p>
-        <h1 class="tw-page-hero__title">Become an <span class="accent">Ambassador</span></h1>
-        <p class="hero-desc">Join our team of ambassadors and represent Ebetstream on social media.</p>
+        <p class="tw-page-hero__sub"><i class="fas fa-star me-2"></i>{{ $t('ui.certification') }}</p>
+        <h1 class="tw-page-hero__title">{{ $t('ui.become_an') }}<span class="accent">{{ $t('ui.ambassador') }}</span></h1>
+        <p class="hero-desc">{{ $t('ui.join_our_team_of_ambassadors_and_represent_ebetstream_on_soc') }}</p>
       </div>
     </section>
 
@@ -17,13 +17,13 @@
         <div class="tw-card info-card">
           <div class="card-header-row">
             <div class="card-icon"><i class="fas fa-check-circle"></i></div>
-            <h3 class="card-title">Requirements</h3>
+            <h3 class="card-title">{{ $t('ui.requirements') }}</h3>
           </div>
           <ul class="check-list">
-            <li>Have an active presence on social media</li>
-            <li>Have a minimum number of followers (e.g., 500–5000, according to your choice)</li>
-            <li>Regularly produce Ebetstream content (posts, videos, invitations)</li>
-            <li>Represent the platform in a professional manner</li>
+            <li>{{ $t('ui.have_an_active_presence_on_social_media') }}</li>
+            <li>{{ $t('ui.have_a_minimum_number_of_followers_e_g_500_5000_according_to') }}</li>
+            <li>{{ $t('ui.regularly_produce_ebetstream_content_posts_videos_invitation') }}</li>
+            <li>{{ $t('ui.represent_the_platform_in_a_professional_manner') }}</li>
           </ul>
         </div>
 
@@ -31,22 +31,22 @@
         <div class="tw-card info-card">
           <div class="card-header-row">
             <div class="card-icon docs"><i class="fas fa-file-alt"></i></div>
-            <h3 class="card-title">Required Documents</h3>
+            <h3 class="card-title">{{ $t('ui.required_documents') }}</h3>
           </div>
           <div class="doc-group">
-            <h5 class="doc-group-title">Identity Documents <span class="required-tag">Required</span></h5>
+            <h5 class="doc-group-title">{{ $t('ui.identity_documents') }}<span class="required-tag">{{ $t('ui.required') }}</span></h5>
             <ul class="doc-list">
-              <li>ID Card / Passport (front and back)</li>
-              <li>Selfie for face verification (anti-fraud)</li>
+              <li>{{ $t('ui.id_card_passport_front_and_back') }}</li>
+              <li>{{ $t('ui.selfie_for_face_verification_anti_fraud') }}</li>
             </ul>
           </div>
           <div class="tw-divider mini"></div>
           <div class="doc-group">
-            <h5 class="doc-group-title">Ambassador-Specific Documents</h5>
+            <h5 class="doc-group-title">{{ $t('ui.ambassador_specific_documents') }}</h5>
             <ul class="doc-list">
-              <li>Link to social media accounts</li>
-              <li>Audience statistics (optional)</li>
-              <li>Previous media (posts, videos)</li>
+              <li>{{ $t('ui.link_to_social_media_accounts') }}</li>
+              <li>{{ $t('ui.audience_statistics_optional_2') }}</li>
+              <li>{{ $t('ui.previous_media_posts_videos') }}</li>
             </ul>
           </div>
         </div>
@@ -56,48 +56,48 @@
 
       <!-- Validation process steps -->
       <section class="steps-section">
-        <h2 class="section-title">Validation Process</h2>
+        <h2 class="section-title">{{ $t('ui.validation_process') }}</h2>
         <div class="tw-steps">
           <div class="tw-step">
             <div class="tw-step__num">1</div>
             <div>
-              <p class="tw-step__title">Submission</p>
-              <p class="tw-step__desc">The candidate fills out a form and submits required documents.</p>
+              <p class="tw-step__title">{{ $t('ui.submission') }}</p>
+              <p class="tw-step__desc">{{ $t('ui.the_candidate_fills_out_a_form_and_submits_required_document') }}</p>
             </div>
           </div>
           <div class="tw-step">
             <div class="tw-step__num">2</div>
             <div>
-              <p class="tw-step__title">Verification</p>
-              <p class="tw-step__desc">The Ebetstream team verifies identity, account history, behavior, and documents provided.</p>
+              <p class="tw-step__title">{{ $t('ui.verification') }}</p>
+              <p class="tw-step__desc">{{ $t('ui.the_ebetstream_team_verifies_identity_account_history_behavi') }}</p>
             </div>
           </div>
           <div class="tw-step">
             <div class="tw-step__num">3</div>
             <div>
-              <p class="tw-step__title">Test</p>
-              <p class="tw-step__desc">Audience verification to confirm your social media reach and engagement.</p>
+              <p class="tw-step__title">{{ $t('ui.test') }}</p>
+              <p class="tw-step__desc">{{ $t('ui.audience_verification_to_confirm_your_social_media_reach_and') }}</p>
             </div>
           </div>
           <div class="tw-step">
             <div class="tw-step__num">4</div>
             <div>
-              <p class="tw-step__title">Quick Interview <span class="optional-tag">Optional</span></p>
-              <p class="tw-step__desc">5-minute video call or video recording to discuss your content strategy.</p>
+              <p class="tw-step__title">{{ $t('ui.quick_interview') }}<span class="optional-tag">{{ $t('ui.optional') }}</span></p>
+              <p class="tw-step__desc">{{ $t('ui.5_minute_video_call_or_video_recording_to_discuss_your_conte') }}</p>
             </div>
           </div>
           <div class="tw-step">
             <div class="tw-step__num">5</div>
             <div>
-              <p class="tw-step__title">Validation</p>
-              <p class="tw-step__desc">Awarding of an official badge and access to ambassador tools and benefits.</p>
+              <p class="tw-step__title">{{ $t('ui.validation') }}</p>
+              <p class="tw-step__desc">{{ $t('ui.awarding_of_an_official_badge_and_access_to_ambassador_tools') }}</p>
             </div>
           </div>
           <div class="tw-step">
             <div class="tw-step__num">6</div>
             <div>
-              <p class="tw-step__title">Training</p>
-              <p class="tw-step__desc">Mini-guides or onboarding videos provided by Ebetstream to get you started.</p>
+              <p class="tw-step__title">{{ $t('ui.training') }}</p>
+              <p class="tw-step__desc">{{ $t('ui.mini_guides_or_onboarding_videos_provided_by_ebetstream_to_g') }}</p>
             </div>
           </div>
         </div>
@@ -108,14 +108,14 @@
       <!-- Disqualification criteria -->
       <section class="disq-section">
         <div class="tw-alert tw-alert--danger">
-          <h4 class="disq-title"><i class="fas fa-ban me-2"></i>Disqualification / Rejection Criteria</h4>
+          <h4 class="disq-title"><i class="fas fa-ban me-2"></i>{{ $t('ui.disqualification_rejection_criteria') }}</h4>
           <ul class="disq-list">
-            <li>Falsified documents</li>
-            <li>Suspicious activities or multiple accounts</li>
-            <li>Fraudulent betting or match-fixing</li>
-            <li>Insults, toxicity, or harassment</li>
-            <li>Refusal to cooperate with the rules</li>
-            <li>Poor past experiences in e-sports</li>
+            <li>{{ $t('ui.falsified_documents') }}</li>
+            <li>{{ $t('ui.suspicious_activities_or_multiple_accounts') }}</li>
+            <li>{{ $t('ui.fraudulent_betting_or_match_fixing') }}</li>
+            <li>{{ $t('ui.insults_toxicity_or_harassment') }}</li>
+            <li>{{ $t('ui.refusal_to_cooperate_with_the_rules') }}</li>
+            <li>{{ $t('ui.poor_past_experiences_in_e_sports') }}</li>
           </ul>
         </div>
       </section>
@@ -127,7 +127,7 @@
         <div class="tw-card form-card">
           <div class="card-header-row">
             <div class="card-icon form-icon"><i class="fas fa-paper-plane"></i></div>
-            <h3 class="card-title">Submit Your Request</h3>
+            <h3 class="card-title">{{ $t('ui.submit_your_request') }}</h3>
           </div>
           <CertificationForm type="ambassador" />
         </div>
@@ -138,6 +138,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import CertificationForm from '@/components/Pages/Certification/CertificationForm.vue';
 </script>
 

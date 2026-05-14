@@ -36,11 +36,11 @@
       <div class="mb-2">
         <p class="player_score mb-1">
           <i class="fas fa-calendar-alt me-1"></i>
-          <strong>Start:</strong> {{ formatDate(championship.start_date) }}
+          <strong>{{ $t('ui.start') }}</strong> {{ formatDate(championship.start_date) }}
         </p>
         <p class="player_score mb-0">
           <i class="fas fa-clock me-1"></i>
-          <strong>Registration ends:</strong> {{ formatDate(championship.registration_end_date) }}
+          <strong>{{ $t('ui.registration_ends') }}</strong> {{ formatDate(championship.registration_end_date) }}
         </p>
       </div>
 
@@ -60,7 +60,7 @@
       <div v-if="championship.total_prize_pool" class="mb-2">
         <p class="player_score mb-0 text-warning">
           <i class="fas fa-coins me-1"></i>
-          <strong>Prize Pool:</strong> {{ championship.total_prize_pool }} EBT
+          <strong>{{ $t('ui.prize_pool') }}</strong> {{ championship.total_prize_pool }} EBT
         </p>
       </div>
     </div>
@@ -72,17 +72,18 @@
         @click.stop="$emit('click')"
       >
         <span v-if="championship.status === 'registration_open'">
-          <i class="fas fa-user-plus me-2"></i>Register Now
-        </span>
+          <i class="fas fa-user-plus me-2"></i>{{ $t('ui.register_now') }}</span>
         <span v-else>
-          <i class="fas fa-eye me-2"></i>View Details
-        </span>
+          <i class="fas fa-eye me-2"></i>{{ $t('ui.view_details') }}</span>
       </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 interface Championship {
   id: number;
   name: string;

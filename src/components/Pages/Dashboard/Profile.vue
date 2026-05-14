@@ -1,14 +1,14 @@
 <template>
   <div class="pay_method__paymethod p-4 p-lg-6 p2-bg rounded-8">
     <div class="pay_method__paymethod-title mb-5 mb-md-6">
-      <h5 class="n10-color">Profil</h5>
+      <h5 class="n10-color">{{ $t('ui.profil') }}</h5>
     </div>
 
     <div class="pay_method__formarea">
       <!-- Loading State -->
       <div v-if="loading" class="text-center py-5">
         <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
+          <span class="visually-hidden">{{ $t('common.loading') }}</span>
         </div>
       </div>
 
@@ -21,7 +21,7 @@
               <img 
                 v-if="profilePhotoUrl"
                 :src="profilePhotoUrl" 
-                alt="Photo de profil"
+                :alt="$t('ui.photo_de_profil')"
                 class="profile_photo rounded-circle"
                 @error="handleImageError"
                 @load="onImageLoad"
@@ -42,7 +42,7 @@
               :disabled="uploadingPhoto"
             />
           </div>
-          <p v-if="uploadingPhoto" class="text-white small mt-2">Uploading...</p>
+          <p v-if="uploadingPhoto" class="text-white small mt-2">{{ $t('ui.uploading') }}</p>
         </div>
 
         <!-- Player Basic Info -->
@@ -51,14 +51,13 @@
           <div class="col-6 col-md-6">
             <div class="info_card n11-bg rounded-8 p-3 h-100">
               <div class="d-flex align-items-center gap-2 mb-2">
-                <span class="fs-3">🕹️</span>
-                <p class="mb-0 fw-bold small">Pseudo in-game</p>
+                <span class="fs-3">{{ $t('ui.text') }}</span>
+                <p class="mb-0 fw-bold small">{{ $t('ui.pseudo_in_game') }}</p>
               </div>
               <div class="d-flex align-items-center gap-2">
                 <p class="mb-0 text-white">{{ profileData.in_game_pseudo || profileData.username || 'None' }}</p>
                 <span v-if="isCertified" class="badge bg-success">
-                  <i class="fas fa-certificate me-1"></i>Certified
-                </span>
+                  <i class="fas fa-certificate me-1"></i>{{ $t('ui.certified') }}</span>
               </div>
             </div>
           </div>
@@ -69,7 +68,7 @@
               <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
                 <div class="d-flex align-items-center gap-2">
                 <span class="fs-3"><i class="fas fa-envelope"></i></span>
-                <p class="mb-0 fw-bold small">Email</p>
+                <p class="mb-0 fw-bold small">{{ $t('common.email') }}</p>
               </div>
                 <button 
                   v-if="!editingEmail"
@@ -89,7 +88,7 @@
                   v-model="emailInput"
                   type="email"
                   class="form-control form-control-sm"
-                  placeholder="your.email@example.com"
+                  :placeholder="$t('ui.your_email_example_com')"
                 />
                 <div class="d-flex gap-2">
                   <button 
@@ -116,8 +115,8 @@
             <div class="info_card n11-bg rounded-8 p-3 h-100">
               <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
                 <div class="d-flex align-items-center gap-2">
-                  <span class="fs-3">📱</span>
-                  <p class="mb-0 fw-bold small">Phone</p>
+                  <span class="fs-3">{{ $t('ui.text_2') }}</span>
+                  <p class="mb-0 fw-bold small">{{ $t('ui.phone_2') }}</p>
                 </div>
                 <button 
                   v-if="!editingPhone"
@@ -165,7 +164,7 @@
               <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
                 <div class="d-flex align-items-center gap-2">
                   <span class="fs-3"><i class="fas fa-user"></i></span>
-                  <p class="mb-0 fw-bold small">Full Name</p>
+                  <p class="mb-0 fw-bold small">{{ $t('ui.full_name_2') }}</p>
                 </div>
                 <button 
                   v-if="!editingFullName"
@@ -185,7 +184,7 @@
                   v-model="fullNameInput"
                   type="text"
                   class="form-control form-control-sm"
-                  placeholder="Your full name"
+                  :placeholder="$t('ui.your_full_name')"
                 />
                 <div class="d-flex gap-2">
                   <button 
@@ -211,8 +210,8 @@
           <div class="col-6 col-md-6">
             <div class="info_card n11-bg rounded-8 p-3 h-100">
               <div class="d-flex align-items-center gap-2 mb-2">
-                <span class="fs-3">🎁</span>
-                <p class="mb-0 fw-bold small">Promo Code</p>
+                <span class="fs-3">{{ $t('ui.text_3') }}</span>
+                <p class="mb-0 fw-bold small">{{ $t('ui.promo_code') }}</p>
               </div>
               <div v-if="profileData.user?.promo_code" class="d-flex align-items-center gap-2">
                 <p class="mb-0 text-white small fw-bold promo_code_text">{{ profileData.user.promo_code }}</p>
@@ -224,7 +223,7 @@
                   <i class="fas fa-copy small"></i>
                 </button>
               </div>
-              <p v-else class="mb-0 text-white small">None</p>
+              <p v-else class="mb-0 text-white small">{{ $t('ui.none') }}</p>
             </div>
           </div>
           
@@ -233,7 +232,7 @@
                 <div class="info_card n11-bg rounded-8 p-3 h-100 d-flex flex-column align-items-start justify-content-center text-start">
               <div class="d-flex align-items-center gap-2 mb-2">
                 <span class="fs-3"><i class="fas fa-trophy"></i></span>
-                <p class="mb-0 fw-bold small">Status</p>
+                <p class="mb-0 fw-bold small">{{ $t('common.status') }}</p>
               </div>
               <p class="mb-0 text-white small">{{ profileData.status || 'None' }}</p>
                 </div>
@@ -245,7 +244,7 @@
                   <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
                     <div class="d-flex align-items-center gap-2">
                       <span class="fs-3"><i class="fas fa-globe"></i></span>
-                      <p class="mb-0 fw-bold small">Country</p>
+                      <p class="mb-0 fw-bold small">{{ $t('common.country') }}</p>
                     </div>
                     <button 
                       v-if="!editingCountry"
@@ -265,7 +264,7 @@
                       v-model="countryInput"
                       type="text"
                       class="form-control form-control-sm"
-                      placeholder="Enter your country"
+                      :placeholder="$t('ui.enter_your_country')"
                     />
                     <div class="d-flex gap-2">
                       <button 
@@ -294,7 +293,7 @@
           <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
             <div class="d-flex align-items-center gap-2">
               <span class="fs-3"><i class="fas fa-edit"></i></span>
-              <h6 class="fw-bold mb-0">Biography</h6>
+              <h6 class="fw-bold mb-0">{{ $t('ui.biography') }}</h6>
             </div>
             <button 
               v-if="!editingBio"
@@ -314,7 +313,7 @@
               v-model="bioInput"
               class="form-control"
               rows="5"
-              placeholder="Tell us about yourself..."
+              :placeholder="$t('ui.tell_us_about_yourself')"
               style="min-height: 120px;"
             ></textarea>
             <div class="d-flex gap-2">
@@ -341,22 +340,22 @@
 
       <!-- Performance Profile -->
       <div class="mb-5">
-        <h6 class="fw-bold mb-3"><i class="fas fa-chart-bar"></i> Performance Profile</h6>
+        <h6 class="fw-bold mb-3"><i class="fas fa-chart-bar"></i>{{ $t('ui.performance_profile') }}</h6>
         <div class="n11-bg rounded-8 p-3 d-flex flex-column gap-2">
           <div class="d-flex justify-content-between">
-            <span><i class="fas fa-medal"></i> Tournaments Won</span>
+            <span><i class="fas fa-medal"></i>{{ $t('ui.tournaments_won') }}</span>
               <span>{{ profileData.tournaments_won || 0 }} {{ formatTournamentsList(profileData.tournaments_list) }}</span>
           </div>
           <div class="d-flex justify-content-between">
-            <span><i class="fas fa-fire"></i> EbetStream Ranking</span>
+            <span><i class="fas fa-fire"></i>{{ $t('ui.ebetstream_ranking') }}</span>
               <span>{{ formatRanking(profileData.ranking, profileData.division) }}</span>
           </div>
           <div class="d-flex justify-content-between">
-            <span>💯 Global Score</span>
+            <span>{{ $t('ui.global_score') }}</span>
               <span>{{ profileData.global_score || 0 }} pts</span>
           </div>
           <div class="d-flex justify-content-between">
-            <span>🗓️ Current Season</span>
+            <span>{{ $t('ui.current_season') }}</span>
               <span>{{ profileData.current_season || 'None' }}</span>
           </div>
         </div>
@@ -364,19 +363,19 @@
 
       <!-- Badges & Distinctions -->
       <div class="mb-5">
-        <h6 class="fw-bold mb-3">🧾 Badges & distinctions</h6>
+        <h6 class="fw-bold mb-3">{{ $t('ui.badges_distinctions') }}</h6>
         <div class="n11-bg rounded-8 p-3 d-flex flex-column gap-2">
             <template v-if="profileData.badges && profileData.badges.length > 0">
               <span v-for="(badge, index) in profileData.badges" :key="index">{{ badge }}</span>
             </template>
-            <span v-else class="text-muted">None</span>
+            <span v-else class="text-muted">{{ $t('ui.none') }}</span>
         </div>
       </div>
 
       <!-- Official Profile & QR -->
       <div class="d-flex gap-5 mb-5 flex-wrap">
           <div class="flex-grow-1 text-center n11-bg rounded-8 p-4">
-            <span class="fs-1 mb-3 d-block">🔗</span>
+            <span class="fs-1 mb-3 d-block">{{ $t('ui.text_4') }}</span>
             <div v-if="profileData.profile_url" class="profile_link_container">
               <a 
                 :href="profileData.profile_url" 
@@ -390,32 +389,31 @@
                    title="Copy link"></i>
               </a>
             </div>
-            <p v-else class="mt-2 small text-muted">None</p>
+            <p v-else class="mt-2 small text-muted">{{ $t('ui.none') }}</p>
           </div>
           <div class="flex-grow-1 text-center n11-bg rounded-8 p-4">
             <div v-if="profileData.qr_code">
-              <img :src="profileData.qr_code" alt="QR Code" class="qr_code_img mb-2" />
+              <img :src="profileData.qr_code" :alt="$t('ui.qr_code')" class="qr_code_img mb-2" />
         </div>
             <div v-else class="qr_code_placeholder mb-2">
           <span class="fs-1">⬜</span>
             </div>
-            <p class="mt-2 small">Scan QR Code for complete profile</p>
+            <p class="mt-2 small">{{ $t('ui.scan_qr_code_for_complete_profile') }}</p>
         </div>
       </div>
 
       <!-- Certification -->
       <div class="mb-5">
-        <h6 class="fw-bold mb-3">🖋️ Certified par</h6>
+        <h6 class="fw-bold mb-3">{{ $t('ui.certified_par') }}</h6>
         <div class="n11-bg rounded-8 p-3 d-flex flex-column gap-1">
             <template v-if="profileData.certifications && profileData.certifications.length > 0">
               <div v-for="(cert, index) in profileData.certifications" :key="index" class="d-flex align-items-center gap-2">
                 <span>{{ cert }}</span>
                 <span v-if="cert === 'Ebetstream'" class="badge bg-success">
-                  <i class="fas fa-certificate me-1"></i>Certified
-                </span>
+                  <i class="fas fa-certificate me-1"></i>{{ $t('ui.certified') }}</span>
               </div>
             </template>
-            <span v-else class="text-muted">None</span>
+            <span v-else class="text-muted">{{ $t('ui.none') }}</span>
           </div>
         </div>
       </div>
@@ -425,82 +423,78 @@
         <div class="certification_section n11-bg rounded-8 p-4">
           <div class="d-flex align-items-center justify-content-between mb-4">
             <div>
-              <h5 class="fw-bold mb-1 text-white"><i class="fas fa-trophy"></i> Certification Ebetstream</h5>
-              <p class="text-white small mb-0" style="opacity: 0.8;">Get your official certification</p>
+              <h5 class="fw-bold mb-1 text-white"><i class="fas fa-trophy"></i>{{ $t('ui.certification_ebetstream') }}</h5>
+              <p class="text-white small mb-0" style="opacity: 0.8;">{{ $t('ui.get_your_official_certification') }}</p>
             </div>
             <div v-if="certificationStatus?.request?.status === 'approved'" class="badge bg-success fs-6 px-3 py-2">
-              <i class="fas fa-check-circle me-2"></i>Certified
-            </div>
+              <i class="fas fa-check-circle me-2"></i>{{ $t('ui.certified') }}</div>
             <div v-else-if="certificationStatus?.request?.status === 'pending'" class="badge bg-warning text-dark fs-6 px-3 py-2">
-              <i class="fas fa-clock me-2"></i>Pending
-            </div>
+              <i class="fas fa-clock me-2"></i>{{ $t('common.pending') }}</div>
             <div v-else-if="certificationStatus?.request?.status === 'rejected'" class="badge bg-danger fs-6 px-3 py-2">
-              <i class="fas fa-times-circle me-2"></i>Rejected
-            </div>
+              <i class="fas fa-times-circle me-2"></i>{{ $t('common.rejected') }}</div>
           </div>
 
           <!-- Conditions List -->
           <div class="conditions_list mb-4" v-if="!loadingEligibility">
-            <h6 class="fw-bold mb-3">Conditions to obtain Ebetstream Certification</h6>
+            <h6 class="fw-bold mb-3">{{ $t('ui.conditions_to_obtain_ebetstream_certification') }}</h6>
             <ul class="conditions_checklist">
               <li class="condition_item">
                 <i class="fas fa-check-circle text-success me-2"></i>
-                <span>Be over 18 years old (or legal age of the country)</span>
+                <span>{{ $t('ui.be_over_18_years_old_or_legal_age_of_the_country') }}</span>
               </li>
               <li class="condition_item">
                 <i :class="(certificationConditions.complete_profile?.met ? 'fas fa-check-circle text-success' : 'fas fa-times-circle text-danger') + ' me-2'"></i>
-                <span>Have a complete profile (photo, bio, country, social network, etc.)</span>
+                <span>{{ $t('ui.have_a_complete_profile_photo_bio_country_social_network_etc') }}</span>
               </li>
               <li class="condition_item">
                 <i class="fas fa-check-circle text-success me-2"></i>
-                <span>Have exemplary behavior: zero sanctions, zero fraud, zero toxic behavior</span>
+                <span>{{ $t('ui.have_exemplary_behavior_zero_sanctions_zero_fraud_zero_toxic') }}</span>
               </li>
               <li class="condition_item">
                 <i class="fas fa-check-circle text-success me-2"></i>
-                <span>Have a positive reputation on the platform (fair-play score, positive reviews, clean history)</span>
+                <span>{{ $t('ui.have_a_positive_reputation_on_the_platform_fair_play_score_p') }}</span>
               </li>
             </ul>
             <div v-if="!certificationConditions.complete_profile?.met && Object.keys(certificationConditions).length > 0" class="alert alert-warning mt-3">
-              <strong>Missing fields:</strong> {{ certificationConditions.complete_profile?.details || '' }}
+              <strong>{{ $t('ui.missing_fields') }}</strong> {{ certificationConditions.complete_profile?.details || '' }}
             </div>
           </div>
           <div v-else-if="loadingEligibility" class="text-center py-3">
             <div class="spinner-border spinner-border-sm text-primary" role="status">
-              <span class="visually-hidden">Loading...</span>
+              <span class="visually-hidden">{{ $t('common.loading') }}</span>
             </div>
           </div>
 
           <!-- Request Status Messages -->
           <div v-if="certificationStatus?.request?.status === 'pending'" class="alert alert-info mb-4">
             <i class="fas fa-info-circle me-2"></i>
-            <strong>Request under review</strong>
-            <p class="mb-0 small mt-2">Your certification request is being processed. You will be notified once a decision is made.</p>
+            <strong>{{ $t('ui.request_under_review') }}</strong>
+            <p class="mb-0 small mt-2">{{ $t('ui.your_certification_request_is_being_processed_you_will_be_no') }}</p>
           </div>
 
           <div v-if="certificationStatus?.request?.status === 'rejected'" class="alert alert-danger mb-4">
             <i class="fas fa-exclamation-triangle me-2"></i>
-            <strong>Request rejected</strong>
+            <strong>{{ $t('ui.request_rejected') }}</strong>
             <p v-if="certificationStatus.request.rejection_reason" class="mb-0 small mt-2">
-              <strong>Reason:</strong> {{ certificationStatus.request.rejection_reason }}
+              <strong>{{ $t('ui.reason') }}</strong> {{ certificationStatus.request.rejection_reason }}
             </p>
             <button class="btn btn-sm btn-outline-danger mt-3" @click="showCertificationForm = true">
-              <i class="fas fa-redo me-2"></i>Try again
-            </button>
+              <i class="fas fa-redo me-2"></i>{{ $t('ui.try_again') }}</button>
           </div>
 
           <!-- Certification Form -->
           <div v-if="!certificationStatus?.request || certificationStatus?.request?.status === 'rejected'">
             <div v-if="!certificationEligible && !loadingEligibility" class="alert alert-warning mb-4">
               <i class="fas fa-exclamation-triangle me-2"></i>
-              <strong>You do not meet all the conditions</strong>
-              <p class="mb-0 small mt-2">Please complete your profile before requesting certification.</p>
+              <strong>{{ $t('ui.you_do_not_meet_all_the_conditions') }}</strong>
+              <p class="mb-0 small mt-2">{{ $t('ui.please_complete_your_profile_before_requesting_certification') }}</p>
             </div>
 
             <div v-if="showCertificationForm && certificationEligible" class="certification_form">
-              <h6 class="fw-bold mb-3">Request Form</h6>
+              <h6 class="fw-bold mb-3">{{ $t('ui.request_form') }}</h6>
               
               <div class="mb-3">
-                <label class="form-label fw-bold">Date of Birth <span class="text-danger">*</span></label>
+                <label class="form-label fw-bold">{{ $t('ui.date_of_birth_2') }}<span class="text-danger">*</span></label>
                 <input 
                   v-model="certificationForm.date_of_birth"
                   type="date"
@@ -508,36 +502,36 @@
                   :max="maxDateOfBirth"
                   required
                 />
-                <small class="text-muted">You must be at least 18 years old</small>
+                <small class="text-muted">{{ $t('ui.you_must_be_at_least_18_years_old') }}</small>
               </div>
 
               <div class="mb-3">
-                <label class="form-label fw-bold">ID Type <span class="text-danger">*</span></label>
+                <label class="form-label fw-bold">{{ $t('ui.id_type') }}<span class="text-danger">*</span></label>
                 <select 
                   v-model="certificationForm.id_type"
                   class="form-control"
                   required
                 >
-                  <option value="">Select a type</option>
-                  <option value="passport">Passport</option>
-                  <option value="national_id">National ID Card</option>
-                  <option value="driving_license">Driving License</option>
-                  <option value="residence_permit">Residence Permit</option>
+                  <option value="">{{ $t('ui.select_a_type') }}</option>
+                  <option value="passport">{{ $t('ui.passport') }}</option>
+                  <option value="national_id">{{ $t('ui.national_id_card') }}</option>
+                  <option value="driving_license">{{ $t('ui.driving_license') }}</option>
+                  <option value="residence_permit">{{ $t('ui.residence_permit') }}</option>
                 </select>
-                <small class="text-muted">Select the type of ID you want to use</small>
+                <small class="text-muted">{{ $t('ui.select_the_type_of_id_you_want_to_use') }}</small>
               </div>
 
               <div class="mb-4">
-                <label class="form-label fw-bold">ID Number <span class="text-danger">*</span></label>
+                <label class="form-label fw-bold">{{ $t('ui.id_number') }}<span class="text-danger">*</span></label>
                 <input 
                   v-model="certificationForm.id_number"
                   type="text"
                   class="form-control"
-                  placeholder="Enter your ID number"
+                  :placeholder="$t('ui.enter_your_id_number')"
                   required
                   maxlength="100"
                 />
-                <small class="text-muted">Enter the complete number of your ID</small>
+                <small class="text-muted">{{ $t('ui.enter_the_complete_number_of_your_id') }}</small>
               </div>
 
               <div class="d-flex gap-2">
@@ -577,6 +571,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted, computed, nextTick } from "vue";
 import apiClient from "@/utils/axios";
 import { getStorageUrl, PRODUCTION_URLS, STORAGE_BASE_URL } from '@/config/constants';

@@ -68,10 +68,10 @@
                                   width="{40}"
                                   height="{40}"
                                   :src="chealse"
-                                  alt="icon"
+                                  :alt="$t('ui.icon')"
                                 />
                               </div>
-                              <h6 class="cpoint">Chealsea</h6>
+                              <h6 class="cpoint">{{ $t('ui.chealsea') }}</h6>
                             </div>
                             <div class="hero_area__topslider-vs">
                               <span class="fw-bold n5-color">VS</span>
@@ -84,10 +84,10 @@
                                   width="{40}"
                                   height="{40}"
                                   :src="liverpool"
-                                  alt="icon"
+                                  :alt="$t('ui.icon')"
                                 />
                               </div>
-                              <h6 class="cpoint">Chealsea</h6>
+                              <h6 class="cpoint">{{ $t('ui.chealsea') }}</h6>
                             </div>
                           </div>
                           <div
@@ -140,10 +140,10 @@
                                   width="{40}"
                                   height="{40}"
                                   :src="chealse"
-                                  alt="icon"
+                                  :alt="$t('ui.icon')"
                                 />
                               </div>
-                              <h6 class="cpoint">Chealsea</h6>
+                              <h6 class="cpoint">{{ $t('ui.chealsea') }}</h6>
                             </div>
                             <div class="hero_area__topslider-vs">
                               <span class="fw-bold n5-color">VS</span>
@@ -156,10 +156,10 @@
                                   width="{40}"
                                   height="{40}"
                                   :src="liverpool"
-                                  alt="icon"
+                                  :alt="$t('ui.icon')"
                                 />
                               </div>
-                              <h6 class="cpoint">Chealsea</h6>
+                              <h6 class="cpoint">{{ $t('ui.chealsea') }}</h6>
                             </div>
                           </div>
                           <div
@@ -212,10 +212,10 @@
                                   width="{40}"
                                   height="{40}"
                                   :src="chealse"
-                                  alt="icon"
+                                  :alt="$t('ui.icon')"
                                 />
                               </div>
-                              <h6 class="cpoint">Chealsea</h6>
+                              <h6 class="cpoint">{{ $t('ui.chealsea') }}</h6>
                             </div>
                             <div class="hero_area__topslider-vs">
                               <span class="fw-bold n5-color">VS</span>
@@ -228,10 +228,10 @@
                                   width="{40}"
                                   height="{40}"
                                   :src="liverpool"
-                                  alt="icon"
+                                  :alt="$t('ui.icon')"
                                 />
                               </div>
-                              <h6 class="cpoint">Chealsea</h6>
+                              <h6 class="cpoint">{{ $t('ui.chealsea') }}</h6>
                             </div>
                           </div>
                           <div
@@ -284,10 +284,10 @@
                                   width="{40}"
                                   height="{40}"
                                   :src="chealse"
-                                  alt="icon"
+                                  :alt="$t('ui.icon')"
                                 />
                               </div>
-                              <h6 class="cpoint">Chealsea</h6>
+                              <h6 class="cpoint">{{ $t('ui.chealsea') }}</h6>
                             </div>
                             <div class="hero_area__topslider-vs">
                               <span class="fw-bold n5-color">VS</span>
@@ -300,10 +300,10 @@
                                   width="{40}"
                                   height="{40}"
                                   :src="liverpool"
-                                  alt="icon"
+                                  :alt="$t('ui.icon')"
                                 />
                               </div>
-                              <h6 class="cpoint">Chealsea</h6>
+                              <h6 class="cpoint">{{ $t('ui.chealsea') }}</h6>
                             </div>
                           </div>
                           <div
@@ -356,10 +356,10 @@
                                   width="{40}"
                                   height="{40}"
                                   :src="chealse"
-                                  alt="icon"
+                                  :alt="$t('ui.icon')"
                                 />
                               </div>
-                              <h6 class="cpoint">Chealsea</h6>
+                              <h6 class="cpoint">{{ $t('ui.chealsea') }}</h6>
                             </div>
                             <div class="hero_area__topslider-vs">
                               <span class="fw-bold n5-color">VS</span>
@@ -372,10 +372,10 @@
                                   width="{40}"
                                   height="{40}"
                                   :src="liverpool"
-                                  alt="icon"
+                                  :alt="$t('ui.icon')"
                                 />
                               </div>
-                              <h6 class="cpoint">Chealsea</h6>
+                              <h6 class="cpoint">{{ $t('ui.chealsea') }}</h6>
                             </div>
                           </div>
                           <div
@@ -428,10 +428,10 @@
                                   width="{40}"
                                   height="{40}"
                                   :src="chealse"
-                                  alt="icon"
+                                  :alt="$t('ui.icon')"
                                 />
                               </div>
-                              <h6 class="cpoint">Chealsea</h6>
+                              <h6 class="cpoint">{{ $t('ui.chealsea') }}</h6>
                             </div>
                             <div class="hero_area__topslider-vs">
                               <span class="fw-bold n5-color">VS</span>
@@ -444,10 +444,10 @@
                                   width="{40}"
                                   height="{40}"
                                   :src="liverpool"
-                                  alt="icon"
+                                  :alt="$t('ui.icon')"
                                 />
                               </div>
-                              <h6 class="cpoint">Chealsea</h6>
+                              <h6 class="cpoint">{{ $t('ui.chealsea') }}</h6>
                             </div>
                           </div>
                           <div
@@ -487,6 +487,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";

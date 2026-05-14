@@ -15,7 +15,7 @@
                     height="{30}"
                     alt="Icon"
                   />
-                  <h3>Australia</h3>
+                  <h3>{{ $t('ui.australia') }}</h3>
                 </div>
                 <div class="top_matches__content">
                   <div
@@ -117,7 +117,7 @@
                               <thead>
                                 <tr class="text-start">
                                   <th scope="col">
-                                    <span class="fs-eight ms-15">Winner</span>
+                                    <span class="fs-eight ms-15">{{ $t('betting.winner') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -170,6 +170,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { australia } from "../assets/data/allPageData";
 import australia2 from "@/assets/images/icon/australia2.png";
 import aussie from "@/assets/images/icon/aussie-rules.png";

@@ -1,7 +1,7 @@
 <template>
   <div class="admin-monetization">
     <div class="header">
-      <h2>Monetization Program</h2>
+      <h2>{{ $t('ui.monetization_program') }}</h2>
       <button class="btn-primary" @click="loadData" :disabled="loading">
         {{ loading ? "Loading..." : "Refresh" }}
       </button>
@@ -10,32 +10,32 @@
     <div v-if="error" class="error">{{ error }}</div>
 
     <section class="card">
-      <h3>Global Settings</h3>
+      <h3>{{ $t('ui.global_settings') }}</h3>
       <div class="settings-grid">
         <div class="setting-item" v-for="(value, key) in settingsMap" :key="key">
           <label>{{ key }}</label>
           <textarea v-model="settingsText[key]" rows="4"></textarea>
-          <button class="btn-secondary" @click="saveSetting(key)">Save</button>
+          <button class="btn-secondary" @click="saveSetting(key)">{{ $t('common.save') }}</button>
         </div>
       </div>
     </section>
 
     <section class="card">
       <div class="section-title">
-        <h3>Streamer Tiers</h3>
-        <button class="btn-primary" @click="addStreamerTier">Add tier</button>
+        <h3>{{ $t('ui.streamer_tiers') }}</h3>
+        <button class="btn-primary" @click="addStreamerTier">{{ $t('ui.add_tier') }}</button>
       </div>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Min followers</th>
-              <th>Max followers</th>
-              <th>Commission %</th>
-              <th>Sort</th>
-              <th>Active</th>
-              <th>Actions</th>
+              <th>{{ $t('common.name') }}</th>
+              <th>{{ $t('ui.min_followers') }}</th>
+              <th>{{ $t('ui.max_followers') }}</th>
+              <th>{{ $t('ui.commission') }}</th>
+              <th>{{ $t('ui.sort') }}</th>
+              <th>{{ $t('common.active') }}</th>
+              <th>{{ $t('common.actions') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -47,8 +47,8 @@
               <td><input type="number" v-model.number="tier.sort_order" /></td>
               <td><input type="checkbox" v-model="tier.is_active" /></td>
               <td class="actions">
-                <button class="btn-secondary" @click="saveStreamerTier(tier)">Save</button>
-                <button class="btn-danger" @click="removeStreamerTier(tier.id)">Delete</button>
+                <button class="btn-secondary" @click="saveStreamerTier(tier)">{{ $t('common.save') }}</button>
+                <button class="btn-danger" @click="removeStreamerTier(tier.id)">{{ $t('common.delete') }}</button>
               </td>
             </tr>
           </tbody>
@@ -58,21 +58,21 @@
 
     <section class="card">
       <div class="section-title">
-        <h3>Agent Tiers</h3>
-        <button class="btn-primary" @click="addAgentTier">Add tier</button>
+        <h3>{{ $t('ui.agent_tiers') }}</h3>
+        <button class="btn-primary" @click="addAgentTier">{{ $t('ui.add_tier') }}</button>
       </div>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Min monthly volume</th>
-              <th>Deposit %</th>
-              <th>Withdrawal %</th>
-              <th>Guarantee amount</th>
-              <th>Sort</th>
-              <th>Active</th>
-              <th>Actions</th>
+              <th>{{ $t('common.name') }}</th>
+              <th>{{ $t('ui.min_monthly_volume') }}</th>
+              <th>{{ $t('ui.deposit') }}</th>
+              <th>{{ $t('ui.withdrawal') }}</th>
+              <th>{{ $t('ui.guarantee_amount') }}</th>
+              <th>{{ $t('ui.sort') }}</th>
+              <th>{{ $t('common.active') }}</th>
+              <th>{{ $t('common.actions') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -85,8 +85,8 @@
               <td><input type="number" v-model.number="tier.sort_order" /></td>
               <td><input type="checkbox" v-model="tier.is_active" /></td>
               <td class="actions">
-                <button class="btn-secondary" @click="saveAgentTier(tier)">Save</button>
-                <button class="btn-danger" @click="removeAgentTier(tier.id)">Delete</button>
+                <button class="btn-secondary" @click="saveAgentTier(tier)">{{ $t('common.save') }}</button>
+                <button class="btn-danger" @click="removeAgentTier(tier.id)">{{ $t('common.delete') }}</button>
               </td>
             </tr>
           </tbody>
@@ -97,6 +97,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { onMounted, reactive, ref } from "vue";
 import apiClient from "@/utils/axios";
 

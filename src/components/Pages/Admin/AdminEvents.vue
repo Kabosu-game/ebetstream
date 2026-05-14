@@ -2,12 +2,11 @@
   <div class="pay_method__paymethod p-3 p-md-4 p-lg-6 p2-bg rounded-8">
     <div class="pay_method__paymethod-title mb-5 mb-md-6 d-flex justify-content-between align-items-center">
       <div>
-        <h2 class="text-white fw-bold mb-2">Event Management</h2>
-        <p class="text-white-50">Manage all platform events</p>
+        <h2 class="text-white fw-bold mb-2">{{ $t('ui.event_management') }}</h2>
+        <p class="text-white-50">{{ $t('ui.manage_all_platform_events') }}</p>
       </div>
       <button class="btn_primary" @click="openCreateModal">
-        <i class="fas fa-plus me-2"  ></i>Create Event
-      </button>
+        <i class="fas fa-plus me-2"  ></i>{{ $t('ui.create_event') }}</button>
     </div>
 
     <!-- Filters -->
@@ -16,26 +15,26 @@
         v-model="searchQuery" 
         type="text" 
         class="form-control n11-bg text-white border-secondary" 
-        placeholder="Search by title, location, type..."
+        :placeholder="$t('ui.search_by_title_location_type')"
         style="max-width: 300px;"
       />
       <select v-model="filterStatus" class="form-select n11-bg text-white border-secondary" style="max-width: 200px;">
-        <option value="">All Status</option>
-        <option value="draft">Draft</option>
-        <option value="published">Published</option>
-        <option value="cancelled">Cancelled</option>
+        <option value="">{{ $t('ui.all_status') }}</option>
+        <option value="draft">{{ $t('ui.draft') }}</option>
+        <option value="published">{{ $t('ui.published') }}</option>
+        <option value="cancelled">{{ $t('common.cancelled') }}</option>
       </select>
       <select v-model="filterTime" class="form-select n11-bg text-white border-secondary" style="max-width: 200px;">
-        <option value="">All Events</option>
-        <option value="upcoming">Upcoming</option>
-        <option value="ongoing">Ongoing</option>
-        <option value="past">Past</option>
+        <option value="">{{ $t('ui.all_events') }}</option>
+        <option value="upcoming">{{ $t('ui.upcoming') }}</option>
+        <option value="ongoing">{{ $t('ui.ongoing') }}</option>
+        <option value="past">{{ $t('ui.past') }}</option>
       </select>
     </div>
 
     <div v-if="loading" class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+        <span class="visually-hidden">{{ $t('common.loading') }}</span>
       </div>
     </div>
 
@@ -44,16 +43,16 @@
         <table class="w-100 text-center p2-bg">
           <thead>
             <tr>
-              <th class="text-white p-3">ID</th>
-              <th class="text-white p-3">Image</th>
-              <th class="text-white p-3">Title</th>
-              <th class="text-white p-3">Type</th>
-              <th class="text-white p-3">Location</th>
-              <th class="text-white p-3">Start Date</th>
-              <th class="text-white p-3">End Date</th>
-              <th class="text-white p-3">Registrations</th>
-              <th class="text-white p-3">Status</th>
-              <th class="text-white p-3">Actions</th>
+              <th class="text-white p-3">{{ $t('common.id') }}</th>
+              <th class="text-white p-3">{{ $t('ui.image') }}</th>
+              <th class="text-white p-3">{{ $t('ui.title') }}</th>
+              <th class="text-white p-3">{{ $t('common.type') }}</th>
+              <th class="text-white p-3">{{ $t('ui.location') }}</th>
+              <th class="text-white p-3">{{ $t('ui.start_date') }}</th>
+              <th class="text-white p-3">{{ $t('ui.end_date') }}</th>
+              <th class="text-white p-3">{{ $t('ui.registrations') }}</th>
+              <th class="text-white p-3">{{ $t('common.status') }}</th>
+              <th class="text-white p-3">{{ $t('common.actions') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -63,10 +62,10 @@
                 <img 
                   v-if="event.image_url" 
                   :src="event.image_url" 
-                  alt="Event image"
+                  :alt="$t('ui.event_image_2')"
                   style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;"
                 />
-                <span v-else class="text-white-50">No image</span>
+                <span v-else class="text-white-50">{{ $t('ui.no_image') }}</span>
               </td>
               <td class="text-white p-3">{{ event.title }}</td>
               <td class="text-white p-3">{{ event.type || 'N/A' }}</td>
@@ -114,7 +113,7 @@
               </td>
             </tr>
             <tr v-if="events.length === 0">
-              <td colspan="10" class="text-white p-5 text-center">No events found</td>
+              <td colspan="10" class="text-white p-5 text-center">{{ $t('ui.no_events_found') }}</td>
             </tr>
           </tbody>
         </table>
@@ -131,30 +130,30 @@
         
         <form @submit.prevent="saveEvent">
           <div class="form-group mb-3">
-            <label class="text-white mb-2 d-block">Title *</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.title_2') }}</label>
             <input 
               v-model="eventForm.title"
               type="text" 
               class="form-control n11-bg text-white border-secondary" 
-              placeholder="Event title"
+              :placeholder="$t('ui.event_title')"
               required
             />
           </div>
 
           <div class="form-group mb-3">
-            <label class="text-white mb-2 d-block">Description</label>
+            <label class="text-white mb-2 d-block">{{ $t('common.description') }}</label>
             <textarea 
               v-model="eventForm.description"
               class="form-control n11-bg text-white border-secondary" 
               rows="4"
-              placeholder="Event description"
+              :placeholder="$t('ui.event_description')"
             ></textarea>
           </div>
 
           <div class="row">
             <div class="col-md-6">
               <div class="form-group mb-3">
-                <label class="text-white mb-2 d-block">Start Date *</label>
+                <label class="text-white mb-2 d-block">{{ $t('ui.start_date_2') }}</label>
                 <input 
                   v-model="eventForm.start_at"
                   type="datetime-local" 
@@ -165,7 +164,7 @@
             </div>
             <div class="col-md-6">
               <div class="form-group mb-3">
-                <label class="text-white mb-2 d-block">End Date</label>
+                <label class="text-white mb-2 d-block">{{ $t('ui.end_date') }}</label>
                 <input 
                   v-model="eventForm.end_at"
                   type="datetime-local" 
@@ -178,23 +177,23 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group mb-3">
-                <label class="text-white mb-2 d-block">Location</label>
+                <label class="text-white mb-2 d-block">{{ $t('ui.location') }}</label>
                 <input 
                   v-model="eventForm.location"
                   type="text" 
                   class="form-control n11-bg text-white border-secondary" 
-                  placeholder="Event location"
+                  :placeholder="$t('ui.event_location')"
                 />
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group mb-3">
-                <label class="text-white mb-2 d-block">Type</label>
+                <label class="text-white mb-2 d-block">{{ $t('common.type') }}</label>
                 <input 
                   v-model="eventForm.type"
                   type="text" 
                   class="form-control n11-bg text-white border-secondary" 
-                  placeholder="Event type (e.g., Tournament, Match, etc.)"
+                  :placeholder="$t('ui.event_type_e_g_tournament_match_etc')"
                 />
               </div>
             </div>
@@ -203,33 +202,33 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group mb-3">
-                <label class="text-white mb-2 d-block">Status</label>
+                <label class="text-white mb-2 d-block">{{ $t('common.status') }}</label>
                 <select 
                   v-model="eventForm.status"
                   class="form-select n11-bg text-white border-secondary"
                 >
-                  <option value="draft">Draft</option>
-                  <option value="published">Published</option>
-                  <option value="cancelled">Cancelled</option>
+                  <option value="draft">{{ $t('ui.draft') }}</option>
+                  <option value="published">{{ $t('ui.published') }}</option>
+                  <option value="cancelled">{{ $t('common.cancelled') }}</option>
                 </select>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group mb-3">
-                <label class="text-white mb-2 d-block">Max Participants</label>
+                <label class="text-white mb-2 d-block">{{ $t('ui.max_participants_2') }}</label>
                 <input 
                   v-model.number="eventForm.max_participants"
                   type="number" 
                   min="1"
                   class="form-control n11-bg text-white border-secondary" 
-                  placeholder="Maximum participants"
+                  :placeholder="$t('ui.maximum_participants')"
                 />
               </div>
             </div>
           </div>
 
           <div class="form-group mb-3">
-            <label class="text-white mb-2 d-block">Registration Deadline</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.registration_deadline') }}</label>
             <input 
               v-model="eventForm.registration_deadline"
               type="datetime-local" 
@@ -238,7 +237,7 @@
           </div>
 
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Event Image</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.event_image') }}</label>
             <input 
               ref="imageInput"
               type="file" 
@@ -246,19 +245,19 @@
               class="form-control n11-bg text-white border-secondary" 
               @change="handleImageChange"
             />
-            <small class="text-white-50 mt-1 d-block">Max size: 5MB (JPEG, PNG, JPG, GIF, WEBP)</small>
+            <small class="text-white-50 mt-1 d-block">{{ $t('ui.max_size_5mb_jpeg_png_jpg_gif_webp') }}</small>
             <div v-if="eventForm.image_preview" class="mt-3">
               <img 
                 :src="eventForm.image_preview" 
-                alt="Preview"
+                :alt="$t('ui.preview')"
                 style="max-width: 200px; max-height: 200px; border-radius: 8px;"
               />
             </div>
             <div v-else-if="editingEvent && editingEvent.image_url" class="mt-3">
-              <p class="text-white-50 small mb-2">Current image:</p>
+              <p class="text-white-50 small mb-2">{{ $t('ui.current_image') }}</p>
               <img 
                 :src="editingEvent.image_url" 
-                alt="Current"
+                :alt="$t('ui.current')"
                 style="max-width: 200px; max-height: 200px; border-radius: 8px;"
               />
             </div>
@@ -272,10 +271,10 @@
               class="btn_primary flex-fill" 
               :disabled="saving"
             >
-              <span v-if="saving">Saving...</span>
+              <span v-if="saving">{{ $t('common.saving') }}</span>
               <span v-else>{{ editingEvent ? 'Update Event' : 'Create Event' }}</span>
             </button>
-            <button type="button" class="btn_secondary" @click="closeModal">Cancel</button>
+            <button type="button" class="btn_secondary" @click="closeModal">{{ $t('common.cancel') }}</button>
           </div>
         </form>
       </div>
@@ -295,27 +294,26 @@
 
           <div v-if="loadingRegistrations" class="text-center py-5">
             <div class="spinner-border text-primary" role="status">
-              <span class="visually-hidden">Loading...</span>
+              <span class="visually-hidden">{{ $t('common.loading') }}</span>
             </div>
           </div>
 
           <div v-else>
             <div class="mb-3">
               <p class="text-white-50 mb-0">
-                Total: <strong class="text-white">{{ registrations.length }}</strong> registration(s)
-              </p>
+                Total: <strong class="text-white">{{ registrations.length }}</strong>{{ $t('ui.registration_s') }}</p>
             </div>
 
             <div class="table-responsive">
               <table class="table table-dark table-hover">
                 <thead>
                   <tr>
-                    <th>ID</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Country</th>
-                    <th>Registration Date</th>
+                    <th>{{ $t('common.id') }}</th>
+                    <th>{{ $t('ui.username') }}</th>
+                    <th>{{ $t('common.email') }}</th>
+                    <th>{{ $t('ui.phone_2') }}</th>
+                    <th>{{ $t('common.country') }}</th>
+                    <th>{{ $t('ui.registration_date') }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -343,6 +341,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted, watch } from 'vue';
 import apiClient from '@/utils/axios';
 

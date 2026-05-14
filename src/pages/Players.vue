@@ -11,10 +11,9 @@
                 <div class="col-lg-6 col-md-7">
                   <div class="defis_content" data-aos="fade-right">
                     <span class="hero_badge mb-3 d-inline-block">
-                      <i class="fas fa-trophy me-2"></i>Top Players
-                    </span>
+                      <i class="fas fa-trophy me-2"></i>{{ $t('ui.top_players') }}</span>
                     <h2 class="hero_title mb-4">
-                      Top <span class="text_gradient">Players</span><br />
+                      Top <span class="text_gradient">{{ $t('ui.players') }}</span><br />
                       this week
                     </h2>
                     <p class="hero_subtitle mb-5">
@@ -29,7 +28,7 @@
                     <div class="floating_card card_defis">
                       <div class="card_icon"><i class="fas fa-trophy"></i></div>
                       <div class="card_content">
-                        <span class="card_label">Top 10</span>
+                        <span class="card_label">{{ $t('ui.top_10') }}</span>
                         <span class="card_value">{{ players.length }} Players</span>
                       </div>
                     </div>
@@ -66,7 +65,7 @@
               <div v-if="loading" class="row mt-5">
                 <div class="col-12 text-center py-5">
                   <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-                    <span class="visually-hidden">Loading...</span>
+                    <span class="visually-hidden">{{ $t('common.loading') }}</span>
                   </div>
                 </div>
               </div>
@@ -97,7 +96,7 @@
                         <img 
                           v-if="player.avatar_url" 
                           :src="correctAvatarUrl(player.avatar_url)" 
-                          :alt="player.name"
+                          :alt="$t('ui.player_name_2')"
                           class="w-100 h-100"
                           style="object-fit: cover;"
                           @error="handleImageError($event)"
@@ -111,14 +110,12 @@
                         <h5 class="fw-bold mb-1 text-white">
                           {{ player.name }}
                           <span v-if="player.certifications && player.certifications.includes('Ebetstream')" class="badge bg-success ms-2" style="font-size: 0.7rem;">
-                            <i class="fas fa-certificate me-1"></i>Certifié
-                          </span>
+                            <i class="fas fa-certificate me-1"></i>{{ $t('ui.certifi') }}</span>
                         </h5>
                         <p class="text-white small mb-0" style="opacity: 0.8;">
                           @{{ player.username }}
                           <span v-if="player.certifications && player.certifications.includes('Ebetstream')" class="badge bg-success ms-2" style="font-size: 0.65rem;">
-                            <i class="fas fa-certificate me-1"></i>Certifié
-                          </span>
+                            <i class="fas fa-certificate me-1"></i>{{ $t('ui.certifi') }}</span>
                         </p>
                       </div>
                     </div>
@@ -146,7 +143,7 @@
               </div>
               <div v-else class="row mt-5">
                 <div class="col-12 text-center py-5">
-                  <p class="text-white" style="opacity: 0.7;">Aucun joueur disponible pour le moment.</p>
+                  <p class="text-white" style="opacity: 0.7;">{{ $t('ui.aucun_joueur_disponible_pour_le_moment') }}</p>
                 </div>
               </div>
               <!-- /Players List -->
@@ -159,6 +156,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient from '@/utils/axios';
@@ -207,9 +207,9 @@ const loadPlayers = async () => {
     
     // Gestion d'erreur améliorée
     if (err.isNetworkError || err.code === 'ERR_NETWORK') {
-      error.value = 'Impossible de se connecter à l\'API. Vérifiez que le serveur est démarré.';
+      error.value = t('errors.apiConnectionFailed');
     } else if (err.response?.status === 404) {
-      error.value = 'Route API introuvable. Vérifiez la configuration de l\'API.';
+      error.value = t('errors.apiRouteNotFound');
     } else if (err.response?.data?.message) {
       error.value = err.response.data.message;
     } else {

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import Language from "./Language.vue";
 import NavItem from "./NavItem.vue";
@@ -46,10 +49,10 @@ onBeforeUnmount(() => {
               <router-link
                 to="/login"
                 class="cmn-btn second-alt px-xxl-11 rounded-2"
-                >Log In</router-link
+                >{{ $t('ui.log_in') }}</router-link
               >
               <router-link to="/create-account" class="cmn-btn px-xxl-11"
-                >Sign Up</router-link
+                >{{ $t('common.sign_up') }}</router-link
               >
             </div>
           </li>
@@ -63,12 +66,12 @@ onBeforeUnmount(() => {
         <router-link
           to="/login"
           class="cmn-btn second-alt px-xxl-11 rounded-2 me-5 me-lg-0 d-none d-sm-block"
-          >Log In</router-link
+          >{{ $t('ui.log_in') }}</router-link
         >
         <router-link
           to="/create-account"
           class="cmn-btn d-none px-xxl-11 d-sm-block d-lg-none d-xl-block"
-          >Sign Up</router-link
+          >{{ $t('common.sign_up') }}</router-link
         >
       </div>
       <button
@@ -76,7 +79,7 @@ onBeforeUnmount(() => {
         class="navbar-toggler mt-1 mt-sm-2 mt-lg-0"
         type="button"
         data-bs-toggle="collapse"
-        aria-label="Navbar Toggler"
+        :aria-label="$t('ui.navbar_toggler')"
         data-bs-target="#navbar-content"
         aria-expanded="true"
         id="nav-icon3"
@@ -101,7 +104,7 @@ onBeforeUnmount(() => {
             width="180"
             height="46"
             :src="logo"
-            alt="Logo"
+            :alt="$t('ui.logo')"
           />
         </router-link>
       </div>

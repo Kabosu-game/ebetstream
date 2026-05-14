@@ -6,13 +6,12 @@
     <div v-else-if="error" class="tw-empty">
       <div class="tw-empty__icon"><i class="fas fa-exclamation-triangle"></i></div>
       <p class="tw-empty__title">{{ error }}</p>
-      <button class="tw-btn tw-btn--primary" @click="$router.push('/arena')">Retour à l'arène</button>
+      <button class="tw-btn tw-btn--primary" @click="$router.push('/arena')">{{ $t('ui.retour_lar_ne') }}</button>
     </div>
 
     <template v-else-if="match">
       <button class="tw-btn tw-btn--secondary tw-detail-back" @click="$router.push('/arena')">
-        <i class="fas fa-arrow-left"></i> Retour
-      </button>
+        <i class="fas fa-arrow-left"></i>{{ $t('ui.retour') }}</button>
 
       <div class="tw-page-hero mb-4">
         <div class="d-flex align-items-center gap-3 mb-3 flex-wrap">
@@ -37,7 +36,7 @@
       <div class="tw-grid-2">
         <!-- Infos match -->
         <div class="tw-content-block">
-          <h4 class="mb-4">Informations du match</h4>
+          <h4 class="mb-4">{{ $t('ui.informations_du_match') }}</h4>
 
           <div v-if="isAuthenticated && ['waiting','scheduled'].includes(match.status)" class="mb-4 d-flex gap-2 flex-wrap">
             <button
@@ -46,22 +45,20 @@
               :disabled="joining"
               @click="joinMatch"
             >
-              <i class="fas fa-user-plus"></i> Rejoindre le match
-            </button>
+              <i class="fas fa-user-plus"></i>{{ $t('ui.rejoindre_le_match') }}</button>
             <button
               v-else-if="match.status === 'waiting'"
               class="tw-btn tw-btn--secondary"
               :disabled="leaving"
               @click="leaveMatch"
             >
-              <i class="fas fa-sign-out-alt"></i> Quitter
-            </button>
+              <i class="fas fa-sign-out-alt"></i>{{ $t('ui.quitter') }}</button>
             <span v-else class="tw-badge tw-badge--open">Inscrit — {{ match.my_team === 'team1' ? match.team1_name : match.team2_name }}</span>
           </div>
 
           <div v-if="match.my_bet" class="tw-info-box mb-4">
             <i class="fas fa-ticket-alt"></i>
-            <p class="mb-0">Votre pari : <strong>{{ match.my_bet.amount }} EBT</strong> sur {{ betTypeLabel(match.my_bet.bet_type) }} — <span>{{ match.my_bet.status }}</span></p>
+            <p class="mb-0">{{ $t('ui.votre_pari') }}<strong>{{ match.my_bet.amount }} EBT</strong> sur {{ betTypeLabel(match.my_bet.bet_type) }} — <span>{{ match.my_bet.status }}</span></p>
           </div>
 
           <div class="tw-grid-2 mb-4">
@@ -76,7 +73,7 @@
           </div>
 
           <h5 class="mb-3">Joueurs inscrits ({{ match.players?.length || 0 }})</h5>
-          <div v-if="!match.players?.length" class="tw-muted">Aucun joueur inscrit</div>
+          <div v-if="!match.players?.length" class="tw-muted">{{ $t('ui.aucun_joueur_inscrit') }}</div>
           <div v-else class="arena-players">
             <div v-for="p in match.players" :key="p.id" class="arena-player-row">
               <span class="tw-badge" :class="p.team === 'team1' ? 'tw-badge--open' : 'tw-badge--ongoing'">
@@ -92,8 +89,7 @@
         <!-- Paris ESBS -->
         <div class="tw-content-block">
           <h4 class="mb-2">
-            <i class="fas fa-shield-alt tw-accent me-2"></i>Paris ESBS
-          </h4>
+            <i class="fas fa-shield-alt tw-accent me-2"></i>{{ $t('ui.paris_esbs') }}</h4>
           <p class="tw-muted mb-4" style="font-size: 0.85rem;">
             Système sécurisé interne — fonds bloqués, résultat vérifié par le serveur, paiement automatique en EBT.
           </p>
@@ -106,19 +102,19 @@
           <template v-else>
             <div v-if="!isAuthenticated" class="tw-info-box mb-4">
               <i class="fas fa-sign-in-alt"></i>
-              <p>Connectez-vous pour parier en EBT.</p>
+              <p>{{ $t('ui.connectez_vous_pour_parier_en_ebt') }}</p>
             </div>
 
             <template v-else>
-              <p class="tw-muted mb-3">Solde disponible : <strong class="tw-accent">{{ walletBalance.toFixed(2) }} EBT</strong></p>
+              <p class="tw-muted mb-3">{{ $t('ui.solde_disponible') }}<strong class="tw-accent">{{ walletBalance.toFixed(2) }} EBT</strong></p>
 
               <div class="tw-form-group">
-                <label class="tw-label">Montant (EBT)</label>
+                <label class="tw-label">{{ $t('ui.montant_ebt') }}</label>
                 <input v-model.number="betAmount" type="number" min="0.01" step="0.01" class="tw-input" placeholder="10.00" />
               </div>
 
               <div class="tw-form-group">
-                <label class="tw-label">Parier sur</label>
+                <label class="tw-label">{{ $t('ui.parier_sur') }}</label>
                 <div class="d-flex flex-column gap-2">
                   <button
                     class="tw-filter-btn text-start"
@@ -163,6 +159,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
 import apiClient from '@/utils/axios';

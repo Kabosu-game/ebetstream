@@ -12,8 +12,8 @@
         </div>
         <transition name="fade-slide">
           <div v-if="sidebarOpen" class="sb-brand-text">
-            <span class="sb-name">EbetStream</span>
-            <span class="sb-role">Administration</span>
+            <span class="sb-name">{{ $t('ui.ebetstream') }}</span>
+            <span class="sb-role">{{ $t('ui.administration') }}</span>
           </div>
         </transition>
       </div>
@@ -26,8 +26,7 @@
         <div class="sb-profile-info">
           <span class="sb-admin-name">{{ adminName }}</span>
           <span class="sb-admin-tag">
-            <span class="sb-dot"></span>Administrateur
-          </span>
+            <span class="sb-dot"></span>{{ $t('ui.administrateur') }}</span>
         </div>
       </div>
 
@@ -56,7 +55,7 @@
       <div class="sb-footer">
         <button class="sb-item sb-logout" @click="handleLogout" :title="!sidebarOpen ? 'Déconnexion' : ''">
           <span class="sb-item-icon icon-red"><i class="fas fa-sign-out-alt"></i></span>
-          <span class="sb-item-label" v-if="sidebarOpen">Déconnexion</span>
+          <span class="sb-item-label" v-if="sidebarOpen">{{ $t('ui.d_connexion') }}</span>
         </button>
       </div>
     </aside>
@@ -70,7 +69,7 @@
             <i :class="['ti', sidebarOpen ? 'ti-layout-sidebar-left-collapse' : 'ti-layout-sidebar-left-expand']"></i>
           </button>
           <div class="topbar-breadcrumb">
-            <span class="breadcrumb-parent">Admin</span>
+            <span class="breadcrumb-parent">{{ $t('common.admin') }}</span>
             <i class="ti ti-chevron-right breadcrumb-sep"></i>
             <span class="breadcrumb-current">{{ currentPageLabel }}</span>
           </div>
@@ -79,7 +78,7 @@
         <div class="topbar-right">
           <div class="topbar-search">
             <i class="fas fa-search"></i>
-            <input type="text" placeholder="Rechercher…" v-model="searchQuery" />
+            <input type="text" :placeholder="$t('ui.rechercher')" v-model="searchQuery" />
           </div>
 
           <button class="topbar-icon-btn notif-btn" title="Notifications">
@@ -95,7 +94,7 @@
             </div>
             <div class="topbar-user-info">
               <span class="topbar-user-name">{{ adminName }}</span>
-              <span class="topbar-user-role">Admin</span>
+              <span class="topbar-user-role">{{ $t('common.admin') }}</span>
             </div>
           </div>
         </div>
@@ -148,6 +147,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 import { useRouter } from "vue-router";
 

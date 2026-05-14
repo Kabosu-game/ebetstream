@@ -2,8 +2,8 @@
   <div class="pay_method__paymethod p-3 p-md-4 p-lg-6 p2-bg rounded-8">
     <div class="pay_method__paymethod-title mb-5 mb-md-6 d-flex justify-content-between align-items-center flex-wrap gap-3">
       <div>
-        <h2 class="text-white fw-bold mb-2">Stream Management</h2>
-        <p class="text-white-50">Manage all platform streams</p>
+        <h2 class="text-white fw-bold mb-2">{{ $t('ui.stream_management') }}</h2>
+        <p class="text-white-50">{{ $t('ui.manage_all_platform_streams') }}</p>
       </div>
     </div>
 
@@ -13,7 +13,7 @@
         <div class="stat-card n11-bg rounded-8 p-3">
           <div class="d-flex align-items-center justify-content-between">
             <div>
-              <p class="text-white-50 small mb-1">Total Streams</p>
+              <p class="text-white-50 small mb-1">{{ $t('ui.total_streams') }}</p>
               <h3 class="text-white mb-0">{{ stats.total_streams || 0 }}</h3>
             </div>
             <div class="stat-icon bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
@@ -26,7 +26,7 @@
         <div class="stat-card n11-bg rounded-8 p-3">
           <div class="d-flex align-items-center justify-content-between">
             <div>
-              <p class="text-white-50 small mb-1">Live Now</p>
+              <p class="text-white-50 small mb-1">{{ $t('ui.live_now') }}</p>
               <h3 class="text-danger mb-0">{{ stats.live_streams || 0 }}</h3>
             </div>
             <div class="stat-icon bg-danger rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
@@ -39,7 +39,7 @@
         <div class="stat-card n11-bg rounded-8 p-3">
           <div class="d-flex align-items-center justify-content-between">
             <div>
-              <p class="text-white-50 small mb-1">Total Viewers</p>
+              <p class="text-white-50 small mb-1">{{ $t('ui.total_viewers') }}</p>
               <h3 class="text-white mb-0">{{ stats.total_viewers || 0 }}</h3>
             </div>
             <div class="stat-icon bg-info rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
@@ -52,7 +52,7 @@
         <div class="stat-card n11-bg rounded-8 p-3">
           <div class="d-flex align-items-center justify-content-between">
             <div>
-              <p class="text-white-50 small mb-1">Total Followers</p>
+              <p class="text-white-50 small mb-1">{{ $t('ui.total_followers') }}</p>
               <h3 class="text-white mb-0">{{ stats.total_followers || 0 }}</h3>
             </div>
             <div class="stat-icon bg-success rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
@@ -69,27 +69,27 @@
         v-model="searchQuery" 
         type="text" 
         class="form-control n11-bg text-white border-secondary" 
-        placeholder="Search by title, streamer..."
+        :placeholder="$t('ui.search_by_title_streamer')"
         style="max-width: 300px;"
       />
       <select v-model="filterStatus" class="form-select n11-bg text-white border-secondary" style="max-width: 200px;">
-        <option value="">All Status</option>
-        <option value="live">Live</option>
-        <option value="offline">Offline</option>
+        <option value="">{{ $t('ui.all_status') }}</option>
+        <option value="live">{{ $t('betting.live') }}</option>
+        <option value="offline">{{ $t('ui.offline') }}</option>
       </select>
       <select v-model="filterCategory" class="form-select n11-bg text-white border-secondary" style="max-width: 200px;">
-        <option value="">All Categories</option>
-        <option value="Gaming">Gaming</option>
-        <option value="Esports">Esports</option>
-        <option value="Just Chatting">Just Chatting</option>
-        <option value="Music">Music</option>
+        <option value="">{{ $t('ui.all_categories') }}</option>
+        <option value="Gaming">{{ $t('ui.gaming') }}</option>
+        <option value="Esports">{{ $t('ui.esports') }}</option>
+        <option value="Just Chatting">{{ $t('ui.just_chatting') }}</option>
+        <option value="Music">{{ $t('ui.music') }}</option>
         <option value="IRL">IRL</option>
       </select>
     </div>
 
     <div v-if="loading" class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+        <span class="visually-hidden">{{ $t('common.loading') }}</span>
       </div>
     </div>
 
@@ -98,16 +98,16 @@
         <table class="w-100 text-center p2-bg">
           <thead>
             <tr>
-              <th class="text-white p-3">ID</th>
-              <th class="text-white p-3">Title</th>
-              <th class="text-white p-3">Streamer</th>
-              <th class="text-white p-3">Category</th>
-              <th class="text-white p-3">Game</th>
-              <th class="text-white p-3">Viewers</th>
-              <th class="text-white p-3">Followers</th>
-              <th class="text-white p-3">Status</th>
-              <th class="text-white p-3">Created</th>
-              <th class="text-white p-3">Actions</th>
+              <th class="text-white p-3">{{ $t('common.id') }}</th>
+              <th class="text-white p-3">{{ $t('ui.title') }}</th>
+              <th class="text-white p-3">{{ $t('ui.streamer') }}</th>
+              <th class="text-white p-3">{{ $t('ui.category') }}</th>
+              <th class="text-white p-3">{{ $t('common.game') }}</th>
+              <th class="text-white p-3">{{ $t('ui.viewers') }}</th>
+              <th class="text-white p-3">{{ $t('ui.followers') }}</th>
+              <th class="text-white p-3">{{ $t('common.status') }}</th>
+              <th class="text-white p-3">{{ $t('ui.created_2') }}</th>
+              <th class="text-white p-3">{{ $t('common.actions') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -161,7 +161,7 @@
               </td>
             </tr>
             <tr v-if="filteredStreams.length === 0">
-              <td colspan="10" class="text-white p-5 text-center">No streams found</td>
+              <td colspan="10" class="text-white p-5 text-center">{{ $t('ui.no_streams_found') }}</td>
             </tr>
           </tbody>
         </table>
@@ -181,7 +181,7 @@
 
           <div v-if="loadingDetails" class="text-center py-5">
             <div class="spinner-border text-primary" role="status">
-              <span class="visually-hidden">Loading...</span>
+              <span class="visually-hidden">{{ $t('common.loading') }}</span>
             </div>
           </div>
 
@@ -190,21 +190,21 @@
             <div class="row g-4 mb-4">
               <div class="col-md-6">
                 <div class="n11-bg rounded-8 p-4">
-                  <h5 class="text-white mb-3">Stream Information</h5>
+                  <h5 class="text-white mb-3">{{ $t('ui.stream_information') }}</h5>
                   <div class="mb-2">
-                    <small class="text-white-50">Streamer:</small>
+                    <small class="text-white-50">{{ $t('ui.streamer_2') }}</small>
                     <p class="text-white mb-0">{{ streamDetails.user?.username }}</p>
                   </div>
                   <div class="mb-2">
-                    <small class="text-white-50">Category:</small>
+                    <small class="text-white-50">{{ $t('ui.category_2') }}</small>
                     <p class="text-white mb-0">{{ streamDetails.category || 'N/A' }}</p>
                   </div>
                   <div class="mb-2">
-                    <small class="text-white-50">Game:</small>
+                    <small class="text-white-50">{{ $t('ui.game') }}</small>
                     <p class="text-white mb-0">{{ streamDetails.game || 'N/A' }}</p>
                   </div>
                   <div class="mb-2">
-                    <small class="text-white-50">Status:</small>
+                    <small class="text-white-50">{{ $t('ui.status') }}</small>
                     <span :class="['badge', streamDetails.is_live ? 'bg-danger' : 'bg-secondary']">
                       {{ streamDetails.is_live ? 'Live' : 'Offline' }}
                     </span>
@@ -213,21 +213,21 @@
               </div>
               <div class="col-md-6">
                 <div class="n11-bg rounded-8 p-4">
-                  <h5 class="text-white mb-3">Statistics</h5>
+                  <h5 class="text-white mb-3">{{ $t('ui.statistics') }}</h5>
                   <div class="mb-2">
-                    <small class="text-white-50">Total Sessions:</small>
+                    <small class="text-white-50">{{ $t('ui.total_sessions') }}</small>
                     <p class="text-white mb-0">{{ streamStats.total_sessions || 0 }}</p>
                   </div>
                   <div class="mb-2">
-                    <small class="text-white-50">Total Chat Messages:</small>
+                    <small class="text-white-50">{{ $t('ui.total_chat_messages') }}</small>
                     <p class="text-white mb-0">{{ streamStats.total_chat_messages || 0 }}</p>
                   </div>
                   <div class="mb-2">
-                    <small class="text-white-50">Total Followers:</small>
+                    <small class="text-white-50">{{ $t('ui.total_followers_2') }}</small>
                     <p class="text-white mb-0">{{ streamStats.total_followers || 0 }}</p>
                   </div>
                   <div class="mb-2">
-                    <small class="text-white-50">Peak Viewers:</small>
+                    <small class="text-white-50">{{ $t('ui.peak_viewers') }}</small>
                     <p class="text-white mb-0">{{ streamStats.peak_viewers || 0 }}</p>
                   </div>
                 </div>
@@ -266,12 +266,12 @@
                   <table class="table table-dark table-sm">
                     <thead>
                       <tr>
-                        <th>Session ID</th>
-                        <th>Status</th>
-                        <th>Started</th>
-                        <th>Ended</th>
-                        <th>Peak Viewers</th>
-                        <th>Total Viewers</th>
+                        <th>{{ $t('ui.session_id') }}</th>
+                        <th>{{ $t('common.status') }}</th>
+                        <th>{{ $t('ui.started') }}</th>
+                        <th>{{ $t('ui.ended') }}</th>
+                        <th>{{ $t('ui.peak_viewers_2') }}</th>
+                        <th>{{ $t('ui.total_viewers') }}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -288,7 +288,7 @@
                         <td>{{ session.total_viewers || 0 }}</td>
                       </tr>
                       <tr v-if="sessions.length === 0">
-                        <td colspan="6" class="text-center text-white-50 py-3">No sessions found</td>
+                        <td colspan="6" class="text-center text-white-50 py-3">{{ $t('ui.no_sessions_found') }}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -306,10 +306,10 @@
                   <table class="table table-dark table-sm">
                     <thead>
                       <tr>
-                        <th>User</th>
-                        <th>Message</th>
-                        <th>Date</th>
-                        <th>Actions</th>
+                        <th>{{ $t('common.user') }}</th>
+                        <th>{{ $t('ui.message') }}</th>
+                        <th>{{ $t('common.date') }}</th>
+                        <th>{{ $t('common.actions') }}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -328,7 +328,7 @@
                         </td>
                       </tr>
                       <tr v-if="chatMessages.length === 0">
-                        <td colspan="4" class="text-center text-white-50 py-3">No messages found</td>
+                        <td colspan="4" class="text-center text-white-50 py-3">{{ $t('ui.no_messages_found') }}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -344,11 +344,11 @@
     <Teleport to="body">
       <div v-if="showEditModal" class="popup-overlay" @click.self="closeEditModal">
         <div class="popup-box p-5 rounded-4 shadow-lg n11-bg" style="max-width: 600px; max-height: 90vh; overflow-y: auto;">
-          <h3 class="fw-bold mb-4 text-center text-white">Edit Stream</h3>
+          <h3 class="fw-bold mb-4 text-center text-white">{{ $t('ui.edit_stream') }}</h3>
           
           <form @submit.prevent="saveStream">
             <div class="form-group mb-3">
-              <label class="text-white mb-2">Title *</label>
+              <label class="text-white mb-2">{{ $t('ui.title_2') }}</label>
               <input 
                 v-model="editForm.title"
                 type="text" 
@@ -358,7 +358,7 @@
             </div>
 
             <div class="form-group mb-3">
-              <label class="text-white mb-2">Description</label>
+              <label class="text-white mb-2">{{ $t('common.description') }}</label>
               <textarea 
                 v-model="editForm.description"
                 class="form-control n11-bg text-white border-secondary" 
@@ -367,7 +367,7 @@
             </div>
 
             <div class="form-group mb-3">
-              <label class="text-white mb-2">Category</label>
+              <label class="text-white mb-2">{{ $t('ui.category') }}</label>
               <input 
                 v-model="editForm.category"
                 type="text" 
@@ -376,7 +376,7 @@
             </div>
 
             <div class="form-group mb-3">
-              <label class="text-white mb-2">Game</label>
+              <label class="text-white mb-2">{{ $t('common.game') }}</label>
               <input 
                 v-model="editForm.game"
                 type="text" 
@@ -385,7 +385,7 @@
             </div>
 
             <div class="form-group mb-3">
-              <label class="text-white mb-2">Thumbnail URL</label>
+              <label class="text-white mb-2">{{ $t('ui.thumbnail_url') }}</label>
               <input 
                 v-model="editForm.thumbnail"
                 type="url" 
@@ -410,10 +410,10 @@
             <div v-if="error" class="alert alert-danger mb-4">{{ error }}</div>
             
             <div class="d-flex gap-2 justify-content-end">
-              <button type="button" class="btn_secondary" @click="closeEditModal">Cancel</button>
+              <button type="button" class="btn_secondary" @click="closeEditModal">{{ $t('common.cancel') }}</button>
               <button type="submit" class="btn_primary" :disabled="saving">
-                <span v-if="saving">Saving...</span>
-                <span v-else>Update Stream</span>
+                <span v-if="saving">{{ $t('common.saving') }}</span>
+                <span v-else>{{ $t('ui.update_stream') }}</span>
               </button>
             </div>
           </form>
@@ -424,6 +424,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, computed, onMounted, watch } from 'vue';
 import apiClient from '@/utils/axios';
 

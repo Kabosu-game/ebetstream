@@ -28,7 +28,7 @@
       <div class="live-hero__header">
         <div class="live-hero__header-left">
           <span class="live-pill"><span class="live-dot"></span>LIVE</span>
-          <h2 class="live-hero__title">Live Now</h2>
+          <h2 class="live-hero__title">{{ $t('ui.live_now') }}</h2>
         </div>
         <router-link to="/streams" class="live-hero__see-all">
           See all <i class="fas fa-arrow-right"></i>
@@ -67,7 +67,7 @@
               <p class="live-featured__cat">{{ activeStream.game?.name || 'Gaming' }}</p>
             </div>
             <button class="live-featured__follow" @click.stop>
-              <i class="far fa-heart"></i><span class="follow-text"> Follow</span>
+              <i class="far fa-heart"></i><span class="follow-text">{{ $t('ui.follow') }}</span>
             </button>
           </div>
 
@@ -85,7 +85,7 @@
 
         <!-- Sidebar: other streams (desktop only) -->
         <div class="live-sidebar" v-if="streams.length > 1">
-          <p class="live-sidebar__label">More channels</p>
+          <p class="live-sidebar__label">{{ $t('ui.more_channels') }}</p>
 
           <div
             v-for="(stream, idx) in streams.slice(1, 5)"
@@ -152,12 +152,12 @@
       <div class="hero-banner__content">
         <!-- Eyebrow -->
         <div class="hero-banner__eyebrow">
-          <span class="live-pill"><span class="live-dot"></span>STREAMING PLATFORM</span>
+          <span class="live-pill"><span class="live-dot"></span>{{ $t('ui.streaming_platform') }}</span>
         </div>
 
         <!-- Title -->
         <h1 class="hero-banner__title">
-          Compete.<br />Stream.<br /><span class="hero-accent">Win.</span>
+          Compete.<br />{{ $t('ui.stream') }}<br /><span class="hero-accent">{{ $t('ui.win') }}</span>
         </h1>
 
         <!-- Sub -->
@@ -171,25 +171,24 @@
             Get Started <i class="fas fa-arrow-right"></i>
           </router-link>
           <router-link to="/streams" class="hero-btn hero-btn--ghost">
-            <span class="live-dot live-dot--sm"></span> Watch Live
-          </router-link>
+            <span class="live-dot live-dot--sm"></span>{{ $t('ui.watch_live') }}</router-link>
         </div>
 
         <!-- Stats (hidden on xs) -->
         <div class="hero-banner__stats">
           <div class="hero-stat">
-            <span class="hero-stat__val">10K+</span>
-            <span class="hero-stat__lbl">Players</span>
+            <span class="hero-stat__val">{{ $t('ui.10k') }}</span>
+            <span class="hero-stat__lbl">{{ $t('ui.players') }}</span>
           </div>
           <div class="hero-stat__sep"></div>
           <div class="hero-stat">
             <span class="hero-stat__val">500+</span>
-            <span class="hero-stat__lbl">Events</span>
+            <span class="hero-stat__lbl">{{ $t('nav.events') }}</span>
           </div>
           <div class="hero-stat__sep"></div>
           <div class="hero-stat">
             <span class="hero-stat__val">50+</span>
-            <span class="hero-stat__lbl">Games</span>
+            <span class="hero-stat__lbl">{{ $t('ui.games') }}</span>
           </div>
         </div>
       </div>
@@ -199,14 +198,14 @@
         <div class="hero-visual-card">
           <div class="hero-visual-card__top">
             <span class="badge-live"><span class="badge-live__dot"></span>LIVE</span>
-            <span class="badge-viewers"><i class="fas fa-eye"></i> 4.2K</span>
+            <span class="badge-viewers"><i class="fas fa-eye"></i>{{ $t('ui.4_2k') }}</span>
           </div>
-          <div class="hero-visual-card__title">Championship Finals</div>
+          <div class="hero-visual-card__title">{{ $t('ui.championship_finals') }}</div>
           <div class="hero-visual-card__row">
             <div class="hero-visual-avatar">E</div>
             <div class="hero-visual-meta">
-              <p>eBetStream Pro</p>
-              <p>PUBG Mobile</p>
+              <p>{{ $t('ui.ebetstream_pro') }}</p>
+              <p>{{ $t('ui.pubg_mobile') }}</p>
             </div>
           </div>
         </div>
@@ -217,6 +216,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import apiClient from "@/utils/axios";

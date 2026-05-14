@@ -11,14 +11,13 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <div>
                     <span class="hero_badge mb-2 d-inline-block">
-                      <i class="fas fa-gamepad me-2"></i>Partners
-                    </span>
+                      <i class="fas fa-gamepad me-2"></i>{{ $t('ui.partners') }}</span>
                     <h3 class="hero_title mb-0">
-                      Our Partner <span class="text_gradient">Developers</span>
+                      Our Partner <span class="text_gradient">{{ $t('ui.developers') }}</span>
                     </h3>
                   </div>
                   <router-link to="/partners" class="btn_primary text-decoration-none btn-sm">
-                    <span>View All</span>
+                    <span>{{ $t('ui.view_all') }}</span>
                     <i class="fas fa-arrow-right ms-2"></i>
                   </router-link>
                 </div>
@@ -26,14 +25,14 @@
                 <!-- Liste compacte -->
                 <div v-if="loading" class="text-center py-4">
                   <div class="spinner-border text-warning" role="status">
-                    <span class="visually-hidden">Loading...</span>
+                    <span class="visually-hidden">{{ $t('common.loading') }}</span>
                   </div>
                 </div>
                 <div v-else-if="error" class="alert alert-warning" role="alert">
                   {{ error }}
                 </div>
                 <div v-else-if="topPartners.length === 0" class="text-center py-4">
-                  <p class="text-muted mb-0">No partners available at the moment.</p>
+                  <p class="text-muted mb-0">{{ $t('ui.no_partners_available_at_the_moment') }}</p>
                 </div>
                 <div v-else class="compact_leaderboard">
                   <div 
@@ -45,15 +44,15 @@
                   >
                     <div class="rank_badge">
                       <span v-if="index === 0" class="medal gold"><i class="fas fa-medal" style="color:#ffd700"></i></span>
-                      <span v-else-if="index === 1" class="medal silver">🥈</span>
-                      <span v-else-if="index === 2" class="medal bronze">🥉</span>
+                      <span v-else-if="index === 1" class="medal silver">{{ $t('ui.text_5') }}</span>
+                      <span v-else-if="index === 2" class="medal bronze">{{ $t('ui.text_6') }}</span>
                       <span v-else class="rank_number">#{{ index + 1 }}</span>
                     </div>
                     <div class="player_avatar_mini">
                       <img 
                         v-if="partner.avatar_url" 
                         :src="partner.avatar_url" 
-                        :alt="partner.name"
+                        :alt="$t('ui.partner_name')"
                         @error="handleImageError($event)"
                       />
                       <i v-else class="fas fa-building"></i>
@@ -79,6 +78,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient, { getApiErrorMessage } from '@/utils/axios';

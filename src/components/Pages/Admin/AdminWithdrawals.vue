@@ -1,22 +1,22 @@
 <template>
   <div class="pay_method__paymethod p-3 p-md-4 p-lg-6 p2-bg rounded-8">
     <div class="pay_method__paymethod-title mb-5 mb-md-6">
-      <h2 class="text-white fw-bold mb-2">Withdrawal Management</h2>
-      <p class="text-white-50">Manage all platform withdrawals</p>
+      <h2 class="text-white fw-bold mb-2">{{ $t('ui.withdrawal_management') }}</h2>
+      <p class="text-white-50">{{ $t('ui.manage_all_platform_withdrawals') }}</p>
     </div>
 
     <div class="d-flex gap-3 mb-4 flex-wrap">
       <select v-model="filterStatus" class="form-select n11-bg text-white border-secondary" style="max-width: 200px;">
-        <option value="">All Statuses</option>
-        <option value="pending">Pending</option>
-        <option value="approved">Approved</option>
-        <option value="rejected">Rejected</option>
+        <option value="">{{ $t('ui.all_statuses') }}</option>
+        <option value="pending">{{ $t('common.pending') }}</option>
+        <option value="approved">{{ $t('common.approved') }}</option>
+        <option value="rejected">{{ $t('common.rejected') }}</option>
       </select>
     </div>
 
     <div v-if="loading" class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+        <span class="visually-hidden">{{ $t('common.loading') }}</span>
       </div>
     </div>
 
@@ -25,13 +25,13 @@
         <table class="w-100 text-center p2-bg">
           <thead>
             <tr>
-              <th class="text-white p-3">ID</th>
-              <th class="text-white p-3">User</th>
-              <th class="text-white p-3">Amount</th>
-              <th class="text-white p-3">Method</th>
-              <th class="text-white p-3">Status</th>
-              <th class="text-white p-3">Date</th>
-              <th class="text-white p-3">Actions</th>
+              <th class="text-white p-3">{{ $t('common.id') }}</th>
+              <th class="text-white p-3">{{ $t('common.user') }}</th>
+              <th class="text-white p-3">{{ $t('ui.amount') }}</th>
+              <th class="text-white p-3">{{ $t('ui.method') }}</th>
+              <th class="text-white p-3">{{ $t('common.status') }}</th>
+              <th class="text-white p-3">{{ $t('common.date') }}</th>
+              <th class="text-white p-3">{{ $t('common.actions') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -59,7 +59,7 @@
               </td>
             </tr>
             <tr v-if="filteredWithdrawals.length === 0">
-              <td colspan="7" class="text-white p-5 text-center">No withdrawals</td>
+              <td colspan="7" class="text-white p-5 text-center">{{ $t('ui.no_withdrawals') }}</td>
             </tr>
           </tbody>
         </table>
@@ -69,6 +69,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, computed, onMounted } from 'vue';
 import apiClient from '@/utils/axios';
 

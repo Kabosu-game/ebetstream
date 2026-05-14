@@ -19,11 +19,11 @@
                       <p class="tw-page-hero__eyebrow">
                         <i class="fas fa-fist-raised"></i> {{ clan.name }}
                       </p>
-                      <span v-if="clan.status === 'active'" class="badge bg-success">Active</span>
-                      <span v-else class="badge bg-secondary">Inactive</span>
+                      <span v-if="clan.status === 'active'" class="badge bg-success">{{ $t('common.active') }}</span>
+                      <span v-else class="badge bg-secondary">{{ $t('common.inactive') }}</span>
                     </div>
                     <h1 class="tw-page-hero__title">
-                      {{ clan.name }} <span>Clan</span>
+                      {{ clan.name }} <span>{{ $t('ui.clan') }}</span>
                     </h1>
                     <p v-if="clan.description" class="tw-page-hero__sub">
                       {{ clan.description }}
@@ -31,15 +31,15 @@
                     <div class="d-flex flex-wrap gap-4 mb-4">
                       <div>
                         <i class="fas fa-crown text-warning me-2"></i>
-                        <strong>Leader:</strong> {{ clan.leader?.username || "No leader" }}
+                        <strong>{{ $t('ui.leader_2') }}</strong> {{ clan.leader?.username || "No leader" }}
                       </div>
                       <div>
                         <i class="fas fa-users text-primary me-2"></i>
-                        <strong>Members:</strong> {{ clan.members_count || 0 }}/{{ clan.max_members || 50 }}
+                        <strong>{{ $t('ui.members_2') }}</strong> {{ clan.members_count || 0 }}/{{ clan.max_members || 50 }}
                       </div>
                       <div>
                         <i class="fas fa-calendar text-info me-2"></i>
-                        <strong>Created:</strong> {{ formatDate(clan.created_at) }}
+                        <strong>{{ $t('ui.created') }}</strong> {{ formatDate(clan.created_at) }}
                       </div>
                     </div>
                   </div>
@@ -56,10 +56,9 @@
                       @click="joinClan"
                       :disabled="joining || !clan.can_join"
                     >
-                      <span v-if="joining">Joining...</span>
+                      <span v-if="joining">{{ $t('ui.joining') }}</span>
                       <span v-else>
-                        <i class="fas fa-user-plus me-2"></i>Join Clan
-                      </span>
+                        <i class="fas fa-user-plus me-2"></i>{{ $t('ui.join_clan') }}</span>
                     </button>
                     <button 
                       v-else
@@ -67,18 +66,16 @@
                       @click="leaveClan"
                       :disabled="leaving || isLeader"
                     >
-                      <span v-if="leaving">Leaving...</span>
+                      <span v-if="leaving">{{ $t('ui.leaving') }}</span>
                       <span v-else>
-                        <i class="fas fa-user-minus me-2"></i>Leave Clan
-                      </span>
+                        <i class="fas fa-user-minus me-2"></i>{{ $t('ui.leave_clan') }}</span>
                     </button>
                     <button 
                       v-if="isMember && !isLeader && !hasApplied"
                       class="tw-btn tw-btn--secondary"
                       @click="showApplyModal = true"
                     >
-                      <i class="fas fa-crown me-2"></i>Apply for Leadership
-                    </button>
+                      <i class="fas fa-crown me-2"></i>{{ $t('ui.apply_for_leadership') }}</button>
                   </div>
                 </div>
               </div>
@@ -93,8 +90,7 @@
                         :class="{ active: activeTab === 'members' }"
                         @click="activeTab = 'members'"
                       >
-                        <i class="fas fa-users me-2"></i>Members
-                      </button>
+                        <i class="fas fa-users me-2"></i>{{ $t('ui.members') }}</button>
                     </li>
                     <li class="nav-item" v-if="isMember">
                       <button 
@@ -102,8 +98,7 @@
                         :class="{ active: activeTab === 'chat' }"
                         @click="activeTab = 'chat'"
                       >
-                        <i class="fas fa-comments me-2"></i>Chat
-                      </button>
+                        <i class="fas fa-comments me-2"></i>{{ $t('ui.chat') }}</button>
                     </li>
                     <li class="nav-item" v-if="isMember">
                       <button 
@@ -111,8 +106,7 @@
                         :class="{ active: activeTab === 'leadership' }"
                         @click="activeTab = 'leadership'"
                       >
-                        <i class="fas fa-crown me-2"></i>Leadership
-                      </button>
+                        <i class="fas fa-crown me-2"></i>{{ $t('ui.leadership') }}</button>
                     </li>
                   </ul>
 
@@ -133,8 +127,7 @@
                               <div class="text-white fw-bold">
                                 {{ member.username }}
                                 <span v-if="clan.leader_id === member.id" class="badge bg-warning ms-2">
-                                  <i class="fas fa-crown"></i> Leader
-                                </span>
+                                  <i class="fas fa-crown"></i>{{ $t('ui.leader') }}</span>
                               </div>
                               <small class="text-white-50">Joined {{ formatDate(member.pivot?.created_at) }}</small>
                             </div>
@@ -150,7 +143,7 @@
                   <!-- Chat Tab -->
                   <div v-if="activeTab === 'chat' && isMember" class="tab-content">
                     <div class="tw-content-block">
-                      <h5 class="text-white mb-4">Clan Chat</h5>
+                      <h5 class="text-white mb-4">{{ $t('ui.clan_chat') }}</h5>
                       <div class="chat-container" style="height: 400px; overflow-y: auto; background: rgba(0,0,0,0.2); border-radius: 10px; padding: 1rem;">
                         <div v-if="loadingMessages" class="text-center py-3">
                           <div class="spinner-border spinner-border-sm text-primary"></div>
@@ -182,7 +175,7 @@
                               v-model="newMessage"
                               type="text" 
                               class="form-control n11-bg text-white border-secondary" 
-                              placeholder="Type your message..."
+                              :placeholder="$t('ui.type_your_message')"
                               :disabled="sendingMessage"
                               maxlength="1000"
                             />
@@ -202,7 +195,7 @@
                   <!-- Leadership Tab -->
                   <div v-if="activeTab === 'leadership' && isMember" class="tab-content">
                     <div class="tw-content-block">
-                      <h5 class="text-white mb-4">Leadership Election</h5>
+                      <h5 class="text-white mb-4">{{ $t('ui.leadership_election') }}</h5>
                       
                       <!-- Current Leader -->
                       <div v-if="clan.leader" class="mb-4 p-3 rounded" style="background: rgba(255,159,0,0.1); border: 1px solid rgba(255,159,0,0.3);">
@@ -210,14 +203,14 @@
                           <i class="fas fa-crown fs-3 text-warning"></i>
                           <div>
                             <strong class="text-white">Current Leader: {{ clan.leader.username }}</strong>
-                            <p class="text-white-50 mb-0 small">The leader manages the clan and makes important decisions.</p>
+                            <p class="text-white-50 mb-0 small">{{ $t('ui.the_leader_manages_the_clan_and_makes_important_decisions') }}</p>
                           </div>
                         </div>
                       </div>
 
                       <!-- Candidates -->
                       <div v-if="candidates.length > 0" class="mb-4">
-                        <h6 class="text-white mb-3">Candidates for Leadership</h6>
+                        <h6 class="text-white mb-3">{{ $t('ui.candidates_for_leadership') }}</h6>
                         <div class="row g-3">
                           <div v-for="candidate in candidates" :key="candidate.id" class="col-12">
                             <div class="p-3 rounded" style="background: rgba(255,255,255,0.05);">
@@ -238,11 +231,9 @@
                                     @click="voteForCandidate(candidate.id)"
                                     :disabled="voting"
                                   >
-                                    <i class="fas fa-check me-1"></i>Vote
-                                  </button>
+                                    <i class="fas fa-check me-1"></i>{{ $t('ui.vote') }}</button>
                                   <span v-else-if="hasVotedFor(candidate.id)" class="badge bg-success">
-                                    <i class="fas fa-check"></i> Voted
-                                  </span>
+                                    <i class="fas fa-check"></i>{{ $t('ui.voted') }}</span>
                                 </div>
                               </div>
                             </div>
@@ -262,18 +253,18 @@
     <div v-if="showApplyModal" class="popup-overlay" @click.self="showApplyModal = false">
       <div class="popup-box p-5 rounded-4 shadow-lg n11-bg">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 class="fw-bold text-white mb-0">Apply for Leadership</h3>
+          <h3 class="fw-bold text-white mb-0">{{ $t('ui.apply_for_leadership') }}</h3>
           <button class="btn-close btn-close-white" @click="showApplyModal = false"></button>
         </div>
         
         <form @submit.prevent="applyForLeadership">
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block fw-bold">Why do you want to become the leader? (Optional)</label>
+            <label class="text-white mb-2 d-block fw-bold">{{ $t('ui.why_do_you_want_to_become_the_leader_optional') }}</label>
             <textarea 
               v-model="applyForm.motivation"
               class="form-control n11-bg text-white border-secondary" 
               rows="4"
-              placeholder="Explain why you would be a good leader for this clan..."
+              :placeholder="$t('ui.explain_why_you_would_be_a_good_leader_for_this_clan')"
               maxlength="500"
             ></textarea>
           </div>
@@ -287,10 +278,9 @@
               class="tw-btn tw-btn--primary flex-fill" 
               :disabled="applying"
             >
-              <span v-if="applying">Applying...</span>
+              <span v-if="applying">{{ $t('ui.applying') }}</span>
               <span v-else>
-                <i class="fas fa-crown me-2"></i>Submit Application
-              </span>
+                <i class="fas fa-crown me-2"></i>{{ $t('ui.submit_application') }}</span>
             </button>
             <button 
               type="button" 
@@ -308,6 +298,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted, computed, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import apiClient from "@/utils/axios";

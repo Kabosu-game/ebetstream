@@ -21,12 +21,15 @@
       </button>
     </form>
     <div class="text-center mt-4">
-      <span>Your withdrawal limit on month: $50,000</span>
+      <span>{{ $t('ui.your_withdrawal_limit_on_month_50_000') }}</span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref } from "vue";
 import { dashboardAmmount } from "../../../assets/data/dashBoard";
 

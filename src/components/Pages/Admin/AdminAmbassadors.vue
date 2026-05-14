@@ -2,17 +2,16 @@
   <div class="pay_method__paymethod p-3 p-md-4 p-lg-6 p2-bg rounded-8">
     <div class="pay_method__paymethod-title mb-5 mb-md-6 d-flex justify-content-between align-items-center">
       <div>
-        <h2 class="text-white fw-bold mb-2">Ambassador Management</h2>
-        <p class="text-white-50">Manage platform ambassadors</p>
+        <h2 class="text-white fw-bold mb-2">{{ $t('ui.ambassador_management') }}</h2>
+        <p class="text-white-50">{{ $t('ui.manage_platform_ambassadors') }}</p>
       </div>
       <button class="btn_primary" @click="showCreateModal = true">
-        <i class="fas fa-plus me-2"  ></i>New Ambassador
-      </button>
+        <i class="fas fa-plus me-2"  ></i>{{ $t('ui.new_ambassador') }}</button>
     </div>
 
     <div v-if="loading" class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+        <span class="visually-hidden">{{ $t('common.loading') }}</span>
       </div>
     </div>
 
@@ -25,7 +24,7 @@
               <img 
                 v-if="ambassador.avatar_url" 
                 :src="ambassador.avatar_url" 
-                :alt="ambassador.name"
+                :alt="$t('ui.ambassador_name')"
                 class="w-100 h-100"
                 style="object-fit: cover;"
               />
@@ -47,8 +46,7 @@
           </div>
           <div class="d-flex gap-2">
             <button class="btn btn-sm btn-warning flex-fill d-flex align-items-center justify-content-center gap-1" @click="editAmbassador(ambassador)">
-              <i class="fas fa-edit"></i>Edit
-            </button>
+              <i class="fas fa-edit"></i>{{ $t('common.edit') }}</button>
             <button class="btn btn-sm btn-danger d-flex align-items-center justify-content-center" @click="deleteAmbassador(ambassador.id)">
               <i class="fas fa-trash"></i>
             </button>
@@ -56,7 +54,7 @@
         </div>
       </div>
       <div v-if="ambassadors.length === 0" class="col-12 text-center py-5">
-        <p class="text-white-50">No ambassadors</p>
+        <p class="text-white-50">{{ $t('ui.no_ambassadors') }}</p>
       </div>
     </div>
 
@@ -68,36 +66,36 @@
         </h3>
         <form @submit.prevent="saveAmbassador">
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Name</label>
+            <label class="text-white mb-2 d-block">{{ $t('common.name') }}</label>
             <input v-model="form.name" type="text" class="form-control n11-bg text-white border-secondary" required />
           </div>
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Username</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.username') }}</label>
             <input v-model="form.username" type="text" class="form-control n11-bg text-white border-secondary" required />
           </div>
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Score</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.score') }}</label>
             <input v-model.number="form.score" type="number" class="form-control n11-bg text-white border-secondary" />
           </div>
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Country</label>
+            <label class="text-white mb-2 d-block">{{ $t('common.country') }}</label>
             <input v-model="form.country" type="text" class="form-control n11-bg text-white border-secondary" />
           </div>
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Bio</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.bio') }}</label>
             <textarea v-model="form.bio" rows="3" class="form-control n11-bg text-white border-secondary"></textarea>
           </div>
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Profile Photo</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.profile_photo') }}</label>
             <input type="file" @change="handleFileChange" accept="image/*" class="form-control n11-bg text-white border-secondary" />
           </div>
           <div v-if="error" class="alert alert-danger mb-4">{{ error }}</div>
           <div class="d-flex gap-3">
             <button type="submit" class="btn_primary flex-fill" :disabled="saving">
-              <span v-if="saving">Saving...</span>
-              <span v-else>Save</span>
+              <span v-if="saving">{{ $t('common.saving') }}</span>
+              <span v-else>{{ $t('common.save') }}</span>
             </button>
-            <button type="button" class="btn_secondary" @click="closeModal">Cancel</button>
+            <button type="button" class="btn_secondary" @click="closeModal">{{ $t('common.cancel') }}</button>
           </div>
         </form>
       </div>
@@ -106,6 +104,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted } from 'vue';
 import apiClient from '@/utils/axios';
 import { fixImageUrl } from '@/utils/imageFixer';

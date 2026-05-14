@@ -241,10 +241,10 @@ onBeforeUnmount(() => {
                 <router-link
                   to="/login"
                   class="cmn-btn second-alt px-xxl-11 rounded-2"
-                  >Log In</router-link
+                  >{{ $t('ui.log_in') }}</router-link
                 >
                 <router-link to="/create-account" class="cmn-btn px-xxl-11"
-                  >Sign Up</router-link
+                  >{{ $t('common.sign_up') }}</router-link
                 >
               </div>
             </li>
@@ -257,7 +257,7 @@ onBeforeUnmount(() => {
             v-if="isAuthenticated" 
             class="balance-display text-end d-none d-sm-block"
           >
-            <span class="fs-seven mb-1 d-block text-white">Your balance</span>
+            <span class="fs-seven mb-1 d-block text-white">{{ $t('ui.your_balance') }}</span>
             <div class="d-flex align-items-center justify-content-end gap-2">
               <span 
                 v-if="loadingBalance" 
@@ -265,7 +265,7 @@ onBeforeUnmount(() => {
                 role="status"
                 style="width: 1rem; height: 1rem;"
               >
-                <span class="visually-hidden">Loading...</span>
+                <span class="visually-hidden">{{ $t('common.loading') }}</span>
               </span>
               <span class="fw-bold d-block balance-amount">{{ formattedBalance }} EBT</span>
             </div>
@@ -389,7 +389,7 @@ onBeforeUnmount(() => {
                     @click="userMenuOpen = false"
                   >
                     <i class="fas fa-user" height="18" width="18"></i>
-                    <span class="small">Profile</span>
+                    <span class="small">{{ $t('ui.profile') }}</span>
                   </router-link>
                   
                   <!-- Mes Bonus - visible uniquement en mode responsive -->
@@ -411,7 +411,7 @@ onBeforeUnmount(() => {
                     class="user-menu-item d-flex align-items-center gap-2 w-100 text-start p-2 rounded-3 border-0 bg-transparent text-white"
                   >
                     <i class="fas fa-sign-out-alt" height="18" width="18"></i>
-                    <span class="small">Logout</span>
+                    <span class="small">{{ $t('common.logout') }}</span>
                   </button>
                 </div>
               </div>
@@ -422,7 +422,7 @@ onBeforeUnmount(() => {
             class="navbar-toggler navbar-toggler-two mt-1 mt-sm-2 mt-lg-0"
             type="button"
             data-bs-toggle="collapse"
-            aria-label="Navbar Toggler"
+            :aria-label="$t('ui.navbar_toggler')"
             data-bs-target="#navbar-content"
             aria-expanded="true"
             id="nav-icon3"
@@ -448,7 +448,7 @@ onBeforeUnmount(() => {
               width="180"
               height="56"
               :src="logo"
-              alt="logoebet"
+              :alt="$t('ui.logoebet')"
             />
           </router-link>
         </div>

@@ -10,7 +10,7 @@
               <!-- Loading State -->
               <div v-if="loading" class="text-center py-5">
                 <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-                  <span class="visually-hidden">Chargement...</span>
+                  <span class="visually-hidden">{{ $t('ui.chargement') }}</span>
                 </div>
               </div>
 
@@ -37,8 +37,7 @@
                     
                     <div class="defis_content">
                       <span class="hero_badge mb-3 d-inline-block">
-                        <i class="fas fa-gamepad me-2"></i>Profil Partenaire
-                      </span>
+                        <i class="fas fa-gamepad me-2"></i>{{ $t('ui.profil_partenaire') }}</span>
                       <h2 class="hero_title mb-4">
                         <span class="text_gradient">{{ partner.name }}</span>
                       </h2>
@@ -62,7 +61,7 @@
                             <img 
                               v-if="partner.avatar_url" 
                               :src="partner.avatar_url" 
-                              :alt="partner.name"
+                              :alt="$t('ui.partner_name')"
                               class="w-100 h-100"
                               style="object-fit: cover;"
                               @error="handleImageError($event)"
@@ -86,16 +85,14 @@
                           <a :href="partner.website" 
                              target="_blank" 
                              class="btn btn-warning text-dark px-4 py-3 fw-bold">
-                            <i class="fas fa-external-link-alt me-2"></i>Visiter le site
-                          </a>
+                            <i class="fas fa-external-link-alt me-2"></i>{{ $t('ui.visiter_le_site') }}</a>
                         </div>
                       </div>
 
                       <!-- Bio Section -->
                       <div v-if="partner.bio" class="mb-4">
                         <h4 class="fw-bold mb-3 text-white">
-                          <i class="fas fa-info-circle me-2"></i>À propos
-                        </h4>
+                          <i class="fas fa-info-circle me-2"></i>{{ $t('ui.propos') }}</h4>
                         <p class="text-white" style="opacity: 0.9; line-height: 1.8; font-size: 1.05rem;">
                           {{ partner.bio }}
                         </p>
@@ -109,7 +106,7 @@
                               <i class="fas fa-gamepad text-warning" style="font-size: 2rem;"></i>
                             </div>
                             <div class="stat_value fw-bold text-white fs-6">{{ partner.specialty || 'N/A' }}</div>
-                            <div class="stat_label text-white small" style="opacity: 0.8;">Spécialité</div>
+                            <div class="stat_label text-white small" style="opacity: 0.8;">{{ $t('ui.sp_cialit') }}</div>
                           </div>
                         </div>
                         <div class="col-md-4">
@@ -117,8 +114,8 @@
                             <div class="stat_icon mb-2">
                               <i class="fas fa-handshake text-warning" style="font-size: 2rem;"></i>
                             </div>
-                            <div class="stat_value fw-bold text-white fs-4">Partenaire</div>
-                            <div class="stat_label text-white small" style="opacity: 0.8;">Statut</div>
+                            <div class="stat_value fw-bold text-white fs-4">{{ $t('ui.partenaire') }}</div>
+                            <div class="stat_label text-white small" style="opacity: 0.8;">{{ $t('ui.statut') }}</div>
                           </div>
                         </div>
                         <div class="col-md-4">
@@ -127,7 +124,7 @@
                               <i class="fas fa-globe text-warning" style="font-size: 2rem;"></i>
                             </div>
                             <div class="stat_value fw-bold text-white fs-6">{{ partner.country || 'N/A' }}</div>
-                            <div class="stat_label text-white small" style="opacity: 0.8;">Pays</div>
+                            <div class="stat_label text-white small" style="opacity: 0.8;">{{ $t('ui.pays') }}</div>
                           </div>
                         </div>
                       </div>
@@ -138,34 +135,32 @@
                   <div class="col-lg-4">
                     <div class="defi_card n11-bg rounded-8 p-4 mb-4">
                       <h5 class="fw-bold mb-4 text-white">
-                        <i class="fas fa-info-circle me-2"></i>Informations
-                      </h5>
+                        <i class="fas fa-info-circle me-2"></i>{{ $t('ui.informations') }}</h5>
                       
                       <div class="info_item mb-3">
-                        <div class="text-white small mb-1" style="opacity: 0.7;">Nom</div>
+                        <div class="text-white small mb-1" style="opacity: 0.7;">{{ $t('ui.nom') }}</div>
                         <div class="text-white fw-semibold">{{ partner.name }}</div>
                       </div>
 
                       <div v-if="partner.specialty" class="info_item mb-3">
-                        <div class="text-white small mb-1" style="opacity: 0.7;">Spécialité</div>
+                        <div class="text-white small mb-1" style="opacity: 0.7;">{{ $t('ui.sp_cialit') }}</div>
                         <div class="text-white fw-semibold">{{ partner.specialty }}</div>
                       </div>
 
                       <div v-if="partner.country" class="info_item mb-3">
-                        <div class="text-white small mb-1" style="opacity: 0.7;">Pays</div>
+                        <div class="text-white small mb-1" style="opacity: 0.7;">{{ $t('ui.pays') }}</div>
                         <div class="text-white fw-semibold">
                           <i class="fas fa-map-marker-alt me-1"></i>{{ partner.country }}
                         </div>
                       </div>
 
                       <div v-if="partner.website" class="info_item mb-3">
-                        <div class="text-white small mb-1" style="opacity: 0.7;">Site web</div>
+                        <div class="text-white small mb-1" style="opacity: 0.7;">{{ $t('ui.site_web') }}</div>
                         <div class="text-white fw-semibold">
                           <a :href="partner.website" 
                              target="_blank" 
                              class="text-warning text-decoration-none">
-                            <i class="fas fa-external-link-alt me-1"></i>Visiter
-                          </a>
+                            <i class="fas fa-external-link-alt me-1"></i>{{ $t('ui.visiter') }}</a>
                         </div>
                       </div>
                     </div>
@@ -181,6 +176,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import apiClient from '@/utils/axios';
@@ -216,9 +214,9 @@ const loadPartner = async () => {
   } catch (err: any) {
     console.error('Error loading partner:', err);
     if (err.response?.status === 404) {
-      error.value = 'Partenaire non trouvé';
+      error.value = t('errors.partnerNotFound');
     } else {
-      error.value = 'Erreur lors du chargement du partenaire';
+      error.value = t('errors.loadPartnerError');
     }
   } finally {
     loading.value = false;

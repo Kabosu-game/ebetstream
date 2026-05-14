@@ -3,8 +3,8 @@
     <!-- Hero -->
     <section class="tw-page-hero">
       <div class="hero-inner">
-        <p class="tw-page-hero__sub"><i class="fas fa-shield-alt me-2"></i>Legal</p>
-        <h1 class="tw-page-hero__title">Privacy <span class="accent">Policy</span></h1>
+        <p class="tw-page-hero__sub"><i class="fas fa-shield-alt me-2"></i>{{ $t('ui.legal') }}</p>
+        <h1 class="tw-page-hero__title">{{ $t('ui.privacy') }}<span class="accent">{{ $t('ui.policy') }}</span></h1>
         <p class="hero-date">Last updated: {{ lastUpdated }}</p>
       </div>
     </section>
@@ -14,16 +14,16 @@
         <!-- Table of contents (sidebar) -->
         <aside class="toc">
           <div class="tw-card toc-card">
-            <h4 class="toc-heading">Contents</h4>
+            <h4 class="toc-heading">{{ $t('ui.contents') }}</h4>
             <ol class="toc-list">
-              <li><a href="#s1" class="toc-link">Introduction</a></li>
-              <li><a href="#s2" class="toc-link">Data Collected</a></li>
-              <li><a href="#s3" class="toc-link">Data Usage</a></li>
-              <li><a href="#s4" class="toc-link">Data Sharing</a></li>
-              <li><a href="#s5" class="toc-link">Security</a></li>
-              <li><a href="#s6" class="toc-link">Your Rights</a></li>
-              <li><a href="#s7" class="toc-link">Cookies</a></li>
-              <li><a href="#s8" class="toc-link">Contact</a></li>
+              <li><a href="#s1" class="toc-link">{{ $t('ui.introduction') }}</a></li>
+              <li><a href="#s2" class="toc-link">{{ $t('ui.data_collected') }}</a></li>
+              <li><a href="#s3" class="toc-link">{{ $t('ui.data_usage') }}</a></li>
+              <li><a href="#s4" class="toc-link">{{ $t('ui.data_sharing') }}</a></li>
+              <li><a href="#s5" class="toc-link">{{ $t('ui.security') }}</a></li>
+              <li><a href="#s6" class="toc-link">{{ $t('ui.your_rights') }}</a></li>
+              <li><a href="#s7" class="toc-link">{{ $t('ui.cookies') }}</a></li>
+              <li><a href="#s8" class="toc-link">{{ $t('ui.contact') }}</a></li>
             </ol>
           </div>
         </aside>
@@ -31,7 +31,7 @@
         <!-- Sections -->
         <main class="legal-content">
           <div id="s1" class="tw-content-block">
-            <h3 class="section-num">1. Introduction</h3>
+            <h3 class="section-num">{{ $t('ui.1_introduction') }}</h3>
             <p class="body-text">
               At eBetStream, we place great importance on protecting your personal data.
               This privacy policy explains how we collect, use, store, and protect
@@ -40,32 +40,32 @@
           </div>
 
           <div id="s2" class="tw-content-block">
-            <h3 class="section-num">2. Data Collected</h3>
-            <p class="body-text">We collect the following types of data:</p>
+            <h3 class="section-num">{{ $t('ui.2_data_collected') }}</h3>
+            <p class="body-text">{{ $t('ui.we_collect_the_following_types_of_data') }}</p>
             <ul class="legal-list">
-              <li>Identification information: name, email, username</li>
-              <li>Account information: password (hashed), preferences</li>
-              <li>Transaction data: challenge history, payments</li>
-              <li>Technical data: IP address, browser type, device</li>
-              <li>Usage data: pages visited, time spent on the platform</li>
+              <li>{{ $t('ui.identification_information_name_email_username') }}</li>
+              <li>{{ $t('ui.account_information_password_hashed_preferences') }}</li>
+              <li>{{ $t('ui.transaction_data_challenge_history_payments') }}</li>
+              <li>{{ $t('ui.technical_data_ip_address_browser_type_device') }}</li>
+              <li>{{ $t('ui.usage_data_pages_visited_time_spent_on_the_platform') }}</li>
             </ul>
           </div>
 
           <div id="s3" class="tw-content-block">
-            <h3 class="section-num">3. Data Usage</h3>
-            <p class="body-text">We use your data to:</p>
+            <h3 class="section-num">{{ $t('ui.3_data_usage') }}</h3>
+            <p class="body-text">{{ $t('ui.we_use_your_data_to') }}</p>
             <ul class="legal-list">
-              <li>Provide and improve our services</li>
-              <li>Manage your account and transactions</li>
-              <li>Contact you regarding your account or our services</li>
-              <li>Ensure security and prevent fraud</li>
-              <li>Comply with our legal obligations</li>
-              <li>Analyze platform usage to improve user experience</li>
+              <li>{{ $t('ui.provide_and_improve_our_services') }}</li>
+              <li>{{ $t('ui.manage_your_account_and_transactions') }}</li>
+              <li>{{ $t('ui.contact_you_regarding_your_account_or_our_services') }}</li>
+              <li>{{ $t('ui.ensure_security_and_prevent_fraud') }}</li>
+              <li>{{ $t('ui.comply_with_our_legal_obligations') }}</li>
+              <li>{{ $t('ui.analyze_platform_usage_to_improve_user_experience') }}</li>
             </ul>
           </div>
 
           <div id="s4" class="tw-content-block">
-            <h3 class="section-num">4. Data Sharing</h3>
+            <h3 class="section-num">{{ $t('ui.4_data_sharing') }}</h3>
             <p class="body-text">
               We never sell your personal data. We may share your information only
               in the following cases: with your explicit consent, to comply with our legal obligations,
@@ -75,7 +75,7 @@
           </div>
 
           <div id="s5" class="tw-content-block">
-            <h3 class="section-num">5. Security</h3>
+            <h3 class="section-num">{{ $t('ui.5_security') }}</h3>
             <p class="body-text">
               We implement appropriate technical and organizational security measures to
               protect your data against unauthorized access, loss, destruction, or alteration.
@@ -84,32 +84,32 @@
           </div>
 
           <div id="s6" class="tw-content-block">
-            <h3 class="section-num">6. Your Rights</h3>
-            <p class="body-text">You have the right to:</p>
+            <h3 class="section-num">{{ $t('ui.6_your_rights') }}</h3>
+            <p class="body-text">{{ $t('ui.you_have_the_right_to') }}</p>
             <ul class="legal-list">
-              <li>Access your personal data</li>
-              <li>Correct inaccurate data</li>
-              <li>Request deletion of your data</li>
-              <li>Object to processing of your data</li>
-              <li>Request portability of your data</li>
-              <li>Withdraw your consent at any time</li>
+              <li>{{ $t('ui.access_your_personal_data') }}</li>
+              <li>{{ $t('ui.correct_inaccurate_data') }}</li>
+              <li>{{ $t('ui.request_deletion_of_your_data') }}</li>
+              <li>{{ $t('ui.object_to_processing_of_your_data') }}</li>
+              <li>{{ $t('ui.request_portability_of_your_data') }}</li>
+              <li>{{ $t('ui.withdraw_your_consent_at_any_time') }}</li>
             </ul>
           </div>
 
           <div id="s7" class="tw-content-block">
-            <h3 class="section-num">7. Cookies</h3>
+            <h3 class="section-num">{{ $t('ui.7_cookies') }}</h3>
             <p class="body-text">
               We use cookies to improve your experience. See our
-              <router-link to="/cookies" class="inline-link">Cookie Policy</router-link>
+              <router-link to="/cookies" class="inline-link">{{ $t('ui.cookie_policy') }}</router-link>
               for more information.
             </p>
           </div>
 
           <div id="s8" class="tw-content-block">
-            <h3 class="section-num">8. Contact</h3>
+            <h3 class="section-num">{{ $t('ui.8_contact') }}</h3>
             <p class="body-text">
               For any questions regarding this policy or your personal data, contact us at
-              <a href="mailto:privacy@acmpt.online" class="inline-link">privacy@acmpt.online</a>
+              <a href="mailto:privacy@acmpt.online" class="inline-link">{{ $t('ui.privacy_acmpt_online') }}</a>
             </p>
           </div>
         </main>
@@ -119,6 +119,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { computed } from 'vue';
 
 const lastUpdated = computed(() => {

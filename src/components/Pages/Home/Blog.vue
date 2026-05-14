@@ -13,10 +13,9 @@
                   <div class="col-lg-6 col-md-7">
                     <div class="top10_content" data-aos="fade-right">
                       <span class="hero_badge mb-3 d-inline-block">
-                        <i class="fas fa-blog me-2"></i>Blog
-                      </span>
+                        <i class="fas fa-blog me-2"></i>{{ $t('ui.blog') }}</span>
                       <h2 class="hero_title mb-4">
-                        Our Recent <span class="text_gradient">Articles</span>
+                        Our Recent <span class="text_gradient">{{ $t('ui.articles') }}</span>
                       </h2>
                       <p class="hero_subtitle mb-5">
                         Discover our latest articles to stay informed and inspired
@@ -24,12 +23,12 @@
                       </p>
                       <div class="hero_actions d-flex flex-wrap gap-3">
                         <button class="btn_primary">
-                          <span>View All Articles</span>
+                          <span>{{ $t('ui.view_all_articles') }}</span>
                           <i class="fas fa-arrow-right ms-2"></i>
                         </button>
                         <button class="btn_secondary">
                           <i class="fas fa-info-circle me-2"></i>
-                          <span>Learn More</span>
+                          <span>{{ $t('ui.learn_more') }}</span>
                         </button>
                       </div>
                     </div>
@@ -39,10 +38,10 @@
                   <div class="col-lg-6 col-md-5 d-none d-md-block">
                     <div class="top10_image" data-aos="fade-left">
                       <div class="floating_card card_top10">
-                        <div class="card_icon">📰</div>
+                        <div class="card_icon">{{ $t('ui.text_7') }}</div>
                         <div class="card_content">
-                          <span class="card_label">Blog</span>
-                          <span class="card_value">Recent</span>
+                          <span class="card_label">{{ $t('ui.blog') }}</span>
+                          <span class="card_value">{{ $t('ui.recent') }}</span>
                         </div>
                       </div>
                     </div>
@@ -72,10 +71,10 @@
                           >
                             <i class="fas fa-newspaper fs-1 text-white opacity-50"></i>
                           </div>
-                          <img v-else :src="post.image" :alt="post.title" class="blog_image mb-3 rounded" />
+                          <img v-else :src="post.image" :alt="$t('ui.post_title')" class="blog_image mb-3 rounded" />
                           <h3 class="player_name">{{ post.title }}</h3>
                           <p class="player_score">{{ post.excerpt }}</p>
-                          <a :href="post.link" target="_blank" class="btn_primary btn-sm mt-2">Read More</a>
+                          <a :href="post.link" target="_blank" class="btn_primary btn-sm mt-2">{{ $t('ui.read_more') }}</a>
                         </div>
                       </SwiperSlide>
                     </Swiper>
@@ -93,6 +92,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";

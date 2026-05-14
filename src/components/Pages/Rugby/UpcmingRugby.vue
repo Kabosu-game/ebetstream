@@ -15,7 +15,7 @@
                     height="{28}"
                     alt="Icon"
                   />
-                  <h3>Rugby League</h3>
+                  <h3>{{ $t('ui.rugby_league') }}</h3>
                 </div>
                 <div class="top_matches__content">
                   <div
@@ -120,10 +120,10 @@
                               <thead>
                                 <tr class="text-center">
                                   <th scope="col">
-                                    <span class="fs-eight">1x2</span>
+                                    <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">Draw no bet</span>
+                                    <span class="fs-eight">{{ $t('betting.draw_no_bet') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -211,6 +211,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { rugbyLeague } from "../../../assets/data/allPageData";
 import union from "@/assets/images/icon/rugby-union.png";
 </script>

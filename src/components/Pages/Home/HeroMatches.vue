@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 import {
   soccerMatch,
@@ -21,7 +24,7 @@ import king from "@/assets/images/icon/king.png";
                   class="top_matches__title d-flex align-items-center gap-2 mb-4"
                 >
                   <img width="{32}" height="{32}" :src="king" alt="Icon" />
-                  <h3>Top Matches</h3>
+                  <h3>{{ $t('ui.top_matches') }}</h3>
                 </div>
                 <div class="top_matches__content">
                   <div class="singletab">
@@ -33,7 +36,7 @@ import king from "@/assets/images/icon/king.png";
                         <Tab
                           as="template"
                           v-slot="{ selected }"
-                          v-for="{ imgSrc, buttonName, id } in tabOne"
+                          v-for="{ imgSrc, sportKey, id } in tabOne"
                           :key="id"
                         >
                           <button
@@ -49,7 +52,7 @@ import king from "@/assets/images/icon/king.png";
                               :src="imgSrc"
                               alt="Icon"
                             />
-                            {{ buttonName }}
+                            {{ $t('sports.' + sportKey) }}
                           </button>
                         </Tab>
                       </TabList>
@@ -448,9 +451,7 @@ import king from "@/assets/images/icon/king.png";
                                       <thead>
                                         <tr class="text-center">
                                           <th scope="col">
-                                            <span class="fs-eight">
-                                              Winner
-                                            </span>
+                                            <span class="fs-eight">{{ $t('betting.winner') }}</span>
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight">
@@ -694,14 +695,10 @@ import king from "@/assets/images/icon/king.png";
                                       <thead>
                                         <tr class="text-center">
                                           <th scope="col">
-                                            <span class="fs-eight">
-                                              Winner (incl. overtime)
-                                            </span>
+                                            <span class="fs-eight">{{ $t('betting.winner_incl_overtime_2') }}</span>
                                           </th>
                                           <th scope="col">
-                                            <span class="fs-eight">
-                                              Handicap (incl. overtime)
-                                            </span>
+                                            <span class="fs-eight">{{ $t('betting.handicap_incl_overtime_2') }}</span>
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight">
@@ -745,9 +742,7 @@ import king from "@/assets/images/icon/king.png";
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                >
-                                                  draw
-                                                </span>
+                                                >{{ $t('betting.draw') }}</span>
                                                 <span class="fw-bold d-block">
                                                   3.45
                                                 </span>
@@ -763,9 +758,7 @@ import king from "@/assets/images/icon/king.png";
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                >
-                                                  draw
-                                                </span>
+                                                >{{ $t('betting.draw') }}</span>
                                                 <span class="fw-bold d-block">
                                                   3.45
                                                 </span>
@@ -775,9 +768,7 @@ import king from "@/assets/images/icon/king.png";
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                >
-                                                  draw
-                                                </span>
+                                                >{{ $t('betting.draw') }}</span>
                                                 <span class="fw-bold d-block">
                                                   3.45
                                                 </span>
@@ -787,9 +778,7 @@ import king from "@/assets/images/icon/king.png";
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                >
-                                                  draw
-                                                </span>
+                                                >{{ $t('betting.draw') }}</span>
                                                 <span class="fw-bold d-block">
                                                   3.45
                                                 </span>
@@ -805,9 +794,7 @@ import king from "@/assets/images/icon/king.png";
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                >
-                                                  draw
-                                                </span>
+                                                >{{ $t('betting.draw') }}</span>
                                                 <span class="fw-bold d-block">
                                                   3.45
                                                 </span>
@@ -817,9 +804,7 @@ import king from "@/assets/images/icon/king.png";
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                >
-                                                  draw
-                                                </span>
+                                                >{{ $t('betting.draw') }}</span>
                                                 <span class="fw-bold d-block">
                                                   3.45
                                                 </span>
@@ -829,9 +814,7 @@ import king from "@/assets/images/icon/king.png";
                                               >
                                                 <span
                                                   class="fs-seven d-block mb-2"
-                                                >
-                                                  draw
-                                                </span>
+                                                >{{ $t('betting.draw') }}</span>
                                                 <span class="fw-bold d-block">
                                                   3.45
                                                 </span>
@@ -878,7 +861,7 @@ import king from "@/assets/images/icon/king.png";
                                           src="@/assets/images/icon/live.png"
                                           width="{16}"
                                           height="{16}"
-                                          alt="icon"
+                                          :alt="$t('ui.icon')"
                                         />
                                         <span class="fs-eight cpoint">
                                           Today, 23:00
@@ -887,7 +870,7 @@ import king from "@/assets/images/icon/king.png";
                                           src="@/assets/images/icon/updwon.png"
                                           width="{16}"
                                           height="{16}"
-                                          alt="icon"
+                                          :alt="$t('ui.icon')"
                                         />
                                       </div>
                                     </div>
@@ -1200,9 +1183,7 @@ import king from "@/assets/images/icon/king.png";
                                         <thead>
                                           <tr class="text-center">
                                             <th scope="col">
-                                              <span class="fs-eight">
-                                                1x2
-                                              </span>
+                                              <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                             </th>
                                             <th scope="col">
                                               <span class="fs-eight">
@@ -1227,9 +1208,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                  >
-                                                    draw
-                                                  </span>
+                                                  >{{ $t('betting.draw') }}</span>
                                                   <span class="fw-bold d-block">
                                                     3.45
                                                   </span>
@@ -1239,9 +1218,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                  >
-                                                    draw
-                                                  </span>
+                                                  >{{ $t('betting.draw') }}</span>
                                                   <span class="fw-bold d-block">
                                                     3.45
                                                   </span>
@@ -1251,9 +1228,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                  >
-                                                    draw
-                                                  </span>
+                                                  >{{ $t('betting.draw') }}</span>
                                                   <span class="fw-bold d-block">
                                                     3.45
                                                   </span>
@@ -1269,9 +1244,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                  >
-                                                    draw
-                                                  </span>
+                                                  >{{ $t('betting.draw') }}</span>
                                                   <span class="fw-bold d-block">
                                                     3.45
                                                   </span>
@@ -1281,9 +1254,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                  >
-                                                    draw
-                                                  </span>
+                                                  >{{ $t('betting.draw') }}</span>
                                                   <span class="fw-bold d-block">
                                                     3.45
                                                   </span>
@@ -1293,9 +1264,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                  >
-                                                    draw
-                                                  </span>
+                                                  >{{ $t('betting.draw') }}</span>
                                                   <span class="fw-bold d-block">
                                                     3.45
                                                   </span>
@@ -1311,9 +1280,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                  >
-                                                    draw
-                                                  </span>
+                                                  >{{ $t('betting.draw') }}</span>
                                                   <span class="fw-bold d-block">
                                                     3.45
                                                   </span>
@@ -1323,9 +1290,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                  >
-                                                    draw
-                                                  </span>
+                                                  >{{ $t('betting.draw') }}</span>
                                                   <span class="fw-bold d-block">
                                                     3.45
                                                   </span>
@@ -1335,9 +1300,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                  >
-                                                    draw
-                                                  </span>
+                                                  >{{ $t('betting.draw') }}</span>
                                                   <span class="fw-bold d-block">
                                                     3.45
                                                   </span>
@@ -1381,7 +1344,7 @@ import king from "@/assets/images/icon/king.png";
                                           src="@/assets/images/icon/live.png"
                                           width="{16}"
                                           height="{16}"
-                                          alt="icon"
+                                          :alt="$t('ui.icon')"
                                         />
                                         <span class="fs-eight cpoint">
                                           Today, 23:00
@@ -1390,7 +1353,7 @@ import king from "@/assets/images/icon/king.png";
                                           src="@/assets/images/icon/updwon.png"
                                           width="{16}"
                                           height="{16}"
-                                          alt="icon"
+                                          :alt="$t('ui.icon')"
                                         />
                                       </div>
                                     </div>
@@ -1616,7 +1579,7 @@ import king from "@/assets/images/icon/king.png";
                                           src="@/assets/images/icon/live.png"
                                           width="{16}"
                                           height="{16}"
-                                          alt="icon"
+                                          :alt="$t('ui.icon')"
                                         />
                                         <span class="fs-eight cpoint">
                                           Today, 23:00
@@ -1625,7 +1588,7 @@ import king from "@/assets/images/icon/king.png";
                                           src="@/assets/images/icon/updwon.png"
                                           width="{16}"
                                           height="{16}"
-                                          alt="icon"
+                                          :alt="$t('ui.icon')"
                                         />
                                       </div>
                                     </div>
@@ -2051,7 +2014,7 @@ import king from "@/assets/images/icon/king.png";
                                           src="@/assets/images/icon/live.png"
                                           width="{16}"
                                           height="{16}"
-                                          alt="icon"
+                                          :alt="$t('ui.icon')"
                                         />
                                         <span class="fs-eight cpoint">
                                           Today, 23:00
@@ -2060,7 +2023,7 @@ import king from "@/assets/images/icon/king.png";
                                           src="@/assets/images/icon/updwon.png"
                                           width="{16}"
                                           height="{16}"
-                                          alt="icon"
+                                          :alt="$t('ui.icon')"
                                         />
                                       </div>
                                     </div>
@@ -3029,7 +2992,7 @@ import king from "@/assets/images/icon/king.png";
                                           src="@/assets/images/icon/updwon.png"
                                           width="{16}"
                                           height="{16}"
-                                          alt="icon"
+                                          :alt="$t('ui.icon')"
                                         />
                                       </div>
                                     </div>
@@ -3167,7 +3130,7 @@ import king from "@/assets/images/icon/king.png";
                                           alt="Icon"
                                         />
                                         <span class="fs-eight cpoint"
-                                          >International(5 overs)</span
+                                          >{{ $t('ui.international_5_overs') }}</span
                                         >
                                       </div>
                                       <div
@@ -3177,16 +3140,16 @@ import king from "@/assets/images/icon/king.png";
                                           src="@/assets/images/icon/live.png"
                                           width="{16}"
                                           height="{16}"
-                                          alt="icon"
+                                          :alt="$t('ui.icon')"
                                         />
                                         <img
                                           src="@/assets/images/icon/play.png"
                                           width="{16}"
                                           height="{16}"
-                                          alt="icon"
+                                          :alt="$t('ui.icon')"
                                         />
                                         <span class="fs-eight cpoint"
-                                          >1 INN, 0.5 OV</span
+                                          >{{ $t('ui.1_inn_0_5_ov') }}</span
                                         >
                                       </div>
                                     </div>
@@ -3205,7 +3168,7 @@ import king from "@/assets/images/icon/king.png";
                                             alt="Icon"
                                           />
                                           <span class="fs-seven cpoint"
-                                            >Australia</span
+                                            >{{ $t('ui.australia') }}</span
                                           >
                                         </div>
                                         <div
@@ -3219,7 +3182,7 @@ import king from "@/assets/images/icon/king.png";
                                             alt="Icon"
                                           />
                                           <span class="fs-seven cpoint"
-                                            >United Arab Emirates</span
+                                            >{{ $t('ui.united_arab_emirates') }}</span
                                           >
                                         </div>
                                       </div>
@@ -3262,12 +3225,11 @@ import king from "@/assets/images/icon/king.png";
                                           <tr class="text-center">
                                             <th scope="col">
                                               <span class="fs-eight"
-                                                >Total runs
-                                              </span>
+                                                >{{ $t('betting.total_runs') }}</span>
                                             </th>
                                             <th scope="col">
                                               <span class="fs-eight"
-                                                >Australia total runs</span
+                                                >{{ $t('ui.australia_total_runs') }}</span
                                               >
                                             </th>
                                           </tr>
@@ -3383,7 +3345,7 @@ import king from "@/assets/images/icon/king.png";
                                           alt="Icon"
                                         />
                                         <span class="fs-eight cpoint"
-                                          >International(5 overs)</span
+                                          >{{ $t('ui.international_5_overs') }}</span
                                         >
                                       </div>
                                       <div
@@ -3393,16 +3355,16 @@ import king from "@/assets/images/icon/king.png";
                                           src="@/assets/images/icon/live.png"
                                           width="{16}"
                                           height="{16}"
-                                          alt="icon"
+                                          :alt="$t('ui.icon')"
                                         />
                                         <img
                                           src="@/assets/images/icon/play.png"
                                           width="{16}"
                                           height="{16}"
-                                          alt="icon"
+                                          :alt="$t('ui.icon')"
                                         />
                                         <span class="fs-eight cpoint"
-                                          >1 INN, 0.5 OV</span
+                                          >{{ $t('ui.1_inn_0_5_ov') }}</span
                                         >
                                       </div>
                                     </div>
@@ -3421,7 +3383,7 @@ import king from "@/assets/images/icon/king.png";
                                             alt="Icon"
                                           />
                                           <span class="fs-seven cpoint"
-                                            >Australia</span
+                                            >{{ $t('ui.australia') }}</span
                                           >
                                         </div>
                                         <div
@@ -3435,7 +3397,7 @@ import king from "@/assets/images/icon/king.png";
                                             alt="Icon"
                                           />
                                           <span class="fs-seven cpoint"
-                                            >United Arab Emirates</span
+                                            >{{ $t('ui.united_arab_emirates') }}</span
                                           >
                                         </div>
                                       </div>
@@ -3478,12 +3440,11 @@ import king from "@/assets/images/icon/king.png";
                                           <tr class="text-center">
                                             <th scope="col">
                                               <span class="fs-eight"
-                                                >Total runs
-                                              </span>
+                                                >{{ $t('betting.total_runs') }}</span>
                                             </th>
                                             <th scope="col">
                                               <span class="fs-eight"
-                                                >Australia total runs</span
+                                                >{{ $t('ui.australia_total_runs') }}</span
                                               >
                                             </th>
                                           </tr>
@@ -3599,7 +3560,7 @@ import king from "@/assets/images/icon/king.png";
                                           alt="Icon"
                                         />
                                         <span class="fs-eight cpoint"
-                                          >International (5 overs)</span
+                                          >{{ $t('ui.international_5_overs_2') }}</span
                                         >
                                       </div>
                                       <div
@@ -3609,16 +3570,16 @@ import king from "@/assets/images/icon/king.png";
                                           src="@/assets/images/icon/live.png"
                                           width="{16}"
                                           height="{16}"
-                                          alt="icon"
+                                          :alt="$t('ui.icon')"
                                         />
                                         <img
                                           src="@/assets/images/icon/play.png"
                                           width="{16}"
                                           height="{16}"
-                                          alt="icon"
+                                          :alt="$t('ui.icon')"
                                         />
                                         <span class="fs-eight cpoint"
-                                          >1 INN, 0.5 OV</span
+                                          >{{ $t('ui.1_inn_0_5_ov') }}</span
                                         >
                                       </div>
                                     </div>
@@ -3636,7 +3597,7 @@ import king from "@/assets/images/icon/king.png";
                                             alt="Icon"
                                           />
                                           <span class="fs-seven cpoint"
-                                            >CR Vasco da Gama RJ</span
+                                            >{{ $t('ui.cr_vasco_da_gama_rj') }}</span
                                           >
                                         </div>
                                         <div
@@ -3649,7 +3610,7 @@ import king from "@/assets/images/icon/king.png";
                                             alt="Icon"
                                           />
                                           <span class="fs-seven cpoint"
-                                            >SC Corinthians SP</span
+                                            >{{ $t('ui.sc_corinthians_sp') }}</span
                                           >
                                         </div>
                                       </div>
@@ -3687,17 +3648,17 @@ import king from "@/assets/images/icon/king.png";
                                           <tr class="text-center">
                                             <th scope="col">
                                               <span class="fs-eight"
-                                                >Winner</span
+                                                >{{ $t('betting.winner') }}</span
                                               >
                                             </th>
                                             <th scope="col">
                                               <span class="fs-eight"
-                                                >Total runs</span
+                                                >{{ $t('betting.total_runs') }}</span
                                               >
                                             </th>
                                             <th scope="col">
                                               <span class="fs-eight"
-                                                >PAK total runs</span
+                                                >{{ $t('ui.pak_total_runs') }}</span
                                               >
                                             </th>
                                           </tr>
@@ -3713,7 +3674,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                    >draw</span
+                                                    >{{ $t('betting.draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -3724,7 +3685,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                    >draw</span
+                                                    >{{ $t('betting.draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -3735,46 +3696,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                    >draw</span
-                                                  >
-                                                  <span class="fw-bold d-block"
-                                                    >3.45</span
-                                                  >
-                                                </div>
-                                              </div>
-                                            </td>
-                                            <td class="pt-4">
-                                              <div
-                                                class="top_matches__innercount d-flex align-items-center gap-2"
-                                              >
-                                                <div
-                                                  class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                                >
-                                                  <span
-                                                    class="fs-seven d-block mb-2"
-                                                    >draw</span
-                                                  >
-                                                  <span class="fw-bold d-block"
-                                                    >3.45</span
-                                                  >
-                                                </div>
-                                                <div
-                                                  class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                                >
-                                                  <span
-                                                    class="fs-seven d-block mb-2"
-                                                    >draw</span
-                                                  >
-                                                  <span class="fw-bold d-block"
-                                                    >3.45</span
-                                                  >
-                                                </div>
-                                                <div
-                                                  class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                                >
-                                                  <span
-                                                    class="fs-seven d-block mb-2"
-                                                    >draw</span
+                                                    >{{ $t('betting.draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -3791,7 +3713,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                    >draw</span
+                                                    >{{ $t('betting.draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -3802,7 +3724,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                    >draw</span
+                                                    >{{ $t('betting.draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -3813,7 +3735,46 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                    >draw</span
+                                                    >{{ $t('betting.draw') }}</span
+                                                  >
+                                                  <span class="fw-bold d-block"
+                                                    >3.45</span
+                                                  >
+                                                </div>
+                                              </div>
+                                            </td>
+                                            <td class="pt-4">
+                                              <div
+                                                class="top_matches__innercount d-flex align-items-center gap-2"
+                                              >
+                                                <div
+                                                  class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                                >
+                                                  <span
+                                                    class="fs-seven d-block mb-2"
+                                                    >{{ $t('betting.draw') }}</span
+                                                  >
+                                                  <span class="fw-bold d-block"
+                                                    >3.45</span
+                                                  >
+                                                </div>
+                                                <div
+                                                  class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                                >
+                                                  <span
+                                                    class="fs-seven d-block mb-2"
+                                                    >{{ $t('betting.draw') }}</span
+                                                  >
+                                                  <span class="fw-bold d-block"
+                                                    >3.45</span
+                                                  >
+                                                </div>
+                                                <div
+                                                  class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                                >
+                                                  <span
+                                                    class="fs-seven d-block mb-2"
+                                                    >{{ $t('betting.draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -3848,7 +3809,7 @@ import king from "@/assets/images/icon/king.png";
                                           alt="Icon"
                                         />
                                         <span class="fs-eight cpoint"
-                                          >International(5 overs)</span
+                                          >{{ $t('ui.international_5_overs') }}</span
                                         >
                                       </div>
                                       <div
@@ -3858,16 +3819,16 @@ import king from "@/assets/images/icon/king.png";
                                           src="@/assets/images/icon/live.png"
                                           width="{16}"
                                           height="{16}"
-                                          alt="icon"
+                                          :alt="$t('ui.icon')"
                                         />
                                         <img
                                           src="@/assets/images/icon/play.png"
                                           width="{16}"
                                           height="{16}"
-                                          alt="icon"
+                                          :alt="$t('ui.icon')"
                                         />
                                         <span class="fs-eight cpoint"
-                                          >1 INN, 0.5 OV</span
+                                          >{{ $t('ui.1_inn_0_5_ov') }}</span
                                         >
                                       </div>
                                     </div>
@@ -3886,7 +3847,7 @@ import king from "@/assets/images/icon/king.png";
                                             alt="Icon"
                                           />
                                           <span class="fs-seven cpoint"
-                                            >Australia</span
+                                            >{{ $t('ui.australia') }}</span
                                           >
                                         </div>
                                         <div
@@ -3900,7 +3861,7 @@ import king from "@/assets/images/icon/king.png";
                                             alt="Icon"
                                           />
                                           <span class="fs-seven cpoint"
-                                            >United Arab Emirates</span
+                                            >{{ $t('ui.united_arab_emirates') }}</span
                                           >
                                         </div>
                                       </div>
@@ -3943,11 +3904,10 @@ import king from "@/assets/images/icon/king.png";
                                           <tr class="text-center">
                                             <th scope="col">
                                               <span class="fs-eight"
-                                                >Winner
-                                              </span>
+                                                >{{ $t('betting.winner') }}</span>
                                             </th>
                                             <th scope="col">
-                                              <span class="fs-eight">1x2</span>
+                                              <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                             </th>
                                           </tr>
                                         </thead>
@@ -4051,7 +4011,7 @@ import king from "@/assets/images/icon/king.png";
                                           alt="Icon"
                                         />
                                         <span class="fs-eight cpoint"
-                                          >International (5 overs)</span
+                                          >{{ $t('ui.international_5_overs_2') }}</span
                                         >
                                       </div>
                                       <div
@@ -4061,16 +4021,16 @@ import king from "@/assets/images/icon/king.png";
                                           src="@/assets/images/icon/live.png"
                                           width="{16}"
                                           height="{16}"
-                                          alt="icon"
+                                          :alt="$t('ui.icon')"
                                         />
                                         <img
                                           src="@/assets/images/icon/play.png"
                                           width="{16}"
                                           height="{16}"
-                                          alt="icon"
+                                          :alt="$t('ui.icon')"
                                         />
                                         <span class="fs-eight cpoint"
-                                          >1 INN, 0.5 OV</span
+                                          >{{ $t('ui.1_inn_0_5_ov') }}</span
                                         >
                                       </div>
                                     </div>
@@ -4088,7 +4048,7 @@ import king from "@/assets/images/icon/king.png";
                                             alt="Icon"
                                           />
                                           <span class="fs-seven cpoint"
-                                            >CR Vasco da Gama RJ</span
+                                            >{{ $t('ui.cr_vasco_da_gama_rj') }}</span
                                           >
                                         </div>
                                         <div
@@ -4101,7 +4061,7 @@ import king from "@/assets/images/icon/king.png";
                                             alt="Icon"
                                           />
                                           <span class="fs-seven cpoint"
-                                            >SC Corinthians SP</span
+                                            >{{ $t('ui.sc_corinthians_sp') }}</span
                                           >
                                         </div>
                                       </div>
@@ -4139,17 +4099,17 @@ import king from "@/assets/images/icon/king.png";
                                           <tr class="text-center">
                                             <th scope="col">
                                               <span class="fs-eight"
-                                                >Winner</span
+                                                >{{ $t('betting.winner') }}</span
                                               >
                                             </th>
                                             <th scope="col">
                                               <span class="fs-eight"
-                                                >Total runs</span
+                                                >{{ $t('betting.total_runs') }}</span
                                               >
                                             </th>
                                             <th scope="col">
                                               <span class="fs-eight"
-                                                >PAK total runs</span
+                                                >{{ $t('ui.pak_total_runs') }}</span
                                               >
                                             </th>
                                           </tr>
@@ -4165,7 +4125,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                    >draw</span
+                                                    >{{ $t('betting.draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -4176,7 +4136,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                    >draw</span
+                                                    >{{ $t('betting.draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -4187,46 +4147,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                    >draw</span
-                                                  >
-                                                  <span class="fw-bold d-block"
-                                                    >3.45</span
-                                                  >
-                                                </div>
-                                              </div>
-                                            </td>
-                                            <td class="pt-4">
-                                              <div
-                                                class="top_matches__innercount d-flex align-items-center gap-2"
-                                              >
-                                                <div
-                                                  class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                                >
-                                                  <span
-                                                    class="fs-seven d-block mb-2"
-                                                    >draw</span
-                                                  >
-                                                  <span class="fw-bold d-block"
-                                                    >3.45</span
-                                                  >
-                                                </div>
-                                                <div
-                                                  class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                                >
-                                                  <span
-                                                    class="fs-seven d-block mb-2"
-                                                    >draw</span
-                                                  >
-                                                  <span class="fw-bold d-block"
-                                                    >3.45</span
-                                                  >
-                                                </div>
-                                                <div
-                                                  class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                                >
-                                                  <span
-                                                    class="fs-seven d-block mb-2"
-                                                    >draw</span
+                                                    >{{ $t('betting.draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -4243,7 +4164,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                    >draw</span
+                                                    >{{ $t('betting.draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -4254,7 +4175,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                    >draw</span
+                                                    >{{ $t('betting.draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -4265,7 +4186,46 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                    >draw</span
+                                                    >{{ $t('betting.draw') }}</span
+                                                  >
+                                                  <span class="fw-bold d-block"
+                                                    >3.45</span
+                                                  >
+                                                </div>
+                                              </div>
+                                            </td>
+                                            <td class="pt-4">
+                                              <div
+                                                class="top_matches__innercount d-flex align-items-center gap-2"
+                                              >
+                                                <div
+                                                  class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                                >
+                                                  <span
+                                                    class="fs-seven d-block mb-2"
+                                                    >{{ $t('betting.draw') }}</span
+                                                  >
+                                                  <span class="fw-bold d-block"
+                                                    >3.45</span
+                                                  >
+                                                </div>
+                                                <div
+                                                  class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                                >
+                                                  <span
+                                                    class="fs-seven d-block mb-2"
+                                                    >{{ $t('betting.draw') }}</span
+                                                  >
+                                                  <span class="fw-bold d-block"
+                                                    >3.45</span
+                                                  >
+                                                </div>
+                                                <div
+                                                  class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                                >
+                                                  <span
+                                                    class="fs-seven d-block mb-2"
+                                                    >{{ $t('betting.draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -4300,7 +4260,7 @@ import king from "@/assets/images/icon/king.png";
                                           alt="Icon"
                                         />
                                         <span class="fs-eight cpoint"
-                                          >International (5 overs)</span
+                                          >{{ $t('ui.international_5_overs_2') }}</span
                                         >
                                       </div>
                                       <div
@@ -4310,16 +4270,16 @@ import king from "@/assets/images/icon/king.png";
                                           src="@/assets/images/icon/live.png"
                                           width="{16}"
                                           height="{16}"
-                                          alt="icon"
+                                          :alt="$t('ui.icon')"
                                         />
                                         <img
                                           src="@/assets/images/icon/play.png"
                                           width="{16}"
                                           height="{16}"
-                                          alt="icon"
+                                          :alt="$t('ui.icon')"
                                         />
                                         <span class="fs-eight cpoint"
-                                          >1 INN, 0.5 OV</span
+                                          >{{ $t('ui.1_inn_0_5_ov') }}</span
                                         >
                                       </div>
                                     </div>
@@ -4337,7 +4297,7 @@ import king from "@/assets/images/icon/king.png";
                                             alt="Icon"
                                           />
                                           <span class="fs-seven cpoint"
-                                            >CR Vasco da Gama RJ</span
+                                            >{{ $t('ui.cr_vasco_da_gama_rj') }}</span
                                           >
                                         </div>
                                         <div
@@ -4350,7 +4310,7 @@ import king from "@/assets/images/icon/king.png";
                                             alt="Icon"
                                           />
                                           <span class="fs-seven cpoint"
-                                            >SC Corinthians SP</span
+                                            >{{ $t('ui.sc_corinthians_sp') }}</span
                                           >
                                         </div>
                                       </div>
@@ -4388,17 +4348,17 @@ import king from "@/assets/images/icon/king.png";
                                           <tr class="text-center">
                                             <th scope="col">
                                               <span class="fs-eight"
-                                                >Winner</span
+                                                >{{ $t('betting.winner') }}</span
                                               >
                                             </th>
                                             <th scope="col">
                                               <span class="fs-eight"
-                                                >Total runs</span
+                                                >{{ $t('betting.total_runs') }}</span
                                               >
                                             </th>
                                             <th scope="col">
                                               <span class="fs-eight"
-                                                >PAK total runs</span
+                                                >{{ $t('ui.pak_total_runs') }}</span
                                               >
                                             </th>
                                           </tr>
@@ -4414,7 +4374,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                    >draw</span
+                                                    >{{ $t('betting.draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -4425,7 +4385,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                    >draw</span
+                                                    >{{ $t('betting.draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -4436,46 +4396,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                    >draw</span
-                                                  >
-                                                  <span class="fw-bold d-block"
-                                                    >3.45</span
-                                                  >
-                                                </div>
-                                              </div>
-                                            </td>
-                                            <td class="pt-4">
-                                              <div
-                                                class="top_matches__innercount d-flex align-items-center gap-2"
-                                              >
-                                                <div
-                                                  class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                                >
-                                                  <span
-                                                    class="fs-seven d-block mb-2"
-                                                    >draw</span
-                                                  >
-                                                  <span class="fw-bold d-block"
-                                                    >3.45</span
-                                                  >
-                                                </div>
-                                                <div
-                                                  class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                                >
-                                                  <span
-                                                    class="fs-seven d-block mb-2"
-                                                    >draw</span
-                                                  >
-                                                  <span class="fw-bold d-block"
-                                                    >3.45</span
-                                                  >
-                                                </div>
-                                                <div
-                                                  class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
-                                                >
-                                                  <span
-                                                    class="fs-seven d-block mb-2"
-                                                    >draw</span
+                                                    >{{ $t('betting.draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -4492,7 +4413,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                    >draw</span
+                                                    >{{ $t('betting.draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -4503,7 +4424,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                    >draw</span
+                                                    >{{ $t('betting.draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -4514,7 +4435,46 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2"
-                                                    >draw</span
+                                                    >{{ $t('betting.draw') }}</span
+                                                  >
+                                                  <span class="fw-bold d-block"
+                                                    >3.45</span
+                                                  >
+                                                </div>
+                                              </div>
+                                            </td>
+                                            <td class="pt-4">
+                                              <div
+                                                class="top_matches__innercount d-flex align-items-center gap-2"
+                                              >
+                                                <div
+                                                  class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                                >
+                                                  <span
+                                                    class="fs-seven d-block mb-2"
+                                                    >{{ $t('betting.draw') }}</span
+                                                  >
+                                                  <span class="fw-bold d-block"
+                                                    >3.45</span
+                                                  >
+                                                </div>
+                                                <div
+                                                  class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                                >
+                                                  <span
+                                                    class="fs-seven d-block mb-2"
+                                                    >{{ $t('betting.draw') }}</span
+                                                  >
+                                                  <span class="fw-bold d-block"
+                                                    >3.45</span
+                                                  >
+                                                </div>
+                                                <div
+                                                  class="top_matches__innercount-item clickable-active py-1 px-8 rounded-3 n11-bg"
+                                                >
+                                                  <span
+                                                    class="fs-seven d-block mb-2"
+                                                    >{{ $t('betting.draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -4640,17 +4600,17 @@ import king from "@/assets/images/icon/king.png";
                                         <tr class="text-center">
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Winner (incl. overtime)</span
+                                              >{{ $t('betting.winner_incl_overtime_2') }}</span
                                             >
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Handicap (incl. overtime)</span
+                                              >{{ $t('betting.handicap_incl_overtime_2') }}</span
                                             >
                                           </th>
                                           <th scope="col">
                                             <span class="fs-eight"
-                                              >Total (incl overtime)</span
+                                              >{{ $t('betting.total_incl_overtime') }}</span
                                             >
                                           </th>
                                         </tr>
@@ -4810,7 +4770,7 @@ import king from "@/assets/images/icon/king.png";
                                           alt="Icon"
                                         />
                                         <span class="fs-eight cpoint"
-                                          >USA NBA All-time</span
+                                          >{{ $t('ui.usa_nba_all_time') }}</span
                                         >
                                       </div>
                                       <div
@@ -4851,7 +4811,7 @@ import king from "@/assets/images/icon/king.png";
                                             alt="Icon"
                                           />
                                           <span class="fs-seven cpoint"
-                                            >CF Tigres UANL</span
+                                            >{{ $t('ui.cf_tigres_uanl') }}</span
                                           >
                                         </div>
                                         <div
@@ -4864,7 +4824,7 @@ import king from "@/assets/images/icon/king.png";
                                             alt="Icon"
                                           />
                                           <span class="fs-seven cpoint"
-                                            >Club America</span
+                                            >{{ $t('ui.club_america') }}</span
                                           >
                                         </div>
                                       </div>
@@ -4896,15 +4856,15 @@ import king from "@/assets/images/icon/king.png";
                                           <tr class="text-center">
                                             <th scope="col">
                                               <span class="fs-eight"
-                                                >Winner (incl overtime)</span
+                                                >{{ $t('betting.winner_incl_overtime') }}</span
                                               >
                                             </th>
                                             <th scope="col">
-                                              <span class="fs-eight">1x2</span>
+                                              <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                             </th>
                                             <th scope="col">
                                               <span class="fs-eight"
-                                                >Total (incl overtime)</span
+                                                >{{ $t('betting.total_incl_overtime') }}</span
                                               >
                                             </th>
                                           </tr>
@@ -4931,7 +4891,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2 text-nowrap"
-                                                    >draw</span
+                                                    >{{ $t('betting.draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -4959,7 +4919,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2 text-nowrap"
-                                                    >1 or draw</span
+                                                    >{{ $t('betting.1_or_draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >1.39</span
@@ -4970,7 +4930,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2 text-nowrap"
-                                                    >1 or 2</span
+                                                    >{{ $t('betting.1_or_2') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -4981,7 +4941,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2 text-nowrap"
-                                                    >draw or 2</span
+                                                    >{{ $t('betting.draw_or_2') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >2.45</span
@@ -5055,7 +5015,7 @@ import king from "@/assets/images/icon/king.png";
                                           alt="Icon"
                                         />
                                         <span class="fs-eight cpoint"
-                                          >Turkiye Super Lig</span
+                                          >{{ $t('ui.turkiye_super_lig') }}</span
                                         >
                                       </div>
                                       <div
@@ -5096,7 +5056,7 @@ import king from "@/assets/images/icon/king.png";
                                             alt="Icon"
                                           />
                                           <span class="fs-seven cpoint"
-                                            >Petroleros de FC</span
+                                            >{{ $t('ui.petroleros_de_fc') }}</span
                                           >
                                         </div>
                                         <div
@@ -5109,7 +5069,7 @@ import king from "@/assets/images/icon/king.png";
                                             alt="Icon"
                                           />
                                           <span class="fs-seven cpoint"
-                                            >Escorpiones FC</span
+                                            >{{ $t('ui.escorpiones_fc') }}</span
                                           >
                                         </div>
                                       </div>
@@ -5141,15 +5101,15 @@ import king from "@/assets/images/icon/king.png";
                                           <tr class="text-center">
                                             <th scope="col">
                                               <span class="fs-eight"
-                                                >Winner (incl overtime)</span
+                                                >{{ $t('betting.winner_incl_overtime') }}</span
                                               >
                                             </th>
                                             <th scope="col">
-                                              <span class="fs-eight">1x2</span>
+                                              <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                             </th>
                                             <th scope="col">
                                               <span class="fs-eight"
-                                                >Total</span
+                                                >{{ $t('betting.total') }}</span
                                               >
                                             </th>
                                           </tr>
@@ -5176,7 +5136,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2 text-nowrap"
-                                                    >draw</span
+                                                    >{{ $t('betting.draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -5204,7 +5164,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2 text-nowrap"
-                                                    >1 or draw</span
+                                                    >{{ $t('betting.1_or_draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >1.39</span
@@ -5215,7 +5175,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2 text-nowrap"
-                                                    >1 or 2</span
+                                                    >{{ $t('betting.1_or_2') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -5226,7 +5186,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2 text-nowrap"
-                                                    >draw or 2</span
+                                                    >{{ $t('betting.draw_or_2') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >2.45</span
@@ -5300,7 +5260,7 @@ import king from "@/assets/images/icon/king.png";
                                           alt="Icon"
                                         />
                                         <span class="fs-eight cpoint"
-                                          >Belarus League A</span
+                                          >{{ $t('ui.belarus_league_a') }}</span
                                         >
                                       </div>
                                       <div
@@ -5325,7 +5285,7 @@ import king from "@/assets/images/icon/king.png";
                                             alt="Icon"
                                           />
                                           <span class="fs-seven cpoint"
-                                            >Mogilev</span
+                                            >{{ $t('ui.mogilev') }}</span
                                           >
                                         </div>
                                         <div
@@ -5338,7 +5298,7 @@ import king from "@/assets/images/icon/king.png";
                                             alt="Icon"
                                           />
                                           <span class="fs-seven cpoint"
-                                            >Pinsk</span
+                                            >{{ $t('ui.pinsk') }}</span
                                           >
                                         </div>
                                       </div>
@@ -5370,15 +5330,15 @@ import king from "@/assets/images/icon/king.png";
                                           <tr class="text-center">
                                             <th scope="col">
                                               <span class="fs-eight"
-                                                >Winner (incl overtime)</span
+                                                >{{ $t('betting.winner_incl_overtime') }}</span
                                               >
                                             </th>
                                             <th scope="col">
-                                              <span class="fs-eight">1x2</span>
+                                              <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                             </th>
                                             <th scope="col">
                                               <span class="fs-eight"
-                                                >Total (incl overtime)</span
+                                                >{{ $t('betting.total_incl_overtime') }}</span
                                               >
                                             </th>
                                           </tr>
@@ -5405,7 +5365,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2 text-nowrap"
-                                                    >draw</span
+                                                    >{{ $t('betting.draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -5433,7 +5393,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2 text-nowrap"
-                                                    >1 or draw</span
+                                                    >{{ $t('betting.1_or_draw') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >1.39</span
@@ -5444,7 +5404,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2 text-nowrap"
-                                                    >1 or 2</span
+                                                    >{{ $t('betting.1_or_2') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >3.45</span
@@ -5455,7 +5415,7 @@ import king from "@/assets/images/icon/king.png";
                                                 >
                                                   <span
                                                     class="fs-seven d-block mb-2 text-nowrap"
-                                                    >draw or 2</span
+                                                    >{{ $t('betting.draw_or_2') }}</span
                                                   >
                                                   <span class="fw-bold d-block"
                                                     >2.45</span

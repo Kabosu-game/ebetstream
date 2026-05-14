@@ -12,10 +12,9 @@
                   <div class="col-lg-6 col-md-7">
                     <div class="top10_content" data-aos="fade-right">
                       <span class="hero_badge mb-3 d-inline-block">
-                        <i class="fas fa-trophy me-2"></i>EBETSTREAM Championship
-                      </span>
+                        <i class="fas fa-trophy me-2"></i>{{ $t('ui.ebetstream_championship') }}</span>
                       <h2 class="hero_title mb-4">
-                        Structured championships by <span class="text_gradient">divisions</span><br />
+                        Structured championships by <span class="text_gradient">{{ $t('ui.divisions') }}</span><br />
                         Play. Challenge. Rise.
                       </h2>
                       <p class="hero_subtitle mb-5">
@@ -23,7 +22,7 @@
                       </p>
                       <div class="hero_actions d-flex flex-wrap gap-3">
                         <router-link to="/championships" class="btn_primary text-decoration-none">
-                          <span>View All Championships</span>
+                          <span>{{ $t('ui.view_all_championships') }}</span>
                           <i class="fas fa-arrow-right ms-2"></i>
                         </router-link>
                       </div>
@@ -36,8 +35,8 @@
                       <div class="floating_card card_top10">
                         <div class="card_icon"><i class="fas fa-trophy"></i></div>
                         <div class="card_content">
-                          <span class="card_label">Championships</span>
-                          <span class="card_value">Divisions</span>
+                          <span class="card_label">{{ $t('nav.championships') }}</span>
+                          <span class="card_value">{{ $t('ui.divisions_2') }}</span>
                         </div>
                       </div>
                     </div>
@@ -47,14 +46,14 @@
                   <div class="col-12 mt-5">
                     <div v-if="loading" class="text-center py-5">
                       <div class="spinner-border text-warning" role="status">
-                        <span class="visually-hidden">Loading...</span>
+                        <span class="visually-hidden">{{ $t('common.loading') }}</span>
                       </div>
                     </div>
                     <div v-else-if="error" class="alert alert-warning" role="alert">
                       {{ error }}
                     </div>
                     <div v-else-if="allChampionships.length === 0" class="text-center py-5">
-                      <p class="text-muted">No upcoming championships available at the moment.</p>
+                      <p class="text-muted">{{ $t('ui.no_upcoming_championships_available_at_the_moment') }}</p>
                     </div>
                     <div v-else>
                       <!-- Tabs Navigation -->
@@ -98,7 +97,7 @@
                       <!-- Division 1 Tab -->
                       <div v-if="activeTab === 'division1'" class="tab-content">
                         <div v-if="division1.length === 0" class="text-center py-5">
-                          <p class="text-muted">No championships available in Division 1 at the moment.</p>
+                          <p class="text-muted">{{ $t('ui.no_championships_available_in_division_1_at_the_moment') }}</p>
                         </div>
                         <div v-else class="top10_list row g-4">
                           <div 
@@ -117,7 +116,7 @@
                       <!-- Division 2 Tab -->
                       <div v-if="activeTab === 'division2'" class="tab-content">
                         <div v-if="division2.length === 0" class="text-center py-5">
-                          <p class="text-muted">No championships available in Division 2 at the moment.</p>
+                          <p class="text-muted">{{ $t('ui.no_championships_available_in_division_2_at_the_moment') }}</p>
                         </div>
                         <div v-else class="top10_list row g-4">
                           <div 
@@ -136,7 +135,7 @@
                       <!-- Division 3 Tab -->
                       <div v-if="activeTab === 'division3'" class="tab-content">
                         <div v-if="division3.length === 0" class="text-center py-5">
-                          <p class="text-muted">No championships available in Division 3 at the moment.</p>
+                          <p class="text-muted">{{ $t('ui.no_championships_available_in_division_3_at_the_moment') }}</p>
                         </div>
                         <div v-else class="top10_list row g-4">
                           <div 
@@ -165,6 +164,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient from '@/utils/axios';

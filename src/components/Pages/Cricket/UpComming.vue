@@ -10,7 +10,7 @@
                   class="top_matches__title d-flex align-items-center gap-2 mb-4 mb-md-6"
                 >
                   <img :src="clock" width="{32}" height="{32}" alt="Icon" />
-                  <h3>Upcoming Events</h3>
+                  <h3>{{ $t('betting.upcoming_events') }}</h3>
                 </div>
                 <div class="top_matches__content">
                   <div class="top_matches__cmncard p2-bg p-4 rounded-3 mb-4">
@@ -27,7 +27,7 @@
                                 height="{16}"
                                 alt="Icon"
                               />
-                              <span class="fs-eight cpoint">T20 World Cup</span>
+                              <span class="fs-eight cpoint">{{ $t('ui.t20_world_cup') }}</span>
                             </div>
                             <div
                               class="d-flex align-items-center gap-4 pe-xl-15 flex-nowrap flex-xl-wrap"
@@ -37,7 +37,7 @@
                                 :src="updown"
                                 width="{16}"
                                 height="{16}"
-                                alt="ion"
+                                :alt="$t('ui.ion')"
                               />
                             </div>
                           </div>
@@ -53,7 +53,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">Rwanda</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.rwanda') }}</span>
                               </div>
                               <div class="d-flex align-items-center gap-2">
                                 <img
@@ -63,7 +63,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">Tanzania</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.tanzania') }}</span>
                               </div>
                             </div>
                             <div
@@ -100,17 +100,17 @@
                                 <tr class="text-center">
                                   <th scope="col">
                                     <span class="fs-eight"
-                                      >Winner (incl. overtime)</span
+                                      >{{ $t('betting.winner_incl_overtime_2') }}</span
                                     >
                                   </th>
                                   <th scope="col">
                                     <span class="fs-eight"
-                                      >Handicap (incl. overtime)</span
+                                      >{{ $t('betting.handicap_incl_overtime_2') }}</span
                                     >
                                   </th>
                                   <th scope="col">
                                     <span class="fs-eight"
-                                      >Total (incl overtime)</span
+                                      >{{ $t('betting.total_incl_overtime') }}</span
                                     >
                                   </th>
                                 </tr>
@@ -251,7 +251,7 @@
                                 height="{16}"
                                 alt="Icon"
                               />
-                              <span class="fs-eight cpoint">T20 World Cup</span>
+                              <span class="fs-eight cpoint">{{ $t('ui.t20_world_cup') }}</span>
                             </div>
                             <div
                               class="d-flex align-items-center gap-4 pe-xl-15 flex-nowrap flex-xl-wrap"
@@ -261,7 +261,7 @@
                                 :src="updown"
                                 width="{16}"
                                 height="{16}"
-                                alt="ion"
+                                :alt="$t('ui.ion')"
                               />
                             </div>
                           </div>
@@ -277,7 +277,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">Rwanda</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.rwanda') }}</span>
                               </div>
                               <div class="d-flex align-items-center gap-2">
                                 <img
@@ -287,7 +287,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">Tanzania</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.tanzania') }}</span>
                               </div>
                             </div>
                             <div
@@ -324,17 +324,17 @@
                                 <tr class="text-center">
                                   <th scope="col">
                                     <span class="fs-eight"
-                                      >Winner (incl. overtime)</span
+                                      >{{ $t('betting.winner_incl_overtime_2') }}</span
                                     >
                                   </th>
                                   <th scope="col">
                                     <span class="fs-eight"
-                                      >Handicap (incl. overtime)</span
+                                      >{{ $t('betting.handicap_incl_overtime_2') }}</span
                                     >
                                   </th>
                                   <th scope="col">
                                     <span class="fs-eight"
-                                      >Total (incl overtime)</span
+                                      >{{ $t('betting.total_incl_overtime') }}</span
                                     >
                                   </th>
                                 </tr>
@@ -475,7 +475,7 @@
                                 height="{16}"
                                 alt="Icon"
                               />
-                              <span class="fs-eight cpoint">T20 World Cup</span>
+                              <span class="fs-eight cpoint">{{ $t('ui.t20_world_cup') }}</span>
                             </div>
                             <div
                               class="d-flex align-items-center gap-4 pe-xl-15 flex-nowrap flex-xl-wrap"
@@ -485,7 +485,7 @@
                                 :src="updown"
                                 width="{16}"
                                 height="{16}"
-                                alt="ion"
+                                :alt="$t('ui.ion')"
                               />
                             </div>
                           </div>
@@ -501,7 +501,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">Rwanda</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.rwanda') }}</span>
                               </div>
                               <div class="d-flex align-items-center gap-2">
                                 <img
@@ -511,7 +511,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">Tanzania</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.tanzania') }}</span>
                               </div>
                             </div>
                             <div
@@ -548,17 +548,17 @@
                                 <tr class="text-center">
                                   <th scope="col">
                                     <span class="fs-eight"
-                                      >Winner (incl. overtime)</span
+                                      >{{ $t('betting.winner_incl_overtime_2') }}</span
                                     >
                                   </th>
                                   <th scope="col">
                                     <span class="fs-eight"
-                                      >Handicap (incl. overtime)</span
+                                      >{{ $t('betting.handicap_incl_overtime_2') }}</span
                                     >
                                   </th>
                                   <th scope="col">
                                     <span class="fs-eight"
-                                      >Total (incl overtime)</span
+                                      >{{ $t('betting.total_incl_overtime') }}</span
                                     >
                                   </th>
                                 </tr>
@@ -700,7 +700,7 @@
                                 alt="Icon"
                               />
                               <span class="fs-eight cpoint"
-                                >International Euroleague</span
+                                >{{ $t('ui.international_euroleague') }}</span
                               >
                             </div>
                             <div
@@ -711,7 +711,7 @@
                                 :src="updown"
                                 width="{16}"
                                 height="{16}"
-                                alt="icon"
+                                :alt="$t('ui.icon')"
                               />
                             </div>
                           </div>
@@ -728,7 +728,7 @@
                                   alt="Icon"
                                 />
                                 <span class="fs-seven cpoint"
-                                  >Queensland Bulls</span
+                                  >{{ $t('ui.queensland_bulls') }}</span
                                 >
                               </div>
                               <div class="d-flex align-items-center gap-2">
@@ -740,7 +740,7 @@
                                   alt="Icon"
                                 />
                                 <span class="fs-seven cpoint"
-                                  >Western Australia</span
+                                  >{{ $t('ui.western_australia') }}</span
                                 >
                               </div>
                             </div>
@@ -772,13 +772,13 @@
                               <thead>
                                 <tr class="text-center">
                                   <th scope="col">
-                                    <span class="fs-eight">Draw no bet </span>
+                                    <span class="fs-eight">{{ $t('betting.draw_no_bet') }}</span>
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">First innings</span>
+                                    <span class="fs-eight">{{ $t('betting.first_innings') }}</span>
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">First over 96</span>
+                                    <span class="fs-eight">{{ $t('ui.first_over_96') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -889,7 +889,7 @@
                                 alt="Icon"
                               />
                               <span class="fs-eight cpoint"
-                                >International Euroleague</span
+                                >{{ $t('ui.international_euroleague') }}</span
                               >
                             </div>
                             <div
@@ -900,7 +900,7 @@
                                 :src="updown"
                                 width="{16}"
                                 height="{16}"
-                                alt="icon"
+                                :alt="$t('ui.icon')"
                               />
                             </div>
                           </div>
@@ -917,7 +917,7 @@
                                   alt="Icon"
                                 />
                                 <span class="fs-seven cpoint"
-                                  >Queensland Bulls</span
+                                  >{{ $t('ui.queensland_bulls') }}</span
                                 >
                               </div>
                               <div class="d-flex align-items-center gap-2">
@@ -929,7 +929,7 @@
                                   alt="Icon"
                                 />
                                 <span class="fs-seven cpoint"
-                                  >Western Australia</span
+                                  >{{ $t('ui.western_australia') }}</span
                                 >
                               </div>
                             </div>
@@ -961,13 +961,13 @@
                               <thead>
                                 <tr class="text-center">
                                   <th scope="col">
-                                    <span class="fs-eight">Draw no bet </span>
+                                    <span class="fs-eight">{{ $t('betting.draw_no_bet') }}</span>
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">First innings</span>
+                                    <span class="fs-eight">{{ $t('betting.first_innings') }}</span>
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">First over 96</span>
+                                    <span class="fs-eight">{{ $t('ui.first_over_96') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -1078,7 +1078,7 @@
                                 alt="Icon"
                               />
                               <span class="fs-eight cpoint"
-                                >International Euroleague</span
+                                >{{ $t('ui.international_euroleague') }}</span
                               >
                             </div>
                             <div
@@ -1089,7 +1089,7 @@
                                 :src="updown"
                                 width="{16}"
                                 height="{16}"
-                                alt="icon"
+                                :alt="$t('ui.icon')"
                               />
                             </div>
                           </div>
@@ -1106,7 +1106,7 @@
                                   alt="Icon"
                                 />
                                 <span class="fs-seven cpoint"
-                                  >Queensland Bulls</span
+                                  >{{ $t('ui.queensland_bulls') }}</span
                                 >
                               </div>
                               <div class="d-flex align-items-center gap-2">
@@ -1118,7 +1118,7 @@
                                   alt="Icon"
                                 />
                                 <span class="fs-seven cpoint"
-                                  >Western Australia</span
+                                  >{{ $t('ui.western_australia') }}</span
                                 >
                               </div>
                             </div>
@@ -1151,11 +1151,10 @@
                                 <tr class="text-center">
                                   <th scope="col">
                                     <span class="fs-eight"
-                                      >Winner (super over)
-                                    </span>
+                                      >{{ $t('ui.winner_super_over') }}</span>
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">Winner</span>
+                                    <span class="fs-eight">{{ $t('betting.winner') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -1238,7 +1237,7 @@
                                 alt="Icon"
                               />
                               <span class="fs-eight cpoint"
-                                >International Euroleague</span
+                                >{{ $t('ui.international_euroleague') }}</span
                               >
                             </div>
                             <div
@@ -1249,7 +1248,7 @@
                                 :src="updown"
                                 width="{16}"
                                 height="{16}"
-                                alt="icon"
+                                :alt="$t('ui.icon')"
                               />
                             </div>
                           </div>
@@ -1266,7 +1265,7 @@
                                   alt="Icon"
                                 />
                                 <span class="fs-seven cpoint"
-                                  >Queensland Bulls</span
+                                  >{{ $t('ui.queensland_bulls') }}</span
                                 >
                               </div>
                               <div class="d-flex align-items-center gap-2">
@@ -1278,7 +1277,7 @@
                                   alt="Icon"
                                 />
                                 <span class="fs-seven cpoint"
-                                  >Western Australia</span
+                                  >{{ $t('ui.western_australia') }}</span
                                 >
                               </div>
                             </div>
@@ -1311,11 +1310,10 @@
                                 <tr class="text-center">
                                   <th scope="col">
                                     <span class="fs-eight"
-                                      >Winner (super over)
-                                    </span>
+                                      >{{ $t('ui.winner_super_over') }}</span>
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">Winner</span>
+                                    <span class="fs-eight">{{ $t('betting.winner') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -1394,6 +1392,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import clock from "@/assets/images/icon/clock-icon.png";
 import cricket from "@/assets/images/icon/cricket.png";
 import chart from "@/assets/images/icon/line-chart.png";

@@ -21,7 +21,7 @@
                       />
                       <div class="top_matches__winnercard-obi">
                         <span class="mb-3 n4-color">Dec 25, 10:00</span>
-                        <h5>UK Politics - Prime Minister After Election</h5>
+                        <h5>{{ $t('ui.uk_politics_prime_minister_after_election') }}</h5>
                       </div>
                     </div>
                     <div class="row gy-2">
@@ -30,7 +30,7 @@
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Labour Party</span>
+                            <span>{{ $t('ui.labour_party') }}</span>
                             <span>4.5</span>
                           </div>
                         </div>
@@ -40,7 +40,7 @@
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>No Overall Majority</span>
+                            <span>{{ $t('ui.no_overall_majority') }}</span>
                             <span>6.5</span>
                           </div>
                         </div>
@@ -50,7 +50,7 @@
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Conservative Party</span>
+                            <span>{{ $t('ui.conservative_party') }}</span>
                             <span>6.5</span>
                           </div>
                         </div>
@@ -68,6 +68,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import specials2 from "@/assets/images/icon/specials2.png";
 </script>
 

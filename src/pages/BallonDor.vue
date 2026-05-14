@@ -11,10 +11,9 @@
                 <div class="col-lg-6 col-md-7">
                   <div class="defis_content" data-aos="fade-right">
                     <span class="hero_badge mb-3 d-inline-block">
-                      <i class="fas fa-trophy"></i> Ballon d'Or EBETSTREAM
-                    </span>
+                      <i class="fas fa-trophy"></i>{{ $t('ui.ballon_dor_ebetstream') }}</span>
                     <h2 class="hero_title mb-4">
-                      Vote for <span class="text_gradient">Season Awards</span><br />
+                      Vote for <span class="text_gradient">{{ $t('ui.season_awards') }}</span><br />
                       and celebrate excellence!
                     </h2>
                     <p class="hero_subtitle mb-5">
@@ -29,17 +28,14 @@
                         v-if="season && season.isVotingOpen && season.isVotingOpen()" 
                         class="badge bg-success px-4 py-2"
                       >
-                        <i class="fas fa-vote-yea me-2"></i>Voting Open
-                      </span>
+                        <i class="fas fa-vote-yea me-2"></i>{{ $t('ui.voting_open') }}</span>
                       <span 
                         v-else-if="season.status === 'completed'" 
                         class="badge bg-warning px-4 py-2"
                       >
-                        <i class="fas fa-trophy me-2"></i>Season Completed
-                      </span>
+                        <i class="fas fa-trophy me-2"></i>{{ $t('ui.season_completed') }}</span>
                       <span v-else class="badge bg-secondary px-4 py-2">
-                        <i class="fas fa-clock me-2"></i>Voting Closed
-                      </span>
+                        <i class="fas fa-clock me-2"></i>{{ $t('ui.voting_closed') }}</span>
                     </div>
                     <router-link 
                       v-if="season && season.status === 'completed'"
@@ -47,7 +43,7 @@
                       class="btn_secondary text-decoration-none"
                     >
                       <i class="fas fa-chart-bar me-2"></i>
-                      <span>View Results</span>
+                      <span>{{ $t('ui.view_results') }}</span>
                     </router-link>
                   </div>
                 </div>
@@ -58,8 +54,8 @@
                     <div class="floating_card card_defis">
                       <div class="card_icon"><i class="fas fa-trophy"></i></div>
                       <div class="card_content">
-                        <span class="card_label">Awards</span>
-                        <span class="card_value">Season End</span>
+                        <span class="card_label">{{ $t('ui.awards') }}</span>
+                        <span class="card_value">{{ $t('ui.season_end') }}</span>
                       </div>
                     </div>
                   </div>
@@ -70,7 +66,7 @@
               <div v-if="loading" class="row mt-5">
                 <div class="col-12 text-center py-5">
                   <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-                    <span class="visually-hidden">Loading...</span>
+                    <span class="visually-hidden">{{ $t('common.loading') }}</span>
                   </div>
                 </div>
               </div>
@@ -129,8 +125,7 @@
                                   {{ nomination.vote_count }} vote{{ nomination.vote_count > 1 ? 's' : '' }}
                                 </span>
                                 <span v-if="nomination.is_winner" class="badge bg-success">
-                                  <i class="fas fa-crown me-1"></i>Winner
-                                </span>
+                                  <i class="fas fa-crown me-1"></i>{{ $t('betting.winner') }}</span>
                               </div>
                             </div>
                           </div>
@@ -143,16 +138,14 @@
                             @click="voteForNomination(nomination.id, 'player')"
                             :disabled="voting"
                           >
-                            <i class="fas fa-vote-yea me-2"></i>Vote
-                          </button>
+                            <i class="fas fa-vote-yea me-2"></i>{{ $t('ui.vote') }}</button>
                           <div v-else-if="hasVotedPlayer && myVotes.player && myVotes.player.nomination_id === nomination.id" class="alert alert-success py-2 mb-0 mt-auto">
-                            <i class="fas fa-check-circle me-2"></i>You voted
-                          </div>
+                            <i class="fas fa-check-circle me-2"></i>{{ $t('ui.you_voted') }}</div>
                         </div>
                       </div>
                     </div>
                     <div v-else class="text-center py-5">
-                      <p class="text-white-50">No nominations at the moment</p>
+                      <p class="text-white-50">{{ $t('ui.no_nominations_at_the_moment') }}</p>
                     </div>
                   </div>
                 </div>
@@ -200,8 +193,7 @@
                                   {{ nomination.vote_count }} vote{{ nomination.vote_count > 1 ? 's' : '' }}
                                 </span>
                                 <span v-if="nomination.is_winner" class="badge bg-success">
-                                  <i class="fas fa-crown me-1"></i>Winner
-                                </span>
+                                  <i class="fas fa-crown me-1"></i>{{ $t('betting.winner') }}</span>
                               </div>
                             </div>
                           </div>
@@ -214,16 +206,14 @@
                             @click="voteForNomination(nomination.id, 'clan')"
                             :disabled="voting"
                           >
-                            <i class="fas fa-vote-yea me-2"></i>Vote
-                          </button>
+                            <i class="fas fa-vote-yea me-2"></i>{{ $t('ui.vote') }}</button>
                           <div v-else-if="hasVotedClan && myVotes.clan && myVotes.clan.nomination_id === nomination.id" class="alert alert-success py-2 mb-0 mt-auto">
-                            <i class="fas fa-check-circle me-2"></i>You voted
-                          </div>
+                            <i class="fas fa-check-circle me-2"></i>{{ $t('ui.you_voted') }}</div>
                         </div>
                       </div>
                     </div>
                     <div v-else class="text-center py-5">
-                      <p class="text-white-50">No nominations at the moment</p>
+                      <p class="text-white-50">{{ $t('ui.no_nominations_at_the_moment') }}</p>
                     </div>
                   </div>
                 </div>
@@ -271,8 +261,7 @@
                                   {{ nomination.vote_count }} vote{{ nomination.vote_count > 1 ? 's' : '' }}
                                 </span>
                                 <span v-if="nomination.is_winner" class="badge bg-success">
-                                  <i class="fas fa-crown me-1"></i>Winner
-                                </span>
+                                  <i class="fas fa-crown me-1"></i>{{ $t('betting.winner') }}</span>
                               </div>
                             </div>
                           </div>
@@ -285,16 +274,14 @@
                             @click="voteForNomination(nomination.id, 'team')"
                             :disabled="voting"
                           >
-                            <i class="fas fa-vote-yea me-2"></i>Vote
-                          </button>
+                            <i class="fas fa-vote-yea me-2"></i>{{ $t('ui.vote') }}</button>
                           <div v-else-if="hasVotedTeam && myVotes.team && myVotes.team.nomination_id === nomination.id" class="alert alert-success py-2 mb-0 mt-auto">
-                            <i class="fas fa-check-circle me-2"></i>You voted
-                          </div>
+                            <i class="fas fa-check-circle me-2"></i>{{ $t('ui.you_voted') }}</div>
                         </div>
                       </div>
                     </div>
                     <div v-else class="text-center py-5">
-                      <p class="text-white-50">No nominations at the moment</p>
+                      <p class="text-white-50">{{ $t('ui.no_nominations_at_the_moment') }}</p>
                     </div>
                   </div>
                 </div>
@@ -308,6 +295,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted, computed } from "vue";
 import apiClient from "@/utils/axios";
 

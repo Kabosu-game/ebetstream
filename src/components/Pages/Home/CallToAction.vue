@@ -13,20 +13,18 @@
                   <div class="col-lg-6 col-md-7">
                     <div class="top10_content" data-aos="fade-right">
                       <span class="hero_badge mb-3 d-inline-block">
-                        <i class="fas fa-rocket me-2"></i>Ready for Adventure
-                      </span>
+                        <i class="fas fa-rocket me-2"></i>{{ $t('ui.ready_for_adventure') }}</span>
                       <h2 class="hero_title mb-4">
-                        Join millions of players in the <span class="text_gradient">eBetStream</span> universe
-                      </h2>
+                        Join millions of players in the <span class="text_gradient">{{ $t('ui.ebetstream_2') }}</span>{{ $t('ui.universe') }}</h2>
                     
                       <div class="hero_actions d-flex flex-wrap gap-3">
                         <router-link to="/create-account" class="btn_primary btn-lg text-decoration-none">
-                          <span>Sign Up Now</span>
+                          <span>{{ $t('ui.sign_up_now') }}</span>
                           <i class="fas fa-arrow-right ms-2"></i>
                         </router-link>
                         <router-link to="/about" class="btn_secondary btn-lg text-decoration-none">
                           <i class="fas fa-info-circle me-2"></i>
-                          <span>Discover More</span>
+                          <span>{{ $t('ui.discover_more') }}</span>
                         </router-link>
                       </div>
                     </div>
@@ -38,8 +36,8 @@
                       <div class="floating_card card_top10">
                         <div class="card_icon"><i class="fas fa-rocket"></i></div>
                         <div class="card_content">
-                          <span class="card_label">Adventure</span>
-                          <span class="card_value">Cyber Gaming</span>
+                          <span class="card_label">{{ $t('ui.adventure') }}</span>
+                          <span class="card_value">{{ $t('ui.cyber_gaming') }}</span>
                         </div>
                       </div>
                     </div>
@@ -56,6 +54,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { useRouter } from "vue-router";
 
 const router = useRouter();

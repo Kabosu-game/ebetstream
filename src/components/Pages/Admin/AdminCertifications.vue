@@ -1,22 +1,22 @@
 <template>
   <div class="pay_method__paymethod p-3 p-md-4 p-lg-6 p2-bg rounded-8">
     <div class="pay_method__paymethod-title mb-5 mb-md-6">
-      <h2 class="text-white fw-bold mb-2">Certification Management</h2>
-      <p class="text-white-50">Manage all certification requests</p>
+      <h2 class="text-white fw-bold mb-2">{{ $t('ui.certification_management') }}</h2>
+      <p class="text-white-50">{{ $t('ui.manage_all_certification_requests') }}</p>
     </div>
 
     <div class="d-flex gap-3 mb-4 flex-wrap">
       <select v-model="filterStatus" class="form-select n11-bg text-white border-secondary" style="max-width: 200px;">
-        <option value="">All Statuses</option>
-        <option value="pending">Pending</option>
-        <option value="approved">Approved</option>
-        <option value="rejected">Rejected</option>
+        <option value="">{{ $t('ui.all_statuses') }}</option>
+        <option value="pending">{{ $t('common.pending') }}</option>
+        <option value="approved">{{ $t('common.approved') }}</option>
+        <option value="rejected">{{ $t('common.rejected') }}</option>
       </select>
     </div>
 
     <div v-if="loading" class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+        <span class="visually-hidden">{{ $t('common.loading') }}</span>
       </div>
     </div>
 
@@ -25,14 +25,14 @@
         <table class="w-100 text-center p2-bg">
           <thead>
             <tr>
-              <th class="text-white p-3">ID</th>
-              <th class="text-white p-3">User</th>
-              <th class="text-white p-3">Date of Birth</th>
-              <th class="text-white p-3">ID Type</th>
-              <th class="text-white p-3">ID Number</th>
-              <th class="text-white p-3">Status</th>
-              <th class="text-white p-3">Request Date</th>
-              <th class="text-white p-3">Actions</th>
+              <th class="text-white p-3">{{ $t('common.id') }}</th>
+              <th class="text-white p-3">{{ $t('common.user') }}</th>
+              <th class="text-white p-3">{{ $t('ui.date_of_birth_2') }}</th>
+              <th class="text-white p-3">{{ $t('ui.id_type') }}</th>
+              <th class="text-white p-3">{{ $t('ui.id_number') }}</th>
+              <th class="text-white p-3">{{ $t('common.status') }}</th>
+              <th class="text-white p-3">{{ $t('ui.request_date') }}</th>
+              <th class="text-white p-3">{{ $t('common.actions') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -98,7 +98,7 @@
               </td>
             </tr>
             <tr v-if="filteredCertifications.length === 0">
-              <td colspan="8" class="text-white p-5 text-center">No certification requests</td>
+              <td colspan="8" class="text-white p-5 text-center">{{ $t('ui.no_certification_requests') }}</td>
             </tr>
           </tbody>
         </table>
@@ -110,33 +110,33 @@
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content n11-bg border-secondary">
           <div class="modal-header border-secondary">
-            <h5 class="modal-title text-white">Request Details</h5>
+            <h5 class="modal-title text-white">{{ $t('ui.request_details') }}</h5>
             <button type="button" class="btn-close btn-close-white" @click="showDetailsModal = false"></button>
           </div>
           <div class="modal-body text-white" v-if="selectedCert">
             <div class="row g-3 mb-4">
               <div class="col-md-6">
-                <strong>User:</strong>
+                <strong>{{ $t('ui.user') }}</strong>
                 <p>{{ selectedCert.user?.username || selectedCert.user?.email }}</p>
               </div>
               <div class="col-md-6">
-                <strong>Email:</strong>
+                <strong>{{ $t('ui.email') }}</strong>
                 <p>{{ selectedCert.user?.email }}</p>
               </div>
               <div class="col-md-6">
-                <strong>Date of Birth:</strong>
+                <strong>{{ $t('ui.date_of_birth') }}</strong>
                 <p>{{ formatDate(selectedCert.date_of_birth) }}</p>
               </div>
               <div class="col-md-6">
-                <strong>ID Type:</strong>
+                <strong>{{ $t('ui.id_type_2') }}</strong>
                 <p>{{ selectedCert.id_type ? getIdTypeLabel(selectedCert.id_type) : 'Not provided' }}</p>
               </div>
               <div class="col-md-6">
-                <strong>ID Number:</strong>
+                <strong>{{ $t('ui.id_number_2') }}</strong>
                 <p class="font-monospace">{{ selectedCert.id_number || 'Not provided' }}</p>
               </div>
               <div class="col-12" v-if="selectedCert.verification_data">
-                <strong>Verified Conditions:</strong>
+                <strong>{{ $t('ui.verified_conditions') }}</strong>
                 <div class="mt-2">
                   <template v-for="(condition, key) in selectedCert.verification_data" :key="key">
                     <div v-if="String(key) !== 'all_met'" class="mb-2">
@@ -150,7 +150,7 @@
                 </div>
               </div>
               <div class="col-12" v-if="selectedCert.rejection_reason">
-                <strong class="text-danger">Rejection Reason:</strong>
+                <strong class="text-danger">{{ $t('ui.rejection_reason_2') }}</strong>
                 <p class="text-danger">{{ selectedCert.rejection_reason }}</p>
               </div>
             </div>
@@ -164,23 +164,23 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content n11-bg border-secondary">
           <div class="modal-header border-secondary">
-            <h5 class="modal-title text-white">Reject Certification</h5>
+            <h5 class="modal-title text-white">{{ $t('ui.reject_certification') }}</h5>
             <button type="button" class="btn-close btn-close-white" @click="showRejectModalFlag = false"></button>
           </div>
           <div class="modal-body text-white">
             <div class="mb-3">
-              <label class="form-label">Rejection Reason <span class="text-danger">*</span></label>
+              <label class="form-label">{{ $t('ui.rejection_reason_3') }}<span class="text-danger">*</span></label>
               <textarea 
                 v-model="rejectionReason" 
                 class="form-control n11-bg text-white border-secondary" 
                 rows="4"
-                placeholder="Explain why this request is being rejected..."
+                :placeholder="$t('ui.explain_why_this_request_is_being_rejected')"
                 required
               ></textarea>
             </div>
           </div>
           <div class="modal-footer border-secondary">
-            <button type="button" class="btn btn-secondary" @click="showRejectModalFlag = false">Cancel</button>
+            <button type="button" class="btn btn-secondary" @click="showRejectModalFlag = false">{{ $t('common.cancel') }}</button>
             <button 
               type="button" 
               class="btn btn-danger" 
@@ -197,6 +197,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, computed, onMounted } from 'vue';
 import apiClient from '@/utils/axios';
 

@@ -3,7 +3,7 @@
     <div class="tw-section-header">
       <div class="tw-section-header__left">
         <i class="ti ti-trophy tw-section-icon"></i>
-        <h2 class="tw-section-title">Top 10 des meilleurs joueurs</h2>
+        <h2 class="tw-section-title">{{ $t('ui.top_10_des_meilleurs_joueurs') }}</h2>
       </div>
       <router-link to="/players" class="tw-see-all">
         Voir tout <i class="fas fa-chevron-right"></i>
@@ -25,7 +25,7 @@
 
     <div v-else-if="topPlayers.length === 0" class="tw-empty-state">
       <i class="ti ti-users tw-empty-state__icon"></i>
-      <p>Aucun joueur disponible pour le moment.</p>
+      <p>{{ $t('ui.aucun_joueur_disponible_pour_le_moment') }}</p>
     </div>
 
     <div v-else class="tw-top10-list">
@@ -38,8 +38,8 @@
       >
         <div class="tw-top10-rank">
           <span v-if="index === 0" class="tw-top10-medal"><i class="fas fa-medal" style="color:#ffd700"></i></span>
-          <span v-else-if="index === 1" class="tw-top10-medal">🥈</span>
-          <span v-else-if="index === 2" class="tw-top10-medal">🥉</span>
+          <span v-else-if="index === 1" class="tw-top10-medal">{{ $t('ui.text_5') }}</span>
+          <span v-else-if="index === 2" class="tw-top10-medal">{{ $t('ui.text_6') }}</span>
           <span v-else class="tw-top10-rank-num">#{{ index + 1 }}</span>
         </div>
 
@@ -47,7 +47,7 @@
           <img
             v-if="player.avatar_url"
             :src="player.avatar_url"
-            :alt="player.name"
+            :alt="$t('ui.player_name_2')"
             @error="handleImageError($event)"
           />
           <i v-else class="fas fa-user"></i>
@@ -63,7 +63,7 @@
 
         <div class="tw-top10-score">
           <span class="tw-top10-score-val">{{ player.score }}</span>
-          <span class="tw-top10-score-lbl">pts</span>
+          <span class="tw-top10-score-lbl">{{ $t('ui.pts') }}</span>
         </div>
       </div>
     </div>
@@ -71,6 +71,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient from '@/utils/axios';

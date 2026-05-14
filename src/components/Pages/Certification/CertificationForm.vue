@@ -3,10 +3,10 @@
     <form @submit.prevent="submitForm" class="needs-validation" novalidate>
       <!-- Personal Information -->
       <div class="mb-4">
-        <h4 class="text-white mb-3">Personal Information</h4>
+        <h4 class="text-white mb-3">{{ $t('ui.personal_information') }}</h4>
         <div class="row g-3">
           <div class="col-md-6">
-            <label class="form-label text-white">Full Name *</label>
+            <label class="form-label text-white">{{ $t('ui.full_name_3') }}</label>
             <input 
               v-model="form.full_name" 
               type="text" 
@@ -15,7 +15,7 @@
             />
           </div>
           <div class="col-md-6">
-            <label class="form-label text-white">Date of Birth</label>
+            <label class="form-label text-white">{{ $t('ui.date_of_birth_2') }}</label>
             <input 
               v-model="form.birth_date" 
               type="date" 
@@ -23,7 +23,7 @@
             />
           </div>
           <div class="col-md-6">
-            <label class="form-label text-white">Country</label>
+            <label class="form-label text-white">{{ $t('common.country') }}</label>
             <input 
               v-model="form.country" 
               type="text" 
@@ -31,7 +31,7 @@
             />
           </div>
           <div class="col-md-6">
-            <label class="form-label text-white">City</label>
+            <label class="form-label text-white">{{ $t('ui.city') }}</label>
             <input 
               v-model="form.city" 
               type="text" 
@@ -39,7 +39,7 @@
             />
           </div>
           <div class="col-md-6">
-            <label class="form-label text-white">Phone *</label>
+            <label class="form-label text-white">{{ $t('ui.phone_3') }}</label>
             <input 
               v-model="form.phone" 
               type="tel" 
@@ -48,7 +48,7 @@
             />
           </div>
           <div class="col-md-6">
-            <label class="form-label text-white">Professional Email *</label>
+            <label class="form-label text-white">{{ $t('ui.professional_email') }}</label>
             <input 
               v-model="form.professional_email" 
               type="email" 
@@ -61,53 +61,53 @@
 
       <!-- Professional Information -->
       <div class="mb-4">
-        <h4 class="text-white mb-3">Professional Information</h4>
+        <h4 class="text-white mb-3">{{ $t('ui.professional_information') }}</h4>
         <div class="mb-3">
-          <label class="form-label text-white">E-sport Experience</label>
+          <label class="form-label text-white">{{ $t('ui.e_sport_experience') }}</label>
           <textarea 
             v-model="form.experience" 
             class="form-control n11-bg text-white border-secondary" 
             rows="4"
-            placeholder="Describe your experience in e-sports, tournaments organized, etc."
+            :placeholder="$t('ui.describe_your_experience_in_e_sports_tournaments_organized_e')"
           ></textarea>
         </div>
         <div class="mb-3">
-          <label class="form-label text-white">Availability</label>
+          <label class="form-label text-white">{{ $t('ui.availability_2') }}</label>
           <textarea 
             v-model="form.availability" 
             class="form-control n11-bg text-white border-secondary" 
             rows="3"
-            placeholder="Indicate your availability (days, hours)"
+            :placeholder="$t('ui.indicate_your_availability_days_hours')"
           ></textarea>
         </div>
         <div class="mb-3">
-          <label class="form-label text-white">Technical Skills</label>
+          <label class="form-label text-white">{{ $t('ui.technical_skills_2') }}</label>
           <textarea 
             v-model="form.technical_skills" 
             class="form-control n11-bg text-white border-secondary" 
             rows="3"
-            placeholder="List your technical skills"
+            :placeholder="$t('ui.list_your_technical_skills')"
           ></textarea>
         </div>
       </div>
 
       <!-- Type-specific Documents -->
       <div class="mb-4">
-        <h4 class="text-white mb-3">Specific Documents</h4>
+        <h4 class="text-white mb-3">{{ $t('ui.specific_documents') }}</h4>
         
         <!-- Organizer -->
         <div v-if="type === 'organizer'">
           <div class="mb-3">
-            <label class="form-label text-white">Proof of Organized Event (link or description)</label>
+            <label class="form-label text-white">{{ $t('ui.proof_of_organized_event_link_or_description') }}</label>
             <textarea 
               v-model="form.event_proof" 
               class="form-control n11-bg text-white border-secondary" 
               rows="3"
-              placeholder="Link to the event, poster, results..."
+              :placeholder="$t('ui.link_to_the_event_poster_results')"
             ></textarea>
           </div>
           <div class="mb-3">
-            <label class="form-label text-white">Tournament Structure (document)</label>
+            <label class="form-label text-white">{{ $t('ui.tournament_structure_document') }}</label>
             <input 
               type="file" 
               @change="handleFileUpload($event, 'tournament_structure')"
@@ -116,12 +116,12 @@
             />
           </div>
           <div class="mb-3">
-            <label class="form-label text-white">Professional Contact Information</label>
+            <label class="form-label text-white">{{ $t('ui.professional_contact_information') }}</label>
             <textarea 
               v-model="form.professional_contacts" 
               class="form-control n11-bg text-white border-secondary" 
               rows="2"
-              placeholder="Email, phone, professional social networks"
+              :placeholder="$t('ui.email_phone_professional_social_networks')"
             ></textarea>
           </div>
         </div>
@@ -129,30 +129,30 @@
         <!-- Referee -->
         <div v-if="type === 'referee'">
           <div class="mb-3">
-            <label class="form-label text-white">Mini CV</label>
+            <label class="form-label text-white">{{ $t('ui.mini_cv_2') }}</label>
             <textarea 
               v-model="form.mini_cv" 
               class="form-control n11-bg text-white border-secondary" 
               rows="4"
-              placeholder="Experience in gaming, refereeing, moderation..."
+              :placeholder="$t('ui.experience_in_gaming_refereeing_moderation')"
             ></textarea>
           </div>
           <div class="mb-3">
-            <label class="form-label text-white">Presentation Video (link)</label>
+            <label class="form-label text-white">{{ $t('ui.presentation_video_link') }}</label>
             <input 
               v-model="form.presentation_video" 
               type="url" 
               class="form-control n11-bg text-white border-secondary"
-              placeholder="Link to the video (YouTube, Vimeo, etc.)"
+              :placeholder="$t('ui.link_to_the_video_youtube_vimeo_etc')"
             />
           </div>
           <div class="mb-3">
-            <label class="form-label text-white">Proof of Activity in Gaming Communities</label>
+            <label class="form-label text-white">{{ $t('ui.proof_of_activity_in_gaming_communities') }}</label>
             <textarea 
               v-model="form.community_proof" 
               class="form-control n11-bg text-white border-secondary" 
               rows="3"
-              placeholder="Discord, Facebook, forums, etc."
+              :placeholder="$t('ui.discord_facebook_forums_etc')"
             ></textarea>
           </div>
         </div>
@@ -160,31 +160,31 @@
         <!-- Ambassador -->
         <div v-if="type === 'ambassador'">
           <div class="mb-3">
-            <label class="form-label text-white">Social Media Links *</label>
+            <label class="form-label text-white">{{ $t('ui.social_media_links_2') }}</label>
             <textarea 
               v-model="form.social_media_links" 
               class="form-control n11-bg text-white border-secondary" 
               rows="4"
-              placeholder="Instagram, Twitter, TikTok, YouTube, etc. (one per line)"
+              :placeholder="$t('ui.instagram_twitter_tiktok_youtube_etc_one_per_line')"
               required
             ></textarea>
           </div>
           <div class="mb-3">
-            <label class="form-label text-white">Audience Statistics (optional)</label>
+            <label class="form-label text-white">{{ $t('ui.audience_statistics_optional') }}</label>
             <textarea 
               v-model="form.audience_stats" 
               class="form-control n11-bg text-white border-secondary" 
               rows="3"
-              placeholder="Number of followers, average views, engagement..."
+              :placeholder="$t('ui.number_of_followers_average_views_engagement')"
             ></textarea>
           </div>
           <div class="mb-3">
-            <label class="form-label text-white">Previous Media (links)</label>
+            <label class="form-label text-white">{{ $t('ui.previous_media_links') }}</label>
             <textarea 
               v-model="form.previous_media" 
               class="form-control n11-bg text-white border-secondary" 
               rows="3"
-              placeholder="Links to your previous posts, videos"
+              :placeholder="$t('ui.links_to_your_previous_posts_videos')"
             ></textarea>
           </div>
         </div>
@@ -192,10 +192,10 @@
 
       <!-- Identity Documents -->
       <div class="mb-4">
-        <h4 class="text-white mb-3">Identity Documents (required)</h4>
+        <h4 class="text-white mb-3">{{ $t('ui.identity_documents_required') }}</h4>
         <div class="row g-3">
           <div class="col-md-6">
-            <label class="form-label text-white">ID Card / Passport (front) *</label>
+            <label class="form-label text-white">{{ $t('ui.id_card_passport_front') }}</label>
             <input 
               type="file" 
               @change="handleFileUpload($event, 'id_card_front')"
@@ -205,7 +205,7 @@
             />
           </div>
           <div class="col-md-6">
-            <label class="form-label text-white">ID Card / Passport (back) *</label>
+            <label class="form-label text-white">{{ $t('ui.id_card_passport_back') }}</label>
             <input 
               type="file" 
               @change="handleFileUpload($event, 'id_card_back')"
@@ -215,7 +215,7 @@
             />
           </div>
           <div class="col-md-12">
-            <label class="form-label text-white">Selfie for Verification *</label>
+            <label class="form-label text-white">{{ $t('ui.selfie_for_verification') }}</label>
             <input 
               type="file" 
               @change="handleFileUpload($event, 'selfie')"
@@ -223,7 +223,7 @@
               accept=".jpg,.jpeg,.png"
               required
             />
-            <small class="text-white-50">Take a clear selfie showing your face</small>
+            <small class="text-white-50">{{ $t('ui.take_a_clear_selfie_showing_your_face') }}</small>
           </div>
         </div>
       </div>
@@ -258,6 +258,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient from '@/utils/axios';

@@ -2,15 +2,15 @@
   <div class="pay_method__paymethod p-3 p-md-4 p-lg-6 p2-bg rounded-8">
     <div class="pay_method__paymethod-title mb-5 mb-md-6 d-flex justify-content-between align-items-center flex-wrap gap-3">
       <div>
-        <h2 class="text-white fw-bold mb-2">Agent Requests</h2>
-        <p class="text-white-50">Manage recharge agent requests from users</p>
+        <h2 class="text-white fw-bold mb-2">{{ $t('ui.agent_requests') }}</h2>
+        <p class="text-white-50">{{ $t('ui.manage_recharge_agent_requests_from_users') }}</p>
       </div>
       <div class="d-flex gap-2">
         <select v-model="filterStatus" class="form-select n11-bg text-white border-secondary" style="max-width: 200px;">
-          <option value="">All Status</option>
-          <option value="pending">Pending</option>
-          <option value="approved">Approved</option>
-          <option value="rejected">Rejected</option>
+          <option value="">{{ $t('ui.all_status') }}</option>
+          <option value="pending">{{ $t('common.pending') }}</option>
+          <option value="approved">{{ $t('common.approved') }}</option>
+          <option value="rejected">{{ $t('common.rejected') }}</option>
         </select>
       </div>
     </div>
@@ -19,25 +19,25 @@
     <div class="row g-3 mb-4">
       <div class="col-md-3 col-sm-6">
         <div class="stat-card n11-bg rounded-8 p-3">
-          <div class="text-white-50 small mb-1">Total Requests</div>
+          <div class="text-white-50 small mb-1">{{ $t('ui.total_requests') }}</div>
           <div class="text-white fw-bold fs-4">{{ stats.total || 0 }}</div>
         </div>
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="stat-card n11-bg rounded-8 p-3">
-          <div class="text-white-50 small mb-1">Pending</div>
+          <div class="text-white-50 small mb-1">{{ $t('common.pending') }}</div>
           <div class="text-warning fw-bold fs-4">{{ stats.pending || 0 }}</div>
         </div>
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="stat-card n11-bg rounded-8 p-3">
-          <div class="text-white-50 small mb-1">Approved</div>
+          <div class="text-white-50 small mb-1">{{ $t('common.approved') }}</div>
           <div class="text-success fw-bold fs-4">{{ stats.approved || 0 }}</div>
         </div>
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="stat-card n11-bg rounded-8 p-3">
-          <div class="text-white-50 small mb-1">Rejected</div>
+          <div class="text-white-50 small mb-1">{{ $t('common.rejected') }}</div>
           <div class="text-danger fw-bold fs-4">{{ stats.rejected || 0 }}</div>
         </div>
       </div>
@@ -45,7 +45,7 @@
 
     <div v-if="loading" class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+        <span class="visually-hidden">{{ $t('common.loading') }}</span>
       </div>
     </div>
 
@@ -54,14 +54,14 @@
         <table class="w-100 text-center p2-bg">
           <thead>
             <tr>
-              <th class="text-white p-3">ID</th>
-              <th class="text-white p-3">Name</th>
-              <th class="text-white p-3">WhatsApp</th>
-              <th class="text-white p-3">City</th>
-              <th class="text-white p-3">Profession</th>
-              <th class="text-white p-3">Status</th>
-              <th class="text-white p-3">Submitted</th>
-              <th class="text-white p-3">Actions</th>
+              <th class="text-white p-3">{{ $t('common.id') }}</th>
+              <th class="text-white p-3">{{ $t('common.name') }}</th>
+              <th class="text-white p-3">{{ $t('ui.whatsapp') }}</th>
+              <th class="text-white p-3">{{ $t('ui.city') }}</th>
+              <th class="text-white p-3">{{ $t('ui.profession') }}</th>
+              <th class="text-white p-3">{{ $t('common.status') }}</th>
+              <th class="text-white p-3">{{ $t('ui.submitted') }}</th>
+              <th class="text-white p-3">{{ $t('common.actions') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -109,7 +109,7 @@
               </td>
             </tr>
             <tr v-if="requests.length === 0">
-              <td colspan="8" class="text-white p-5 text-center">No agent requests found</td>
+              <td colspan="8" class="text-white p-5 text-center">{{ $t('ui.no_agent_requests_found') }}</td>
             </tr>
           </tbody>
         </table>
@@ -120,7 +120,7 @@
     <div v-if="showDetailsModal" class="modal-overlay" @click.self="showDetailsModal = false">
       <div class="modal-content n11-bg rounded-8 p-4" style="max-width: 700px; max-height: 90vh; overflow-y: auto;">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 class="text-white mb-0">Agent Request Details</h3>
+          <h3 class="text-white mb-0">{{ $t('ui.agent_request_details') }}</h3>
           <button class="btn-close btn-close-white" @click="showDetailsModal = false"></button>
         </div>
 
@@ -138,27 +138,27 @@
               </h5>
               <div class="row g-3">
                 <div class="col-md-6">
-                  <small class="text-white-50">Full Name:</small>
+                  <small class="text-white-50">{{ $t('ui.full_name') }}</small>
                   <p class="text-white mb-0">{{ requestDetails.name }}</p>
                 </div>
                 <div class="col-md-6">
-                  <small class="text-white-50">WhatsApp:</small>
+                  <small class="text-white-50">{{ $t('ui.whatsapp_2') }}</small>
                   <p class="text-white mb-0">{{ requestDetails.whatsapp }}</p>
                 </div>
                 <div class="col-md-6">
-                  <small class="text-white-50">Email:</small>
+                  <small class="text-white-50">{{ $t('ui.email') }}</small>
                   <p class="text-white mb-0">{{ requestDetails.email || 'N/A' }}</p>
                 </div>
                 <div class="col-md-6">
-                  <small class="text-white-50">Secondary Phone:</small>
+                  <small class="text-white-50">{{ $t('ui.secondary_phone') }}</small>
                   <p class="text-white mb-0">{{ requestDetails.phone || 'N/A' }}</p>
                 </div>
                 <div class="col-md-6">
-                  <small class="text-white-50">Date of Birth:</small>
+                  <small class="text-white-50">{{ $t('ui.date_of_birth') }}</small>
                   <p class="text-white mb-0">{{ requestDetails.birth_date || 'N/A' }}</p>
                 </div>
                 <div class="col-md-6">
-                  <small class="text-white-50">City:</small>
+                  <small class="text-white-50">{{ $t('ui.city_2') }}</small>
                   <p class="text-white mb-0">{{ requestDetails.city || 'N/A' }}</p>
                 </div>
               </div>
@@ -174,17 +174,17 @@
               </h5>
               <div class="row g-3">
                 <div class="col-md-6">
-                  <small class="text-white-50">Profession:</small>
+                  <small class="text-white-50">{{ $t('ui.profession_2') }}</small>
                   <p class="text-white mb-0">{{ requestDetails.occupation || 'N/A' }}</p>
                 </div>
                 <div class="col-md-6">
-                  <small class="text-white-50">Experience Level:</small>
+                  <small class="text-white-50">{{ $t('ui.experience_level') }}</small>
                   <p class="text-white mb-0">
                     <span class="badge bg-info">{{ getExperienceLabel(requestDetails.experience) }}</span>
                   </p>
                 </div>
                 <div class="col-12">
-                  <small class="text-white-50">Skills & Qualifications:</small>
+                  <small class="text-white-50">{{ $t('ui.skills_qualifications') }}</small>
                   <p class="text-white mb-0" style="white-space: pre-wrap;">{{ requestDetails.skills || 'N/A' }}</p>
                 </div>
               </div>
@@ -200,13 +200,13 @@
               </h5>
               <div class="row g-3">
                 <div class="col-md-6">
-                  <small class="text-white-50">Availability Type:</small>
+                  <small class="text-white-50">{{ $t('ui.availability_type') }}</small>
                   <p class="text-white mb-0">
                     <span class="badge bg-success">{{ getAvailabilityLabel(requestDetails.availability) }}</span>
                   </p>
                 </div>
                 <div class="col-md-6">
-                  <small class="text-white-50">Working Hours:</small>
+                  <small class="text-white-50">{{ $t('ui.working_hours') }}</small>
                   <p class="text-white mb-0">{{ requestDetails.working_hours || 'N/A' }}</p>
                 </div>
               </div>
@@ -221,11 +221,11 @@
                 Motivation
               </h5>
               <div class="mb-3">
-                <small class="text-white-50">Why become an agent:</small>
+                <small class="text-white-50">{{ $t('ui.why_become_an_agent') }}</small>
                 <p class="text-white mb-0" style="white-space: pre-wrap;">{{ requestDetails.motivation || 'N/A' }}</p>
               </div>
               <div v-if="requestDetails.message">
-                <small class="text-white-50">Additional Message:</small>
+                <small class="text-white-50">{{ $t('ui.additional_message') }}</small>
                 <p class="text-white mb-0" style="white-space: pre-wrap;">{{ requestDetails.message }}</p>
               </div>
             </div>
@@ -240,7 +240,7 @@
               </h5>
               <div class="row g-3">
                 <div class="col-md-6">
-                  <small class="text-white-50">Valid ID Card:</small>
+                  <small class="text-white-50">{{ $t('ui.valid_id_card') }}</small>
                   <p class="text-white mb-0">
                     <span :class="['badge', requestDetails.has_id_card === 'yes' ? 'bg-success' : 'bg-secondary']">
                       {{ requestDetails.has_id_card === 'yes' ? 'Yes' : 'No' }}
@@ -248,7 +248,7 @@
                   </p>
                 </div>
                 <div class="col-md-6">
-                  <small class="text-white-50">Business Registration:</small>
+                  <small class="text-white-50">{{ $t('ui.business_registration') }}</small>
                   <p class="text-white mb-0">
                     <span :class="['badge', requestDetails.has_business_license === 'yes' ? 'bg-success' : 'bg-secondary']">
                       {{ requestDetails.has_business_license === 'yes' ? 'Yes' : 'No' }}
@@ -256,7 +256,7 @@
                   </p>
                 </div>
                 <div class="col-12">
-                  <small class="text-white-50">Terms Accepted:</small>
+                  <small class="text-white-50">{{ $t('ui.terms_accepted') }}</small>
                   <p class="text-white mb-0">
                     <span :class="['badge', requestDetails.agree_terms ? 'bg-success' : 'bg-danger']">
                       {{ requestDetails.agree_terms ? 'Yes' : 'No' }}
@@ -276,7 +276,7 @@
               </h5>
               <div class="row g-3">
                 <div class="col-md-6">
-                  <small class="text-white-50">Status:</small>
+                  <small class="text-white-50">{{ $t('ui.status') }}</small>
                   <p class="mb-0">
                     <span :class="['badge', getStatusClass(requestDetails.status)]">
                       {{ getStatusLabel(requestDetails.status) }}
@@ -284,15 +284,15 @@
                   </p>
                 </div>
                 <div class="col-md-6">
-                  <small class="text-white-50">Submitted:</small>
+                  <small class="text-white-50">{{ $t('ui.submitted_2') }}</small>
                   <p class="text-white mb-0">{{ formatDate(requestDetails.created_at) }}</p>
                 </div>
                 <div class="col-md-6">
-                  <small class="text-white-50">Request ID:</small>
+                  <small class="text-white-50">{{ $t('ui.request_id') }}</small>
                   <p class="text-white mb-0">#{{ requestDetails.id }}</p>
                 </div>
                 <div class="col-md-6">
-                  <small class="text-white-50">User:</small>
+                  <small class="text-white-50">{{ $t('ui.user') }}</small>
                   <p class="text-white mb-0">{{ requestDetails.user?.username || 'Guest' }}</p>
                 </div>
               </div>
@@ -306,7 +306,7 @@
     <div v-if="showApproveModal && selectedRequest" class="modal-overlay" @click.self="showApproveModal = false">
       <div class="popup-box p-5 rounded-4 shadow-lg n11-bg" style="max-width: 600px;">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 class="fw-bold mb-0 text-white">Approve Agent Request</h3>
+          <h3 class="fw-bold mb-0 text-white">{{ $t('ui.approve_agent_request') }}</h3>
           <button class="btn-close btn-close-white" @click="showApproveModal = false"></button>
         </div>
         <p class="text-white-50 mb-4">
@@ -318,10 +318,10 @@
             @click="approveRequest"
             :disabled="processing"
           >
-            <span v-if="processing">Processing...</span>
-            <span v-else>Approve</span>
+            <span v-if="processing">{{ $t('common.processing') }}</span>
+            <span v-else>{{ $t('ui.approve') }}</span>
           </button>
-          <button type="button" class="btn_secondary" @click="showApproveModal = false">Cancel</button>
+          <button type="button" class="btn_secondary" @click="showApproveModal = false">{{ $t('common.cancel') }}</button>
         </div>
       </div>
     </div>
@@ -330,7 +330,7 @@
     <div v-if="showRejectModal && selectedRequest" class="modal-overlay" @click.self="showRejectModal = false">
       <div class="popup-box p-5 rounded-4 shadow-lg n11-bg" style="max-width: 600px;">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 class="fw-bold mb-0 text-white">Reject Agent Request</h3>
+          <h3 class="fw-bold mb-0 text-white">{{ $t('ui.reject_agent_request') }}</h3>
           <button class="btn-close btn-close-white" @click="showRejectModal = false"></button>
         </div>
         <p class="text-white-50 mb-4">
@@ -342,10 +342,10 @@
             @click="rejectRequest"
             :disabled="processing"
           >
-            <span v-if="processing">Processing...</span>
-            <span v-else>Reject</span>
+            <span v-if="processing">{{ $t('common.processing') }}</span>
+            <span v-else>{{ $t('ui.reject') }}</span>
           </button>
-          <button type="button" class="btn_secondary" @click="showRejectModal = false">Cancel</button>
+          <button type="button" class="btn_secondary" @click="showRejectModal = false">{{ $t('common.cancel') }}</button>
         </div>
       </div>
     </div>
@@ -353,6 +353,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted, watch } from 'vue';
 import apiClient from '@/utils/axios';
 

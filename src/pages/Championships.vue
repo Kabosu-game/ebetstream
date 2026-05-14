@@ -4,43 +4,42 @@
     <!-- Hero -->
     <div class="tw-page-hero">
       <div>
-        <h1 class="tw-page-hero__title">Championships</h1>
-        <p class="tw-page-hero__sub">Browse all available championships and register to compete</p>
+        <h1 class="tw-page-hero__title">{{ $t('nav.championships') }}</h1>
+        <p class="tw-page-hero__sub">{{ $t('ui.browse_all_available_championships_and_register_to_compete') }}</p>
       </div>
       <div class="tw-page-hero__actions">
         <button class="tw-btn tw-btn--secondary" @click="$router.push('/')">
-          <i class="fas fa-arrow-left me-2"></i>Back
-        </button>
+          <i class="fas fa-arrow-left me-2"></i>{{ $t('common.back') }}</button>
       </div>
     </div>
 
     <!-- Filter Bar -->
     <div class="tw-filters">
       <select v-model="selectedDivision" @change="loadChampionships" class="tw-select">
-        <option value="">All Divisions</option>
-        <option value="1">Division 1</option>
-        <option value="2">Division 2</option>
-        <option value="3">Division 3</option>
+        <option value="">{{ $t('ui.all_divisions') }}</option>
+        <option value="1">{{ $t('ui.division_1') }}</option>
+        <option value="2">{{ $t('ui.division_2') }}</option>
+        <option value="3">{{ $t('ui.division_3') }}</option>
       </select>
 
       <select v-model="selectedGame" @change="loadChampionships" class="tw-select">
-        <option value="">All Games</option>
-        <option value="COD Mobile">COD Mobile</option>
-        <option value="Free Fire">Free Fire</option>
-        <option value="PUBG Mobile">PUBG Mobile</option>
-        <option value="Mobile Legends">Mobile Legends</option>
-        <option value="eFootball / FC / DLS">eFootball / FC / DLS</option>
-        <option value="Clash Royale">Clash Royale</option>
-        <option value="Brawl Stars">Brawl Stars</option>
-        <option value="Stumble Guys">Stumble Guys</option>
+        <option value="">{{ $t('ui.all_games') }}</option>
+        <option value="COD Mobile">{{ $t('ui.cod_mobile') }}</option>
+        <option value="Free Fire">{{ $t('ui.free_fire') }}</option>
+        <option value="PUBG Mobile">{{ $t('ui.pubg_mobile') }}</option>
+        <option value="Mobile Legends">{{ $t('ui.mobile_legends') }}</option>
+        <option value="eFootball / FC / DLS">{{ $t('ui.efootball_fc_dls') }}</option>
+        <option value="Clash Royale">{{ $t('ui.clash_royale') }}</option>
+        <option value="Brawl Stars">{{ $t('ui.brawl_stars') }}</option>
+        <option value="Stumble Guys">{{ $t('ui.stumble_guys') }}</option>
       </select>
 
       <select v-model="selectedStatus" @change="loadChampionships" class="tw-select">
-        <option value="">All Status</option>
-        <option value="registration_open">Registration Open</option>
-        <option value="validated">Validated</option>
-        <option value="started">Live</option>
-        <option value="finished">Finished</option>
+        <option value="">{{ $t('ui.all_status') }}</option>
+        <option value="registration_open">{{ $t('ui.registration_open') }}</option>
+        <option value="validated">{{ $t('ui.validated') }}</option>
+        <option value="started">{{ $t('betting.live') }}</option>
+        <option value="finished">{{ $t('ui.finished') }}</option>
       </select>
     </div>
 
@@ -113,14 +112,17 @@
     <!-- Empty state -->
     <div v-else class="tw-empty">
       <div class="tw-empty__icon"><i class="fas fa-trophy"></i></div>
-      <p class="tw-empty__title">No Championships Found</p>
-      <p class="tw-empty__sub">Try adjusting your filters to find championships.</p>
+      <p class="tw-empty__title">{{ $t('ui.no_championships_found') }}</p>
+      <p class="tw-empty__sub">{{ $t('ui.try_adjusting_your_filters_to_find_championships') }}</p>
     </div>
 
   </div>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient from '@/utils/axios';

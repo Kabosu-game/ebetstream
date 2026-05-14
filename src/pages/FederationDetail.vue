@@ -15,7 +15,7 @@
 
                   <div v-if="loading" class="text-center py-5">
                     <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-                      <span class="visually-hidden">Loading...</span>
+                      <span class="visually-hidden">{{ $t('common.loading') }}</span>
                     </div>
                   </div>
 
@@ -29,7 +29,7 @@
                         <img 
                           v-if="federation.logo_url" 
                           :src="federation.logo_url" 
-                          :alt="federation.name"
+                          :alt="$t('ui.federation_name')"
                           class="rounded-circle"
                           style="width: 150px; height: 150px; object-fit: cover;"
                         />
@@ -61,12 +61,12 @@
                         <div class="d-flex flex-wrap gap-4 mb-3">
                           <div v-if="federation.country">
                             <i class="fas fa-map-marker-alt text-warning me-2"></i>
-                            <strong>Localisation:</strong> {{ federation.country }}
+                            <strong>{{ $t('ui.localisation') }}</strong> {{ federation.country }}
                             <span v-if="federation.city">, {{ federation.city }}</span>
                           </div>
                           <div v-if="federation.tournaments && federation.tournaments.length">
                             <i class="fas fa-trophy text-primary me-2"></i>
-                            <strong>Championnats:</strong> {{ federation.tournaments.length }}
+                            <strong>{{ $t('ui.championnats') }}</strong> {{ federation.tournaments.length }}
                           </div>
                         </div>
                         <div v-if="federation.website || federation.email || federation.phone" class="d-flex flex-wrap gap-3">
@@ -76,22 +76,19 @@
                             target="_blank"
                             class="btn btn-sm btn-outline-primary"
                           >
-                            <i class="fas fa-globe me-2"></i>Site web
-                          </a>
+                            <i class="fas fa-globe me-2"></i>{{ $t('ui.site_web') }}</a>
                           <a 
                             v-if="federation.email" 
                             :href="`mailto:${federation.email}`"
                             class="btn btn-sm btn-outline-primary"
                           >
-                            <i class="fas fa-envelope me-2"></i>Email
-                          </a>
+                            <i class="fas fa-envelope me-2"></i>{{ $t('common.email') }}</a>
                           <a 
                             v-if="federation.phone" 
                             :href="`tel:${federation.phone}`"
                             class="btn btn-sm btn-outline-primary"
                           >
-                            <i class="fas fa-phone me-2"></i>Téléphone
-                          </a>
+                            <i class="fas fa-phone me-2"></i>{{ $t('ui.t_l_phone') }}</a>
                         </div>
                       </div>
                     </div>
@@ -109,8 +106,7 @@
                         :class="{ active: activeTab === 'tournaments' }"
                         @click="activeTab = 'tournaments'"
                       >
-                        <i class="fas fa-trophy me-2"></i>Championnats
-                      </button>
+                        <i class="fas fa-trophy me-2"></i>{{ $t('ui.championnats_2') }}</button>
                     </li>
                     <li class="nav-item">
                       <button 
@@ -118,8 +114,7 @@
                         :class="{ active: activeTab === 'info' }"
                         @click="activeTab = 'info'"
                       >
-                        <i class="fas fa-info-circle me-2"></i>Informations
-                      </button>
+                        <i class="fas fa-info-circle me-2"></i>{{ $t('ui.informations') }}</button>
                     </li>
                   </ul>
 
@@ -145,7 +140,7 @@
                               <h5 class="fw-bold text-white mb-2">{{ tournament.title || tournament.name }}</h5>
                               <div class="mb-3">
                                 <span class="badge bg-primary me-2">{{ tournament.game }}</span>
-                                <span class="badge bg-warning me-2">Div. 1</span>
+                                <span class="badge bg-warning me-2">{{ $t('ui.div_1') }}</span>
                                 <span 
                                   :class="['badge', getTournamentStatusClass(tournament.status)]"
                                 >
@@ -189,7 +184,7 @@
                               <h5 class="fw-bold text-white mb-2">{{ tournament.title || tournament.name }}</h5>
                               <div class="mb-3">
                                 <span class="badge bg-primary me-2">{{ tournament.game }}</span>
-                                <span class="badge bg-info me-2">Div. 2</span>
+                                <span class="badge bg-info me-2">{{ $t('ui.div_2') }}</span>
                                 <span 
                                   :class="['badge', getTournamentStatusClass(tournament.status)]"
                                 >
@@ -233,7 +228,7 @@
                               <h5 class="fw-bold text-white mb-2">{{ tournament.title || tournament.name }}</h5>
                               <div class="mb-3">
                                 <span class="badge bg-primary me-2">{{ tournament.game }}</span>
-                                <span class="badge bg-secondary me-2">Div. 3</span>
+                                <span class="badge bg-secondary me-2">{{ $t('ui.div_3') }}</span>
                                 <span 
                                   :class="['badge', getTournamentStatusClass(tournament.status)]"
                                 >
@@ -264,7 +259,7 @@
                     <div v-else class="text-center py-5">
                       <div class="alert alert-info">
                         <i class="fas fa-info-circle fa-2x mb-3 d-block"></i>
-                        <p class="mb-0">Aucun championnat disponible pour le moment</p>
+                        <p class="mb-0">{{ $t('ui.aucun_championnat_disponible_pour_le_moment') }}</p>
                       </div>
                     </div>
                   </div>
@@ -272,35 +267,35 @@
                   <!-- Info Tab -->
                   <div v-if="activeTab === 'info'" class="tab-content">
                     <div class="defi_card n11-bg rounded-8 p-4">
-                      <h5 class="fw-bold text-white mb-4">Informations détaillées</h5>
+                      <h5 class="fw-bold text-white mb-4">{{ $t('ui.informations_d_taill_es') }}</h5>
                       <div class="row g-3">
                         <div v-if="federation.address" class="col-md-6">
                           <div class="info_item p-3 rounded-3" style="background: rgba(102, 126, 234, 0.1);">
-                            <span class="text-white-50 small d-block mb-1">Adresse</span>
+                            <span class="text-white-50 small d-block mb-1">{{ $t('ui.adresse') }}</span>
                             <span class="fw-bold text-white">{{ federation.address }}</span>
                           </div>
                         </div>
                         <div v-if="federation.country" class="col-md-6">
                           <div class="info_item p-3 rounded-3" style="background: rgba(102, 126, 234, 0.1);">
-                            <span class="text-white-50 small d-block mb-1">Pays</span>
+                            <span class="text-white-50 small d-block mb-1">{{ $t('ui.pays') }}</span>
                             <span class="fw-bold text-white">{{ federation.country }}</span>
                           </div>
                         </div>
                         <div v-if="federation.city" class="col-md-6">
                           <div class="info_item p-3 rounded-3" style="background: rgba(102, 126, 234, 0.1);">
-                            <span class="text-white-50 small d-block mb-1">Ville</span>
+                            <span class="text-white-50 small d-block mb-1">{{ $t('ui.ville') }}</span>
                             <span class="fw-bold text-white">{{ federation.city }}</span>
                           </div>
                         </div>
                         <div v-if="federation.user" class="col-md-6">
                           <div class="info_item p-3 rounded-3" style="background: rgba(102, 126, 234, 0.1);">
-                            <span class="text-white-50 small d-block mb-1">Responsable</span>
+                            <span class="text-white-50 small d-block mb-1">{{ $t('ui.responsable') }}</span>
                             <span class="fw-bold text-white">{{ federation.user.username }}</span>
                           </div>
                         </div>
                         <div v-if="federation.created_at" class="col-md-6">
                           <div class="info_item p-3 rounded-3" style="background: rgba(102, 126, 234, 0.1);">
-                            <span class="text-white-50 small d-block mb-1">Date de création</span>
+                            <span class="text-white-50 small d-block mb-1">{{ $t('ui.date_de_cr_ation') }}</span>
                             <span class="fw-bold text-white">{{ formatDate(federation.created_at) }}</span>
                           </div>
                         </div>
@@ -318,6 +313,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import apiClient from "@/utils/axios";
@@ -421,7 +419,7 @@ const loadFederation = async () => {
   } catch (err: any) {
     console.error("Error loading federation:", err);
     if (err.response?.status === 404) {
-      error.value = "Fédération non trouvée";
+      error.value = t('errors.federationNotFound');
     } else {
       error.value = err.response?.data?.message || "Error loading";
     }

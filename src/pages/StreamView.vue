@@ -4,7 +4,7 @@
     <!-- Loading -->
     <div v-if="loading" class="sv-loading">
       <div class="sv-spinner"></div>
-      <p>Chargement du stream…</p>
+      <p>{{ $t('ui.chargement_du_stream') }}</p>
     </div>
 
     <!-- Error -->
@@ -12,8 +12,7 @@
       <i class="ti ti-video-off sv-error__icon"></i>
       <h3>{{ pageError }}</h3>
       <button class="sv-btn sv-btn--secondary" @click="$router.push('/streams')">
-        <i class="fas fa-arrow-left"></i> Retour aux streams
-      </button>
+        <i class="fas fa-arrow-left"></i>{{ $t('ui.retour_aux_streams') }}</button>
     </div>
 
     <!-- Content -->
@@ -24,8 +23,7 @@
 
         <!-- Back button -->
         <button class="sv-back" @click="$router.push('/streams')">
-          <i class="fas fa-arrow-left"></i> Retour
-        </button>
+          <i class="fas fa-arrow-left"></i>{{ $t('ui.retour') }}</button>
 
         <!-- Video player -->
         <div class="sv-player">
@@ -44,8 +42,7 @@
               <div class="sv-spinner sv-spinner--lg"></div>
               <p class="sv-player__wait-msg">{{ waitingMsg }}</p>
               <button v-if="showRetry" class="sv-btn sv-btn--secondary sv-retry" @click="retryConnection">
-                <i class="fas fa-sync-alt"></i> Réessayer
-              </button>
+                <i class="fas fa-sync-alt"></i>{{ $t('ui.r_essayer') }}</button>
             </template>
             <template v-else>
               <StreamCover
@@ -59,8 +56,7 @@
                 style="position:absolute;inset:0;width:100%;height:100%;border-radius:0;"
               />
               <div class="sv-offline-badge">
-                <i class="fas fa-video-slash"></i> Hors ligne
-              </div>
+                <i class="fas fa-video-slash"></i>{{ $t('ui.hors_ligne') }}</div>
             </template>
           </div>
 
@@ -95,8 +91,7 @@
             </div>
             <!-- Own stream: show label, not button -->
             <span v-if="stream.is_own_stream" class="sv-own-badge">
-              <i class="fas fa-video"></i> Votre stream
-            </span>
+              <i class="fas fa-video"></i>{{ $t('ui.votre_stream') }}</span>
             <!-- Other stream: follow button -->
             <button
               v-else-if="isAuthenticated"
@@ -115,18 +110,16 @@
               @click="$router.push('/login')"
             >
               <i class="fas fa-sign-in-alt"></i>
-              <span>Se connecter</span>
+              <span>{{ $t('ui.se_connecter') }}</span>
             </button>
           </div>
 
           <!-- Monetization actions -->
           <div v-if="isAuthenticated && !stream.is_own_stream" class="sv-money-actions">
             <button class="sv-donate-btn" @click="showDonateModal = true">
-              <i class="fas fa-coins"></i> Donner des EBT
-            </button>
+              <i class="fas fa-coins"></i>{{ $t('ui.donner_des_ebt') }}</button>
             <button v-if="stream.is_live" class="sv-predict-btn" @click="showPredictModal = true">
-              <i class="fas fa-star"></i> Soutenir
-            </button>
+              <i class="fas fa-star"></i>{{ $t('ui.soutenir') }}</button>
           </div>
 
           <!-- Tags -->
@@ -144,7 +137,7 @@
       <div class="sv-chat">
         <div class="sv-chat__header">
           <i class="fas fa-comment-dots"></i>
-          <span>Chat en direct</span>
+          <span>{{ $t('ui.chat_en_direct') }}</span>
         </div>
 
         <!-- Messages -->
@@ -154,7 +147,7 @@
           </div>
           <div v-else-if="chatMessages.length === 0" class="sv-chat__empty">
             <i class="fas fa-comment-slash"></i>
-            <p>Aucun message pour le moment</p>
+            <p>{{ $t('ui.aucun_message_pour_le_moment') }}</p>
           </div>
           <div v-else class="sv-chat__list">
             <div
@@ -185,7 +178,7 @@
             v-model="newMessage"
             type="text"
             class="sv-chat__input"
-            placeholder="Tapez un message…"
+            :placeholder="$t('ui.tapez_un_message')"
             @keyup.enter="sendMessage"
             :disabled="sendingMessage"
             maxlength="500"
@@ -199,10 +192,8 @@
           </button>
         </div>
         <div v-else class="sv-chat__login-cta">
-          <p>Connectez-vous pour chatter</p>
-          <button class="sv-btn sv-btn--primary" @click="$router.push('/login')">
-            Se connecter
-          </button>
+          <p>{{ $t('ui.connectez_vous_pour_chatter') }}</p>
+          <button class="sv-btn sv-btn--primary" @click="$router.push('/login')">{{ $t('ui.se_connecter') }}</button>
         </div>
       </div>
 
@@ -212,27 +203,26 @@
     <div v-if="showDonateModal" class="sv-modal-overlay" @click.self="showDonateModal = false">
       <div class="sv-modal">
         <div class="sv-modal__header">
-          <h3><i class="fas fa-coins"></i> Envoyer des EBT</h3>
+          <h3><i class="fas fa-coins"></i>{{ $t('ui.envoyer_des_ebt') }}</h3>
           <button @click="showDonateModal = false"><i class="fas fa-times"></i></button>
         </div>
         <div class="sv-modal__body">
           <p class="sv-modal__info">
-            <strong>85%</strong> va directement au streamer. <strong>15%</strong> à la plateforme.
-          </p>
+            <strong>85%</strong>{{ $t('ui.va_directement_au_streamer') }}<strong>15%</strong>{{ $t('ui.la_plateforme') }}</p>
           <div class="sv-modal__group">
-            <label>Montant (EBT)</label>
-            <input v-model="donateAmount" type="number" min="1" placeholder="ex: 50" class="sv-chat__input" />
+            <label>{{ $t('ui.montant_ebt') }}</label>
+            <input v-model="donateAmount" type="number" min="1" :placeholder="$t('ui.ex_50')" class="sv-chat__input" />
           </div>
           <div class="sv-modal__group">
-            <label>Message (optionnel)</label>
-            <input v-model="donateMessage" type="text" maxlength="500" placeholder="Félicitations !" class="sv-chat__input" />
+            <label>{{ $t('ui.message_optionnel') }}</label>
+            <input v-model="donateMessage" type="text" maxlength="500" :placeholder="$t('ui.f_licitations')" class="sv-chat__input" />
           </div>
           <div v-if="moneyMsg" :class="['sv-modal__msg', moneyMsgType === 'success' ? 'sv-modal__msg--ok' : 'sv-modal__msg--err']">
             {{ moneyMsg }}
           </div>
         </div>
         <div class="sv-modal__footer">
-          <button class="sv-btn sv-btn--secondary" @click="showDonateModal = false">Annuler</button>
+          <button class="sv-btn sv-btn--secondary" @click="showDonateModal = false">{{ $t('ui.annuler') }}</button>
           <button class="sv-btn sv-btn--primary" @click="sendDonation" :disabled="moneyLoading || !donateAmount">
             <i class="fas fa-paper-plane"></i> {{ moneyLoading ? 'Envoi…' : 'Envoyer' }}
           </button>
@@ -244,17 +234,16 @@
     <div v-if="showPredictModal" class="sv-modal-overlay" @click.self="showPredictModal = false">
       <div class="sv-modal">
         <div class="sv-modal__header">
-          <h3><i class="fas fa-star"></i> Soutenir le streamer</h3>
+          <h3><i class="fas fa-star"></i>{{ $t('ui.soutenir_le_streamer') }}</h3>
           <button @click="showPredictModal = false"><i class="fas fa-times"></i></button>
         </div>
         <div class="sv-modal__body">
           <p class="sv-modal__info">
-            Commission de <strong>15%</strong> prélevée sur vos crédits.<br />
-            Le streamer reçoit <strong>40%</strong> de la commission — soit <strong>6%</strong> de votre mise.
-          </p>
+            Commission de <strong>15%</strong>{{ $t('ui.pr_lev_e_sur_vos_cr_dits') }}<br />
+            Le streamer reçoit <strong>40%</strong>{{ $t('ui.de_la_commission_soit') }}<strong>6%</strong>{{ $t('ui.de_votre_mise') }}</p>
           <div class="sv-modal__group">
-            <label>Crédits à engager (EBT)</label>
-            <input v-model="predictAmount" type="number" min="1" placeholder="ex: 100" class="sv-chat__input" />
+            <label>{{ $t('ui.cr_dits_engager_ebt') }}</label>
+            <input v-model="predictAmount" type="number" min="1" :placeholder="$t('ui.ex_100')" class="sv-chat__input" />
             <small v-if="predictAmount">
               Commission payée : {{ (parseFloat(predictAmount || '0') * 0.15).toFixed(2) }} EBT
               — Streamer gagne : {{ (parseFloat(predictAmount || '0') * 0.15 * 0.40).toFixed(2) }} EBT
@@ -265,7 +254,7 @@
           </div>
         </div>
         <div class="sv-modal__footer">
-          <button class="sv-btn sv-btn--secondary" @click="showPredictModal = false">Annuler</button>
+          <button class="sv-btn sv-btn--secondary" @click="showPredictModal = false">{{ $t('ui.annuler') }}</button>
           <button class="sv-btn sv-btn--primary" @click="sendPrediction" :disabled="moneyLoading || !predictAmount">
             <i class="fas fa-bolt"></i> {{ moneyLoading ? 'Envoi…' : 'Soutenir' }}
           </button>
@@ -277,6 +266,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import apiClient from '@/utils/axios';

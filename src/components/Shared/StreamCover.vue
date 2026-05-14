@@ -25,7 +25,7 @@
         <span class="sc__brand-icon">
           <i class="fas fa-bolt" />
         </span>
-        <span class="sc__brand-name">eBetStream</span>
+        <span class="sc__brand-name">{{ $t('ui.ebetstream_2') }}</span>
       </div>
 
       <!-- LIVE / VOD badge -->
@@ -76,11 +76,11 @@
     <div class="sc__watermark" aria-hidden="true">
       <div class="sc__watermark-inner">
         <i class="fas fa-bolt sc__watermark-bolt" />
-        <span class="sc__watermark-text">eBetStream</span>
+        <span class="sc__watermark-text">{{ $t('ui.ebetstream_2') }}</span>
         <i class="fas fa-bolt sc__watermark-bolt" />
-        <span class="sc__watermark-text">eBetStream</span>
+        <span class="sc__watermark-text">{{ $t('ui.ebetstream_2') }}</span>
         <i class="fas fa-bolt sc__watermark-bolt" />
-        <span class="sc__watermark-text">eBetStream</span>
+        <span class="sc__watermark-text">{{ $t('ui.ebetstream_2') }}</span>
       </div>
     </div>
 
@@ -105,6 +105,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { computed } from 'vue';
 
 const props = defineProps<{

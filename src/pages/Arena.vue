@@ -4,28 +4,27 @@
     <!-- Hero -->
     <div class="tw-page-hero">
       <p class="tw-page-hero__eyebrow">
-        <i class="fas fa-gamepad"></i> EBETSTREAM ARENA™
-      </p>
-      <h1 class="tw-page-hero__title">Arène compétitive 5v5</h1>
+        <i class="fas fa-gamepad"></i>{{ $t('ui.ebetstream_arena') }}</p>
+      <h1 class="tw-page-hero__title">{{ $t('ui.ar_ne_comp_titive_5v5') }}</h1>
       <p class="tw-page-hero__sub">
         Matchs rapides, classement EOL, paris sécurisés ESBS en EBT.
       </p>
       <div v-if="stats" class="arena-live-stats">
         <div class="arena-live-stat">
           <span class="arena-live-stat__val">{{ stats.live_matches }}</span>
-          <span class="arena-live-stat__lbl">En direct</span>
+          <span class="arena-live-stat__lbl">{{ $t('ui.en_direct') }}</span>
         </div>
         <div class="arena-live-stat">
           <span class="arena-live-stat__val">{{ stats.scheduled_matches }}</span>
-          <span class="arena-live-stat__lbl">Programmés</span>
+          <span class="arena-live-stat__lbl">{{ $t('ui.programm_s') }}</span>
         </div>
         <div class="arena-live-stat">
           <span class="arena-live-stat__val">{{ stats.total_players }}</span>
-          <span class="arena-live-stat__lbl">Joueurs</span>
+          <span class="arena-live-stat__lbl">{{ $t('ui.joueurs') }}</span>
         </div>
         <div class="arena-live-stat">
           <span class="arena-live-stat__val">EBT</span>
-          <span class="arena-live-stat__lbl">Monnaie</span>
+          <span class="arena-live-stat__lbl">{{ $t('ui.monnaie') }}</span>
         </div>
       </div>
     </div>
@@ -33,23 +32,20 @@
     <!-- Tabs -->
     <div class="tw-tabs">
       <button class="tw-tab" :class="{ active: tab === 'matches' }" @click="tab = 'matches'">
-        <i class="fas fa-list me-1"></i> Matchs
-      </button>
+        <i class="fas fa-list me-1"></i>{{ $t('ui.matchs') }}</button>
       <button class="tw-tab" :class="{ active: tab === 'leaderboard' }" @click="tab = 'leaderboard'; loadLeaderboard()">
-        <i class="fas fa-trophy me-1"></i> Classement
-      </button>
+        <i class="fas fa-trophy me-1"></i>{{ $t('ui.classement') }}</button>
       <button class="tw-tab" :class="{ active: tab === 'profile' }" @click="tab = 'profile'; loadProfile()">
-        <i class="fas fa-user me-1"></i> Mon profil
-      </button>
+        <i class="fas fa-user me-1"></i>{{ $t('ui.mon_profil') }}</button>
     </div>
 
     <!-- ── MATCHS ── -->
     <div v-if="tab === 'matches'">
       <div class="tw-filters mb-3">
-        <button class="tw-filter-btn" :class="{ active: matchFilter === null }" @click="matchFilter = null; loadMatches()">Tous</button>
-        <button class="tw-filter-btn" :class="{ active: matchFilter === 'live' }" @click="matchFilter = 'live'; loadMatches()">Live</button>
-        <button class="tw-filter-btn" :class="{ active: matchFilter === 'scheduled' }" @click="matchFilter = 'scheduled'; loadMatches()">Programmés</button>
-        <button class="tw-filter-btn" :class="{ active: matchFilter === 'completed' }" @click="matchFilter = 'completed'; loadMatches()">Terminés</button>
+        <button class="tw-filter-btn" :class="{ active: matchFilter === null }" @click="matchFilter = null; loadMatches()">{{ $t('ui.tous') }}</button>
+        <button class="tw-filter-btn" :class="{ active: matchFilter === 'live' }" @click="matchFilter = 'live'; loadMatches()">{{ $t('betting.live') }}</button>
+        <button class="tw-filter-btn" :class="{ active: matchFilter === 'scheduled' }" @click="matchFilter = 'scheduled'; loadMatches()">{{ $t('ui.programm_s') }}</button>
+        <button class="tw-filter-btn" :class="{ active: matchFilter === 'completed' }" @click="matchFilter = 'completed'; loadMatches()">{{ $t('ui.termin_s') }}</button>
         <button class="tw-filter-btn refresh-btn" @click="loadMatches()" :disabled="loadingMatches">
           <i class="fas fa-sync-alt { 'fa-spin': loadingMatches }"></i>
         </button>
@@ -58,8 +54,8 @@
       <div v-if="loadingMatches" class="tw-empty"><div class="spinner"></div></div>
       <div v-else-if="matches.length === 0" class="tw-empty">
         <div class="tw-empty__icon"><i class="fas fa-gamepad"></i></div>
-        <p class="tw-empty__title">Aucun match</p>
-        <p class="tw-empty__sub">Créez un profil et lancez un Quick Match</p>
+        <p class="tw-empty__title">{{ $t('ui.aucun_match') }}</p>
+        <p class="tw-empty__sub">{{ $t('ui.cr_ez_un_profil_et_lancez_un_quick_match') }}</p>
       </div>
       <div v-else class="arena-match-list">
         <div
@@ -98,19 +94,19 @@
     <div v-if="tab === 'leaderboard'">
       <div v-if="loadingLeaderboard" class="tw-empty"><div class="spinner"></div></div>
       <div v-else-if="leaderboard.length === 0" class="tw-empty">
-        <p class="tw-empty__title">Classement vide</p>
+        <p class="tw-empty__title">{{ $t('ui.classement_vide') }}</p>
       </div>
       <div v-else class="tw-content-block p-0 overflow-hidden">
         <table class="arena-lb-table">
           <thead>
             <tr>
               <th>#</th>
-              <th>Joueur</th>
-              <th>Classe</th>
-              <th>Rang</th>
+              <th>{{ $t('ui.joueur') }}</th>
+              <th>{{ $t('ui.classe') }}</th>
+              <th>{{ $t('ui.rang') }}</th>
               <th>MMR</th>
-              <th>Victoires</th>
-              <th>Win%</th>
+              <th>{{ $t('ui.victoires') }}</th>
+              <th>{{ $t('ui.win_3') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -132,15 +128,14 @@
     <div v-if="tab === 'profile'">
       <div v-if="!isAuthenticated" class="tw-info-box mb-4">
         <i class="fas fa-sign-in-alt"></i>
-        <p>Connectez-vous pour créer votre profil Arena et rejoindre des matchs.</p>
+        <p>{{ $t('ui.connectez_vous_pour_cr_er_votre_profil_arena_et_rejoindre_de') }}</p>
       </div>
       <router-link v-if="!isAuthenticated" to="/login" class="tw-btn tw-btn--primary mb-4">
-        <i class="fas fa-sign-in-alt"></i> Se connecter
-      </router-link>
+        <i class="fas fa-sign-in-alt"></i>{{ $t('ui.se_connecter') }}</router-link>
 
       <template v-else>
         <div class="tw-content-block mb-4">
-          <h3 class="arena-block__title mb-3">Choisir votre classe</h3>
+          <h3 class="arena-block__title mb-3">{{ $t('ui.choisir_votre_classe') }}</h3>
           <div class="tw-grid-4 mb-4">
             <button
               v-for="cls in classes"
@@ -168,16 +163,16 @@
           </div>
           <div class="tw-stat-card">
             <span class="tw-stat-card__value">{{ rankLabel(profile.rank) }}</span>
-            <span class="tw-stat-card__label">Rang</span>
+            <span class="tw-stat-card__label">{{ $t('ui.rang') }}</span>
           </div>
           <div class="tw-stat-card">
             <span class="tw-stat-card__value">{{ profile.matches_won }}/{{ profile.matches_played }}</span>
-            <span class="tw-stat-card__label">Victoires</span>
+            <span class="tw-stat-card__label">{{ $t('ui.victoires') }}</span>
           </div>
         </div>
 
         <div class="tw-content-block">
-          <h3 class="arena-block__title mb-3">Actions</h3>
+          <h3 class="arena-block__title mb-3">{{ $t('common.actions') }}</h3>
           <div class="d-flex gap-3 flex-wrap">
             <button class="tw-btn tw-btn--primary" @click="quickMatch" :disabled="!profile || quickMatching">
               <i class="fas fa-bolt"></i>
@@ -188,11 +183,9 @@
               {{ rankedMatching ? 'Recherche...' : 'Ranked' }}
             </button>
             <button class="tw-btn tw-btn--secondary" @click="showPrivateModal = true" :disabled="!profile">
-              <i class="fas fa-lock"></i> Match privé
-            </button>
+              <i class="fas fa-lock"></i>{{ $t('ui.match_priv') }}</button>
             <button class="tw-btn tw-btn--secondary" @click="showTournamentModal = true" :disabled="!profile">
-              <i class="fas fa-medal"></i> Tournoi
-            </button>
+              <i class="fas fa-medal"></i>{{ $t('ui.tournoi') }}</button>
           </div>
           <p v-if="quickMsg" class="mt-3 mb-0 tw-accent">{{ quickMsg }}</p>
         </div>
@@ -203,21 +196,21 @@
     <div v-if="showPrivateModal" class="tw-modal-overlay" @click.self="showPrivateModal = false">
       <div class="tw-modal">
         <div class="tw-modal__header">
-          <h3 class="tw-modal__title">Créer un match privé</h3>
+          <h3 class="tw-modal__title">{{ $t('ui.cr_er_un_match_priv') }}</h3>
           <button class="tw-modal__close" @click="showPrivateModal = false"><i class="fas fa-times"></i></button>
         </div>
         <div class="tw-modal__body">
           <div class="tw-form-group">
-            <label class="tw-label">Équipe 1</label>
-            <input v-model="privateForm.team1_name" class="tw-input" placeholder="Nom équipe 1" />
+            <label class="tw-label">{{ $t('ui.quipe_1') }}</label>
+            <input v-model="privateForm.team1_name" class="tw-input" :placeholder="$t('ui.nom_quipe_1')" />
           </div>
           <div class="tw-form-group">
-            <label class="tw-label">Équipe 2</label>
-            <input v-model="privateForm.team2_name" class="tw-input" placeholder="Nom équipe 2" />
+            <label class="tw-label">{{ $t('ui.quipe_2') }}</label>
+            <input v-model="privateForm.team2_name" class="tw-input" :placeholder="$t('ui.nom_quipe_2')" />
           </div>
         </div>
         <div class="tw-modal__footer">
-          <button class="tw-btn tw-btn--secondary" @click="showPrivateModal = false">Annuler</button>
+          <button class="tw-btn tw-btn--secondary" @click="showPrivateModal = false">{{ $t('ui.annuler') }}</button>
           <button class="tw-btn tw-btn--primary" @click="createPrivateMatch" :disabled="creatingPrivate">
             Créer
           </button>
@@ -229,21 +222,21 @@
     <div v-if="showTournamentModal" class="tw-modal-overlay" @click.self="showTournamentModal = false">
       <div class="tw-modal">
         <div class="tw-modal__header">
-          <h3 class="tw-modal__title">Créer un match tournoi</h3>
+          <h3 class="tw-modal__title">{{ $t('ui.cr_er_un_match_tournoi') }}</h3>
           <button class="tw-modal__close" @click="showTournamentModal = false"><i class="fas fa-times"></i></button>
         </div>
         <div class="tw-modal__body">
           <div class="tw-form-group">
-            <label class="tw-label">Équipe 1</label>
-            <input v-model="tournamentForm.team1_name" class="tw-input" placeholder="Nom équipe 1" />
+            <label class="tw-label">{{ $t('ui.quipe_1') }}</label>
+            <input v-model="tournamentForm.team1_name" class="tw-input" :placeholder="$t('ui.nom_quipe_1')" />
           </div>
           <div class="tw-form-group">
-            <label class="tw-label">Équipe 2</label>
-            <input v-model="tournamentForm.team2_name" class="tw-input" placeholder="Nom équipe 2" />
+            <label class="tw-label">{{ $t('ui.quipe_2') }}</label>
+            <input v-model="tournamentForm.team2_name" class="tw-input" :placeholder="$t('ui.nom_quipe_2')" />
           </div>
         </div>
         <div class="tw-modal__footer">
-          <button class="tw-btn tw-btn--secondary" @click="showTournamentModal = false">Annuler</button>
+          <button class="tw-btn tw-btn--secondary" @click="showTournamentModal = false">{{ $t('ui.annuler') }}</button>
           <button class="tw-btn tw-btn--primary" @click="createTournamentMatch" :disabled="creatingTournament">
             Créer
           </button>
@@ -254,6 +247,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient from '@/utils/axios';

@@ -4,10 +4,10 @@
     <div class="tw-section-header">
       <div class="tw-section-header__left">
         <i class="ti ti-calendar-event tw-section-icon"></i>
-        <h2 class="tw-section-title">Événements</h2>
+        <h2 class="tw-section-title">{{ $t('events.title') }}</h2>
       </div>
       <router-link to="/events" class="tw-see-all">
-        Voir tout <i class="fas fa-chevron-right"></i>
+        {{ $t('events.viewAllEvents') }} <i class="fas fa-chevron-right"></i>
       </router-link>
     </div>
 
@@ -35,7 +35,7 @@
           <img
             v-if="event.image_url"
             :src="event.image_url"
-            :alt="event.title"
+            :alt="$t('ui.event_title_2')"
             @error="onImgError"
           />
           <div v-else class="tw-event-card__thumb-fallback">

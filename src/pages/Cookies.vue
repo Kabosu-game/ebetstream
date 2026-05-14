@@ -3,8 +3,8 @@
     <!-- Hero -->
     <section class="tw-page-hero">
       <div class="hero-inner">
-        <p class="tw-page-hero__sub"><i class="fas fa-cookie-bite me-2"></i>Legal</p>
-        <h1 class="tw-page-hero__title">Cookie <span class="accent">Policy</span></h1>
+        <p class="tw-page-hero__sub"><i class="fas fa-cookie-bite me-2"></i>{{ $t('ui.legal') }}</p>
+        <h1 class="tw-page-hero__title">{{ $t('ui.cookie') }}<span class="accent">{{ $t('ui.policy') }}</span></h1>
         <p class="hero-date">Last updated: {{ lastUpdated }}</p>
       </div>
     </section>
@@ -12,31 +12,31 @@
     <div class="tw-page-body">
       <!-- Cookie type cards grid -->
       <section class="cookie-types-section">
-        <h2 class="section-title">Types of Cookies We Use</h2>
+        <h2 class="section-title">{{ $t('ui.types_of_cookies_we_use') }}</h2>
         <div class="tw-grid-3">
           <div class="tw-card cookie-type-card">
             <div class="cookie-icon required"><i class="fas fa-lock"></i></div>
-            <h4 class="cookie-name">Essential</h4>
-            <span class="cookie-tag required">Always active</span>
-            <p class="cookie-desc">Session and authentication cookies required for the platform to function securely.</p>
+            <h4 class="cookie-name">{{ $t('ui.essential') }}</h4>
+            <span class="cookie-tag required">{{ $t('ui.always_active') }}</span>
+            <p class="cookie-desc">{{ $t('ui.session_and_authentication_cookies_required_for_the_platform') }}</p>
           </div>
           <div class="tw-card cookie-type-card">
             <div class="cookie-icon perf"><i class="fas fa-chart-line"></i></div>
-            <h4 class="cookie-name">Performance</h4>
-            <span class="cookie-tag perf">Optional</span>
-            <p class="cookie-desc">Collect usage data to help us understand how visitors interact with the platform.</p>
+            <h4 class="cookie-name">{{ $t('ui.performance') }}</h4>
+            <span class="cookie-tag perf">{{ $t('ui.optional') }}</span>
+            <p class="cookie-desc">{{ $t('ui.collect_usage_data_to_help_us_understand_how_visitors_intera') }}</p>
           </div>
           <div class="tw-card cookie-type-card">
             <div class="cookie-icon func"><i class="fas fa-sliders-h"></i></div>
-            <h4 class="cookie-name">Functionality</h4>
-            <span class="cookie-tag func">Optional</span>
-            <p class="cookie-desc">Remember your preferences like language and region for a personalized experience.</p>
+            <h4 class="cookie-name">{{ $t('ui.functionality') }}</h4>
+            <span class="cookie-tag func">{{ $t('ui.optional') }}</span>
+            <p class="cookie-desc">{{ $t('ui.remember_your_preferences_like_language_and_region_for_a_per') }}</p>
           </div>
           <div class="tw-card cookie-type-card">
             <div class="cookie-icon target"><i class="fas fa-bullseye"></i></div>
-            <h4 class="cookie-name">Targeting</h4>
-            <span class="cookie-tag target">Optional</span>
-            <p class="cookie-desc">Set by advertising partners to show you relevant advertisements on other sites.</p>
+            <h4 class="cookie-name">{{ $t('ui.targeting') }}</h4>
+            <span class="cookie-tag target">{{ $t('ui.optional') }}</span>
+            <p class="cookie-desc">{{ $t('ui.set_by_advertising_partners_to_show_you_relevant_advertiseme') }}</p>
           </div>
         </div>
       </section>
@@ -46,7 +46,7 @@
       <!-- Sections -->
       <div class="legal-content">
         <div class="tw-content-block">
-          <h3 class="section-num">1. What is a Cookie?</h3>
+          <h3 class="section-num">{{ $t('ui.1_what_is_a_cookie') }}</h3>
           <p class="body-text">
             Cookies are small text files stored on your device when you visit a website.
             They allow the site to remember your actions and preferences over a period of time, thus avoiding
@@ -55,7 +55,7 @@
         </div>
 
         <div class="tw-content-block">
-          <h3 class="section-num">2. How Do We Use Cookies?</h3>
+          <h3 class="section-num">{{ $t('ui.2_how_do_we_use_cookies') }}</h3>
           <p class="body-text">
             eBetStream uses cookies to improve your user experience, analyze usage of
             our platform, personalize content, and ensure the security of your account.
@@ -63,17 +63,17 @@
         </div>
 
         <div class="tw-content-block">
-          <h3 class="section-num">3. Cookie Management</h3>
-          <p class="body-text">You can control and manage cookies in several ways:</p>
+          <h3 class="section-num">{{ $t('ui.3_cookie_management') }}</h3>
+          <p class="body-text">{{ $t('ui.you_can_control_and_manage_cookies_in_several_ways') }}</p>
           <ul class="legal-list">
-            <li>Browser settings: most browsers allow you to refuse or accept cookies</li>
-            <li>Platform settings: you can manage your cookie preferences in your account settings</li>
-            <li>Note: disabling certain cookies may affect the functionality of some features</li>
+            <li>{{ $t('ui.browser_settings_most_browsers_allow_you_to_refuse_or_accept') }}</li>
+            <li>{{ $t('ui.platform_settings_you_can_manage_your_cookie_preferences_in_') }}</li>
+            <li>{{ $t('ui.note_disabling_certain_cookies_may_affect_the_functionality_') }}</li>
           </ul>
         </div>
 
         <div class="tw-content-block">
-          <h3 class="section-num">4. Third-Party Cookies</h3>
+          <h3 class="section-num">{{ $t('ui.4_third_party_cookies') }}</h3>
           <p class="body-text">
             Some cookies are placed by third-party services that appear on our pages. We have no
             control over these third-party cookies. We recommend that you review the cookie policies of these
@@ -82,7 +82,7 @@
         </div>
 
         <div class="tw-content-block">
-          <h3 class="section-num">5. Retention Period</h3>
+          <h3 class="section-num">{{ $t('ui.5_retention_period') }}</h3>
           <p class="body-text">
             Session cookies are deleted when you close your browser. Persistent cookies
             remain on your device for a determined period or until you manually delete them.
@@ -90,10 +90,10 @@
         </div>
 
         <div class="tw-content-block">
-          <h3 class="section-num">6. Contact</h3>
+          <h3 class="section-num">{{ $t('ui.6_contact') }}</h3>
           <p class="body-text">
             For any questions regarding our use of cookies, contact us at
-            <a href="mailto:privacy@acmpt.online" class="inline-link">privacy@acmpt.online</a>
+            <a href="mailto:privacy@acmpt.online" class="inline-link">{{ $t('ui.privacy_acmpt_online') }}</a>
           </p>
         </div>
       </div>
@@ -102,6 +102,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { computed } from 'vue';
 
 const lastUpdated = computed(() => {

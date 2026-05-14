@@ -15,7 +15,7 @@
                     height="{32}"
                     alt="Icon"
                   />
-                  <h3>Live Matches</h3>
+                  <h3>{{ $t('betting.live_matches') }}</h3>
                 </div>
                 <div class="top_matches__content">
                   <div
@@ -116,10 +116,10 @@
                               <thead>
                                 <tr class="text-center">
                                   <th scope="col">
-                                    <span class="fs-eight">Winner</span>
+                                    <span class="fs-eight">{{ $t('betting.winner') }}</span>
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">Total</span>
+                                    <span class="fs-eight">{{ $t('betting.total') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -146,7 +146,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >draw</span
+                                          >{{ $t('betting.draw') }}</span
                                         >
                                         <span
                                           class="fw-bold d-block text-nowrap"
@@ -249,6 +249,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { UpCmingKabaddi } from "../assets/data/allPageData";
 import liveMatch from "@/assets/images/icon/live-match.png";
 </script>

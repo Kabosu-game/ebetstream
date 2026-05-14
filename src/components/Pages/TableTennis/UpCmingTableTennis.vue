@@ -15,7 +15,7 @@
                     height="{32}"
                     alt="Icon"
                   />
-                  <h3>Upcoming Events</h3>
+                  <h3>{{ $t('betting.upcoming_events') }}</h3>
                 </div>
                 <div class="top_matches__content">
                   <div
@@ -46,7 +46,7 @@
                                 alt="Icon"
                               />
                               <span class="fs-eight cpoint"
-                                >Challenger Series</span
+                                >{{ $t('ui.challenger_series') }}</span
                               >
                             </div>
                             <div
@@ -119,7 +119,7 @@
                               <thead>
                                 <tr class="text-start">
                                   <th scope="col">
-                                    <span class="fs-eight ms-15">Winner</span>
+                                    <span class="fs-eight ms-15">{{ $t('betting.winner') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -172,6 +172,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { UpCmingTableTannis } from "../../../assets/data/allPageData";
 import clock from "@/assets/images/icon/clock-icon.png";
 </script>

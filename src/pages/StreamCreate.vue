@@ -6,52 +6,51 @@
     ══════════════════════════════════════════════════════ -->
     <div v-if="phase === 'setup'" class="sc-setup">
       <button class="sc-back" @click="$router.push('/streams')">
-        <i class="fas fa-arrow-left"></i> Retour
-      </button>
+        <i class="fas fa-arrow-left"></i>{{ $t('ui.retour') }}</button>
 
       <div class="sc-setup__header">
         <h1 class="sc-setup__title">
           <i class="fas fa-video sc-setup__icon"></i>
           Créer votre Stream
         </h1>
-        <p class="sc-setup__sub">Configurez votre stream puis démarrez en direct depuis votre navigateur.</p>
+        <p class="sc-setup__sub">{{ $t('ui.configurez_votre_stream_puis_d_marrez_en_direct_depuis_votre') }}</p>
       </div>
 
       <div class="sc-setup__card">
         <form @submit.prevent="handleSubmit">
           <div class="sc-field">
-            <label class="sc-label">Titre du stream *</label>
-            <input v-model="form.title" type="text" class="sc-input" placeholder="Ex: Gaming session soir" required maxlength="255" />
+            <label class="sc-label">{{ $t('ui.titre_du_stream') }}</label>
+            <input v-model="form.title" type="text" class="sc-input" :placeholder="$t('ui.ex_gaming_session_soir')" required maxlength="255" />
           </div>
 
           <div class="sc-field">
-            <label class="sc-label">Description</label>
-            <textarea v-model="form.description" class="sc-input sc-textarea" placeholder="Décrivez votre stream..." rows="3" maxlength="1000"></textarea>
+            <label class="sc-label">{{ $t('common.description') }}</label>
+            <textarea v-model="form.description" class="sc-input sc-textarea" :placeholder="$t('ui.d_crivez_votre_stream')" rows="3" maxlength="1000"></textarea>
           </div>
 
           <div class="sc-row-2">
             <div class="sc-field">
-              <label class="sc-label">Catégorie</label>
+              <label class="sc-label">{{ $t('ui.cat_gorie') }}</label>
               <select v-model="form.category" class="sc-input sc-select">
-                <option value="">Sélectionner</option>
-                <option>Gaming</option>
-                <option>Esports</option>
-                <option>Just Chatting</option>
+                <option value="">{{ $t('ui.s_lectionner') }}</option>
+                <option>{{ $t('ui.gaming') }}</option>
+                <option>{{ $t('ui.esports') }}</option>
+                <option>{{ $t('ui.just_chatting') }}</option>
                 <option>IRL</option>
-                <option>Music</option>
-                <option>Creative</option>
+                <option>{{ $t('ui.music') }}</option>
+                <option>{{ $t('ui.creative') }}</option>
               </select>
             </div>
             <div class="sc-field">
-              <label class="sc-label">Jeu</label>
-              <input v-model="form.game" type="text" class="sc-input" placeholder="FC Mobile, COD..." maxlength="100" />
+              <label class="sc-label">{{ $t('ui.jeu') }}</label>
+              <input v-model="form.game" type="text" class="sc-input" :placeholder="$t('ui.fc_mobile_cod')" maxlength="100" />
             </div>
           </div>
 
           <div class="sc-field">
-            <label class="sc-label">Miniature</label>
+            <label class="sc-label">{{ $t('ui.miniature') }}</label>
             <input ref="thumbnailInput" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="sc-input sc-file" @change="handleThumbnailChange" />
-            <small class="sc-hint">JPEG, PNG, GIF, WebP — max 5 MB</small>
+            <small class="sc-hint">{{ $t('ui.jpeg_png_gif_webp_max_5_mb') }}</small>
             <img v-if="thumbnailPreview" :src="thumbnailPreview" class="sc-thumb-preview" />
           </div>
 
@@ -72,9 +71,8 @@
               {{ loading ? 'Création…' : 'Créer le stream' }}
             </button>
             <button v-else type="button" class="sc-btn sc-btn--primary" @click="updateStream" :disabled="loading">
-              <i class="fas fa-save"></i> Sauvegarder
-            </button>
-            <button type="button" class="sc-btn sc-btn--ghost" @click="$router.push('/streams')">Annuler</button>
+              <i class="fas fa-save"></i>{{ $t('ui.sauvegarder') }}</button>
+            <button type="button" class="sc-btn sc-btn--ghost" @click="$router.push('/streams')">{{ $t('ui.annuler') }}</button>
           </div>
         </form>
 
@@ -82,31 +80,30 @@
         <div v-if="streamId" class="sc-golive">
           <div class="sc-golive__info">
             <i class="fas fa-info-circle"></i>
-            Stream <strong>#{{ streamId }}</strong> configuré — choisissez la source et démarrez.
-          </div>
+            Stream <strong>#{{ streamId }}</strong>{{ $t('ui.configur_choisissez_la_source_et_d_marrez') }}</div>
 
           <!-- Source mobile -->
           <div v-if="isMobile" class="sc-sources">
             <button class="sc-source" :class="{ active: sourceMode === 'camera-back' }" @click="sourceMode = 'camera-back'">
-              <i class="fas fa-camera"></i><span>Caméra arrière</span>
+              <i class="fas fa-camera"></i><span>{{ $t('ui.cam_ra_arri_re') }}</span>
             </button>
             <button class="sc-source" :class="{ active: sourceMode === 'camera-front' }" @click="sourceMode = 'camera-front'">
-              <i class="fas fa-user-circle"></i><span>Caméra avant</span>
+              <i class="fas fa-user-circle"></i><span>{{ $t('ui.cam_ra_avant') }}</span>
             </button>
             <button v-if="supportsDisplayMedia" class="sc-source" :class="{ active: sourceMode === 'screen' }" @click="sourceMode = 'screen'">
-              <i class="fas fa-mobile-alt"></i><span>Partage d'écran</span>
+              <i class="fas fa-mobile-alt"></i><span>{{ $t('ui.partage_d_cran') }}</span>
             </button>
           </div>
           <!-- Source desktop -->
           <div v-else class="sc-sources">
             <div class="sc-source active" style="cursor:default;">
-              <i class="fas fa-desktop"></i><span>Partage d'écran (bureau)</span>
+              <i class="fas fa-desktop"></i><span>{{ $t('ui.partage_d_cran_bureau') }}</span>
             </div>
           </div>
 
           <button class="sc-btn sc-btn--live" @click="goLive" :disabled="startingStream">
-            <span v-if="startingStream"><i class="fas fa-spinner fa-spin"></i> Démarrage…</span>
-            <span v-else><span class="sc-live-dot"></span> GO LIVE</span>
+            <span v-if="startingStream"><i class="fas fa-spinner fa-spin"></i>{{ $t('ui.d_marrage') }}</span>
+            <span v-else><span class="sc-live-dot"></span>{{ $t('ui.go_live') }}</span>
           </button>
         </div>
       </div>
@@ -120,7 +117,7 @@
       <!-- ── Top bar ── -->
       <div class="studio__topbar">
         <div class="studio__topbar-left">
-          <span class="studio__live-badge"><span class="sc-live-dot"></span>EN DIRECT</span>
+          <span class="studio__live-badge"><span class="sc-live-dot"></span>{{ $t('ui.en_direct_2') }}</span>
           <!-- Titre éditable inline -->
           <div class="studio__title-wrap">
             <input
@@ -155,8 +152,7 @@
             <i class="fas fa-circle"></i><i class="fas fa-circle"></i><i class="fas fa-circle"></i><i class="fas fa-circle"></i>
           </div>
           <button class="studio__stop-btn" @click="showConfirmStop = true">
-            <i class="fas fa-stop"></i> Arrêter
-          </button>
+            <i class="fas fa-stop"></i>{{ $t('ui.arr_ter') }}</button>
         </div>
       </div>
 
@@ -173,7 +169,7 @@
             <!-- Overlays when cam/mic off -->
             <div v-if="camOff" class="studio__cam-off">
               <i class="fas fa-video-slash"></i>
-              <span>Caméra désactivée</span>
+              <span>{{ $t('ui.cam_ra_d_sactiv_e') }}</span>
             </div>
 
             <!-- Audio level VU meter -->
@@ -190,7 +186,7 @@
             <transition name="studio-alert">
               <div v-if="donationAlert" class="studio__donation-alert">
                 <i class="fas fa-coins"></i>
-                <strong>{{ donationAlert.donor }}</strong> a envoyé <strong>{{ donationAlert.amount }} EBT</strong>
+                <strong>{{ donationAlert.donor }}</strong>{{ $t('ui.a_envoy') }}<strong>{{ donationAlert.amount }} EBT</strong>
                 <p v-if="donationAlert.message">{{ donationAlert.message }}</p>
               </div>
             </transition>
@@ -220,7 +216,7 @@
             <!-- Caméra switch (mobile: avant/arrière) -->
             <button v-if="isMobile" class="studio__tool" @click="flipCamera" :disabled="switchingSource">
               <i class="fas fa-sync-alt"></i>
-              <span>Retourner</span>
+              <span>{{ $t('ui.retourner_cam') }}</span>
             </button>
 
             <div class="studio__toolbar-sep"></div>
@@ -238,11 +234,11 @@
             <div class="studio__quality-select">
               <i class="fas fa-cog"></i>
               <select v-model="selectedQuality" class="studio__select" @change="applyQuality">
-                <option value="auto">Auto</option>
-                <option value="1080">1080p</option>
-                <option value="720">720p</option>
-                <option value="480">480p</option>
-                <option value="360">360p</option>
+                <option value="auto">{{ $t('ui.auto') }}</option>
+                <option value="1080">{{ $t('ui.1080p') }}</option>
+                <option value="720">{{ $t('ui.720p') }}</option>
+                <option value="480">{{ $t('ui.480p') }}</option>
+                <option value="360">{{ $t('ui.360p') }}</option>
               </select>
             </div>
 
@@ -257,7 +253,7 @@
           <!-- ── Stats bar ── -->
           <div class="studio__stats">
             <div class="studio__stat">
-              <span class="studio__stat-label">Résolution</span>
+              <span class="studio__stat-label">{{ $t('ui.r_solution') }}</span>
               <span class="studio__stat-val">{{ streamResolution }}</span>
             </div>
             <div class="studio__stat">
@@ -265,19 +261,19 @@
               <span class="studio__stat-val">{{ streamFps }}</span>
             </div>
             <div class="studio__stat">
-              <span class="studio__stat-label">WebSocket</span>
+              <span class="studio__stat-label">{{ $t('ui.websocket') }}</span>
               <span class="studio__stat-val" :class="wsConnected ? 'studio__stat-val--ok' : 'studio__stat-val--err'">
                 {{ wsConnected ? 'Connecté' : 'Déconnecté' }}
               </span>
             </div>
             <div class="studio__stat">
-              <span class="studio__stat-label">Source</span>
+              <span class="studio__stat-label">{{ $t('ui.source') }}</span>
               <span class="studio__stat-val" :class="localStream ? 'studio__stat-val--ok' : 'studio__stat-val--err'">
                 {{ localStream ? 'Active' : 'Perdue' }}
               </span>
             </div>
             <div class="studio__stat">
-              <span class="studio__stat-label">Pairs</span>
+              <span class="studio__stat-label">{{ $t('ui.pairs') }}</span>
               <span class="studio__stat-val">{{ peerCount }}</span>
             </div>
           </div>
@@ -295,15 +291,12 @@
           <!-- Tabs -->
           <div class="studio__tabs">
             <button class="studio__tab" :class="{ active: studioTab === 'chat' }" @click="studioTab = 'chat'">
-              <i class="fas fa-comment-dots"></i> Chat
-              <span v-if="unreadChat > 0" class="studio__tab-badge">{{ unreadChat }}</span>
+              <i class="fas fa-comment-dots"></i>{{ $t('ui.chat') }}<span v-if="unreadChat > 0" class="studio__tab-badge">{{ unreadChat }}</span>
             </button>
             <button class="studio__tab" :class="{ active: studioTab === 'tools' }" @click="studioTab = 'tools'; unreadChat = 0">
-              <i class="fas fa-sliders-h"></i> Outils
-            </button>
+              <i class="fas fa-sliders-h"></i>{{ $t('ui.outils') }}</button>
             <button class="studio__tab" :class="{ active: studioTab === 'donations' }" @click="studioTab = 'donations'">
-              <i class="fas fa-coins"></i> Dons
-            </button>
+              <i class="fas fa-coins"></i>{{ $t('ui.dons') }}</button>
           </div>
 
           <!-- Chat tab -->
@@ -311,7 +304,7 @@
             <div class="studio__chat-messages" ref="chatContainer">
               <div v-if="chatMessages.length === 0" class="studio__chat-empty">
                 <i class="fas fa-comment-slash"></i>
-                <span>Aucun message</span>
+                <span>{{ $t('ui.aucun_message') }}</span>
               </div>
               <div v-for="msg in chatMessages" :key="msg.id" class="studio__msg">
                 <div class="studio__msg-avatar">{{ (msg.user?.username || '?').slice(0,2).toUpperCase() }}</div>
@@ -332,7 +325,7 @@
               <input
                 v-model="newChatMessage"
                 class="studio__chat-field"
-                placeholder="Répondre au chat…"
+                :placeholder="$t('ui.r_pondre_au_chat')"
                 @keyup.enter="sendChatMessage"
                 maxlength="500"
               />
@@ -344,42 +337,39 @@
 
           <!-- Tools tab -->
           <div v-if="studioTab === 'tools'" class="studio__panel studio__panel--tools">
-            <h4 class="studio__tools-title"><i class="fas fa-edit"></i> Infos du stream</h4>
+            <h4 class="studio__tools-title"><i class="fas fa-edit"></i>{{ $t('ui.infos_du_stream') }}</h4>
             <div class="sc-field">
-              <label class="sc-label">Titre</label>
+              <label class="sc-label">{{ $t('ui.titre') }}</label>
               <input v-model="form.title" class="sc-input" @blur="saveTitle" maxlength="255" />
             </div>
             <div class="sc-field">
-              <label class="sc-label">Catégorie</label>
+              <label class="sc-label">{{ $t('ui.cat_gorie') }}</label>
               <select v-model="form.category" class="sc-input sc-select" @change="saveTitle">
                 <option value="">—</option>
-                <option>Gaming</option><option>Esports</option>
-                <option>Just Chatting</option><option>IRL</option>
-                <option>Music</option><option>Creative</option>
+                <option>{{ $t('ui.gaming') }}</option><option>{{ $t('ui.esports') }}</option>
+                <option>{{ $t('ui.just_chatting') }}</option><option>IRL</option>
+                <option>{{ $t('ui.music') }}</option><option>{{ $t('ui.creative') }}</option>
               </select>
             </div>
             <div class="sc-field">
-              <label class="sc-label">Jeu</label>
+              <label class="sc-label">{{ $t('ui.jeu') }}</label>
               <input v-model="form.game" class="sc-input" @blur="saveTitle" maxlength="100" />
             </div>
             <button class="sc-btn sc-btn--primary sc-btn--sm" @click="saveTitle" :disabled="loading">
-              <i class="fas fa-save"></i> Sauvegarder
-            </button>
+              <i class="fas fa-save"></i>{{ $t('ui.sauvegarder') }}</button>
 
             <div class="studio__tools-sep"></div>
 
-            <h4 class="studio__tools-title"><i class="fas fa-bullhorn"></i> Annonce</h4>
-            <textarea v-model="announcementText" class="sc-input sc-textarea" rows="2" placeholder="Message à envoyer au chat..."></textarea>
+            <h4 class="studio__tools-title"><i class="fas fa-bullhorn"></i>{{ $t('ui.annonce') }}</h4>
+            <textarea v-model="announcementText" class="sc-input sc-textarea" rows="2" :placeholder="$t('ui.message_envoyer_au_chat')"></textarea>
             <button class="sc-btn sc-btn--primary sc-btn--sm" @click="sendAnnouncement" :disabled="!announcementText.trim()">
-              <i class="fas fa-paper-plane"></i> Envoyer au chat
-            </button>
+              <i class="fas fa-paper-plane"></i>{{ $t('ui.envoyer_au_chat') }}</button>
 
             <div class="studio__tools-sep"></div>
 
-            <h4 class="studio__tools-title"><i class="fas fa-shield-alt"></i> Modération</h4>
+            <h4 class="studio__tools-title"><i class="fas fa-shield-alt"></i>{{ $t('ui.mod_ration') }}</h4>
             <button class="sc-btn sc-btn--ghost sc-btn--sm" @click="clearChat">
-              <i class="fas fa-trash"></i> Vider le chat
-            </button>
+              <i class="fas fa-trash"></i>{{ $t('ui.vider_le_chat') }}</button>
           </div>
 
           <!-- Donations tab -->
@@ -387,17 +377,17 @@
             <div class="studio__don-stats">
               <div class="studio__don-stat">
                 <span class="studio__don-val">{{ totalDonations.toFixed(2) }}</span>
-                <span class="studio__don-lbl">EBT reçus</span>
+                <span class="studio__don-lbl">{{ $t('ui.ebt_re_us') }}</span>
               </div>
               <div class="studio__don-stat">
                 <span class="studio__don-val">{{ donationList.length }}</span>
-                <span class="studio__don-lbl">Donateurs</span>
+                <span class="studio__don-lbl">{{ $t('ui.donateurs') }}</span>
               </div>
             </div>
             <div class="studio__don-list">
               <div v-if="donationList.length === 0" class="studio__chat-empty">
                 <i class="fas fa-coins"></i>
-                <span>Aucun don encore</span>
+                <span>{{ $t('ui.aucun_don_encore') }}</span>
               </div>
               <div v-for="don in donationList" :key="don.id" class="studio__don-item">
                 <div class="studio__don-avatar">{{ (don.donor || '?').slice(0,2).toUpperCase() }}</div>
@@ -417,10 +407,10 @@
       <div v-if="showConfirmStop" class="studio__overlay" @click.self="showConfirmStop = false">
         <div class="studio__confirm">
           <div class="studio__confirm-icon"><i class="fas fa-stop-circle"></i></div>
-          <h3>Arrêter le live ?</h3>
+          <h3>{{ $t('ui.arr_ter_le_live_2') }}</h3>
           <p>{{ viewerCount }} spectateur{{ viewerCount !== 1 ? 's' : '' }} regarde{{ viewerCount !== 1 ? 'nt' : '' }} votre stream.</p>
           <div class="studio__confirm-btns">
-            <button class="sc-btn sc-btn--ghost" @click="showConfirmStop = false">Continuer</button>
+            <button class="sc-btn sc-btn--ghost" @click="showConfirmStop = false">{{ $t('ui.continuer') }}</button>
             <button class="sc-btn sc-btn--danger" @click="stopStream" :disabled="stoppingStream">
               <i class="fas fa-stop"></i> {{ stoppingStream ? 'Arrêt…' : 'Oui, arrêter' }}
             </button>
@@ -433,6 +423,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted, onBeforeUnmount, nextTick, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient from '@/utils/axios';
@@ -661,9 +654,9 @@ const goLive = async () => {
     localStream.value = null;
     phase.value = 'setup';
     if (err.name === 'CompatError') { errorType.value = 'compat'; error.value = err.friendly; }
-    else if (err.name === 'NotAllowedError') { error.value = 'Permission refusée. Autorisez l\'accès dans votre navigateur.'; }
-    else if (err.name === 'NotFoundError') { errorType.value = 'compat'; error.value = 'Aucune caméra détectée.'; }
-    else { error.value = err.response?.data?.message || err.message || 'Erreur au démarrage.'; }
+    else if (err.name === 'NotAllowedError') { error.value = t('errors.permissionDenied'); }
+    else if (err.name === 'NotFoundError') { errorType.value = 'compat'; error.value = t('errors.noCameraDetected'); }
+    else { error.value = err.response?.data?.message || err.message || t('errors.streamStartError'); }
   } finally { startingStream.value = false; }
 };
 

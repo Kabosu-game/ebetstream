@@ -8,7 +8,7 @@
             width="{16}"
             height="{16}"
             :src="selectedPerson.srcImage"
-            alt="icon"
+            :alt="$t('ui.icon')"
           />
           <span class="d-flex gap-1 align-items-center truncate">
             {{ selectedPerson.name }}
@@ -42,7 +42,7 @@
                 width="{16}"
                 height="{16}"
                 :src="person.srcImage"
-                alt="icon"
+                :alt="$t('ui.icon')"
               />
               <span
                 class="block text-nowrap"

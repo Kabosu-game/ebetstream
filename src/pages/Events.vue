@@ -4,7 +4,7 @@
     <!-- Hero -->
     <div class="tw-page-hero">
       <div>
-        <h1 class="tw-page-hero__title">Upcoming Events</h1>
+        <h1 class="tw-page-hero__title">{{ $t('betting.upcoming_events') }}</h1>
         <p class="tw-page-hero__sub">
           Tournaments, competitions &amp; more — don't miss your chance to compete
         </p>
@@ -22,22 +22,22 @@
         class="tw-filter-btn"
         :class="{ active: filterStatus === null }"
         @click="filterStatus = null; loadEvents()"
-      >All</button>
+      >{{ $t('common.all') }}</button>
       <button
         class="tw-filter-btn"
         :class="{ active: filterStatus === 'upcoming' }"
         @click="filterStatus = 'upcoming'; loadEvents()"
-      >Upcoming</button>
+      >{{ $t('ui.upcoming') }}</button>
       <button
         class="tw-filter-btn"
         :class="{ active: filterStatus === 'ongoing' }"
         @click="filterStatus = 'ongoing'; loadEvents()"
-      >Ongoing</button>
+      >{{ $t('ui.ongoing') }}</button>
       <button
         class="tw-filter-btn"
         :class="{ active: filterStatus === 'past' }"
         @click="filterStatus = 'past'; loadEvents()"
-      >Past</button>
+      >{{ $t('ui.past') }}</button>
     </div>
 
     <!-- Loading -->
@@ -48,7 +48,7 @@
     <!-- Error state -->
     <div v-else-if="error" class="tw-empty">
       <div class="tw-empty__icon"><i class="fas fa-exclamation-triangle"></i></div>
-      <p class="tw-empty__title">Could not load events</p>
+      <p class="tw-empty__title">{{ $t('ui.could_not_load_events') }}</p>
       <p class="tw-empty__sub">{{ error }}</p>
     </div>
 
@@ -65,7 +65,7 @@
           <img
             v-if="event.image_url"
             :src="event.image_url"
-            :alt="event.title"
+            :alt="$t('ui.event_title_2')"
             class="thumb-img"
             @error="handleImageError($event)"
           />
@@ -78,16 +78,15 @@
             v-if="event.is_ongoing"
             class="tw-badge tw-badge--ongoing thumb-badge"
           >
-            <span class="tw-live-dot"></span>Ongoing
-          </span>
+            <span class="tw-live-dot"></span>{{ $t('ui.ongoing') }}</span>
           <span
             v-else-if="event.is_upcoming"
             class="tw-badge tw-badge--open thumb-badge"
-          >Upcoming</span>
+          >{{ $t('ui.upcoming') }}</span>
           <span
             v-else-if="event.is_past"
             class="tw-badge tw-badge--closed thumb-badge"
-          >Finished</span>
+          >{{ $t('ui.finished') }}</span>
 
           <!-- Type badge -->
           <span v-if="event.type" class="event-type-badge">{{ event.type }}</span>
@@ -127,14 +126,17 @@
     <!-- Empty state -->
     <div v-else class="tw-empty">
       <div class="tw-empty__icon"><i class="fas fa-calendar-times"></i></div>
-      <p class="tw-empty__title">No Events Available</p>
-      <p class="tw-empty__sub">Check back soon for upcoming events and tournaments.</p>
+      <p class="tw-empty__title">{{ $t('ui.no_events_available') }}</p>
+      <p class="tw-empty__sub">{{ $t('ui.check_back_soon_for_upcoming_events_and_tournaments') }}</p>
     </div>
 
   </div>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient, { getApiErrorMessage } from '@/utils/axios';

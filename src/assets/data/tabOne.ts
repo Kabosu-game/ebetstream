@@ -27,41 +27,13 @@ import corinthians from "@/assets/images/icon/sc-corinthians.png";
 import basketballTwo from "@/assets/images/icon/basketball-two.png";
 
 export const tabOne = [
-  {
-    id: "1",
-    imgSrc: soccer,
-    buttonName: "Soccer",
-  },
-  {
-    id: "2",
-    imgSrc: tennis,
-    buttonName: "Tennis",
-  },
-  {
-    id: "3",
-    imgSrc: basketball,
-    buttonName: "Basketball",
-  },
-  {
-    id: "4",
-    imgSrc: cricket,
-    buttonName: "Cricket",
-  },
-  {
-    id: "5",
-    imgSrc: eCricket,
-    buttonName: "eCricket",
-  },
-  {
-    id: "6",
-    imgSrc: iceHockey,
-    buttonName: "Ice Hockey",
-  },
-  {
-    id: "7",
-    imgSrc: iconNBA,
-    buttonName: "NBA 2K",
-  },
+  { id: "1", imgSrc: soccer, sportKey: "soccer" },
+  { id: "2", imgSrc: tennis, sportKey: "tennis" },
+  { id: "3", imgSrc: basketball, sportKey: "basketball" },
+  { id: "4", imgSrc: cricket, sportKey: "cricket" },
+  { id: "5", imgSrc: eCricket, sportKey: "ecricket" },
+  { id: "6", imgSrc: iceHockey, sportKey: "ice_hockey" },
+  { id: "7", imgSrc: iconNBA, sportKey: "nba_2k" },
 ];
 
 export const basketballMatch = [

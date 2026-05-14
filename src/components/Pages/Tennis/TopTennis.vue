@@ -10,7 +10,7 @@
                   className="top_matches__title d-flex align-items-center gap-2 mb-4 mb-md-5"
                 >
                   <img :src="king" width="{32}" height="{32}" alt="Icon" />
-                  <h3>Top Soccer</h3>
+                  <h3>{{ $t('betting.top_soccer') }}</h3>
                 </div>
                 <div className="top_matches__content">
                   <div
@@ -118,7 +118,7 @@
                               <thead>
                                 <tr className="text-center">
                                   <th scope="col">
-                                    <span className="fs-eight"> Winner </span>
+                                    <span className="fs-eight">{{ $t('betting.winner') }}</span>
                                   </th>
                                   <th scope="col">
                                     <span className="fs-eight">
@@ -246,6 +246,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { soccerMatch } from "../../../assets/data/tabOne";
 import king from "@/assets/images/icon/king.png";
 </script>

@@ -32,13 +32,13 @@
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>Spain</span>
+                            <span>{{ $t('ui.spain') }}</span>
                             <span>4.5</span>
                           </div>
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3 mb-2"
                           >
-                            <span>France</span>
+                            <span>{{ $t('ui.france') }}</span>
                             <span>7.5</span>
                           </div>
                         </div>
@@ -48,7 +48,7 @@
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3"
                           >
-                            <span>roatia</span>
+                            <span>{{ $t('ui.roatia') }}</span>
                             <span>6.5</span>
                           </div>
                         </div>
@@ -58,7 +58,7 @@
                           <div
                             class="top_matches__winnercard-singe d-flex align-items-center justify-content-between n11-bg rounded-2 py-2 px-3"
                           >
-                            <span>Montenegro</span>
+                            <span>{{ $t('ui.montenegro') }}</span>
                             <span>6.5</span>
                           </div>
                         </div>
@@ -76,6 +76,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import hugary from "@/assets/images/icon/outrights-hugary.png";
 </script>
 

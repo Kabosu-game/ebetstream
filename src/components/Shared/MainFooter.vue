@@ -3,7 +3,7 @@
     <div class="tw-footer__inner">
       <!-- Brand + description -->
       <div class="tw-footer__brand">
-        <span class="tw-footer__logo">eBetStream</span>
+        <span class="tw-footer__logo">{{ $t('ui.ebetstream_2') }}</span>
         <p class="tw-footer__tagline">{{ $t('footer.description', 'Compete. Stream. Win. The ultimate gaming platform.') }}</p>
         <p class="tw-footer__tagline">{{ $t('footer.description2', 'Ebetstream is designed for a new generation of digital platforms where interactive entertainment, performance and community come together to create an immersive and dynamic experience.') }}</p>
       </div>
@@ -14,8 +14,8 @@
           <h6 class="tw-footer__col-title">{{ $t('footer.company', 'Company') }}</h6>
           <ul>
             <li><router-link to="/about">{{ $t('footer.aboutUs', 'About') }}</router-link></li>
-            <li><router-link to="/monetisation">Monétisation</router-link></li>
-            <li><router-link to="/arena">EBETSTREAM ARENA™</router-link></li>
+            <li><router-link to="/monetisation">{{ $t('ui.mon_tisation') }}</router-link></li>
+            <li><router-link to="/arena">{{ $t('ui.ebetstream_arena') }}</router-link></li>
             <li><router-link to="/contact">{{ $t('footer.contact', 'Contact') }}</router-link></li>
             <li><router-link to="/careers">{{ $t('footer.careers', 'Careers') }}</router-link></li>
           </ul>
@@ -42,7 +42,7 @@
         <div class="tw-footer__col">
           <h6 class="tw-footer__col-title">{{ $t('footer.certifications', 'Certifications') }}</h6>
           <ul>
-            <li><router-link to="/agents-crypto">Agents Crypto</router-link></li>
+            <li><router-link to="/agents-crypto">{{ $t('ui.agents_crypto') }}</router-link></li>
             <li><router-link to="/become-agent">{{ $t('footer.becomeAgent', 'Become Agent') }}</router-link></li>
             <li><router-link to="/become-referee">{{ $t('footer.becomeReferee', 'Become Referee') }}</router-link></li>
             <li><router-link to="/become-ambassador">{{ $t('footer.becomeAmbassador', 'Ambassador') }}</router-link></li>

@@ -2,8 +2,8 @@
   <div class="pay_method__paymethod p-3 p-md-4 p-lg-6 p2-bg rounded-8">
     <div class="pay_method__paymethod-title mb-5 mb-md-6 d-flex justify-content-between align-items-center flex-wrap gap-3">
       <div>
-        <h2 class="text-white fw-bold mb-2">Federation Management</h2>
-        <p class="text-white-50">Manage all platform federations</p>
+        <h2 class="text-white fw-bold mb-2">{{ $t('ui.federation_management') }}</h2>
+        <p class="text-white-50">{{ $t('ui.manage_all_platform_federations') }}</p>
       </div>
     </div>
 
@@ -11,25 +11,25 @@
     <div class="row g-3 mb-4">
       <div class="col-md-3 col-sm-6">
         <div class="stat-card n11-bg rounded-8 p-3">
-          <div class="text-white-50 small mb-1">Total Federations</div>
+          <div class="text-white-50 small mb-1">{{ $t('ui.total_federations') }}</div>
           <div class="text-white fw-bold fs-4">{{ stats.total || 0 }}</div>
         </div>
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="stat-card n11-bg rounded-8 p-3">
-          <div class="text-white-50 small mb-1">Approved</div>
+          <div class="text-white-50 small mb-1">{{ $t('common.approved') }}</div>
           <div class="text-success fw-bold fs-4">{{ stats.approved || 0 }}</div>
         </div>
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="stat-card n11-bg rounded-8 p-3">
-          <div class="text-white-50 small mb-1">Pending</div>
+          <div class="text-white-50 small mb-1">{{ $t('common.pending') }}</div>
           <div class="text-warning fw-bold fs-4">{{ stats.pending || 0 }}</div>
         </div>
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="stat-card n11-bg rounded-8 p-3">
-          <div class="text-white-50 small mb-1">Rejected</div>
+          <div class="text-white-50 small mb-1">{{ $t('common.rejected') }}</div>
           <div class="text-danger fw-bold fs-4">{{ stats.rejected || 0 }}</div>
         </div>
       </div>
@@ -41,22 +41,22 @@
         v-model="searchQuery" 
         type="text" 
         class="form-control n11-bg text-white border-secondary" 
-        placeholder="Search by name, email, country..."
+        :placeholder="$t('ui.search_by_name_email_country')"
         style="max-width: 300px;"
         @input="loadFederations"
       />
       <select v-model="filterStatus" class="form-select n11-bg text-white border-secondary" style="max-width: 200px;" @change="loadFederations">
-        <option value="">All Status</option>
-        <option value="pending">Pending</option>
-        <option value="approved">Approved</option>
-        <option value="rejected">Rejected</option>
-        <option value="suspended">Suspended</option>
+        <option value="">{{ $t('ui.all_status') }}</option>
+        <option value="pending">{{ $t('common.pending') }}</option>
+        <option value="approved">{{ $t('common.approved') }}</option>
+        <option value="rejected">{{ $t('common.rejected') }}</option>
+        <option value="suspended">{{ $t('ui.suspended') }}</option>
       </select>
     </div>
 
     <div v-if="loading" class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+        <span class="visually-hidden">{{ $t('common.loading') }}</span>
       </div>
     </div>
 
@@ -65,14 +65,14 @@
         <table class="w-100 text-center p2-bg">
           <thead>
             <tr>
-              <th class="text-white p-3">ID</th>
-              <th class="text-white p-3">Name</th>
-              <th class="text-white p-3">Responsible</th>
-              <th class="text-white p-3">Location</th>
-              <th class="text-white p-3">Tournaments</th>
-              <th class="text-white p-3">Status</th>
-              <th class="text-white p-3">Created</th>
-              <th class="text-white p-3">Actions</th>
+              <th class="text-white p-3">{{ $t('common.id') }}</th>
+              <th class="text-white p-3">{{ $t('common.name') }}</th>
+              <th class="text-white p-3">{{ $t('ui.responsible') }}</th>
+              <th class="text-white p-3">{{ $t('ui.location') }}</th>
+              <th class="text-white p-3">{{ $t('ui.tournaments') }}</th>
+              <th class="text-white p-3">{{ $t('common.status') }}</th>
+              <th class="text-white p-3">{{ $t('ui.created_2') }}</th>
+              <th class="text-white p-3">{{ $t('common.actions') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -91,7 +91,7 @@
                 <span v-if="federation.country">
                   {{ federation.country }}<span v-if="federation.city">, {{ federation.city }}</span>
                 </span>
-                <span v-else class="text-white-50">N/A</span>
+                <span v-else class="text-white-50">{{ $t('ui.n_a') }}</span>
               </td>
               <td class="text-white p-3">
                 <span class="badge bg-info">{{ federation.tournaments?.length || 0 }}</span>
@@ -155,7 +155,7 @@
               </td>
             </tr>
             <tr v-if="federations.length === 0">
-              <td colspan="8" class="text-white p-5 text-center">No federations found</td>
+              <td colspan="8" class="text-white p-5 text-center">{{ $t('ui.no_federations_found') }}</td>
             </tr>
           </tbody>
         </table>
@@ -166,7 +166,7 @@
     <div v-if="showDetailsModal" class="modal-overlay" @click.self="showDetailsModal = false">
       <div class="modal-content n11-bg rounded-8 p-4" style="max-width: 700px; max-height: 90vh; overflow-y: auto;">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 class="text-white mb-0">Federation Details</h3>
+          <h3 class="text-white mb-0">{{ $t('ui.federation_details') }}</h3>
           <button class="btn-close btn-close-white" @click="showDetailsModal = false"></button>
         </div>
 
@@ -180,7 +180,7 @@
               <img 
                 v-if="selectedFederation.logo_url" 
                 :src="selectedFederation.logo_url" 
-                alt="Logo"
+                :alt="$t('ui.logo')"
                 class="rounded-circle"
                 style="width: 100px; height: 100px; object-fit: cover;"
               />
@@ -195,11 +195,11 @@
             <h4 class="text-white text-center mb-3">{{ selectedFederation.name }}</h4>
           </div>
           <div class="col-md-6">
-            <small class="text-white-50">Description:</small>
+            <small class="text-white-50">{{ $t('ui.description') }}</small>
             <p class="text-white mb-0" style="white-space: pre-wrap;">{{ selectedFederation.description || 'N/A' }}</p>
           </div>
           <div class="col-md-6">
-            <small class="text-white-50">Status:</small>
+            <small class="text-white-50">{{ $t('ui.status') }}</small>
             <p class="mb-0">
               <span :class="['badge', getStatusClass(selectedFederation.status)]">
                 {{ getStatusLabel(selectedFederation.status) }}
@@ -207,40 +207,40 @@
             </p>
           </div>
           <div class="col-md-6">
-            <small class="text-white-50">Responsible:</small>
+            <small class="text-white-50">{{ $t('ui.responsible_2') }}</small>
             <p class="text-white mb-0">{{ selectedFederation.user?.username || 'N/A' }}</p>
           </div>
           <div class="col-md-6">
-            <small class="text-white-50">Email:</small>
+            <small class="text-white-50">{{ $t('ui.email') }}</small>
             <p class="text-white mb-0">{{ selectedFederation.email || 'N/A' }}</p>
           </div>
           <div class="col-md-6">
-            <small class="text-white-50">Phone:</small>
+            <small class="text-white-50">{{ $t('ui.phone') }}</small>
             <p class="text-white mb-0">{{ selectedFederation.phone || 'N/A' }}</p>
           </div>
           <div class="col-md-6">
-            <small class="text-white-50">Website:</small>
+            <small class="text-white-50">{{ $t('ui.website') }}</small>
             <p class="text-white mb-0">
               <a v-if="selectedFederation.website" :href="selectedFederation.website" target="_blank" class="text-primary">
                 {{ selectedFederation.website }}
               </a>
-              <span v-else>N/A</span>
+              <span v-else>{{ $t('ui.n_a') }}</span>
             </p>
           </div>
           <div class="col-md-6">
-            <small class="text-white-50">Country:</small>
+            <small class="text-white-50">{{ $t('ui.country') }}</small>
             <p class="text-white mb-0">{{ selectedFederation.country || 'N/A' }}</p>
           </div>
           <div class="col-md-6">
-            <small class="text-white-50">City:</small>
+            <small class="text-white-50">{{ $t('ui.city_2') }}</small>
             <p class="text-white mb-0">{{ selectedFederation.city || 'N/A' }}</p>
           </div>
           <div class="col-12" v-if="selectedFederation.address">
-            <small class="text-white-50">Address:</small>
+            <small class="text-white-50">{{ $t('ui.address') }}</small>
             <p class="text-white mb-0">{{ selectedFederation.address }}</p>
           </div>
           <div class="col-12" v-if="selectedFederation.rejection_reason">
-            <small class="text-white-50">Rejection/Suspension Reason:</small>
+            <small class="text-white-50">{{ $t('ui.rejection_suspension_reason') }}</small>
             <p class="text-danger mb-0">{{ selectedFederation.rejection_reason }}</p>
           </div>
         </div>
@@ -250,21 +250,21 @@
     <!-- Reject Modal -->
     <div v-if="showRejectModal" class="modal-overlay" @click.self="showRejectModal = false">
       <div class="modal-content n11-bg rounded-8 p-4" style="max-width: 500px;">
-        <h3 class="text-white mb-4">Reject Federation</h3>
+        <h3 class="text-white mb-4">{{ $t('ui.reject_federation') }}</h3>
         <div class="mb-3">
-          <label class="form-label text-white">Reason (optional)</label>
+          <label class="form-label text-white">{{ $t('ui.reason_optional') }}</label>
           <textarea 
             v-model="rejectReason"
             class="form-control n11-bg text-white border-secondary"
             rows="3"
-            placeholder="Enter rejection reason..."
+            :placeholder="$t('ui.enter_rejection_reason')"
           ></textarea>
         </div>
         <div class="d-flex gap-3">
           <button class="btn_primary flex-fill" @click="rejectFederation" :disabled="processing">
             Reject
           </button>
-          <button class="btn_secondary" @click="showRejectModal = false">Cancel</button>
+          <button class="btn_secondary" @click="showRejectModal = false">{{ $t('common.cancel') }}</button>
         </div>
       </div>
     </div>
@@ -272,21 +272,21 @@
     <!-- Suspend Modal -->
     <div v-if="showSuspendModal" class="modal-overlay" @click.self="showSuspendModal = false">
       <div class="modal-content n11-bg rounded-8 p-4" style="max-width: 500px;">
-        <h3 class="text-white mb-4">Suspend Federation</h3>
+        <h3 class="text-white mb-4">{{ $t('ui.suspend_federation') }}</h3>
         <div class="mb-3">
-          <label class="form-label text-white">Reason (optional)</label>
+          <label class="form-label text-white">{{ $t('ui.reason_optional') }}</label>
           <textarea 
             v-model="suspendReason"
             class="form-control n11-bg text-white border-secondary"
             rows="3"
-            placeholder="Enter suspension reason..."
+            :placeholder="$t('ui.enter_suspension_reason')"
           ></textarea>
         </div>
         <div class="d-flex gap-3">
           <button class="btn_primary flex-fill" @click="suspendFederation" :disabled="processing">
             Suspend
           </button>
-          <button class="btn_secondary" @click="showSuspendModal = false">Cancel</button>
+          <button class="btn_secondary" @click="showSuspendModal = false">{{ $t('common.cancel') }}</button>
         </div>
       </div>
     </div>
@@ -294,6 +294,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted, computed } from "vue";
 import apiClient from "@/utils/axios";
 

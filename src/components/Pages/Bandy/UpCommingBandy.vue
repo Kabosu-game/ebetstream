@@ -10,7 +10,7 @@
                   class="top_matches__title d-flex align-items-center gap-2 mb-4 mb-md-6"
                 >
                   <img :src="rugby" width="{28}" height="{28}" alt="Icon" />
-                  <h3>International</h3>
+                  <h3>{{ $t('ui.international') }}</h3>
                 </div>
                 <div class="top_matches__content">
                   <div
@@ -40,14 +40,14 @@
                                 alt="Icon"
                               />
                               <span class="fs-eight cpoint"
-                                >Poland Ekstraklasa</span
+                                >{{ $t('ui.poland_ekstraklasa') }}</span
                               >
                             </div>
                             <div
                               class="d-flex align-items-center gap-4 pe-xl-15 flex-nowrap flex-xl-wrap"
                             >
                               <span class="fs-eight cpoint me-xl-6"
-                                >In 2 days, 00:00</span
+                                >{{ $t('ui.in_2_days_00_00') }}</span
                               >
                             </div>
                           </div>
@@ -113,7 +113,7 @@
                               <thead>
                                 <tr class="text-center">
                                   <th scope="col">
-                                    <span class="fs-eight">1x2</span>
+                                    <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -175,6 +175,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { russiaData } from "../../../assets/data/allPageData";
 import rugby from "@/assets/images/icon/rugby-union.png";
 </script>

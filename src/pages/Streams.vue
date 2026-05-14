@@ -4,7 +4,7 @@
     <!-- Top bar -->
     <div class="streams-topbar">
       <div class="streams-topbar__left">
-        <h1 class="streams-topbar__title">Browse Streams</h1>
+        <h1 class="streams-topbar__title">{{ $t('ui.browse_streams') }}</h1>
         <span v-if="liveStreams.length > 0" class="st-live-pill">
           <span class="st-dot"></span>{{ liveStreams.length }} Live
         </span>
@@ -13,10 +13,10 @@
         </span>
       </div>
       <button v-if="isAuthenticated" class="st-stream-btn" @click="$router.push('/streams/create')">
-        <i class="fas fa-video"></i><span class="btn-text"> Go Live</span>
+        <i class="fas fa-video"></i><span class="btn-text">{{ $t('ui.go_live_2') }}</span>
       </button>
       <button v-else class="st-stream-btn st-stream-btn--ghost" @click="$router.push('/login')">
-        <i class="fas fa-sign-in-alt"></i><span class="btn-text"> Login to Stream</span>
+        <i class="fas fa-sign-in-alt"></i><span class="btn-text">{{ $t('ui.login_to_stream') }}</span>
       </button>
     </div>
 
@@ -27,12 +27,10 @@
           All<span class="st-tab-count">{{ allStreams.length + liveChallenges.length }}</span>
         </button>
         <button class="st-tab" :class="{ active: activeTab === 'live' }"       @click="activeTab = 'live'">
-          <span class="st-dot"></span>Live
-          <span class="st-tab-count" v-if="liveStreams.length">{{ liveStreams.length }}</span>
+          <span class="st-dot"></span>{{ $t('betting.live') }}<span class="st-tab-count" v-if="liveStreams.length">{{ liveStreams.length }}</span>
         </button>
         <button class="st-tab" :class="{ active: activeTab === 'challenges' }" @click="activeTab = 'challenges'">
-          <i class="fas fa-fist-raised"></i>Challenges
-          <span class="st-tab-count" v-if="liveChallenges.length">{{ liveChallenges.length }}</span>
+          <i class="fas fa-fist-raised"></i>{{ $t('nav.challenges') }}<span class="st-tab-count" v-if="liveChallenges.length">{{ liveChallenges.length }}</span>
         </button>
         <button class="st-tab" :class="{ active: activeTab === 'offline' }"    @click="activeTab = 'offline'">
           Recent<span class="st-tab-count" v-if="offlineStreams.length">{{ offlineStreams.length }}</span>
@@ -45,7 +43,7 @@
           v-model="searchQuery"
           type="text"
           class="st-search__input"
-          placeholder="Search streams…"
+          :placeholder="$t('ui.search_streams')"
           @input="debouncedSearch"
         />
         <button v-if="searchQuery" class="st-search__clear" @click="searchQuery = ''; loadStreams()">
@@ -78,7 +76,7 @@
       >
         <div class="st-section-header">
           <span class="st-section-dot st-section-dot--red"></span>
-          <h2 class="st-section-title">Live Challenges</h2>
+          <h2 class="st-section-title">{{ $t('ui.live_challenges') }}</h2>
           <span class="st-section-count">{{ liveChallenges.length }}</span>
         </div>
         <div class="st-grid">
@@ -122,7 +120,7 @@
       >
         <div class="st-section-header">
           <span class="st-section-dot st-section-dot--red"></span>
-          <h2 class="st-section-title">Live Now</h2>
+          <h2 class="st-section-title">{{ $t('ui.live_now') }}</h2>
           <span class="st-section-count">{{ liveStreams.length }}</span>
         </div>
         <div class="st-grid">
@@ -163,7 +161,7 @@
       >
         <div class="st-section-header">
           <span class="st-section-dot"></span>
-          <h2 class="st-section-title">Recent Streams</h2>
+          <h2 class="st-section-title">{{ $t('ui.recent_streams') }}</h2>
           <span class="st-section-count">{{ offlineStreams.length }}</span>
         </div>
         <div class="st-grid">
@@ -205,24 +203,23 @@
       <!-- Empty states per tab -->
       <div v-if="activeTab === 'live' && liveStreams.length === 0" class="st-empty">
         <i class="ti ti-broadcast-off st-empty__icon"></i>
-        <h3 class="st-empty__title">No live streams right now</h3>
-        <p class="st-empty__sub">Be the first to go live!</p>
+        <h3 class="st-empty__title">{{ $t('ui.no_live_streams_right_now') }}</h3>
+        <p class="st-empty__sub">{{ $t('ui.be_the_first_to_go_live') }}</p>
         <button v-if="isAuthenticated" class="st-btn-primary" @click="$router.push('/streams/create')">
-          <i class="fas fa-video"></i> Start Streaming
-        </button>
+          <i class="fas fa-video"></i>{{ $t('ui.start_streaming') }}</button>
       </div>
 
       <div v-if="activeTab === 'challenges' && liveChallenges.length === 0" class="st-empty">
         <i class="fas fa-fist-raised st-empty__icon"></i>
-        <h3 class="st-empty__title">No live challenges</h3>
-        <p class="st-empty__sub">Start a challenge to see it here.</p>
-        <router-link to="/challenges" class="st-btn-primary">Browse Challenges</router-link>
+        <h3 class="st-empty__title">{{ $t('ui.no_live_challenges') }}</h3>
+        <p class="st-empty__sub">{{ $t('ui.start_a_challenge_to_see_it_here') }}</p>
+        <router-link to="/challenges" class="st-btn-primary">{{ $t('ui.browse_challenges') }}</router-link>
       </div>
 
       <div v-if="activeTab === 'offline' && offlineStreams.length === 0" class="st-empty">
         <i class="fas fa-video-slash st-empty__icon"></i>
-        <h3 class="st-empty__title">No streams found</h3>
-        <p class="st-empty__sub">Try adjusting your search.</p>
+        <h3 class="st-empty__title">{{ $t('ui.no_streams_found') }}</h3>
+        <p class="st-empty__sub">{{ $t('ui.try_adjusting_your_search') }}</p>
       </div>
 
       <!-- Global empty (all tabs, nothing at all) -->
@@ -231,12 +228,11 @@
         class="st-empty"
       >
         <i class="fas fa-video-slash st-empty__icon"></i>
-        <h3 class="st-empty__title">No streams available</h3>
-        <p class="st-empty__sub">Be the first to stream on eBetStream!</p>
+        <h3 class="st-empty__title">{{ $t('ui.no_streams_available') }}</h3>
+        <p class="st-empty__sub">{{ $t('ui.be_the_first_to_stream_on_ebetstream') }}</p>
         <button v-if="isAuthenticated" class="st-btn-primary" @click="$router.push('/streams/create')">
-          <i class="fas fa-video"></i> Create a Stream
-        </button>
-        <router-link v-else to="/login" class="st-btn-primary">Login to Start</router-link>
+          <i class="fas fa-video"></i>{{ $t('ui.create_a_stream') }}</button>
+        <router-link v-else to="/login" class="st-btn-primary">{{ $t('ui.login_to_start') }}</router-link>
       </div>
 
     </template>
@@ -244,6 +240,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient from '@/utils/axios';

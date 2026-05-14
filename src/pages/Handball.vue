@@ -10,7 +10,7 @@
                   class="top_matches__title d-flex align-items-center gap-2 mb-4 mb-md-5"
                 >
                   <img :src="clock" width="{32}" height="{32}" alt="Icon" />
-                  <h3>Upcoming Events</h3>
+                  <h3>{{ $t('betting.upcoming_events') }}</h3>
                 </div>
                 <div class="top_matches__content">
                   <div class="top_matches__cmncard p2-bg p-4 rounded-3 mb-4">
@@ -28,14 +28,14 @@
                                 alt="Icon"
                               />
                               <span class="fs-eight cpoint"
-                                >UEFA Youth League</span
+                                >{{ $t('ui.uefa_youth_league') }}</span
                               >
                             </div>
                             <div
                               class="d-flex align-items-center gap-4 pe-xl-15 flex-nowrap flex-xl-wrap"
                             >
                               <span class="fs-eight cpoint"
-                                >In 2 days, 02:00</span
+                                >{{ $t('ui.in_2_days_02_00') }}</span
                               >
                             </div>
                           </div>
@@ -51,7 +51,7 @@
                                   alt="Icon"
                                 />
                                 <span class="fs-seven cpoint"
-                                  >FC Shakhtar Donetsk</span
+                                  >{{ $t('ui.fc_shakhtar_donetsk') }}</span
                                 >
                               </div>
                               <div class="d-flex align-items-center gap-2">
@@ -62,7 +62,7 @@
                                   alt="Icon"
                                 />
                                 <span class="fs-seven cpoint"
-                                  >Royal Antwerp FC U19</span
+                                  >{{ $t('ui.royal_antwerp_fc_u19') }}</span
                                 >
                               </div>
                             </div>
@@ -99,7 +99,7 @@
                               <thead>
                                 <tr class="text-center">
                                   <th scope="col">
-                                    <span class="fs-eight">Winner</span>
+                                    <span class="fs-eight">{{ $t('betting.winner') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -248,13 +248,13 @@
                               <thead>
                                 <tr class="text-center">
                                   <th scope="col">
-                                    <span class="fs-eight">1x2</span>
+                                    <span class="fs-eight">{{ $t('betting.1x2') }}</span>
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">Double chance</span>
+                                    <span class="fs-eight">{{ $t('betting.double_chance') }}</span>
                                   </th>
                                   <th scope="col">
-                                    <span class="fs-eight">Total</span>
+                                    <span class="fs-eight">{{ $t('betting.total') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -281,7 +281,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >draw</span
+                                          >{{ $t('betting.draw') }}</span
                                         >
                                         <span
                                           class="fw-bold d-block text-nowrap"
@@ -311,7 +311,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >1 or draw</span
+                                          >{{ $t('betting.1_or_draw') }}</span
                                         >
                                         <span class="fw-bold d-block"
                                           >3.45</span
@@ -322,7 +322,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >1 or 2</span
+                                          >{{ $t('betting.1_or_2') }}</span
                                         >
                                         <span class="fw-bold d-block"
                                           >3.45</span
@@ -333,7 +333,7 @@
                                       >
                                         <span
                                           class="fs-seven d-block mb-2 text-nowrap"
-                                          >draw or 2</span
+                                          >{{ $t('betting.draw_or_2') }}</span
                                         >
                                         <span class="fw-bold d-block"
                                           >3.45</span
@@ -402,6 +402,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { amricanFootballUpCE } from "../assets/data/tabThree";
 import clock from "@/assets/images/icon/clock-icon.png";
 import floorball from "@/assets/images/icon/floorball.png";

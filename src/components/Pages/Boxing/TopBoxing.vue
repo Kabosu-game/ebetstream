@@ -10,7 +10,7 @@
                   class="top_matches__title d-flex align-items-center gap-2 mb-4 mb-md-5"
                 >
                   <img :src="portugal" width="{30}" height="{30}" alt="Icon" />
-                  <h3>Portugal</h3>
+                  <h3>{{ $t('ui.portugal') }}</h3>
                 </div>
                 <div class="top_matches__content">
                   <div class="top_matches__cmncard p2-bg p-4 rounded-3 mb-4">
@@ -28,7 +28,7 @@
                                 alt="Icon"
                               />
                               <span class="fs-eight cpoint"
-                                >Challenger Series</span
+                                >{{ $t('ui.challenger_series') }}</span
                               >
                             </div>
                             <div
@@ -52,7 +52,7 @@
                                   alt="Icon"
                                 />
                                 <span class="fs-seven cpoint"
-                                  >Fils, Arthur</span
+                                  >{{ $t('ui.fils_arthur') }}</span
                                 >
                               </div>
                               <div class="d-flex align-items-center gap-2">
@@ -63,7 +63,7 @@
                                   height="{24}"
                                   alt="Icon"
                                 />
-                                <span class="fs-seven cpoint">Nardi, Luca</span>
+                                <span class="fs-seven cpoint">{{ $t('ui.nardi_luca') }}</span>
                               </div>
                             </div>
                             <div
@@ -92,7 +92,7 @@
                               <thead>
                                 <tr class="text-start">
                                   <th scope="col">
-                                    <span class="fs-eight ms-15">Winner</span>
+                                    <span class="fs-eight ms-15">{{ $t('betting.winner') }}</span>
                                   </th>
                                 </tr>
                               </thead>
@@ -145,6 +145,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import portugal from "@/assets/images/icon/portugal.png";
 import arthur from "@/assets/images/icon/fils-arthur.png";
 import luca from "@/assets/images/icon/nardi-luca.png";

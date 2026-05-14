@@ -25,7 +25,7 @@
       <div class="balance-card">
         <div class="balance-header">
           <div class="balance-icon"><i class="ti ti-chart-bar"></i></div>
-          <span class="balance-title">Solde net de la plateforme</span>
+          <span class="balance-title">{{ $t('ui.solde_net_de_la_plateforme') }}</span>
         </div>
         <div class="balance-amount" :class="netBalance >= 0 ? 'positive' : 'negative'">
           {{ netBalance >= 0 ? '+' : '' }}${{ formatNumber(Math.abs(netBalance)) }}
@@ -51,7 +51,7 @@
 
       <!-- Quick actions -->
       <div class="quick-actions-card">
-        <div class="qa-title">Actions rapides</div>
+        <div class="qa-title">{{ $t('ui.actions_rapides') }}</div>
         <div class="qa-grid">
           <button v-for="qa in quickActions" :key="qa.label" class="qa-btn" :class="qa.cls">
             <i :class="['ti', qa.icon]"></i>
@@ -79,8 +79,8 @@
         <div class="rtc-header">
           <div class="rtc-title">
             <i class="fas fa-award"></i>
-            <span>Top 10 Joueurs</span>
-            <span class="rtc-period">cette semaine</span>
+            <span>{{ $t('ui.top_10_joueurs') }}</span>
+            <span class="rtc-period">{{ $t('ui.cette_semaine') }}</span>
           </div>
           <div v-if="loadingPlayers" class="rtc-loader">
             <div class="spin"></div>
@@ -89,12 +89,12 @@
         <div class="rtc-body">
           <div v-if="!loadingPlayers && topPlayers.length === 0" class="rtc-empty">
             <i class="ti ti-user-off"></i>
-            <span>Aucun joueur cette semaine</span>
+            <span>{{ $t('ui.aucun_joueur_cette_semaine') }}</span>
           </div>
           <div v-for="(player, idx) in topPlayers.slice(0, 10)" :key="player.id" class="rank-row">
             <div class="rank-badge" :class="getRankClass(idx)">{{ idx + 1 }}</div>
             <div class="rank-avatar">
-              <img v-if="player.avatar_url" :src="player.avatar_url" :alt="player.name" />
+              <img v-if="player.avatar_url" :src="player.avatar_url" :alt="$t('ui.player_name_2')" />
               <i v-else class="fas fa-user"></i>
             </div>
             <div class="rank-info">
@@ -103,7 +103,7 @@
             </div>
             <div class="rank-score">
               <span class="score-val">{{ player.score || 0 }}</span>
-              <span class="score-unit">pts</span>
+              <span class="score-unit">{{ $t('ui.pts') }}</span>
             </div>
           </div>
         </div>
@@ -114,8 +114,8 @@
         <div class="rtc-header">
           <div class="rtc-title">
             <i class="fas fa-star"></i>
-            <span>Top 10 Ambassadeurs</span>
-            <span class="rtc-period">cette semaine</span>
+            <span>{{ $t('ui.top_10_ambassadeurs') }}</span>
+            <span class="rtc-period">{{ $t('ui.cette_semaine') }}</span>
           </div>
           <div v-if="loadingAmbassadors" class="rtc-loader">
             <div class="spin"></div>
@@ -124,12 +124,12 @@
         <div class="rtc-body">
           <div v-if="!loadingAmbassadors && topAmbassadors.length === 0" class="rtc-empty">
             <i class="ti ti-star-off"></i>
-            <span>Aucun ambassadeur cette semaine</span>
+            <span>{{ $t('ui.aucun_ambassadeur_cette_semaine') }}</span>
           </div>
           <div v-for="(amb, idx) in topAmbassadors.slice(0, 10)" :key="amb.id" class="rank-row">
             <div class="rank-badge" :class="getRankClass(idx)">{{ idx + 1 }}</div>
             <div class="rank-avatar">
-              <img v-if="amb.avatar_url" :src="amb.avatar_url" :alt="amb.name" />
+              <img v-if="amb.avatar_url" :src="amb.avatar_url" :alt="$t('ui.amb_name')" />
               <i v-else class="fas fa-user"></i>
             </div>
             <div class="rank-info">
@@ -138,7 +138,7 @@
             </div>
             <div class="rank-score">
               <span class="score-val">{{ amb.score || 0 }}</span>
-              <span class="score-unit">pts</span>
+              <span class="score-unit">{{ $t('ui.pts') }}</span>
             </div>
           </div>
         </div>
@@ -150,18 +150,18 @@
       <div class="rtc-header">
         <div class="rtc-title">
           <i class="fas fa-building"></i>
-          <span>Partenaires développeurs</span>
+          <span>{{ $t('ui.partenaires_d_veloppeurs') }}</span>
         </div>
         <div v-if="loadingPartners" class="rtc-loader"><div class="spin"></div></div>
       </div>
       <div v-if="!loadingPartners && topPartners.length === 0" class="rtc-empty">
         <i class="ti ti-building-off"></i>
-        <span>Aucun partenaire disponible</span>
+        <span>{{ $t('ui.aucun_partenaire_disponible') }}</span>
       </div>
       <div class="partner-grid">
         <div v-for="p in topPartners" :key="p.id" class="partner-chip">
           <div class="partner-chip-avatar">
-            <img v-if="p.avatar_url" :src="p.avatar_url" :alt="p.name" />
+            <img v-if="p.avatar_url" :src="p.avatar_url" :alt="$t('ui.p_name')" />
             <i v-else class="fas fa-building"></i>
           </div>
           <div class="partner-chip-info">
@@ -179,6 +179,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, computed, onMounted } from 'vue';
 import apiClient from '@/utils/axios';
 

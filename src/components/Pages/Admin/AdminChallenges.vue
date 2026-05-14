@@ -2,8 +2,8 @@
   <div class="pay_method__paymethod p-3 p-md-4 p-lg-6 p2-bg rounded-8">
     <div class="pay_method__paymethod-title mb-5 mb-md-6 d-flex justify-content-between align-items-center flex-wrap gap-3">
       <div>
-        <h2 class="text-white fw-bold mb-2">Challenge Management</h2>
-        <p class="text-white-50">Manage all platform challenges</p>
+        <h2 class="text-white fw-bold mb-2">{{ $t('ui.challenge_management') }}</h2>
+        <p class="text-white-50">{{ $t('ui.manage_all_platform_challenges') }}</p>
       </div>
       <button 
         class="btn btn-warning fw-bold"
@@ -27,16 +27,16 @@
         v-model="searchQuery" 
         type="text" 
         class="form-control n11-bg text-white border-secondary" 
-        placeholder="Search by game, username, email..."
+        :placeholder="$t('ui.search_by_game_username_email')"
         style="max-width: 300px;"
       />
       <select v-model="filterStatus" class="form-select n11-bg text-white border-secondary" style="max-width: 200px;">
-        <option value="">All Status</option>
-        <option value="open">Open</option>
-        <option value="accepted">Accepted</option>
-        <option value="in_progress">In Progress</option>
-        <option value="completed">Completed</option>
-        <option value="cancelled">Cancelled</option>
+        <option value="">{{ $t('ui.all_status') }}</option>
+        <option value="open">{{ $t('ui.open') }}</option>
+        <option value="accepted">{{ $t('ui.accepted') }}</option>
+        <option value="in_progress">{{ $t('ui.in_progress') }}</option>
+        <option value="completed">{{ $t('common.completed') }}</option>
+        <option value="cancelled">{{ $t('common.cancelled') }}</option>
       </select>
       <button 
         class="btn btn-primary"
@@ -49,7 +49,7 @@
 
     <div v-if="loading" class="text-center py-5">
       <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+        <span class="visually-hidden">{{ $t('common.loading') }}</span>
       </div>
     </div>
 
@@ -58,15 +58,15 @@
         <table class="w-100 text-center p2-bg">
           <thead>
             <tr>
-              <th class="text-white p-3">ID</th>
-              <th class="text-white p-3">Game</th>
-              <th class="text-white p-3">Creator</th>
-              <th class="text-white p-3">Opponent</th>
-              <th class="text-white p-3">Scores</th>
-              <th class="text-white p-3">Bet</th>
-              <th class="text-white p-3">Status</th>
-              <th class="text-white p-3">Date</th>
-              <th class="text-white p-3">Actions</th>
+              <th class="text-white p-3">{{ $t('common.id') }}</th>
+              <th class="text-white p-3">{{ $t('common.game') }}</th>
+              <th class="text-white p-3">{{ $t('ui.creator') }}</th>
+              <th class="text-white p-3">{{ $t('ui.opponent') }}</th>
+              <th class="text-white p-3">{{ $t('ui.scores') }}</th>
+              <th class="text-white p-3">{{ $t('ui.bet') }}</th>
+              <th class="text-white p-3">{{ $t('common.status') }}</th>
+              <th class="text-white p-3">{{ $t('common.date') }}</th>
+              <th class="text-white p-3">{{ $t('common.actions') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -120,7 +120,7 @@
               </td>
             </tr>
             <tr v-if="challenges.length === 0">
-              <td colspan="9" class="text-white p-5 text-center">No challenges found</td>
+              <td colspan="9" class="text-white p-5 text-center">{{ $t('ui.no_challenges_found') }}</td>
             </tr>
           </tbody>
         </table>
@@ -130,49 +130,49 @@
     <!-- Complete Challenge Modal -->
     <div v-if="showCompleteModal && selectedChallenge" class="popup-overlay" @click.self="closeCompleteModal">
       <div class="popup-box p-5 rounded-4 shadow-lg n11-bg" style="max-width: 600px; max-height: 90vh; overflow-y: auto;">
-        <h3 class="fw-bold mb-4 text-center text-white">Complete Challenge</h3>
+        <h3 class="fw-bold mb-4 text-center text-white">{{ $t('ui.complete_challenge') }}</h3>
         
         <div class="mb-4 p-3 rounded n11-bg border border-secondary">
-          <p class="text-white-50 mb-1 small">Game</p>
+          <p class="text-white-50 mb-1 small">{{ $t('common.game') }}</p>
           <p class="text-white mb-0 fw-bold">{{ selectedChallenge.game }}</p>
-          <p class="text-white-50 mb-1 small mt-2">Bet Amount</p>
+          <p class="text-white-50 mb-1 small mt-2">{{ $t('betting.bet_amount') }}</p>
           <p class="text-white mb-0 fw-bold">{{ formatNumber(selectedChallenge.bet_amount) }} EBT</p>
         </div>
 
         <form @submit.prevent="completeChallenge">
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Winner</label>
+            <label class="text-white mb-2 d-block">{{ $t('betting.winner') }}</label>
             <select 
               v-model="completeForm.winner_id" 
               class="form-select n11-bg text-white border-secondary"
               required
             >
-              <option value="">Select winner</option>
+              <option value="">{{ $t('ui.select_winner') }}</option>
               <option value="creator">{{ selectedChallenge.creator?.username || 'Creator' }}</option>
               <option value="opponent">{{ selectedChallenge.opponent?.username || 'Opponent' }}</option>
-              <option value="draw">Draw (Refund both)</option>
+              <option value="draw">{{ $t('ui.draw_refund_both') }}</option>
             </select>
           </div>
 
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Creator Score (optional)</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.creator_score_optional') }}</label>
             <input 
               v-model.number="completeForm.creator_score"
               type="number" 
               min="0"
               class="form-control n11-bg text-white border-secondary" 
-              placeholder="Enter creator score"
+              :placeholder="$t('ui.enter_creator_score')"
             />
           </div>
 
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Opponent Score (optional)</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.opponent_score_optional') }}</label>
             <input 
               v-model.number="completeForm.opponent_score"
               type="number" 
               min="0"
               class="form-control n11-bg text-white border-secondary" 
-              placeholder="Enter opponent score"
+              :placeholder="$t('ui.enter_opponent_score')"
             />
           </div>
 
@@ -184,10 +184,10 @@
               class="btn_primary flex-fill" 
               :disabled="saving || !completeForm.winner_id"
             >
-              <span v-if="saving">Processing...</span>
-              <span v-else>Complete Challenge</span>
+              <span v-if="saving">{{ $t('common.processing') }}</span>
+              <span v-else>{{ $t('ui.complete_challenge') }}</span>
             </button>
-            <button type="button" class="btn_secondary" @click="closeCompleteModal">Cancel</button>
+            <button type="button" class="btn_secondary" @click="closeCompleteModal">{{ $t('common.cancel') }}</button>
           </div>
         </form>
       </div>
@@ -197,7 +197,7 @@
     <div v-if="showDetailsModal" class="modal-overlay" @click.self="showDetailsModal = false">
       <div class="modal-content n11-bg rounded-8 p-4" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 class="text-white mb-0">Challenge Details</h3>
+          <h3 class="text-white mb-0">{{ $t('ui.challenge_details') }}</h3>
           <button class="btn-close btn-close-white" @click="showDetailsModal = false"></button>
         </div>
 
@@ -232,17 +232,17 @@
           <div v-if="activeTab === 'overview'" class="row g-4">
             <div class="col-md-6">
               <div class="n11-bg rounded-8 p-4">
-                <h5 class="text-white mb-3">Information</h5>
+                <h5 class="text-white mb-3">{{ $t('ui.information') }}</h5>
                 <div class="mb-2">
-                  <small class="text-white-50">Game:</small>
+                  <small class="text-white-50">{{ $t('ui.game') }}</small>
                   <p class="text-white mb-0">{{ challengeDetails.game }}</p>
                 </div>
                 <div class="mb-2">
-                  <small class="text-white-50">Bet Amount:</small>
+                  <small class="text-white-50">{{ $t('ui.bet_amount') }}</small>
                   <p class="text-white mb-0">{{ formatNumber(challengeDetails.bet_amount) }} EBT</p>
                 </div>
                 <div class="mb-2">
-                  <small class="text-white-50">Status:</small>
+                  <small class="text-white-50">{{ $t('ui.status') }}</small>
                   <p class="mb-0">
                     <span :class="['badge', getStatusClass(challengeDetails.status)]">
                       {{ getStatusLabel(challengeDetails.status) }}
@@ -250,20 +250,20 @@
                   </p>
                 </div>
                 <div class="mb-2">
-                  <small class="text-white-50">Created:</small>
+                  <small class="text-white-50">{{ $t('ui.created') }}</small>
                   <p class="text-white mb-0">{{ formatDate(challengeDetails.created_at) }}</p>
                 </div>
                 <div v-if="challengeDetails.expires_at" class="mb-2">
-                  <small class="text-white-50">Expires:</small>
+                  <small class="text-white-50">{{ $t('ui.expires') }}</small>
                   <p class="text-white mb-0">{{ formatDate(challengeDetails.expires_at) }}</p>
                 </div>
               </div>
             </div>
             <div class="col-md-6">
               <div class="n11-bg rounded-8 p-4">
-                <h5 class="text-white mb-3">Players</h5>
+                <h5 class="text-white mb-3">{{ $t('ui.players') }}</h5>
                 <div class="mb-3">
-                  <small class="text-white-50">Creator:</small>
+                  <small class="text-white-50">{{ $t('ui.creator_2') }}</small>
                   <p class="text-white mb-0">
                     {{ challengeDetails.creator?.username || 'N/A' }}
                     <span v-if="challengeDetails.creator_score !== null" class="badge bg-primary ms-2">
@@ -272,7 +272,7 @@
                   </p>
                 </div>
                 <div class="mb-3">
-                  <small class="text-white-50">Opponent:</small>
+                  <small class="text-white-50">{{ $t('ui.opponent_2') }}</small>
                   <p class="text-white mb-0">
                     {{ challengeDetails.opponent?.username || 'Pending' }}
                     <span v-if="challengeDetails.opponent_score !== null" class="badge bg-success ms-2">
@@ -287,7 +287,7 @@
           <!-- Messages Tab -->
           <div v-if="activeTab === 'messages'" class="n11-bg rounded-8 p-4">
             <div class="mb-3 d-flex justify-content-between align-items-center">
-              <h5 class="text-white mb-0">Challenge Discussion</h5>
+              <h5 class="text-white mb-0">{{ $t('ui.challenge_discussion') }}</h5>
               <div>
                 <small class="text-white-50">
                   Total: {{ challengeStats.total_messages || 0 }} | 
@@ -311,7 +311,7 @@
                     <div>
                       <strong class="text-white">{{ message.user?.username }}</strong>
                       <small class="text-white-50 ms-2">{{ formatDateTime(message.created_at) }}</small>
-                      <span v-if="message.is_deleted" class="badge bg-secondary ms-2">Deleted</span>
+                      <span v-if="message.is_deleted" class="badge bg-secondary ms-2">{{ $t('ui.deleted') }}</span>
                     </div>
                   </div>
                   <p class="text-white mb-0" :style="{ textDecoration: message.is_deleted ? 'line-through' : 'none' }">
@@ -363,7 +363,7 @@
                   <div>Confirmed by: {{ request.confirmer?.username }}</div>
                   <div>Confirmed at: {{ formatDateTime(request.confirmed_at) }}</div>
                   <div v-if="request.reason" class="mt-2">
-                    <strong>Reason:</strong> {{ request.reason }}
+                    <strong>{{ $t('ui.reason') }}</strong> {{ request.reason }}
                   </div>
                 </div>
               </div>
@@ -373,14 +373,12 @@
                 class="btn btn-sm btn-success"
                 @click="openApproveModal(request)"
               >
-                <i class="fas fa-check me-1"></i>Approve & Complete
-              </button>
+                <i class="fas fa-check me-1"></i>{{ $t('ui.approve_complete') }}</button>
               <button 
                 class="btn btn-sm btn-danger"
                 @click="rejectStopRequest(request.id)"
               >
-                <i class="fas fa-times me-1"></i>Reject
-              </button>
+                <i class="fas fa-times me-1"></i>{{ $t('ui.reject') }}</button>
             </div>
           </div>
         </div>
@@ -395,51 +393,51 @@
     <div v-if="showApproveModal && selectedStopRequest" class="modal-overlay" @click.self="showApproveModal = false">
       <div class="popup-box p-5 rounded-4 shadow-lg n11-bg" style="max-width: 600px;">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 class="fw-bold mb-0 text-white">Approve Stop Request</h3>
+          <h3 class="fw-bold mb-0 text-white">{{ $t('ui.approve_stop_request') }}</h3>
           <button class="btn-close btn-close-white" @click="showApproveModal = false"></button>
         </div>
 
         <div class="mb-4 p-3 rounded n11-bg border border-secondary">
-          <p class="text-white-50 mb-1 small">Challenge</p>
+          <p class="text-white-50 mb-1 small">{{ $t('ui.challenge') }}</p>
           <p class="text-white mb-0 fw-bold">{{ selectedStopRequest.challenge?.game }}</p>
-          <p class="text-white-50 mb-1 small mt-2">Bet Amount</p>
+          <p class="text-white-50 mb-1 small mt-2">{{ $t('betting.bet_amount') }}</p>
           <p class="text-white mb-0 fw-bold">{{ formatNumber(selectedStopRequest.challenge?.bet_amount || 0) }} EBT</p>
         </div>
 
         <form @submit.prevent="approveStopRequest">
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Winner</label>
+            <label class="text-white mb-2 d-block">{{ $t('betting.winner') }}</label>
             <select 
               v-model="approveForm.winner_id" 
               class="form-select n11-bg text-white border-secondary"
               required
             >
-              <option value="">Select winner</option>
+              <option value="">{{ $t('ui.select_winner') }}</option>
               <option value="creator">{{ selectedStopRequest.challenge?.creator?.username || 'Creator' }}</option>
               <option value="opponent">{{ selectedStopRequest.challenge?.opponent?.username || 'Opponent' }}</option>
-              <option value="draw">Draw (Refund both)</option>
+              <option value="draw">{{ $t('ui.draw_refund_both') }}</option>
             </select>
           </div>
 
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Creator Score (optional)</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.creator_score_optional') }}</label>
             <input 
               v-model.number="approveForm.creator_score"
               type="number" 
               min="0"
               class="form-control n11-bg text-white border-secondary" 
-              placeholder="Enter creator score"
+              :placeholder="$t('ui.enter_creator_score')"
             />
           </div>
 
           <div class="form-group mb-4">
-            <label class="text-white mb-2 d-block">Opponent Score (optional)</label>
+            <label class="text-white mb-2 d-block">{{ $t('ui.opponent_score_optional') }}</label>
             <input 
               v-model.number="approveForm.opponent_score"
               type="number" 
               min="0"
               class="form-control n11-bg text-white border-secondary" 
-              placeholder="Enter opponent score"
+              :placeholder="$t('ui.enter_opponent_score')"
             />
           </div>
 
@@ -449,10 +447,10 @@
               class="btn_primary flex-fill" 
               :disabled="approvingStop || !approveForm.winner_id"
             >
-              <span v-if="approvingStop">Processing...</span>
-              <span v-else>Approve & Complete</span>
+              <span v-if="approvingStop">{{ $t('common.processing') }}</span>
+              <span v-else>{{ $t('ui.approve_complete') }}</span>
             </button>
-            <button type="button" class="btn_secondary" @click="showApproveModal = false">Cancel</button>
+            <button type="button" class="btn_secondary" @click="showApproveModal = false">{{ $t('common.cancel') }}</button>
           </div>
         </form>
       </div>
@@ -461,6 +459,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 import { ref, onMounted, watch } from 'vue';
 import apiClient from '@/utils/axios';
 
