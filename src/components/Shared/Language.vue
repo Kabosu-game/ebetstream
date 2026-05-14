@@ -4,9 +4,7 @@
       <div class="langu__head mt-3 mt-sm-2 mt-md-1">
         <ListboxButton class="d-flex align-items-center relative w-100">
           <img
-            class="rounded-5 me-1"
-            width="{16}"
-            height="{16}"
+            class="rounded-5 me-1 lang-flag"
             :src="selectedPerson.srcImage"
             :alt="$t('ui.icon')"
           />
@@ -38,9 +36,7 @@
           >
             <div class="d-flex flex-nowrap">
               <img
-                class="rounded-5 me-3 object-fit-contain"
-                width="{16}"
-                height="{16}"
+                class="rounded-5 me-3 lang-flag"
                 :src="person.srcImage"
                 :alt="$t('ui.icon')"
               />
@@ -120,4 +116,11 @@ onMounted(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.lang-flag {
+  width: 20px;
+  height: 14px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+</style>
