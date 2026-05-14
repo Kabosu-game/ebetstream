@@ -74,7 +74,7 @@ import {
 import { useI18n } from "vue-i18n";
 import english from "@/assets/images/icon/lang-usa.png";
 import france from "@/assets/images/icon/lang-france.png";
-import spain from "@/assets/images/icon/argentina.png";
+import spain from "@/assets/images/icon/spain.png";
 
 const { locale } = useI18n();
 
