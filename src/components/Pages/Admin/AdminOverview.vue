@@ -166,7 +166,7 @@
           </div>
           <div class="partner-chip-info">
             <span class="partner-chip-name">{{ p.name }}</span>
-            <span class="partner-chip-spec">{{ p.specialty || 'Développeur' }}</span>
+            <span class="partner-chip-spec">{{ p.specialty || $t('admin.developer') }}</span>
           </div>
           <span v-if="p.country" class="partner-chip-country">
             <i class="fas fa-map-marker-alt"></i> {{ p.country }}
@@ -216,41 +216,41 @@ const depositRatio = computed(() => {
 
 const kpiCards = computed(() => [
   {
-    key: 'users', label: 'Utilisateurs totaux', icon: 'ti-users',
+    key: 'users', label: t('admin.totalUsers'), icon: 'ti-users',
     colorClass: 'kpi-purple', formatted: formatNumber(stats.value.totalUsers),
     trend: '+12%', trendUp: true, barWidth: '72%',
   },
   {
-    key: 'challenges', label: 'Défis actifs', icon: 'ti-sword',
+    key: 'challenges', label: t('admin.activeChallenges'), icon: 'ti-sword',
     colorClass: 'kpi-orange', formatted: formatNumber(stats.value.totalChallenges),
     trend: '+8%', trendUp: true, barWidth: '58%',
   },
   {
-    key: 'streams', label: 'Streams live', icon: 'ti-video',
+    key: 'streams', label: t('admin.liveStreams'), icon: 'ti-video',
     colorClass: 'kpi-red', formatted: formatNumber(stats.value.totalStreams),
     trend: '+15%', trendUp: true, barWidth: '65%',
   },
   {
-    key: 'deposits', label: 'Dépôts totaux', icon: 'ti-wallet',
+    key: 'deposits', label: t('admin.totalDeposits'), icon: 'ti-wallet',
     colorClass: 'kpi-green', formatted: '$' + formatNumber(stats.value.totalDeposits),
     trend: '+20%', trendUp: true, barWidth: '80%',
   },
 ]);
 
 const miniStats = computed(() => [
-  { label: 'Ambassadeurs', value: formatNumber(stats.value.totalAmbassadors), icon: 'ti-star', cls: 'ms-yellow' },
-  { label: 'Partenaires', value: formatNumber(stats.value.totalPartners), icon: 'ti-building', cls: 'ms-cyan' },
-  { label: 'Retraits totaux', value: '$' + formatNumber(stats.value.totalWithdrawals), icon: 'ti-credit-card', cls: 'ms-pink' },
+  { label: t('admin.ambassadors'), value: formatNumber(stats.value.totalAmbassadors), icon: 'ti-star', cls: 'ms-yellow' },
+  { label: t('admin.partners'), value: formatNumber(stats.value.totalPartners), icon: 'ti-building', cls: 'ms-cyan' },
+  { label: t('admin.totalWithdrawals'), value: '$' + formatNumber(stats.value.totalWithdrawals), icon: 'ti-credit-card', cls: 'ms-pink' },
 ]);
 
-const quickActions = [
-  { label: 'Nouveau utilisateur', icon: 'ti-user-plus', cls: 'qa-blue' },
-  { label: 'Créer un défi', icon: 'ti-sword', cls: 'qa-orange' },
-  { label: 'Ajouter un event', icon: 'ti-calendar-plus', cls: 'qa-purple' },
-  { label: 'Code promo', icon: 'ti-ticket', cls: 'qa-green' },
-  { label: 'Méthode paiement', icon: 'ti-credit-card', cls: 'qa-cyan' },
-  { label: 'Voir rapports', icon: 'ti-chart-bar', cls: 'qa-red' },
-];
+const quickActions = computed(() => [
+  { label: t('admin.newUser'), icon: 'ti-user-plus', cls: 'qa-blue' },
+  { label: t('admin.createChallenge'), icon: 'ti-sword', cls: 'qa-orange' },
+  { label: t('admin.addEvent'), icon: 'ti-calendar-plus', cls: 'qa-purple' },
+  { label: t('admin.promoCode'), icon: 'ti-ticket', cls: 'qa-green' },
+  { label: t('admin.paymentMethod'), icon: 'ti-credit-card', cls: 'qa-cyan' },
+  { label: t('admin.viewReports'), icon: 'ti-chart-bar', cls: 'qa-red' },
+]);
 
 const formatNumber = (n: number | null | undefined) => {
   if (n === null || n === undefined || isNaN(n)) return '0';

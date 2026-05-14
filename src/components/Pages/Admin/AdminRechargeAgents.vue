@@ -44,17 +44,17 @@
               </td>
               <td class="text-white p-3">
                 <strong>{{ formatNum(agent.wallet_balance) }}</strong>
-                <br><small class="text-white-50">Dispo: {{ formatNum(agent.wallet_available) }}</small>
+                <br><small class="text-white-50">{{ $t('admin.availableShort') }}: {{ formatNum(agent.wallet_available) }}</small>
               </td>
               <td class="text-white p-3">{{ agent.tier?.name || '—' }}</td>
               <td class="p-3"><span :class="['badge', getStatusClass(agent.status)]">{{ getStatusLabel(agent.status) }}</span></td>
               <td class="p-3">
                 <div class="d-flex gap-1 justify-content-center flex-wrap">
-                  <button class="btn btn-sm btn-info text-white" title="Modifier" @click="editAgent(agent)"><i class="fas fa-edit"></i></button>
-                  <button class="btn btn-sm btn-warning text-dark" title="Gérer le solde" @click="openWallet(agent)"><i class="fas fa-wallet"></i></button>
-                  <button v-if="agent.status !== 'suspended'" class="btn btn-sm btn-secondary text-white" title="Suspendre" @click="suspendAgent(agent)"><i class="fas fa-pause"></i></button>
-                  <button v-else class="btn btn-sm btn-success text-white" title="Réactiver" @click="activateAgent(agent)"><i class="fas fa-play"></i></button>
-                  <button class="btn btn-sm btn-danger text-white" title="Supprimer" @click="deleteAgent(agent)"><i class="fas fa-trash"></i></button>
+                  <button class="btn btn-sm btn-info text-white" :title="$t('common.edit')" @click="editAgent(agent)"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-sm btn-warning text-dark" :title="$t('admin.manageBalance')" @click="openWallet(agent)"><i class="fas fa-wallet"></i></button>
+                  <button v-if="agent.status !== 'suspended'" class="btn btn-sm btn-secondary text-white" :title="$t('admin.suspend')" @click="suspendAgent(agent)"><i class="fas fa-pause"></i></button>
+                  <button v-else class="btn btn-sm btn-success text-white" :title="$t('admin.reactivate')" @click="activateAgent(agent)"><i class="fas fa-play"></i></button>
+                  <button class="btn btn-sm btn-danger text-white" :title="$t('common.delete')" @click="deleteAgent(agent)"><i class="fas fa-trash"></i></button>
                 </div>
               </td>
             </tr>
@@ -67,7 +67,7 @@
     <!-- Add/Edit -->
     <div v-if="showFormModal" class="modal-overlay" @click.self="closeModals">
       <div class="modal-content n11-bg rounded-8 p-4" style="max-width: 600px;">
-        <h3 class="text-white mb-4">{{ showEditModal ? 'Modifier l\'agent' : 'Nouvel agent' }}</h3>
+        <h3 class="text-white mb-4">{{ showEditModal ? $t('admin.editAgent') : $t('admin.newAgent') }}</h3>
         <form @submit.prevent="submitAgent">
           <div class="mb-3">
             <label class="form-label text-white">{{ $t('ui.nom_2') }}</label>
@@ -90,7 +90,7 @@
             <textarea v-model="agentForm.description" rows="3" class="form-control n11-bg text-white border-secondary"></textarea>
           </div>
           <button type="submit" class="btn btn-primary w-100 admin-accent-btn" :disabled="processing">
-            {{ processing ? 'Enregistrement...' : 'Enregistrer' }}
+            {{ processing ? $t('admin.saving') : $t('common.save') }}
           </button>
         </form>
       </div>
@@ -99,9 +99,9 @@
     <!-- Wallet -->
     <div v-if="showWalletModal && selectedAgent" class="modal-overlay" @click.self="showWalletModal = false">
       <div class="modal-content n11-bg rounded-8 p-4" style="max-width: 520px;">
-        <h3 class="text-white mb-2">Solde — {{ selectedAgent.name }}</h3>
+        <h3 class="text-white mb-2">{{ $t('admin.balanceTitle', { name: selectedAgent.name }) }}</h3>
         <p class="text-white-50 mb-4">
-          Actuel : <strong class="text-white">{{ formatNum(selectedAgent.wallet_balance) }} USDT</strong>
+          {{ $t('admin.currentBalance') }}: <strong class="text-white">{{ formatNum(selectedAgent.wallet_balance) }} USDT</strong>
           · Bloqué : {{ formatNum(selectedAgent.wallet_locked) }}
         </p>
         <form @submit.prevent="submitWallet">

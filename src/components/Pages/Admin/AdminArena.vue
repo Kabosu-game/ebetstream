@@ -63,10 +63,10 @@
               </td>
               <td class="p-3">
                 <div class="d-flex gap-1 justify-content-center flex-wrap">
-                  <button v-if="['waiting','scheduled'].includes(m.status)" class="btn btn-sm btn-danger" title="Démarrer LIVE" @click="startMatch(m)"><i class="fas fa-play"></i></button>
-                  <button v-if="['live','scheduled','waiting'].includes(m.status)" class="btn btn-sm btn-success" title="Résultat" @click="openResult(m)"><i class="fas fa-flag-checkered"></i></button>
-                  <button v-if="!['completed','cancelled'].includes(m.status)" class="btn btn-sm btn-warning text-dark" title="Annuler" @click="cancelMatch(m)"><i class="fas fa-ban"></i></button>
-                  <button class="btn btn-sm btn-info text-white" title="Détail" @click="openDetail(m)"><i class="fas fa-eye"></i></button>
+                  <button v-if="['waiting','scheduled'].includes(m.status)" class="btn btn-sm btn-danger" :title="$t('admin.startLive')" @click="startMatch(m)"><i class="fas fa-play"></i></button>
+                  <button v-if="['live','scheduled','waiting'].includes(m.status)" class="btn btn-sm btn-success" :title="$t('admin.result')" @click="openResult(m)"><i class="fas fa-flag-checkered"></i></button>
+                  <button v-if="!['completed','cancelled'].includes(m.status)" class="btn btn-sm btn-warning text-dark" :title="$t('common.cancel')" @click="cancelMatch(m)"><i class="fas fa-ban"></i></button>
+                  <button class="btn btn-sm btn-info text-white" :title="$t('admin.detail')" @click="openDetail(m)"><i class="fas fa-eye"></i></button>
                 </div>
               </td>
             </tr>
@@ -102,7 +102,7 @@
     <!-- Result -->
     <div v-if="showResult && selected" class="modal-overlay" @click.self="showResult = false">
       <div class="modal-content n11-bg rounded-8 p-4" style="max-width:480px">
-        <h3 class="text-white mb-2">Résultat — {{ selected.team1_name }} vs {{ selected.team2_name }}</h3>
+        <h3 class="text-white mb-2">{{ $t('admin.resultTitle', { team1: selected.team1_name, team2: selected.team2_name }) }}</h3>
         <p class="text-white-50 mb-4">{{ $t('ui.les_paris_esbs_et_les_stats_joueurs_seront_mis_jour_automati') }}</p>
         <div class="row g-3 mb-3">
           <div class="col-6"><label class="text-white">{{ selected.team1_name }}</label><input v-model.number="resultForm.team1_score" type="number" min="0" class="form-control n11-bg text-white border-secondary" /></div>
@@ -117,13 +117,13 @@
       <div class="modal-content n11-bg rounded-8 p-4" style="max-width:640px;max-height:90vh;overflow-y:auto">
         <h3 class="text-white mb-3">Match #{{ selected.id }}</h3>
         <p class="text-white">{{ selected.team1_name }} vs {{ selected.team2_name }}</p>
-        <p class="text-white-50">Mode : {{ modeLabel(selected.mode) }} · {{ statusLabel(selected.status) }}</p>
+        <p class="text-white-50">{{ $t('ui.mode') }}: {{ modeLabel(selected.mode) }} · {{ statusLabel(selected.status) }}</p>
         <h5 class="text-white mt-4 mb-2">{{ $t('ui.joueurs') }}</h5>
         <div v-if="!detailPlayers.length" class="text-white-50">{{ $t('ui.aucun_joueur') }}</div>
         <div v-for="p in detailPlayers" :key="p.id" class="text-white mb-1">
           {{ p.user?.username }} — {{ p.team }} ({{ p.player_class }})
         </div>
-        <h5 class="text-white mt-4 mb-2">Paris ({{ detailBets.length }})</h5>
+        <h5 class="text-white mt-4 mb-2">{{ $t('ui.paris') }} ({{ detailBets.length }})</h5>
         <div v-for="b in detailBets" :key="b.id" class="text-white-50 small mb-1">
           {{ b.user?.username }} : {{ b.amount }} EBT — {{ b.bet_type }} — {{ b.status }}
         </div>
@@ -262,8 +262,19 @@ const openDetail = async (m: ArenaRow) => {
   showDetail.value = true;
 };
 
-const modeLabel = (m: string) => ({ quick_match: 'Quick', ranked: 'Ranked', tournament: 'Tournoi', private_match: 'Privé' }[m] || m);
-const statusLabel = (s: string) => ({ live: 'LIVE', scheduled: 'Programmé', waiting: 'Attente', completed: 'Terminé', cancelled: 'Annulé' }[s] || s);
+const modeLabel = (m: string) => ({
+  quick_match: t('ui.quick_match'),
+  ranked: t('ui.ranked'),
+  tournament: t('ui.tournoi'),
+  private_match: t('ui.priv'),
+}[m] || m);
+const statusLabel = (s: string) => ({
+  live: t('betting.live'),
+  scheduled: t('ui.programm_s'),
+  waiting: t('ui.en_attente'),
+  completed: t('ui.termin_s'),
+  cancelled: t('ui.annul_s'),
+}[s] || s);
 const statusClass = (s: string) => ({ live: 'bg-danger', scheduled: 'bg-warning text-dark', waiting: 'bg-info text-dark', completed: 'bg-success', cancelled: 'bg-secondary' }[s] || 'bg-secondary');
 const formatDate = (d?: string) => d ? new Date(d).toLocaleString('fr-FR') : '—';
 

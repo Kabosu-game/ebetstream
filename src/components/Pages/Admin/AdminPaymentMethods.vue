@@ -405,7 +405,7 @@ const getDefaultMethods = (): PaymentMethod[] => {
     {
       id: 1,
       name: 'USDT (TRC20)',
-      description: 'Dépôt via USDT sur le réseau TRON',
+      description: t('admin.depositUsdtTron'),
       type: 'deposit',
       method_key: 'crypto',
       is_active: true,
@@ -418,7 +418,7 @@ const getDefaultMethods = (): PaymentMethod[] => {
     {
       id: 2,
       name: 'USDT (ERC20)',
-      description: 'Dépôt via USDT sur le réseau Ethereum',
+      description: t('admin.depositUsdtEthereum'),
       type: 'deposit',
       method_key: 'crypto',
       is_active: true,
@@ -430,7 +430,7 @@ const getDefaultMethods = (): PaymentMethod[] => {
     {
       id: 3,
       name: 'Bitcoin (BTC)',
-      description: 'Dépôt via Bitcoin',
+      description: t('admin.depositBitcoin'),
       type: 'deposit',
       method_key: 'crypto',
       is_active: true,
@@ -442,7 +442,7 @@ const getDefaultMethods = (): PaymentMethod[] => {
     {
       id: 4,
       name: 'Ethereum (ETH)',
-      description: 'Dépôt via Ethereum',
+      description: t('admin.depositEthereum'),
       type: 'deposit',
       method_key: 'crypto',
       is_active: true,
@@ -454,7 +454,7 @@ const getDefaultMethods = (): PaymentMethod[] => {
     {
       id: 5,
       name: 'Cash (Agents)',
-      description: 'Dépôt en espèces via agents de recharge',
+      description: t('admin.depositCashAgents'),
       type: 'deposit',
       method_key: 'cash',
       is_active: true,
@@ -466,7 +466,7 @@ const getDefaultMethods = (): PaymentMethod[] => {
     {
       id: 6,
       name: 'USDT (TRC20)',
-      description: 'Retrait via USDT sur le réseau TRON',
+      description: t('admin.withdrawUsdtTron'),
       type: 'withdrawal',
       method_key: 'crypto',
       is_active: true,
@@ -477,7 +477,7 @@ const getDefaultMethods = (): PaymentMethod[] => {
     {
       id: 7,
       name: 'USDT (ERC20)',
-      description: 'Retrait via USDT sur le réseau Ethereum',
+      description: t('admin.withdrawUsdtEthereum'),
       type: 'withdrawal',
       method_key: 'crypto',
       is_active: true,
