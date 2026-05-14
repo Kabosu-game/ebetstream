@@ -4,7 +4,8 @@
  * The dev server proxies /peerjs to the Peer server.
  */
 export function getPeerOptions(peerId?: string): { id?: string; debug?: number; host?: string; port?: number; path?: string; secure?: boolean } {
-  const isLocal = typeof window !== 'undefined' && 
+  const isCapacitor = typeof (window as any).Capacitor !== 'undefined';
+  const isLocal = !isCapacitor && typeof window !== 'undefined' &&
     (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
   
   const base: Record<string, unknown> = {

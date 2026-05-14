@@ -4,8 +4,8 @@
 // ========================================
 
 // API de production - utilisée quand aucune URL n'est forcée via .env
-export const PRODUCTION_API_URL = 'https://acmpt.online/api';
-export const PRODUCTION_BASE_URL = 'https://acmpt.online';
+export const PRODUCTION_API_URL = 'https://api.ebetstream.live/api';
+export const PRODUCTION_BASE_URL = 'https://api.ebetstream.live';
 
 // Priorité au .env : si VITE_API_BASE_URL est défini, on l'utilise (même en dev → afficher les données acmpt.online)
 const envApiUrl = import.meta.env.VITE_API_BASE_URL as string | undefined;

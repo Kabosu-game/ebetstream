@@ -82,19 +82,19 @@
             <i class="fas fa-info-circle"></i>
             Stream <strong>#{{ streamId }}</strong>{{ $t('ui.configur_choisissez_la_source_et_d_marrez') }}</div>
 
-          <!-- Source mobile -->
+          <!-- Source mobile : écran + caméra avant/arrière -->
           <div v-if="isMobile" class="sc-sources">
+            <button class="sc-source" :class="{ active: sourceMode === 'screen' }" @click="sourceMode = 'screen'">
+              <i class="fas fa-mobile-alt"></i><span>{{ $t('ui.partage_d_cran') }}</span>
+            </button>
             <button class="sc-source" :class="{ active: sourceMode === 'camera-back' }" @click="sourceMode = 'camera-back'">
               <i class="fas fa-camera"></i><span>{{ $t('ui.cam_ra_arri_re') }}</span>
             </button>
             <button class="sc-source" :class="{ active: sourceMode === 'camera-front' }" @click="sourceMode = 'camera-front'">
               <i class="fas fa-user-circle"></i><span>{{ $t('ui.cam_ra_avant') }}</span>
             </button>
-            <button v-if="supportsDisplayMedia" class="sc-source" :class="{ active: sourceMode === 'screen' }" @click="sourceMode = 'screen'">
-              <i class="fas fa-mobile-alt"></i><span>{{ $t('ui.partage_d_cran') }}</span>
-            </button>
           </div>
-          <!-- Source desktop -->
+          <!-- Source desktop : partage d'écran uniquement -->
           <div v-else class="sc-sources">
             <div class="sc-source active" style="cursor:default;">
               <i class="fas fa-desktop"></i><span>{{ $t('ui.partage_d_cran_bureau') }}</span>
@@ -214,7 +214,7 @@
             </button>
 
             <!-- Caméra switch (mobile: avant/arrière) -->
-            <button v-if="isMobile" class="studio__tool" @click="flipCamera" :disabled="switchingSource">
+            <button v-if="isMobile && sourceMode !== 'screen'" class="studio__tool studio__tool--cam-flip" @click="flipCamera" :disabled="switchingSource">
               <i class="fas fa-sync-alt"></i>
               <span>{{ $t('ui.retourner_cam') }}</span>
             </button>
@@ -403,6 +403,12 @@
         </div>
       </div>
 
+      <!-- ── Bouton stop flottant (mobile uniquement) ── -->
+      <button class="studio__fab-stop" @click="showConfirmStop = true">
+        <i class="fas fa-stop"></i>
+        <span>Arrêter le live</span>
+      </button>
+
       <!-- ── Confirm stop modal ── -->
       <div v-if="showConfirmStop" class="studio__overlay" @click.self="showConfirmStop = false">
         <div class="studio__confirm">
@@ -429,6 +435,8 @@ const { t } = useI18n();
 import { ref, onMounted, onBeforeUnmount, nextTick, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient from '@/utils/axios';
+import { Capacitor } from '@capacitor/core';
+import { getNativeScreenStream } from '@/utils/nativeScreenCapture';
 
 const router = useRouter();
 
@@ -458,7 +466,7 @@ const isIOS           = /iPhone|iPad|iPod/i.test(ua);
 const isAndroid       = /Android/i.test(ua);
 const isMobile        = isIOS || isAndroid;
 const supportsDisplayMedia = typeof (navigator.mediaDevices as any)?.getDisplayMedia === 'function';
-const sourceMode      = ref<'screen' | 'camera-back' | 'camera-front'>(!isMobile ? 'screen' : 'camera-back');
+const sourceMode      = ref<'screen' | 'camera-back' | 'camera-front'>('screen');
 
 // ── Media controls ────────────────────────────────────────────────────────────
 const micMuted         = ref(false);
@@ -492,6 +500,7 @@ let analyser: AnalyserNode | null = null;
 let animFrame: number | null = null;
 
 const WS_BASE = (import.meta.env.VITE_STREAM_WS_URL || 'wss://ebetstream.com/ws').replace(/\/$/, '');
+let nativeScreenStop: (() => Promise<void>) | null = null;
 const ICE_SERVERS = [
   { urls: 'stun:stun.l.google.com:19302' },
   { urls: 'stun:stun1.l.google.com:19302' },
@@ -605,19 +614,34 @@ const saveTitle = async () => {
 // ── Capture media ─────────────────────────────────────────────────────────────
 const captureMedia = async (): Promise<MediaStream> => {
   const mode = sourceMode.value;
-  if (mode === 'screen' && !supportsDisplayMedia) {
-    throw Object.assign(new Error('COMPAT'), {
-      name: 'CompatError',
-      friendly: isIOS ? 'Le partage d\'écran n\'est pas disponible sur iOS.' : 'Partage d\'écran non supporté. Utilisez Chrome.',
-    });
-  }
+
   if (mode === 'camera-back' || mode === 'camera-front') {
     return navigator.mediaDevices.getUserMedia({
       video: { facingMode: mode === 'camera-front' ? 'user' : 'environment', width: { ideal: 1280 }, height: { ideal: 720 } },
       audio: true,
     });
   }
-  const screenStream = await (navigator.mediaDevices as any).getDisplayMedia({
+
+  // Partage d'écran — on tente directement sans guard de compatibilité.
+  // Sur Android WebView 92+ / Android 12+ ça fonctionne nativement.
+  // Si getDisplayMedia n'est pas disponible, on bascule automatiquement sur la caméra.
+  if (isIOS) {
+    throw Object.assign(new Error('COMPAT'), {
+      name: 'CompatError',
+      friendly: 'Le partage d\'écran n\'est pas disponible sur iOS.',
+    });
+  }
+
+  // Sur Android Capacitor : plugin natif MediaProjection
+  // dialog + service + stream en un seul appel (token Android 14 non expiré)
+  if (Capacitor.isNativePlatform()) {
+    const { stream, stop } = await getNativeScreenStream();
+    nativeScreenStop = stop;
+    return stream;
+  }
+
+  // Sur navigateur desktop : getDisplayMedia standard
+  const screenStream: MediaStream = await (navigator.mediaDevices as any).getDisplayMedia({
     video: { width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 30 } },
     audio: true,
   });
@@ -936,6 +960,7 @@ const stopStream = async () => {
     localStream.value = null;
     if (localVideo.value) localVideo.value.srcObject = null;
     if (ws) { ws.close(); ws = null; }
+    if (nativeScreenStop) { await nativeScreenStop().catch(() => {}); nativeScreenStop = null; }
     wsConnected.value = false;
     if (streamId.value) await apiClient.post(`/streams/${streamId.value}/stop`).catch(() => { });
     setTimeout(() => router.push('/streams'), 1500);
@@ -1320,6 +1345,24 @@ watch(outputVolume, v => { if (localVideo.value) localVideo.value.volume = v / 1
 .studio__don-name { font-size: 12px; font-weight: 700; color: rgb(var(--n8)); display: block; }
 .studio__don-msg { font-size: 10px; color: rgb(var(--n3)); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .studio__don-amount { font-size: 12px; font-weight: 800; color: rgb(var(--g1)); white-space: nowrap; flex-shrink: 0; }
+
+/* Floating stop button — mobile only */
+.studio__fab-stop {
+  display: none;
+  @media (max-width: 900px) {
+    display: flex; align-items: center; gap: 8px;
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    z-index: 1000;
+    background: #e91916; color: #fff;
+    border: none; border-radius: 32px;
+    padding: 0 24px; height: 48px;
+    font-size: 15px; font-weight: 800;
+    box-shadow: 0 6px 24px rgba(233,25,22,.55);
+    cursor: pointer;
+    i { font-size: 16px; }
+    &:active { background: #c41412; transform: translateX(-50%) scale(.96); }
+  }
+}
 
 /* Confirm stop modal */
 .studio__overlay { position: fixed; inset: 0; background: rgba(0,0,0,.75); display: flex; align-items: center; justify-content: center; z-index: 9999; }

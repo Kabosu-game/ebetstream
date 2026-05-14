@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
+
+    <!-- Comportement par défaut : HTTPS uniquement, certificats système -->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+    <!-- Cleartext autorisé pour le serveur WebSocket local de capture d'écran -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">127.0.0.1</domain>
+        <domain includeSubdomains="false">localhost</domain>
+    </domain-config>
+
+    <!-- Domaines de production : HTTPS/WSS uniquement, certificats système -->
     <domain-config cleartextTrafficPermitted="false">
         <domain includeSubdomains="true">ebetstream.live</domain>
-        <domain includeSubdomains="true">api.ebetstream.live</domain>
-        <domain includeSubdomains="true">ws.ebetstream.live</domain>
+        <domain includeSubdomains="true">ebetstream.com</domain>
         <trust-anchors>
             <certificates src="system" />
         </trust-anchors>
     </domain-config>
+
 </network-security-config>
