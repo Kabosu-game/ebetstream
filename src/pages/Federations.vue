@@ -248,11 +248,11 @@ const loadFederations = async (page: number = 1) => {
         next_page_url: response.data.data.next_page_url,
       };
     } else {
-      error.value = response.data.message || "Error loading federations";
+      error.value = response.data.message || t('errors.loadFederations');
     }
   } catch (err: any) {
     console.error("Error loading federations:", err);
-    error.value = err.response?.data?.message || "Error loading federations";
+    error.value = err.response?.data?.message || t('errors.loadFederations');
   } finally {
     loading.value = false;
   }

@@ -23,7 +23,7 @@
           <span class="tw-badge tw-badge--ongoing">EOL — {{ tierLabel(match.league_tier) }}</span>
         </div>
         <h1 class="tw-page-hero__title">
-          {{ match.team1_name }} <span class="tw-accent">VS</span> {{ match.team2_name }}
+          {{ match.team1_name }} <span class="tw-accent">{{ $t('labels.vs') }}</span> {{ match.team2_name }}
         </h1>
         <p v-if="match.status === 'completed'" class="tw-page-hero__sub">
           Score final : <strong>{{ match.team1_score }} – {{ match.team2_score }}</strong>
@@ -189,7 +189,7 @@ const loadMatch = async () => {
     const res = await apiClient.get(`/arena/matches/${route.params.id}`);
     if (res.data.success) match.value = res.data.data;
   } catch {
-    if (loading.value) error.value = 'Match introuvable';
+    if (loading.value) error.value = t('errors.matchNotFound');
   } finally {
     loading.value = false;
   }
@@ -216,17 +216,17 @@ const leaveMatch = async () => {
     await apiClient.post(`/arena/matches/${route.params.id}/leave`);
     await loadMatch();
   } catch (err: any) {
-    betError.value = err.response?.data?.message || 'Erreur';
+    betError.value = err.response?.data?.message || t('errors.generic');
   } finally {
     leaving.value = false;
   }
 };
 
-const betTypeLabel = (t: string) => ({
-  team1_win: match.value?.team1_name || 'Équipe 1',
-  team2_win: match.value?.team2_name || 'Équipe 2',
-  draw: 'Match nul',
-}[t] || t);
+const betTypeLabel = (type: string) => ({
+  team1_win: match.value?.team1_name || t('labels.team1'),
+  team2_win: match.value?.team2_name || t('labels.team2'),
+  draw: t('arena.draw'),
+}[type] || type);
 
 const loadWallet = async () => {
   if (!isAuthenticated.value) return;
@@ -243,15 +243,15 @@ const placeBet = async () => {
   betError.value = '';
   betSuccess.value = '';
   if (!betAmount.value || betAmount.value <= 0) {
-    betError.value = 'Montant invalide';
+    betError.value = t('arena.invalidAmount');
     return;
   }
   if (!betType.value) {
-    betError.value = 'Sélectionnez une équipe';
+    betError.value = t('arena.selectTeam');
     return;
   }
   if (betAmount.value > walletBalance.value) {
-    betError.value = `Solde insuffisant (${walletBalance.value.toFixed(2)} EBT disponibles)`;
+    betError.value = t('arena.insufficientBalanceEbt', { balance: walletBalance.value.toFixed(2) });
     return;
   }
   placingBet.value = true;
@@ -262,13 +262,13 @@ const placeBet = async () => {
       amount: betAmount.value,
     });
     if (res.data.success) {
-      betSuccess.value = 'Pari placé avec succès ! Fonds bloqués jusqu\'à la fin du match.';
+      betSuccess.value = t('arena.betPlacedLocked');
       betAmount.value = null;
       betType.value = null;
       await loadWallet();
     }
   } catch (err: any) {
-    betError.value = err.response?.data?.message || 'Erreur lors du pari';
+    betError.value = err.response?.data?.message || t('errors.betFailed');
   } finally {
     placingBet.value = false;
   }
@@ -280,11 +280,11 @@ const statusBadge = (s: string) => ({
 }[s] || 'tw-badge--closed');
 
 const statusLabel = (s: string) => ({
-  live: 'LIVE', scheduled: 'Programmé', waiting: 'En attente', completed: 'Terminé',
+  live: t('labels.live'), scheduled: t('arena.statusScheduled'), waiting: t('arena.statusWaiting'), completed: t('arena.statusCompleted'),
 }[s] || s);
 
 const modeLabel = (m: string) => ({
-  quick_match: 'Quick Match', ranked: 'Ranked', tournament: 'Tournoi', private_match: 'Privé',
+  quick_match: 'Quick Match', ranked: 'Ranked', tournament: t('arena.modeTournament'), private_match: t('arena.modePrivate'),
 }[m] || m);
 
 const tierLabel = (t: string) => ({

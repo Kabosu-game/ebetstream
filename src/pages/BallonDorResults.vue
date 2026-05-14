@@ -195,7 +195,7 @@ const getCategoryLabel = (category: string) => {
   const labels: Record<string, string> = {
     player: "Ballon d'Or - Meilleur Joueur",
     clan: "Meilleur Clan",
-    team: "Meilleure Équipe",
+    team: t('arena.bestTeam'),
   };
   return labels[category] || category;
 };
@@ -223,11 +223,11 @@ const loadResults = async () => {
       results.value = response.data.data;
       season.value = response.data.data.season;
     } else {
-      error.value = response.data.message || "Error loading";
+      error.value = response.data.message || t('errors.loadError');
     }
   } catch (err: any) {
     console.error("Error loading results:", err);
-    error.value = err.response?.data?.message || "Error loading results";
+    error.value = err.response?.data?.message || t('errors.loadResults');
   } finally {
     loading.value = false;
   }

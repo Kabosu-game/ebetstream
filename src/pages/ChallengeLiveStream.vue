@@ -258,7 +258,7 @@ const connectWebRTC = () => {
   ws.onopen = () => {
     if (destroyed) { ws?.close(); return; }
     wsStatus.value = 'connected';
-    waitingMsg.value = 'Connecté — en attente du flux vidéo...';
+    waitingMsg.value = t('labels.connectedWaiting');
     startRetryTimer();
   };
 
@@ -284,7 +284,7 @@ const connectWebRTC = () => {
         streamEnded = true;
         if (wsReconnectTimer) clearTimeout(wsReconnectTimer);
         hasRemoteStream.value = false;
-        waitingMsg.value = 'Le stream est terminé.';
+        waitingMsg.value = t('labels.streamEnded');
         showRetry.value = false;
         cleanupPeer();
         if (ws) {
@@ -308,14 +308,14 @@ const connectWebRTC = () => {
   ws.onerror = () => {
     if (destroyed) return;
     wsStatus.value = 'disconnected';
-    streamError.value = 'Erreur de connexion WebSocket.';
+    streamError.value = t('errors.websocketConnection');
   };
 
   ws.onclose = (evt) => {
     if (destroyed) return;
     wsStatus.value = 'disconnected';
     if (streamEnded) return;
-    if (evt.code === 1008) { streamError.value = 'Connexion refusée.'; return; }
+    if (evt.code === 1008) { streamError.value = t('labels.connectionRefused'); return; }
     if (!challenge.value?.is_live) return;
     if (!hasRemoteStream.value) {
       waitingMsg.value = 'Reconnexion...';
@@ -480,13 +480,13 @@ const loadLiveStream = async () => {
         connectWebRTC();
       }
     } else {
-      error.value = response.data.message || "Error loading live stream";
+      error.value = response.data.message || t('errors.loadLiveStream');
     }
   } catch (err: any) {
-    if (err.response?.status === 404) error.value = "Challenge not found";
+    if (err.response?.status === 404) error.value = t('errors.challengeNotFound');
     else if (err.response?.status === 400)
-      error.value = err.response.data.message || "This challenge is not currently live";
-    else error.value = err.response?.data?.message || "Error loading live stream";
+      error.value = err.response.data.message || t('errors.challengeNotLive');
+    else error.value = err.response?.data?.message || t('errors.loadLiveStream');
   } finally {
     loading.value = false;
   }

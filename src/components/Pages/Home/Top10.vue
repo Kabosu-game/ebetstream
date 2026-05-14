@@ -6,7 +6,7 @@
         <h2 class="tw-section-title">{{ $t('ui.top_10_des_meilleurs_joueurs') }}</h2>
       </div>
       <router-link to="/players" class="tw-see-all">
-        Voir tout <i class="fas fa-chevron-right"></i>
+        {{ $t('labels.view_all') }} <i class="fas fa-chevron-right"></i>
       </router-link>
     </div>
 
@@ -99,7 +99,7 @@ const loadTopPlayers = async () => {
     const response = await apiClient.get('/top-players', { params: { limit: 10, period: 'week' } });
     if (response.data.success) topPlayers.value = response.data.data;
   } catch {
-    error.value = 'Erreur lors du chargement des joueurs';
+    error.value = t('errors.loadPlayersTop10');
   } finally {
     loading.value = false;
   }

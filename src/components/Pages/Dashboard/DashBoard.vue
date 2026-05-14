@@ -666,7 +666,7 @@ const getMatchName = (bet: any) => {
     return `${p1} vs ${p2}`;
   }
   if (bet.arena_match) {
-    return `${bet.arena_match.team1_name || 'Équipe 1'} vs ${bet.arena_match.team2_name || 'Équipe 2'}`;
+    return `${bet.arena_match.team1_name || t('labels.team1')} vs ${bet.arena_match.team2_name || t('labels.team2')}`;
   }
   return bet.match_name || 'N/A';
 };

@@ -200,7 +200,7 @@ const loadPlayers = async () => {
     if (response.data.success) {
       players.value = response.data.data || [];
     } else {
-      error.value = 'Error loading players';
+      error.value = t('errors.loadPlayers');
     }
   } catch (err: any) {
     console.error('Error loading players:', err);
@@ -213,7 +213,7 @@ const loadPlayers = async () => {
     } else if (err.response?.data?.message) {
       error.value = err.response.data.message;
     } else {
-      error.value = 'Error loading players';
+      error.value = t('errors.loadPlayers');
     }
   } finally {
     loading.value = false;

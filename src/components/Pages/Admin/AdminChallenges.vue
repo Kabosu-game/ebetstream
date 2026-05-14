@@ -517,7 +517,7 @@ const loadChallenges = async () => {
     }
   } catch (err: any) {
     console.error('Error loading challenges:', err);
-    error.value = err.response?.data?.message || 'Error loading challenges';
+    error.value = err.response?.data?.message || t('errors.loadChallenges');
   } finally {
     loading.value = false;
   }
@@ -602,7 +602,7 @@ const viewDetails = async (id: number) => {
     }
   } catch (err: any) {
     console.error('Error loading challenge details:', err);
-    alert('Error loading challenge details: ' + (err.response?.data?.message || err.message));
+    alert(t('errors.loadChallengeDetails') + ': ' + (err.response?.data?.message || err.message));
   } finally {
     loadingDetails.value = false;
   }
@@ -657,10 +657,10 @@ const completeChallenge = async () => {
     if (response.data.success) {
       closeCompleteModal();
       await loadChallenges();
-      alert('Challenge completed successfully!');
+      alert(t('success.challengeCompleted'));
     }
   } catch (err: any) {
-    error.value = err.response?.data?.message || 'Error completing challenge';
+    error.value = err.response?.data?.message || t('errors.completeChallenge');
   } finally {
     saving.value = false;
   }
@@ -676,10 +676,10 @@ const cancelChallenge = async (id: number) => {
     
     if (response.data.success) {
       await loadChallenges();
-      alert('Challenge cancelled successfully!');
+      alert(t('success.challengeCancelled'));
     }
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error cancelling challenge');
+    alert(err.response?.data?.message || t('errors.cancelChallenge'));
   }
 };
 
@@ -737,7 +737,7 @@ const loadStopRequests = async () => {
     console.error('Error response:', err.response);
     console.error('Error response data:', err.response?.data);
     console.error('Error response status:', err.response?.status);
-    alert('Error loading stop requests: ' + (err.response?.data?.message || err.message));
+    alert(t('errors.loadStopRequests') + ': ' + (err.response?.data?.message || err.message));
   } finally {
     loadingStopRequests.value = false;
   }
@@ -780,10 +780,10 @@ const approveStopRequest = async () => {
       selectedStopRequest.value = null;
       await loadStopRequests();
       await loadChallenges();
-      alert('Stop request approved and challenge completed successfully!');
+      alert(t('success.stopRequestApproved'));
     }
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error approving stop request');
+    alert(err.response?.data?.message || t('errors.approveStopRequest'));
   } finally {
     approvingStop.value = false;
   }
@@ -799,10 +799,10 @@ const rejectStopRequest = async (id: number) => {
     
     if (response.data.success) {
       await loadStopRequests();
-      alert('Stop request rejected successfully');
+      alert(t('success.stopRequestRejected'));
     }
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error rejecting stop request');
+    alert(err.response?.data?.message || t('errors.rejectStopRequest'));
   }
 };
 

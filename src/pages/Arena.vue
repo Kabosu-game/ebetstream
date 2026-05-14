@@ -73,7 +73,7 @@
           </div>
           <div class="arena-match-card__teams">
             <span class="arena-match-card__team">{{ match.team1_name }}</span>
-            <span class="arena-match-card__vs">VS</span>
+            <span class="arena-match-card__vs">{{ $t('labels.vs') }}</span>
             <span class="arena-match-card__team">{{ match.team2_name }}</span>
           </div>
           <div v-if="match.status === 'completed'" class="arena-match-card__score">
@@ -151,7 +151,7 @@
           </div>
           <button class="tw-btn tw-btn--primary" @click="saveProfile" :disabled="savingProfile">
             <i class="fas fa-save"></i>
-            {{ profile ? 'Mettre à jour' : 'Créer mon profil' }}
+            {{ profile ? t('arena.updateProfile') : t('arena.createProfile') }}
           </button>
           <p v-if="profileMsg" class="mt-3 mb-0" :class="profileMsgOk ? 'tw-accent' : 'text-danger'">{{ profileMsg }}</p>
         </div>
@@ -176,11 +176,11 @@
           <div class="d-flex gap-3 flex-wrap">
             <button class="tw-btn tw-btn--primary" @click="quickMatch" :disabled="!profile || quickMatching">
               <i class="fas fa-bolt"></i>
-              {{ quickMatching ? 'Recherche...' : 'Quick Match' }}
+              {{ quickMatching ? t('arena.searching') : 'Quick Match' }}
             </button>
             <button class="tw-btn tw-btn--primary" @click="rankedMatch" :disabled="!profile || rankedMatching">
               <i class="fas fa-trophy"></i>
-              {{ rankedMatching ? 'Recherche...' : 'Ranked' }}
+              {{ rankedMatching ? t('arena.searching') : 'Ranked' }}
             </button>
             <button class="tw-btn tw-btn--secondary" @click="showPrivateModal = true" :disabled="!profile">
               <i class="fas fa-lock"></i>{{ $t('ui.match_priv') }}</button>
@@ -212,7 +212,7 @@
         <div class="tw-modal__footer">
           <button class="tw-btn tw-btn--secondary" @click="showPrivateModal = false">{{ $t('ui.annuler') }}</button>
           <button class="tw-btn tw-btn--primary" @click="createPrivateMatch" :disabled="creatingPrivate">
-            Créer
+            {{ $t('ui.cr_er') }}
           </button>
         </div>
       </div>
@@ -238,7 +238,7 @@
         <div class="tw-modal__footer">
           <button class="tw-btn tw-btn--secondary" @click="showTournamentModal = false">{{ $t('ui.annuler') }}</button>
           <button class="tw-btn tw-btn--primary" @click="createTournamentMatch" :disabled="creatingTournament">
-            Créer
+            {{ $t('ui.cr_er') }}
           </button>
         </div>
       </div>
@@ -279,12 +279,12 @@ const tournamentForm = ref({ team1_name: '', team2_name: '' });
 
 const isAuthenticated = computed(() => !!localStorage.getItem('auth_token'));
 
-const classes = [
-  { id: 'attacker', label: 'Attacker', icon: 'fas fa-bolt', desc: 'Rapide, dégâts élevés' },
-  { id: 'defender', label: 'Defender', icon: 'fas fa-shield-alt', desc: 'Défense, zones' },
-  { id: 'support', label: 'Support', icon: 'fas fa-heart', desc: 'Soins, boost' },
-  { id: 'tactical', label: 'Tactical', icon: 'fas fa-crosshairs', desc: 'Pièges, radar' },
-];
+const classes = computed(() => [
+  { id: 'attacker', label: 'Attacker', icon: 'fas fa-bolt', desc: t('arena.classAttackerDesc') },
+  { id: 'defender', label: 'Defender', icon: 'fas fa-shield-alt', desc: t('arena.classDefenderDesc') },
+  { id: 'support', label: 'Support', icon: 'fas fa-heart', desc: t('arena.classSupportDesc') },
+  { id: 'tactical', label: 'Tactical', icon: 'fas fa-crosshairs', desc: t('arena.classTacticalDesc') },
+]);
 
 const loadStats = async () => {
   try {
@@ -337,11 +337,11 @@ const saveProfile = async () => {
     const res = await apiClient.post('/arena/profile', { player_class: selectedClass.value });
     if (res.data.success) {
       profile.value = res.data.data;
-      profileMsg.value = 'Profil enregistré !';
+      profileMsg.value = t('arena.profileSaved');
       profileMsgOk.value = true;
     }
   } catch (err: any) {
-    profileMsg.value = err.response?.data?.message || 'Erreur';
+    profileMsg.value = err.response?.data?.message || t('errors.generic');
     profileMsgOk.value = false;
   } finally {
     savingProfile.value = false;
@@ -360,7 +360,7 @@ const quickMatch = async () => {
       if (res.data.data?.id) router.push(`/arena/matches/${res.data.data.id}`);
     }
   } catch (err: any) {
-    quickMsg.value = err.response?.data?.message || 'Erreur';
+    quickMsg.value = err.response?.data?.message || t('errors.generic');
   } finally {
     quickMatching.value = false;
   }
@@ -378,7 +378,7 @@ const rankedMatch = async () => {
       if (res.data.data?.id) router.push(`/arena/matches/${res.data.data.id}`);
     }
   } catch (err: any) {
-    quickMsg.value = err.response?.data?.message || 'Erreur';
+    quickMsg.value = err.response?.data?.message || t('errors.generic');
   } finally {
     rankedMatching.value = false;
   }
@@ -395,7 +395,7 @@ const createPrivateMatch = async () => {
       router.push(`/arena/matches/${res.data.data.id}`);
     }
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Erreur');
+    alert(err.response?.data?.message || t('errors.generic'));
   } finally {
     creatingPrivate.value = false;
   }
@@ -412,7 +412,7 @@ const createTournamentMatch = async () => {
       router.push(`/arena/matches/${res.data.data.id}`);
     }
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Erreur');
+    alert(err.response?.data?.message || t('errors.generic'));
   } finally {
     creatingTournament.value = false;
   }
@@ -426,13 +426,13 @@ const statusBadge = (s: string) => ({
 }[s] || 'tw-badge--closed');
 
 const statusLabel = (s: string) => ({
-  live: 'LIVE', scheduled: 'Programmé', waiting: 'En attente',
-  completed: 'Terminé', cancelled: 'Annulé',
+  live: t('labels.live'), scheduled: t('arena.statusScheduled'), waiting: t('arena.statusWaiting'),
+  completed: t('arena.statusCompleted'), cancelled: t('arena.statusCancelled'),
 }[s] || s);
 
 const modeLabel = (m: string) => ({
   quick_match: 'Quick Match', ranked: 'Ranked',
-  tournament: 'Tournoi', private_match: 'Privé',
+  tournament: t('arena.modeTournament'), private_match: t('arena.modePrivate'),
 }[m] || m);
 
 const classLabel = (c: string) => ({

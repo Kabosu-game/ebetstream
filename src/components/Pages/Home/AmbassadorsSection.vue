@@ -114,7 +114,7 @@ const loadAmbassadors = async () => {
     }
   } catch (err: any) {
     console.error('Error loading ambassadors:', err);
-    error.value = 'Error loading ambassadors';
+    error.value = t('errors.loadAmbassadors');
   } finally {
     loading.value = false;
   }

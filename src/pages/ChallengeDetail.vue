@@ -72,7 +72,7 @@
 
             <!-- VS divider -->
             <div class="cd-vs-center">
-              <div class="cd-vs-circle">VS</div>
+              <div class="cd-vs-circle">{{ $t('labels.vs') }}</div>
               <div class="cd-pot">
                 <i class="fas fa-coins"></i>
                 <span class="cd-pot__amount">{{ (challenge.bet_amount * 2).toLocaleString() }} EBT</span>
@@ -177,7 +177,7 @@
           <!-- LIVE indicator (for viewers) -->
           <div v-if="challenge.is_live && !isCreator" class="cd-live-banner">
             <span class="cd-live-dot"></span>
-            <strong>LIVE</strong> — {{ challenge.viewer_count || 0 }} spectateurs
+            <strong>{{ $t('labels.live') }}</strong> — {{ challenge.viewer_count || 0 }} {{ $t('labels.viewers') }}
             <button class="cd-btn cd-btn--live" @click="viewLiveStream">
               <i class="fas fa-play"></i>{{ $t('ui.watch') }}</button>
           </div>
@@ -227,7 +227,7 @@
                 <span>
                   <span v-if="!challenge.is_live_paused" class="cd-live-dot"></span>
                   <i v-else class="fas fa-pause"></i>
-                  {{ challenge.is_live_paused ? 'PAUSED' : 'LIVE' }}
+                  {{ challenge.is_live_paused ? $t('labels.paused') : $t('labels.live') }}
                 </span>
                 <span><i class="fas fa-eye"></i> {{ challenge.viewer_count || 0 }}</span>
               </div>
@@ -487,7 +487,7 @@ const connectSignaling = (stream: MediaStream) => {
 
   signalingWs.onerror = () => {
     wsStreamerConnected.value = false;
-    recordingError.value = 'Erreur WebSocket signal.';
+    recordingError.value = t('errors.websocketSignal');
   };
 
   signalingWs.onclose = () => {
@@ -646,7 +646,7 @@ const getPublicStreamUrl = () => {
 
 const copyStreamUrl = () => {
   navigator.clipboard.writeText(getPublicStreamUrl());
-  alert('Lien copié ! Les spectateurs peuvent regarder via ce lien.');
+  alert(t('success.linkCopied'));
 };
 
 const openStreamInNewTab = () => window.open('/streams', '_blank');
@@ -733,7 +733,7 @@ const startScreenRecording = async () => {
     }
     const apiMsg = err.response?.data?.message;
     recordingError.value = apiMsg || (err.name === 'NotAllowedError'
-      ? "Partage d'écran refusé. Veuillez autoriser l'accès."
+      ? t('streamStudio.screenShareDenied')
       : (err.message || "Failed to start screen recording."));
   } finally {
     startingRecording.value = false;
@@ -832,11 +832,11 @@ const loadChallenge = async () => {
       }
 
     } else {
-      error.value = response.data.message || "Error loading challenge";
+      error.value = response.data.message || t('errors.loadChallenge');
     }
   } catch (err: any) {
-    if (err.response?.status === 404) error.value = "Challenge not found";
-    else error.value = err.response?.data?.message || "Error loading challenge";
+    if (err.response?.status === 404) error.value = t('errors.challengeNotFound');
+    else error.value = err.response?.data?.message || t('errors.loadChallenge');
   } finally {
     loading.value = false;
   }
@@ -901,10 +901,10 @@ const requestStopChallenge = async () => {
     const res = await apiClient.post(
       `/challenges/${challenge.value.id}/request-stop`, { reason: null }
     );
-    if (res.data.success) { await loadStopRequest(); alert(res.data.message || "Stop request created."); }
-    else alert(res.data.message || "Error");
+    if (res.data.success) { await loadStopRequest(); alert(res.data.message || t('success.stopRequestCreated')); }
+    else alert(res.data.message || t('errors.generic'));
   } catch (err: any) {
-    alert(err.response?.data?.message || "Error");
+    alert(err.response?.data?.message || t('errors.generic'));
   } finally { requestingStop.value = false; }
 };
 
@@ -913,9 +913,9 @@ const confirmStopRequest = async () => {
   try {
     confirmingStop.value = true;
     const res = await apiClient.post(`/challenges/${challenge.value.id}/request-stop`, {});
-    if (res.data.success) { await loadStopRequest(); alert(res.data.message || "Confirmed."); }
+    if (res.data.success) { await loadStopRequest(); alert(res.data.message || t('success.stopRequestConfirmed')); }
   } catch (err: any) {
-    alert(err.response?.data?.message || "Error");
+    alert(err.response?.data?.message || t('errors.generic'));
   } finally { confirmingStop.value = false; }
 };
 
@@ -924,9 +924,9 @@ const cancelStopRequest = async () => {
   try {
     cancellingStop.value = true;
     const res = await apiClient.delete(`/challenges/${challenge.value.id}/stop-request`);
-    if (res.data.success) { stopRequest.value = null; alert("Stop request cancelled."); }
+    if (res.data.success) { stopRequest.value = null; alert(t('success.stopRequestCancelled')); }
   } catch (err: any) {
-    alert(err.response?.data?.message || "Error");
+    alert(err.response?.data?.message || t('errors.generic'));
   } finally { cancellingStop.value = false; }
 };
 
@@ -940,7 +940,7 @@ const getCurrentUser = async () => {
 const acceptChallenge = async () => {
   if (!challenge.value) return;
   if (!localStorage.getItem("auth_token")) {
-    alert("Please log in to accept challenges");
+    alert(t('errors.mustBeLoggedInAccept'));
     return;
   }
   if (!confirm(
@@ -948,10 +948,10 @@ const acceptChallenge = async () => {
   )) return;
   try {
     const res = await apiClient.post(`/challenges/${challenge.value.id}/accept`, {});
-    if (res.data.success) { await loadChallenge(); alert("Challenge accepted successfully!"); }
-    else alert(res.data.message || "Error accepting challenge");
+    if (res.data.success) { await loadChallenge(); alert(t('success.challengeAccepted')); }
+    else alert(res.data.message || t('errors.acceptChallenge'));
   } catch (err: any) {
-    alert(err.response?.data?.message || "Error accepting challenge");
+    alert(err.response?.data?.message || t('errors.acceptChallenge'));
   }
 };
 
@@ -959,9 +959,9 @@ const cancelChallenge = async () => {
   if (!challenge.value || !confirm("Cancel this challenge? Your bet will be refunded.")) return;
   try {
     const res = await apiClient.post(`/challenges/${challenge.value.id}/cancel`, {});
-    if (res.data.success) { await loadChallenge(); alert("Challenge cancelled successfully!"); }
+    if (res.data.success) { await loadChallenge(); alert(t('success.challengeCancelled')); }
   } catch (err: any) {
-    alert(err.response?.data?.message || "Error cancelling challenge");
+    alert(err.response?.data?.message || t('errors.cancelChallenge'));
   }
 };
 

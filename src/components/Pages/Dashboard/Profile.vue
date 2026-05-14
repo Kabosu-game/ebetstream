@@ -739,7 +739,7 @@ const loadCertificationStatus = async () => {
 
 const submitCertificationRequest = async () => {
   if (!certificationForm.value.date_of_birth || !certificationForm.value.id_type || !certificationForm.value.id_number) {
-    alert('Please fill in all required fields');
+    alert(t('errors.fillRequiredFields'));
     return;
   }
 
@@ -751,7 +751,7 @@ const submitCertificationRequest = async () => {
     );
 
     if (response.data.success) {
-      alert('Certification request submitted successfully!');
+      alert(t('success.certificationSubmitted'));
       showCertificationForm.value = false;
       certificationForm.value = {
         date_of_birth: '',
@@ -762,7 +762,7 @@ const submitCertificationRequest = async () => {
     }
   } catch (error: any) {
     console.error("Error submitting certification request:", error);
-    alert(error.response?.data?.message || "Error submitting request");
+    alert(error.response?.data?.message || t('errors.submitRequest'));
   } finally {
     submittingCertification.value = false;
   }
@@ -776,14 +776,14 @@ const handlePhotoUpload = async (event: Event) => {
 
   // Validation de la taille du fichier (2MB max)
   if (file.size > 2 * 1024 * 1024) {
-    alert('La photo ne doit pas dépasser 2MB');
+    alert(t('errors.photoTooLarge'));
     return;
   }
 
   // Validation du type de fichier
   const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
   if (!allowedTypes.includes(file.type)) {
-    alert('Format de fichier non supporté. Utilisez JPEG, PNG ou GIF');
+    alert(t('errors.unsupportedFileFormat'));
     return;
   }
 
@@ -878,10 +878,10 @@ const copyPromoCode = async (promoCode: string) => {
   try {
     await navigator.clipboard.writeText(promoCode);
     // Display a success notification
-    alert('Promo code copied!');
+    alert(t('success.promoCodeCopied'));
   } catch (err) {
     console.error("Failed to copy promo code:", err);
-    alert('Error copying promo code');
+    alert(t('errors.copyPromoCode'));
   }
 };
 
@@ -904,7 +904,7 @@ const savePhone = async () => {
     }
   } catch (error: any) {
     console.error("Error saving phone:", error);
-    alert(error.response?.data?.message || "Error saving phone number");
+    alert(error.response?.data?.message || t('errors.savePhone'));
   } finally {
     savingPhone.value = false;
   }
@@ -934,7 +934,7 @@ const saveFullName = async () => {
     }
   } catch (error: any) {
     console.error("Error saving full name:", error);
-    alert(error.response?.data?.message || "Error saving name");
+    alert(error.response?.data?.message || t('errors.saveName'));
   } finally {
     savingFullName.value = false;
   }
@@ -952,7 +952,7 @@ const saveEmail = async () => {
     // Validation de l'email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(emailInput.value)) {
-      alert('Please enter a valid email address');
+      alert(t('errors.invalidEmail'));
       return;
     }
     
@@ -964,11 +964,11 @@ const saveEmail = async () => {
     if (response.data.success) {
       await loadProfile();
       editingEmail.value = false;
-      alert('Email updated successfully!');
+      alert(t('success.emailUpdated'));
     }
   } catch (error: any) {
     console.error("Error saving email:", error);
-    alert(error.response?.data?.message || "Error saving email");
+    alert(error.response?.data?.message || t('errors.saveEmail'));
   } finally {
     savingEmail.value = false;
   }
@@ -998,7 +998,7 @@ const saveCountry = async () => {
     }
   } catch (error: any) {
     console.error("Error saving country:", error);
-    alert(error.response?.data?.message || "Error saving country");
+    alert(error.response?.data?.message || t('errors.saveCountry'));
   } finally {
     savingCountry.value = false;
   }
@@ -1028,7 +1028,7 @@ const saveBio = async () => {
     }
   } catch (error: any) {
     console.error("Error saving bio:", error);
-    alert(error.response?.data?.message || "Error saving biography");
+    alert(error.response?.data?.message || t('errors.saveBio'));
   } finally {
     savingBio.value = false;
   }

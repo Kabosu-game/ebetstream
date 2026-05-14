@@ -69,7 +69,7 @@
             </router-link>
             <router-link to="/faq" class="quick-link">
               <i class="fas fa-list-alt quick-link__icon"></i>
-              <span>FAQ</span>
+              <span>{{ $t('labels.faq') }}</span>
               <i class="fas fa-chevron-right quick-link__arrow"></i>
             </router-link>
             <router-link to="/contact" class="quick-link">
@@ -117,7 +117,7 @@ const { t } = useI18n();
 
 const openChat = () => {
   // Simulate opening chat
-  alert('Chat feature coming soon. In the meantime, please use the contact form or email.');
+  alert(t('success.chatComingSoon'));
 };
 </script>
 

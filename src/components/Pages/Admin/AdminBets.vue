@@ -249,7 +249,7 @@ const updateBetStatus = async (betId: number, status: 'won' | 'lost' | 'cancelle
       await loadBets(pagination.value?.current_page || 1);
     }
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error updating bet status');
+    alert(err.response?.data?.message || t('errors.updateBetStatus'));
   } finally {
     updatingStatus.value = null;
   }
@@ -262,7 +262,7 @@ const getMatchName = (bet: Bet) => {
     return `${p1} vs ${p2}`;
   }
   if (bet.arena_match) {
-    return `${bet.arena_match.team1_name || 'Équipe 1'} vs ${bet.arena_match.team2_name || 'Équipe 2'}`;
+    return `${bet.arena_match.team1_name || t('labels.team1')} vs ${bet.arena_match.team2_name || t('labels.team2')}`;
   }
   return 'N/A';
 };

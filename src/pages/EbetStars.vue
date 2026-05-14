@@ -185,7 +185,7 @@ const loadEbetStars = async () => {
       }
     } catch (userErr: any) {
       console.error('Error loading ebetstars from users:', userErr);
-      error.value = 'Error loading ebetstars';
+      error.value = t('errors.loadEbetstars');
     }
   } finally {
     loading.value = false;

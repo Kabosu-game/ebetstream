@@ -209,7 +209,7 @@ const createMatch = async () => {
     showCreate.value = false;
     await loadMatches();
   } catch (e: any) {
-    alert(e.response?.data?.message || 'Erreur');
+    alert(e.response?.data?.message || t('errors.generic'));
   } finally {
     processing.value = false;
   }
@@ -235,7 +235,7 @@ const submitResult = async () => {
     showResult.value = false;
     await loadMatches();
   } catch (e: any) {
-    alert(e.response?.data?.message || 'Erreur');
+    alert(e.response?.data?.message || t('errors.generic'));
   } finally {
     processing.value = false;
   }

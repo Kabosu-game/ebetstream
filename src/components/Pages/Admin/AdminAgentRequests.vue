@@ -435,9 +435,9 @@ const loadRequests = async (page = 1) => {
   } catch (err: any) {
     console.error('Error loading agent requests:', err);
     const errorMessage = err.isNetworkError 
-      ? 'L\'API n\'est pas démarrée. Veuillez démarrer l\'API avec: cd ebetstream_api\\ebetstream_api && php artisan serve --port=8001'
-      : (err.response?.data?.message || err.message || 'Erreur inconnue');
-    alert('Error loading agent requests: ' + errorMessage);
+      ? t('errors.apiNotStarted')
+      : (err.response?.data?.message || err.message || t('errors.unknownError'));
+    alert(t('errors.loadAgentRequests') + ': ' + errorMessage);
   } finally {
     loading.value = false;
   }
@@ -466,7 +466,7 @@ const viewDetails = async (id: number) => {
     }
   } catch (err: any) {
     console.error('Error loading request details:', err);
-    alert('Error loading request details: ' + (err.response?.data?.message || err.message));
+    alert(t('errors.loadRequestDetails') + ': ' + (err.response?.data?.message || err.message));
     showDetailsModal.value = false;
   } finally {
     loadingDetails.value = false;
@@ -494,10 +494,10 @@ const approveRequest = async () => {
       showApproveModal.value = false;
       selectedRequest.value = null;
       await loadRequests();
-      alert('Agent request approved successfully! The agent has been created.');
+      alert(t('success.agentRequestApproved'));
     }
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error approving request');
+    alert(err.response?.data?.message || t('errors.approveCertificationRequest'));
   } finally {
     processing.value = false;
   }
@@ -514,10 +514,10 @@ const rejectRequest = async () => {
       showRejectModal.value = false;
       selectedRequest.value = null;
       await loadRequests();
-      alert('Agent request rejected successfully!');
+      alert(t('success.agentRequestRejected'));
     }
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error rejecting request');
+    alert(err.response?.data?.message || t('errors.rejectCertificationRequest'));
   } finally {
     processing.value = false;
   }

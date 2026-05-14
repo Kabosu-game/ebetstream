@@ -174,7 +174,7 @@ const saveAmbassador = async () => {
         console.log('Test upload result:', testResponse.data);
       } catch (testErr: any) {
         console.error('Test upload failed:', testErr.response?.data || testErr);
-        error.value = 'Test upload failed: ' + (testErr.response?.data?.message || testErr.message);
+        error.value = t('errors.testUploadFailed') + ': ' + (testErr.response?.data?.message || testErr.message);
         return;
       }
     }
@@ -206,7 +206,7 @@ const saveAmbassador = async () => {
     }
   } catch (err: any) {
     console.error('Save ambassador error:', err.response?.data || err);
-    error.value = err.response?.data?.message || 'Error saving ambassador';
+    error.value = err.response?.data?.message || t('errors.saveAmbassador');
   } finally {
     saving.value = false;
   }
@@ -229,7 +229,7 @@ const deleteAmbassador = async (id: number) => {
     await apiClient.delete(`/admin/ambassadors/${id}`);
     await loadAmbassadors();
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error deleting ambassador');
+    alert(err.response?.data?.message || t('errors.deleteAmbassador'));
   }
 };
 

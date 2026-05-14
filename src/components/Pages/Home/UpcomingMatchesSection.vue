@@ -7,7 +7,7 @@
         <h2 class="tw-section-title">{{ $t('ui.matchs_du_championnat') }}</h2>
       </div>
       <router-link to="/championships" class="tw-see-all">
-        Voir tout <i class="fas fa-chevron-right"></i>
+        {{ $t('labels.view_all') }} <i class="fas fa-chevron-right"></i>
       </router-link>
     </div>
 
@@ -17,7 +17,7 @@
         <div class="skeleton-line mb-2"></div>
         <div class="tw-match-card__teams">
           <div class="skeleton-avatar"></div>
-          <span class="tw-match-vs">VS</span>
+          <span class="tw-match-vs">{{ $t('labels.vs') }}</span>
           <div class="skeleton-avatar"></div>
         </div>
         <div class="skeleton-line skeleton-line--short mt-3"></div>
@@ -99,7 +99,7 @@
                   <p class="tw-match-team__handle">@{{ match.player1?.user?.username || match.player1?.player_username || 'player1' }}</p>
                 </div>
 
-                <div class="tw-match-vs">VS</div>
+                <div class="tw-match-vs">{{ $t('labels.vs') }}</div>
 
                 <!-- Team 2 -->
                 <div class="tw-match-team">
@@ -400,7 +400,7 @@ const viewChampionship = (id: number) => {
 const selectBet = (match: Match, betType: string, odds: number | string) => {
   const token = localStorage.getItem("auth_token");
   if (!token) {
-    alert('You must be logged in to place a bet');
+    alert(t('errors.mustBeLoggedInBet'));
     router.push('/login');
     return;
   }
@@ -461,7 +461,7 @@ const placeBet = async () => {
     );
     
     if (response.data.success) {
-      alert('Bet placed successfully!');
+      alert(t('success.betPlaced'));
       closeBetModal();
       await loadWallet();
     }
@@ -510,7 +510,7 @@ onMounted(() => {
     }
   } catch (e) {
     console.error('Error in onMounted:', e);
-    error.value = 'Failed to load matches';
+    error.value = t('errors.loadMatchesFailed');
     loading.value = false;
   }
 });

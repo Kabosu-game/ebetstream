@@ -32,20 +32,20 @@
 
       <!-- Navigation -->
       <nav class="sb-nav">
-        <div v-for="section in menuSections" :key="section.label" class="sb-section">
-          <div class="sb-section-label" v-if="sidebarOpen">{{ section.label }}</div>
+        <div v-for="section in menuSections" :key="section.sectionKey" class="sb-section">
+          <div class="sb-section-label" v-if="sidebarOpen">{{ $t(section.sectionKey) }}</div>
           <button
             v-for="item in section.items"
             :key="item.tab"
             class="sb-item"
             :class="{ 'is-active': activeTab === item.tab }"
             @click="navigate(item.tab)"
-            :title="!sidebarOpen ? item.label : ''"
+            :title="!sidebarOpen ? t(item.labelKey) : ''"
           >
             <span class="sb-item-icon" :class="item.colorClass">
               <i :class="['ti', item.icon]"></i>
             </span>
-            <span class="sb-item-label" v-if="sidebarOpen">{{ item.label }}</span>
+            <span class="sb-item-label" v-if="sidebarOpen">{{ $t(item.labelKey) }}</span>
             <span v-if="sidebarOpen && item.badge" class="sb-badge">{{ item.badge }}</span>
           </button>
         </div>
@@ -53,7 +53,7 @@
 
       <!-- Sidebar footer -->
       <div class="sb-footer">
-        <button class="sb-item sb-logout" @click="handleLogout" :title="!sidebarOpen ? 'Déconnexion' : ''">
+        <button class="sb-item sb-logout" @click="handleLogout" :title="!sidebarOpen ? t('ui.d_connexion') : ''">
           <span class="sb-item-icon icon-red"><i class="fas fa-sign-out-alt"></i></span>
           <span class="sb-item-label" v-if="sidebarOpen">{{ $t('ui.d_connexion') }}</span>
         </button>
@@ -108,7 +108,7 @@
           </div>
           <div>
             <h1 class="page-title">{{ currentPageLabel }}</h1>
-            <p class="page-sub">{{ currentPageItem?.desc || 'Gestion de la plateforme' }}</p>
+            <p class="page-sub">{{ currentPageItem?.descKey ? t(currentPageItem.descKey) : t('adminMenu.platformManagement') }}</p>
           </div>
         </div>
         <div class="page-header-right">
@@ -186,70 +186,70 @@ const adminName = ref(localStorage.getItem('user_name') || 'Admin');
 
 interface MenuItem {
   tab: string;
-  label: string;
+  labelKey: string;
   icon: string;
   colorClass: string;
-  desc?: string;
+  descKey?: string;
   badge?: number;
 }
 
 interface MenuSection {
-  label: string;
+  sectionKey: string;
   items: MenuItem[];
 }
 
 const menuSections: MenuSection[] = [
   {
-    label: 'Tableau de bord',
+    sectionKey: 'adminMenu.dashboard',
     items: [
-      { tab: 'overview', label: 'Vue d\'ensemble', icon: 'ti-layout-dashboard', colorClass: 'icon-blue', desc: 'Statistiques générales de la plateforme' },
+      { tab: 'overview', labelKey: 'adminMenu.overview', icon: 'ti-layout-dashboard', colorClass: 'icon-blue', descKey: 'adminMenu.overviewDesc' },
     ],
   },
   {
-    label: 'Utilisateurs',
+    sectionKey: 'adminMenu.usersSection',
     items: [
-      { tab: 'users', label: 'Utilisateurs', icon: 'ti-users', colorClass: 'icon-purple', desc: 'Gestion des comptes utilisateurs' },
-      { tab: 'ambassadors', label: 'Ambassadeurs', icon: 'ti-star', colorClass: 'icon-yellow', desc: 'Gestion des ambassadeurs' },
-      { tab: 'partners', label: 'Partenaires', icon: 'ti-building', colorClass: 'icon-cyan', desc: 'Gestion des partenaires' },
-      { tab: 'clans', label: 'Clans', icon: 'ti-shield', colorClass: 'icon-green', desc: 'Gestion des clans' },
+      { tab: 'users', labelKey: 'adminMenu.users', icon: 'ti-users', colorClass: 'icon-purple', descKey: 'adminMenu.usersDesc' },
+      { tab: 'ambassadors', labelKey: 'adminMenu.ambassadors', icon: 'ti-star', colorClass: 'icon-yellow', descKey: 'adminMenu.ambassadorsDesc' },
+      { tab: 'partners', labelKey: 'adminMenu.partners', icon: 'ti-building', colorClass: 'icon-cyan', descKey: 'adminMenu.partnersDesc' },
+      { tab: 'clans', labelKey: 'adminMenu.clans', icon: 'ti-shield', colorClass: 'icon-green', descKey: 'adminMenu.clansDesc' },
     ],
   },
   {
-    label: 'Gaming',
+    sectionKey: 'adminMenu.gamingSection',
     items: [
-      { tab: 'challenges', label: 'Défis', icon: 'ti-sword', colorClass: 'icon-red', desc: 'Gestion des défis et compétitions' },
-      { tab: 'events', label: 'Événements', icon: 'ti-calendar-event', colorClass: 'icon-orange', desc: 'Gestion des événements' },
-      { tab: 'streams', label: 'Streams', icon: 'ti-video', colorClass: 'icon-pink', desc: 'Gestion des streams live' },
-      { tab: 'championships', label: 'Championnats', icon: 'ti-trophy', colorClass: 'icon-yellow', desc: 'Gestion des championnats' },
-      { tab: 'arena', label: 'Arena', icon: 'ti-device-gamepad-2', colorClass: 'icon-pink', desc: 'EBETSTREAM ARENA — matchs et résultats' },
-      { tab: 'bets', label: 'Paris', icon: 'ti-currency-dollar', colorClass: 'icon-gold', desc: 'Gestion des paris' },
+      { tab: 'challenges', labelKey: 'adminMenu.challenges', icon: 'ti-sword', colorClass: 'icon-red', descKey: 'adminMenu.challengesDesc' },
+      { tab: 'events', labelKey: 'adminMenu.events', icon: 'ti-calendar-event', colorClass: 'icon-orange', descKey: 'adminMenu.eventsDesc' },
+      { tab: 'streams', labelKey: 'adminMenu.streams', icon: 'ti-video', colorClass: 'icon-pink', descKey: 'adminMenu.streamsDesc' },
+      { tab: 'championships', labelKey: 'adminMenu.championships', icon: 'ti-trophy', colorClass: 'icon-yellow', descKey: 'adminMenu.championshipsDesc' },
+      { tab: 'arena', labelKey: 'adminMenu.arena', icon: 'ti-device-gamepad-2', colorClass: 'icon-pink', descKey: 'adminMenu.arenaDesc' },
+      { tab: 'bets', labelKey: 'adminMenu.bets', icon: 'ti-currency-dollar', colorClass: 'icon-gold', descKey: 'adminMenu.betsDesc' },
     ],
   },
   {
-    label: 'Finance',
+    sectionKey: 'adminMenu.financeSection',
     items: [
-      { tab: 'deposits', label: 'Dépôts', icon: 'ti-wallet', colorClass: 'icon-green', desc: 'Gestion des dépôts' },
-      { tab: 'withdrawals', label: 'Retraits', icon: 'ti-credit-card', colorClass: 'icon-orange', desc: 'Gestion des retraits' },
-      { tab: 'recharge-agents', label: 'Agents de recharge', icon: 'ti-refresh', colorClass: 'icon-blue', desc: 'Agents de recharge' },
-      { tab: 'withdrawal-codes', label: 'Codes de retrait', icon: 'ti-key', colorClass: 'icon-purple', desc: 'Codes de retrait' },
-      { tab: 'payment-methods', label: 'Méthodes de paiement', icon: 'ti-building-bank', colorClass: 'icon-cyan', desc: 'Méthodes de paiement disponibles' },
-      { tab: 'promo-codes', label: 'Codes promo', icon: 'ti-ticket', colorClass: 'icon-pink', desc: 'Gestion des codes promotionnels' },
-      { tab: 'monetization', label: 'Monétisation', icon: 'ti-coin', colorClass: 'icon-gold', desc: 'Paramètres de monétisation' },
+      { tab: 'deposits', labelKey: 'adminMenu.deposits', icon: 'ti-wallet', colorClass: 'icon-green', descKey: 'adminMenu.depositsDesc' },
+      { tab: 'withdrawals', labelKey: 'adminMenu.withdrawals', icon: 'ti-credit-card', colorClass: 'icon-orange', descKey: 'adminMenu.withdrawalsDesc' },
+      { tab: 'recharge-agents', labelKey: 'adminMenu.rechargeAgents', icon: 'ti-refresh', colorClass: 'icon-blue', descKey: 'adminMenu.rechargeAgentsDesc' },
+      { tab: 'withdrawal-codes', labelKey: 'adminMenu.withdrawalCodes', icon: 'ti-key', colorClass: 'icon-purple', descKey: 'adminMenu.withdrawalCodesDesc' },
+      { tab: 'payment-methods', labelKey: 'adminMenu.paymentMethods', icon: 'ti-building-bank', colorClass: 'icon-cyan', descKey: 'adminMenu.paymentMethodsDesc' },
+      { tab: 'promo-codes', labelKey: 'adminMenu.promoCodes', icon: 'ti-ticket', colorClass: 'icon-pink', descKey: 'adminMenu.promoCodesDesc' },
+      { tab: 'monetization', labelKey: 'adminMenu.monetization', icon: 'ti-coin', colorClass: 'icon-gold', descKey: 'adminMenu.monetizationDesc' },
     ],
   },
   {
-    label: 'Vérification',
+    sectionKey: 'adminMenu.verificationSection',
     items: [
-      { tab: 'certifications', label: 'Certifications', icon: 'ti-certificate', colorClass: 'icon-blue', desc: 'Gestion des certifications' },
-      { tab: 'certification-requests', label: 'Demandes certif.', icon: 'ti-file-check', colorClass: 'icon-orange', desc: 'Demandes de certification' },
-      { tab: 'agent-requests', label: 'Demandes agents', icon: 'ti-user-check', colorClass: 'icon-green', desc: 'Demandes d\'agents' },
+      { tab: 'certifications', labelKey: 'adminMenu.certifications', icon: 'ti-certificate', colorClass: 'icon-blue', descKey: 'adminMenu.certificationsDesc' },
+      { tab: 'certification-requests', labelKey: 'adminMenu.certificationRequests', icon: 'ti-file-check', colorClass: 'icon-orange', descKey: 'adminMenu.certificationRequestsDesc' },
+      { tab: 'agent-requests', labelKey: 'adminMenu.agentRequests', icon: 'ti-user-check', colorClass: 'icon-green', descKey: 'adminMenu.agentRequestsDesc' },
     ],
   },
   {
-    label: 'Fédérations',
+    sectionKey: 'adminMenu.federationsSection',
     items: [
-      { tab: 'federations', label: 'Fédérations', icon: 'ti-world', colorClass: 'icon-purple', desc: 'Gestion des fédérations' },
-      { tab: 'ballon-dor', label: 'Ballon d\'Or', icon: 'ti-award', colorClass: 'icon-gold', desc: 'Gestion du Ballon d\'Or' },
+      { tab: 'federations', labelKey: 'adminMenu.federations', icon: 'ti-world', colorClass: 'icon-purple', descKey: 'adminMenu.federationsDesc' },
+      { tab: 'ballon-dor', labelKey: 'adminMenu.ballonDor', icon: 'ti-award', colorClass: 'icon-gold', descKey: 'adminMenu.ballonDorDesc' },
     ],
   },
 ];
@@ -261,7 +261,7 @@ const currentPageItem = computed(() =>
 );
 
 const currentPageLabel = computed(() =>
-  currentPageItem.value?.label || 'Vue d\'ensemble'
+  currentPageItem.value ? t(currentPageItem.value.labelKey) : t('adminMenu.overview')
 );
 
 const formattedDate = computed(() => {

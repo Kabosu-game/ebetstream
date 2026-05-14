@@ -114,7 +114,7 @@ const approveDeposit = async (id: number) => {
     await apiClient.post(`/admin/deposits/${id}/approve`, {});
     await loadDeposits();
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error approving deposit');
+    alert(err.response?.data?.message || t('errors.approveDeposit'));
   }
 };
 
@@ -124,7 +124,7 @@ const rejectDeposit = async (id: number) => {
     await apiClient.post(`/admin/deposits/${id}/reject`, {});
     await loadDeposits();
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error rejecting deposit');
+    alert(err.response?.data?.message || t('errors.rejectDeposit'));
   }
 };
 

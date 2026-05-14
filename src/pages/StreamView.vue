@@ -81,7 +81,7 @@
               {{ (stream.user?.username || '?').slice(0, 2).toUpperCase() }}
             </div>
             <div class="sv-info__meta">
-              <h2 class="sv-info__title">{{ stream.title || 'Sans titre' }}</h2>
+              <h2 class="sv-info__title">{{ stream.title || $t('errors.untitled') }}</h2>
               <p class="sv-info__channel">{{ stream.user?.username || 'User' }}</p>
               <p class="sv-info__followers">
                 <i class="far fa-heart"></i>
@@ -162,8 +162,8 @@
               <div class="sv-msg__body">
                 <div class="sv-msg__top">
                   <span class="sv-msg__name">{{ msg.user?.username || 'User' }}</span>
-                  <span v-if="msg.is_moderator" class="sv-msg__badge sv-msg__badge--mod">MOD</span>
-                  <span v-if="msg.is_subscriber" class="sv-msg__badge sv-msg__badge--sub">SUB</span>
+                  <span v-if="msg.is_moderator" class="sv-msg__badge sv-msg__badge--mod">{{ $t('labels.mod') }}</span>
+                  <span v-if="msg.is_subscriber" class="sv-msg__badge sv-msg__badge--sub">{{ $t('labels.sub') }}</span>
                   <span class="sv-msg__time">{{ formatTime(msg.created_at) }}</span>
                 </div>
                 <p class="sv-msg__text">{{ msg.message }}</p>
@@ -338,7 +338,7 @@ const sendDonation = async () => {
     }
   } catch (e: any) {
     moneyMsgType.value = 'error';
-    moneyMsg.value = e.response?.data?.message || 'Erreur lors du don';
+    moneyMsg.value = e.response?.data?.message || t('errors.donationFailed');
   } finally {
     moneyLoading.value = false;
   }
@@ -360,7 +360,7 @@ const sendPrediction = async () => {
     }
   } catch (e: any) {
     moneyMsgType.value = 'error';
-    moneyMsg.value = e.response?.data?.message || 'Erreur';
+    moneyMsg.value = e.response?.data?.message || t('errors.generic');
   } finally {
     moneyLoading.value = false;
   }
@@ -416,7 +416,7 @@ const connectWebRTC = () => {
 
   ws.onopen = () => {
     wsStatus.value = 'connected';
-    waitingMsg.value = 'Connecté — en attente du flux vidéo...';
+    waitingMsg.value = t('labels.connectedWaiting');
     startRetryTimer();
   };
 
@@ -460,7 +460,7 @@ const connectWebRTC = () => {
         streamEnded = true;
         if (wsReconnectTimer) clearTimeout(wsReconnectTimer);
         connected.value = false;
-        waitingMsg.value = 'Le stream est terminé.';
+        waitingMsg.value = t('labels.streamEnded');
         showRetry.value = false;
         cleanupPeer();
         // Fermer proprement le WS (onclose ne relancera pas de reconnexion)
@@ -475,7 +475,7 @@ const connectWebRTC = () => {
 
   ws.onerror = () => {
     wsStatus.value = 'disconnected';
-    waitingMsg.value = 'Erreur de connexion WebSocket.';
+    waitingMsg.value = t('errors.websocketConnection');
   };
 
   ws.onclose = (evt) => {
@@ -486,7 +486,7 @@ const connectWebRTC = () => {
 
     // Cas 2 : rejeté par le serveur (1008) → pas de boucle
     if (evt.code === 1008) {
-      waitingMsg.value = 'Connexion refusée.';
+      waitingMsg.value = t('labels.connectionRefused');
       return;
     }
 
@@ -599,8 +599,8 @@ const loadStream = async (connectRtc = true) => {
     }
   } catch (e: any) {
     pageError.value = e.response?.status === 404
-      ? 'Stream introuvable.'
-      : 'Erreur lors du chargement.';
+      ? t('errors.streamNotFound')
+      : t('errors.loadStreamPageFailed');
   } finally {
     loading.value = false;
   }
@@ -654,7 +654,7 @@ const sendMessage = async () => {
     }
   } catch (e: any) {
     newMessage.value = text; // remettre le texte si erreur
-    alert(e.response?.data?.message || 'Erreur envoi');
+    alert(e.response?.data?.message || t('errors.sendFailed'));
   } finally {
     sendingMessage.value = false;
   }
@@ -681,7 +681,7 @@ const scrollChat = () => {
 const formatTime = (d: string) => {
   const diff = Date.now() - new Date(d).getTime();
   const m = Math.floor(diff / 60000);
-  if (m < 1) return 'À l\'instant';
+  if (m < 1) return t('labels.justNow');
   if (m < 60) return `${m}min`;
   const h = Math.floor(m / 60);
   if (h < 24) return `${h}h`;

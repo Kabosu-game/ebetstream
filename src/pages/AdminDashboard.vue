@@ -3,6 +3,8 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 import { onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 import AdminDashBoard from '../components/Pages/Admin/AdminDashBoard.vue';
@@ -24,7 +26,7 @@ onBeforeMount(() => {
   // Vérifier si l'utilisateur est admin
   if (userRole !== 'admin') {
     console.log('User is not admin, role:', userRole);
-    alert("Accès refusé. Vous devez être administrateur pour accéder à cette page.");
+    alert(t('errors.accessDeniedAdmin'));
     router.push("/");
     return;
   }

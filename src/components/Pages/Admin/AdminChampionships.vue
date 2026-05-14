@@ -688,11 +688,11 @@ const deleteChampionship = async (id: number) => {
     if (response.data.success) {
       await loadChampionships();
     } else {
-      alert(response.data.message || 'Error deleting championship');
+      alert(response.data.message || t('errors.deleteChampionship'));
     }
   } catch (error: any) {
     console.error('Error deleting championship:', error);
-    alert(error.response?.data?.message || 'Error deleting championship');
+    alert(error.response?.data?.message || t('errors.deleteChampionship'));
   }
 };
 
@@ -720,11 +720,11 @@ const validateRegistration = async (registrationId: number, validate: boolean) =
     if (response.data.success) {
       await manageRegistrations(managingRegistrations.value!);
     } else {
-      alert(response.data.message || 'Error validating registration');
+      alert(response.data.message || t('errors.validateRegistration'));
     }
   } catch (error: any) {
     console.error('Error validating registration:', error);
-    alert(error.response?.data?.message || 'Error validating registration');
+    alert(error.response?.data?.message || t('errors.validateRegistration'));
   }
 };
 
@@ -734,14 +734,14 @@ const generateMatchesForChampionship = async (id: number) => {
   try {
     const response = await apiClient.post(`/admin/championships/${id}/generate-matches`);
     if (response.data.success) {
-      alert('Matches generated successfully');
+      alert(t('success.matchesGenerated'));
       await loadChampionships();
     } else {
-      alert(response.data.message || 'Error generating matches');
+      alert(response.data.message || t('errors.generateMatches'));
     }
   } catch (error: any) {
     console.error('Error generating matches:', error);
-    alert(error.response?.data?.message || 'Error generating matches');
+    alert(error.response?.data?.message || t('errors.generateMatches'));
   }
 };
 

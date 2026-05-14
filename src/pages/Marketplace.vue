@@ -388,14 +388,14 @@ const buyTeam = async (listing: Listing) => {
     const response = await apiClient.post(`/team-marketplace/${listing.id}/buy`);
 
     if (response.data.success) {
-      alert("Team purchased successfully!");
+      alert(t('success.teamPurchased'));
       await loadListings();
     } else {
-      alert(response.data.message || "Error purchasing team");
+      alert(response.data.message || t('errors.purchaseTeam'));
     }
   } catch (err: any) {
     console.error("Error buying team:", err);
-    alert(err.response?.data?.message || "Error purchasing team");
+    alert(err.response?.data?.message || t('errors.purchaseTeam'));
   } finally {
     processing.value = false;
   }
@@ -409,14 +409,14 @@ const loanTeam = async (listing: Listing) => {
     const response = await apiClient.post(`/team-marketplace/${listing.id}/loan`);
 
     if (response.data.success) {
-      alert("Team loaned successfully!");
+      alert(t('success.teamLoaned'));
       await loadListings();
     } else {
-      alert(response.data.message || "Error loaning team");
+      alert(response.data.message || t('errors.loanTeam'));
     }
   } catch (err: any) {
     console.error("Error loaning team:", err);
-    alert(err.response?.data?.message || "Error loaning team");
+    alert(err.response?.data?.message || t('errors.loanTeam'));
   } finally {
     processing.value = false;
   }
@@ -424,7 +424,7 @@ const loanTeam = async (listing: Listing) => {
 
 const viewDetails = (id: number) => {
   // TODO: Navigate to listing detail page
-  alert("Listing details coming soon");
+  alert(t('success.listingDetailsComingSoon'));
 };
 
 const createListing = async () => {
@@ -447,15 +447,15 @@ const createListing = async () => {
     const response = await apiClient.post("/team-marketplace", payload);
 
     if (response.data.success) {
-      alert("Listing created successfully!");
+      alert(t('success.listingCreated'));
       closeCreateModal();
       await loadListings();
     } else {
-      alert(response.data.message || "Error creating listing");
+      alert(response.data.message || t('errors.createListing'));
     }
   } catch (err: any) {
     console.error("Error creating listing:", err);
-    alert(err.response?.data?.message || "Error creating listing");
+    alert(err.response?.data?.message || t('errors.createListing'));
   } finally {
     processing.value = false;
   }

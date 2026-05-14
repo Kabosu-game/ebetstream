@@ -199,7 +199,7 @@ const loadAgents = async () => {
       };
     }
   } catch (e: any) {
-    alert(e.response?.data?.message || 'Erreur de chargement');
+    alert(e.response?.data?.message || t('errors.loadFailed'));
   } finally {
     loading.value = false;
   }
@@ -237,7 +237,7 @@ const submitAgent = async () => {
     await loadAgents();
     closeModals();
   } catch (e: any) {
-    alert(e.response?.data?.message || 'Erreur');
+    alert(e.response?.data?.message || t('errors.generic'));
   } finally {
     processing.value = false;
   }
@@ -256,7 +256,7 @@ const submitWallet = async () => {
     await loadAgents();
     showWalletModal.value = false;
   } catch (e: any) {
-    alert(e.response?.data?.message || 'Erreur solde');
+    alert(e.response?.data?.message || t('errors.balanceError'));
   } finally {
     processing.value = false;
   }
@@ -283,7 +283,7 @@ const confirmDelete = async () => {
     showDeleteModal.value = false;
     await loadAgents();
   } catch (e: any) {
-    alert(e.response?.data?.message || 'Erreur suppression');
+    alert(e.response?.data?.message || t('errors.deleteError'));
   } finally {
     processing.value = false;
   }

@@ -36,7 +36,7 @@
                 <option>{{ $t('ui.gaming') }}</option>
                 <option>{{ $t('ui.esports') }}</option>
                 <option>{{ $t('ui.just_chatting') }}</option>
-                <option>IRL</option>
+                <option>{{ $t('labels.irl') }}</option>
                 <option>{{ $t('ui.music') }}</option>
                 <option>{{ $t('ui.creative') }}</option>
               </select>
@@ -68,7 +68,7 @@
             <button v-if="!streamId" type="submit" class="sc-btn sc-btn--primary" :disabled="loading">
               <i class="fas fa-spinner fa-spin" v-if="loading"></i>
               <i class="fas fa-video" v-else></i>
-              {{ loading ? 'Création…' : 'Créer le stream' }}
+              {{ loading ? $t('ui.creating') : $t('streamStudio.createStream') }}
             </button>
             <button v-else type="button" class="sc-btn sc-btn--primary" @click="updateStream" :disabled="loading">
               <i class="fas fa-save"></i>{{ $t('ui.sauvegarder') }}</button>
@@ -202,15 +202,15 @@
             </button>
 
             <!-- Caméra -->
-            <button class="studio__tool" :class="{ 'studio__tool--active': !camOff, 'studio__tool--danger': camOff }" @click="toggleCam" :title="camOff ? 'Activer la caméra' : 'Couper la caméra'">
+            <button class="studio__tool" :class="{ 'studio__tool--active': !camOff, 'studio__tool--danger': camOff }" @click="toggleCam" :title="camOff ? t('streamStudio.enableCamera') : t('streamStudio.disableCamera')">
               <i :class="camOff ? 'fas fa-video-slash' : 'fas fa-video'"></i>
-              <span>{{ camOff ? 'Cam off' : 'Caméra' }}</span>
+              <span>{{ camOff ? t('streamStudio.camOff') : t('streamStudio.camera') }}</span>
             </button>
 
             <!-- Screen share switch -->
             <button class="studio__tool" :class="{ 'studio__tool--active': sourceMode === 'screen' }" @click="switchSource" :disabled="switchingSource">
               <i class="fas fa-desktop"></i>
-              <span>{{ switchingSource ? '…' : 'Écran' }}</span>
+              <span>{{ switchingSource ? '…' : t('streamStudio.screen') }}</span>
             </button>
 
             <!-- Caméra switch (mobile: avant/arrière) -->
@@ -243,9 +243,9 @@
             </div>
 
             <!-- Plein écran preview -->
-            <button class="studio__tool" @click="toggleFullscreen" title="Plein écran">
+            <button class="studio__tool" @click="toggleFullscreen" :title="t('streamStudio.fullscreen')">
               <i :class="isFullscreen ? 'fas fa-compress' : 'fas fa-expand'"></i>
-              <span>{{ isFullscreen ? 'Réduire' : 'Plein écran' }}</span>
+              <span>{{ isFullscreen ? t('streamStudio.exitFullscreen') : t('streamStudio.fullscreen') }}</span>
             </button>
 
           </div>
@@ -257,13 +257,13 @@
               <span class="studio__stat-val">{{ streamResolution }}</span>
             </div>
             <div class="studio__stat">
-              <span class="studio__stat-label">FPS</span>
+              <span class="studio__stat-label">{{ $t('labels.fps') }}</span>
               <span class="studio__stat-val">{{ streamFps }}</span>
             </div>
             <div class="studio__stat">
               <span class="studio__stat-label">{{ $t('ui.websocket') }}</span>
               <span class="studio__stat-val" :class="wsConnected ? 'studio__stat-val--ok' : 'studio__stat-val--err'">
-                {{ wsConnected ? 'Connecté' : 'Déconnecté' }}
+                {{ wsConnected ? t('streamStudio.connected') : t('streamStudio.disconnected') }}
               </span>
             </div>
             <div class="studio__stat">
@@ -347,7 +347,7 @@
               <select v-model="form.category" class="sc-input sc-select" @change="saveTitle">
                 <option value="">—</option>
                 <option>{{ $t('ui.gaming') }}</option><option>{{ $t('ui.esports') }}</option>
-                <option>{{ $t('ui.just_chatting') }}</option><option>IRL</option>
+                <option>{{ $t('ui.just_chatting') }}</option><option>{{ $t('labels.irl') }}</option>
                 <option>{{ $t('ui.music') }}</option><option>{{ $t('ui.creative') }}</option>
               </select>
             </div>
@@ -418,7 +418,7 @@
           <div class="studio__confirm-btns">
             <button class="sc-btn sc-btn--ghost" @click="showConfirmStop = false">{{ $t('ui.continuer') }}</button>
             <button class="sc-btn sc-btn--danger" @click="stopStream" :disabled="stoppingStream">
-              <i class="fas fa-stop"></i> {{ stoppingStream ? 'Arrêt…' : 'Oui, arrêter' }}
+              <i class="fas fa-stop"></i> {{ stoppingStream ? t('streamStudio.stopping') : t('streamStudio.yesStop') }}
             </button>
           </div>
         </div>
@@ -524,7 +524,7 @@ let donationInterval: ReturnType<typeof setInterval> | null = null;
 const handleThumbnailChange = (e: Event) => {
   const file = (e.target as HTMLInputElement).files?.[0];
   if (!file) return;
-  if (file.size > 5 * 1024 * 1024) { error.value = 'Image trop grande (max 5 Mo)'; return; }
+  if (file.size > 5 * 1024 * 1024) { error.value = t('errors.imageTooLarge'); return; }
   thumbnailFile.value = file;
   const reader = new FileReader();
   reader.onload = ev => { thumbnailPreview.value = ev.target?.result as string; };
@@ -545,15 +545,15 @@ const handleSubmit = async () => {
     const res = await apiClient.post('/streams', fd);
     if (res.data.success) {
       streamId.value = res.data.data.id;
-      successMsg.value = 'Stream créé ! Vous pouvez démarrer le live.';
+      successMsg.value = t('streamStudio.streamCreated');
     }
   } catch (err: any) {
     if (err.response?.status === 400 && err.response.data.message?.includes('already have')) {
-      successMsg.value = 'Vous avez déjà un stream — chargement…';
+      successMsg.value = t('streamStudio.streamExistsLoading');
       await loadExistingStream();
     } else {
       const errs = err.response?.data?.errors;
-      error.value = errs ? Object.values(errs).flat().join(', ') : (err.response?.data?.message || 'Erreur');
+      error.value = errs ? Object.values(errs).flat().join(', ') : (err.response?.data?.message || t('errors.generic'));
     }
   } finally { loading.value = false; }
 };
@@ -569,9 +569,9 @@ const updateStream = async () => {
     fd.append('game', form.value.game || '');
     if (thumbnailFile.value) fd.append('thumbnail', thumbnailFile.value);
     await apiClient.put(`/streams/${streamId.value}`, fd);
-    successMsg.value = 'Stream mis à jour !';
+    successMsg.value = t('streamStudio.streamUpdated');
   } catch (err: any) {
-    error.value = err.response?.data?.message || 'Erreur';
+    error.value = err.response?.data?.message || t('errors.generic');
   } finally { loading.value = false; }
 };
 
@@ -614,7 +614,12 @@ const saveTitle = async () => {
 // ── Capture media ─────────────────────────────────────────────────────────────
 const captureMedia = async (): Promise<MediaStream> => {
   const mode = sourceMode.value;
-
+  if (mode === 'screen' && !supportsDisplayMedia) {
+    throw Object.assign(new Error('COMPAT'), {
+      name: 'CompatError',
+      friendly: isIOS ? t('streamStudio.screenShareIos') : t('streamStudio.screenShareUnsupported'),
+    });
+  }
   if (mode === 'camera-back' || mode === 'camera-front') {
     return navigator.mediaDevices.getUserMedia({
       video: { facingMode: mode === 'camera-front' ? 'user' : 'environment', width: { ideal: 1280 }, height: { ideal: 720 } },
@@ -776,7 +781,7 @@ const switchSource = async () => {
     localStream.value = combined;
     if (localVideo.value) localVideo.value.srcObject = combined;
   } catch (e: any) {
-    error.value = e.message || 'Erreur changement source';
+    error.value = e.message || t('errors.sourceChangeError');
   } finally { switchingSource.value = false; }
 };
 
@@ -905,7 +910,7 @@ const connectSignaling = () => {
   const token = localStorage.getItem('auth_token') || '';
   ws = new WebSocket(`${WS_BASE}/stream/${streamId.value}?token=${encodeURIComponent(token)}`);
   ws.onopen  = () => { wsConnected.value = true; connectionQuality.value = 'excellent'; };
-  ws.onerror = () => { wsConnected.value = false; connectionQuality.value = 'disconnected'; error.value = 'WebSocket error.'; };
+  ws.onerror = () => { wsConnected.value = false; connectionQuality.value = 'disconnected'; error.value = t('errors.websocketError'); };
   ws.onclose = () => { wsConnected.value = false; connectionQuality.value = 'disconnected'; };
   ws.onmessage = async (evt) => {
     let msg: any;

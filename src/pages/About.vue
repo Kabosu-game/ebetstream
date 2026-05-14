@@ -98,14 +98,14 @@
         <span class="value-card__icon"><i class="fas fa-level-up-alt"></i></span>
         <h4 class="tw-card__title">{{ $t('ui.syst_me_de_progression') }}</h4>
         <p class="tw-card__sub">
-          Évoluez à travers différents niveaux selon votre audience et votre activité, avec des avantages à chaque palier.
+          {{ $t('ui.about_progression_desc') }}
         </p>
       </div>
       <div class="tw-card value-card">
         <span class="value-card__icon"><i class="fas fa-heart"></i></span>
         <h4 class="tw-card__title">{{ $t('ui.soutien_communautaire') }}</h4>
         <p class="tw-card__sub">
-          Les spectateurs soutiennent leurs streamers préférés via des contributions volontaires et des interactions intégrées.
+          {{ $t('ui.about_viewers_support_desc') }}
         </p>
       </div>
     </div>

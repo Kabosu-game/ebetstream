@@ -9,7 +9,7 @@
       </div>
       <div class="tw-section-header__right">
         <router-link to="/challenges" class="tw-see-all">
-          Voir tout <i class="fas fa-chevron-right"></i>
+          {{ $t('labels.view_all') }} <i class="fas fa-chevron-right"></i>
         </router-link>
       </div>
     </div>
@@ -36,7 +36,7 @@
         <div class="skeleton-line skeleton-line--short mb-4"></div>
         <div class="tw-challenge-card__teams">
           <div class="skeleton-avatar"></div>
-          <span class="tw-challenge-vs">VS</span>
+          <span class="tw-challenge-vs">{{ $t('labels.vs') }}</span>
           <div class="skeleton-avatar"></div>
         </div>
         <div class="skeleton-line skeleton-line--short mt-3"></div>
@@ -73,7 +73,7 @@
             <span class="tw-challenge-username">{{ defi.creator.username }}</span>
           </div>
 
-          <div class="tw-challenge-vs">VS</div>
+          <div class="tw-challenge-vs">{{ $t('labels.vs') }}</div>
 
           <div class="tw-challenge-player">
             <div class="tw-challenge-avatar tw-challenge-avatar--ghost" v-if="!defi.opponent">?</div>

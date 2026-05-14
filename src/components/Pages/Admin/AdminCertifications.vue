@@ -259,7 +259,7 @@ const viewDetails = async (cert: CertificationRequest) => {
       showDetailsModal.value = true;
     }
   } catch (err: any) {
-    alert('Error loading details');
+    alert(t('errors.loadDetails'));
   }
 };
 
@@ -267,10 +267,10 @@ const approveCertification = async (id: number) => {
   if (!confirm('Approve this certification request?')) return;
   try {
     await apiClient.post(`/admin/certifications/${id}/approve`, {});
-    alert('Certification approved successfully!');
+    alert(t('success.certificationApproved'));
     await loadCertifications();
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error approving certification');
+    alert(err.response?.data?.message || t('errors.approveCertification'));
   }
 };
 
@@ -287,13 +287,13 @@ const rejectCertification = async (id: number | null) => {
     await apiClient.post(`/admin/certifications/${id}/reject`, {
       rejection_reason: rejectionReason.value
     });
-    alert('Certification rejected');
+    alert(t('success.certificationRejected'));
     showRejectModalFlag.value = false;
     rejectionReason.value = '';
     rejectingCertId.value = null;
     await loadCertifications();
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error rejecting certification');
+    alert(err.response?.data?.message || t('errors.rejectCertification'));
   }
 };
 

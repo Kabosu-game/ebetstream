@@ -357,7 +357,7 @@ const loadPromoCodes = async () => {
     }
   } catch (err: any) {
     console.error('Error loading promo codes:', err);
-    error.value = 'Erreur lors du chargement des codes promo';
+    error.value = t('errors.loadPromoCodes');
   } finally {
     loading.value = false;
   }
@@ -445,7 +445,7 @@ const saveCode = async () => {
     await loadPromoCodes();
     closeModal();
   } catch (err: any) {
-    error.value = err.response?.data?.message || err.response?.data?.errors?.code?.[0] || 'Error saving promo code';
+    error.value = err.response?.data?.message || err.response?.data?.errors?.code?.[0] || t('errors.savePromoCode');
   } finally {
     saving.value = false;
   }
@@ -458,7 +458,7 @@ const deleteCode = async (id: number) => {
     await apiClient.delete(`/admin/promo-codes/${id}`);
     await loadPromoCodes();
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error deleting promo code');
+    alert(err.response?.data?.message || t('errors.deletePromoCode'));
   }
 };
 

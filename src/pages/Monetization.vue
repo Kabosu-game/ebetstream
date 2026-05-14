@@ -80,7 +80,7 @@
             </div>
           </div>
           <p class="mon-revenue-desc">
-            Les spectateurs peuvent envoyer des donations en direct lors des streams compétitifs.
+            {{ $t('ui.monetization_donations_desc') }}
           </p>
           <div class="mon-split">
             <div class="mon-split__item mon-split__item--streamer">
@@ -110,8 +110,7 @@
             </div>
           </div>
           <p class="mon-revenue-desc">
-            Les spectateurs utilisent des crédits Ebetstream pour soutenir un streamer lors de matchs.
-            La plateforme prélève une commission sur les crédits utilisés.
+            {{ $t('ui.monetization_predictions_desc') }}
           </p>
           <div class="mon-split">
             <div class="mon-split__item mon-split__item--streamer">

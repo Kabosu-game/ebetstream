@@ -245,7 +245,7 @@ const deleteNomination = async (id: number) => {
     loadNominations();
   } catch (error: any) {
     console.error('Error deleting nomination:', error);
-    alert('Error deleting nomination');
+    alert(t('errors.deleteNomination'));
   }
 };
 

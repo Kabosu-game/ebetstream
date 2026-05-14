@@ -584,7 +584,7 @@ const deleteMethod = async (id: number) => {
     await apiClient.delete(`/admin/payment-methods/${id}`);
     await loadPaymentMethods();
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error deleting payment method');
+    alert(err.response?.data?.message || t('errors.deletePaymentMethod'));
   }
 };
 
@@ -603,7 +603,7 @@ const saveMethod = async () => {
     await loadPaymentMethods();
     closeModal();
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error saving payment method');
+    alert(err.response?.data?.message || t('errors.savePaymentMethod'));
   } finally {
     saving.value = false;
   }

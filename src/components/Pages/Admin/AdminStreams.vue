@@ -571,7 +571,7 @@ const viewStreamDetails = async (stream: Stream) => {
     }
   } catch (err: any) {
     console.error('Error loading stream details:', err);
-    alert('Error loading stream details: ' + (err.response?.data?.message || err.message));
+    alert(t('errors.loadStreamDetails') + ': ' + (err.response?.data?.message || err.message));
   } finally {
     loadingDetails.value = false;
   }
@@ -655,7 +655,7 @@ const saveStream = async () => {
       closeEditModal();
     }
   } catch (err: any) {
-    error.value = err.response?.data?.message || 'Error updating stream';
+    error.value = err.response?.data?.message || t('errors.updateStream');
   } finally {
     saving.value = false;
   }
@@ -672,7 +672,7 @@ const deleteStream = async (id: number) => {
       await loadStreams();
     }
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error deleting stream');
+    alert(err.response?.data?.message || t('errors.deleteStream'));
   }
 };
 
@@ -685,10 +685,10 @@ const forceStopStream = async (id: number) => {
     const response = await apiClient.post(`/admin/streams/${id}/force-stop`);
     if (response.data.success) {
       await loadStreams();
-      alert('Stream stopped successfully');
+      alert(t('success.streamStopped'));
     }
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error stopping stream');
+    alert(err.response?.data?.message || t('errors.stopStream'));
   }
 };
 
@@ -705,7 +705,7 @@ const deleteChatMessage = async (messageId: number) => {
       await loadChatMessages();
     }
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error deleting message');
+    alert(err.response?.data?.message || t('errors.deleteMessage'));
   }
 };
 

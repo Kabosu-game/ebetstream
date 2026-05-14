@@ -172,7 +172,7 @@ const loadPartners = async () => {
         };
       });
     } else {
-      error.value = response.data.message || 'Error loading partners';
+      error.value = response.data.message || t('errors.loadPartners');
     }
   } catch (err: any) {
     console.error('Error loading partners:', err);

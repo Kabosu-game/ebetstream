@@ -386,13 +386,13 @@ const completeCode = async (code: WithdrawalCode | null) => {
     });
     
     if (response.data.success) {
-      alert('Code marked as completed successfully!');
+      alert(t('success.codeCompleted'));
       loadCodes();
       showDetailsModal.value = false;
     }
   } catch (error: any) {
     console.error('Error completing code:', error);
-    alert('Error completing code: ' + (error.response?.data?.message || error.message));
+    alert(t('errors.completeCode') + ': ' + (error.response?.data?.message || error.message));
   }
 };
 
@@ -408,13 +408,13 @@ const cancelCode = async (code: WithdrawalCode | null) => {
     });
     
     if (response.data.success) {
-      alert('Code cancelled successfully!');
+      alert(t('success.codeCancelled'));
       loadCodes();
       showDetailsModal.value = false;
     }
   } catch (error: any) {
     console.error('Error cancelling code:', error);
-    alert('Error cancelling code: ' + (error.response?.data?.message || error.message));
+    alert(t('errors.cancelCode') + ': ' + (error.response?.data?.message || error.message));
   }
 };
 

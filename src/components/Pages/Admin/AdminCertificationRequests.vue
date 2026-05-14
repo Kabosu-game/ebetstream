@@ -500,7 +500,7 @@ const loadRequests = async () => {
     }
   } catch (err: any) {
     console.error('Error loading certification requests:', err);
-    alert('Error loading certification requests: ' + (err.response?.data?.message || err.message));
+    alert(t('errors.loadCertificationRequests') + ': ' + (err.response?.data?.message || err.message));
   } finally {
     loading.value = false;
   }
@@ -543,7 +543,7 @@ const viewDetails = async (id: number) => {
   } catch (err: any) {
     console.error('Error loading request details:', err);
     console.error('Error response:', err.response);
-    alert('Error loading request details: ' + (err.response?.data?.message || err.message));
+    alert(t('errors.loadRequestDetails') + ': ' + (err.response?.data?.message || err.message));
     showDetailsModal.value = false;
   } finally {
     loadingDetails.value = false;
@@ -572,10 +572,10 @@ const approveRequest = async () => {
       showApproveModal.value = false;
       selectedRequest.value = null;
       await loadRequests();
-      alert('Certification request approved successfully!');
+      alert(t('success.certificationRequestApproved'));
     }
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error approving request');
+    alert(err.response?.data?.message || t('errors.approveCertificationRequest'));
   } finally {
     processing.value = false;
   }
@@ -595,10 +595,10 @@ const rejectRequest = async () => {
       selectedRequest.value = null;
       rejectionReason.value = '';
       await loadRequests();
-      alert('Certification request rejected successfully!');
+      alert(t('success.certificationRequestRejected'));
     }
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error rejecting request');
+    alert(err.response?.data?.message || t('errors.rejectCertificationRequest'));
   } finally {
     processing.value = false;
   }

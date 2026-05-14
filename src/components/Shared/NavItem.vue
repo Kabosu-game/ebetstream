@@ -15,7 +15,7 @@
         :class="['navunik', 'dropdown-toggle', 'nav-dropdown-toggle']"
         @click.stop="toggleSubmenu(navItemSingle.id)"
       >
-        {{ navItemSingle.linkText }}
+        {{ $t(navItemSingle.labelKey) }}
         <IconChevronDown
           v-if="openSubmenu !== navItemSingle.id"
           class="nav-dropdown-icon"
@@ -41,7 +41,7 @@
             :class="{ active: isActive(subItem.href) }"
             @click="closeSubmenu"
           >
-            {{ subItem.linkText }}
+            {{ $t(subItem.labelKey) }}
           </router-link>
         </li>
       </ul>
@@ -53,7 +53,7 @@
       :class="['navunik', isActive(navItemSingle.href) ? 'active' : '']"
       :to="navItemSingle.href"
     >
-      {{ navItemSingle.linkText }}
+      {{ $t(navItemSingle.labelKey) }}
     </router-link>
   </li>
 </template>

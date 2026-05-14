@@ -211,11 +211,11 @@ const loadClans = async (page = 1) => {
       clans.value = response.data.data.data || response.data.data || [];
       pagination.value = response.data.data;
     } else {
-      error.value = response.data.message || "Error loading clans";
+      error.value = response.data.message || t('errors.loadClans');
     }
   } catch (err: any) {
     console.error("Error loading clans:", err);
-    error.value = err.response?.data?.message || "Error loading clans";
+    error.value = err.response?.data?.message || t('errors.loadClans');
   } finally {
     loading.value = false;
   }

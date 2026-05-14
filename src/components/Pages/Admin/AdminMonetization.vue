@@ -130,7 +130,7 @@ const loadData = async () => {
       settingsText[key] = JSON.stringify(settings[key], null, 2);
     });
   } catch (e: any) {
-    error.value = e?.response?.data?.message || "Unable to load monetization data.";
+    error.value = e?.response?.data?.message || t('errors.loadMonetization');
   } finally {
     loading.value = false;
   }
@@ -144,7 +144,7 @@ const saveSetting = async (settingKey: string) => {
     });
     await loadData();
   } catch {
-    error.value = `Invalid JSON for ${settingKey}.`;
+    error.value = t('errors.invalidJson', { key: settingKey });
   }
 };
 

@@ -448,7 +448,7 @@ const saveUser = async () => {
     closeModal();
     await loadUsers();
   } catch (err: any) {
-    error.value = err.response?.data?.message || 'Error saving user';
+    error.value = err.response?.data?.message || t('errors.saveUser');
   } finally {
     saving.value = false;
   }
@@ -473,7 +473,7 @@ const deleteUser = async (id: number) => {
     await apiClient.delete(`/admin/users/${id}`);
     await loadUsers();
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error deleting user');
+    alert(err.response?.data?.message || t('errors.deleteUser'));
   }
 };
 

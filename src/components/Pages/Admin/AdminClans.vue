@@ -560,7 +560,7 @@ const loadClans = async (page = 1) => {
     }
   } catch (err: any) {
     console.error('Error loading clans:', err);
-    alert('Error loading clans: ' + (err.response?.data?.message || err.message));
+    alert(t('errors.loadClans') + ': ' + (err.response?.data?.message || err.message));
   } finally {
     loading.value = false;
   }
@@ -585,7 +585,7 @@ const viewClanDetails = async (clan: Clan) => {
     }
   } catch (err: any) {
     console.error('Error loading clan details:', err);
-    alert('Error loading clan details: ' + (err.response?.data?.message || err.message));
+    alert(t('errors.loadClanDetails') + ': ' + (err.response?.data?.message || err.message));
   } finally {
     loadingDetails.value = false;
   }
@@ -649,13 +649,13 @@ const deleteClan = async (id: number) => {
     
     if (response.data.success) {
       await loadClans(pagination.value?.current_page || 1);
-      alert('Clan deleted successfully');
+      alert(t('success.clanDeleted'));
     } else {
-      alert('Error deleting clan: ' + (response.data.message || 'Unknown error'));
+      alert(t('errors.deleteClan') + ': ' + (response.data.message || t('errors.unknownError')));
     }
   } catch (err: any) {
     console.error('Error deleting clan:', err);
-    alert('Error deleting clan: ' + (err.response?.data?.message || err.message));
+    alert(t('errors.deleteClan') + ': ' + (err.response?.data?.message || err.message));
   }
 };
 
@@ -671,13 +671,13 @@ const removeMember = async (userId: number) => {
     
     if (response.data.success) {
       await viewClanDetails(clanDetails.value);
-      alert('Member removed successfully');
+      alert(t('success.memberRemoved'));
     } else {
-      alert('Error removing member: ' + (response.data.message || 'Unknown error'));
+      alert(t('errors.removeMember') + ': ' + (response.data.message || t('errors.unknownError')));
     }
   } catch (err: any) {
     console.error('Error removing member:', err);
-    alert('Error removing member: ' + (err.response?.data?.message || err.message));
+    alert(t('errors.removeMember') + ': ' + (err.response?.data?.message || err.message));
   }
 };
 
@@ -693,13 +693,13 @@ const approveLeader = async (candidateId: number) => {
     
     if (response.data.success) {
       await viewClanDetails(clanDetails.value);
-      alert('New leader approved successfully!');
+      alert(t('success.leaderApproved'));
     } else {
-      alert('Error approving leader: ' + (response.data.message || 'Unknown error'));
+      alert(t('errors.approveLeader') + ': ' + (response.data.message || t('errors.unknownError')));
     }
   } catch (err: any) {
     console.error('Error approving leader:', err);
-    alert('Error approving leader: ' + (err.response?.data?.message || err.message));
+    alert(t('errors.approveLeader') + ': ' + (err.response?.data?.message || err.message));
   }
 };
 

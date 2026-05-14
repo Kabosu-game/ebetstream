@@ -358,12 +358,12 @@ const loadSeason = async () => {
         };
       }
     } else {
-      error.value = "No current season";
+      error.value = t('errors.noCurrentSeason');
     }
   } catch (err: any) {
     console.error("Error loading season:", err);
     if (err.response?.status !== 404) {
-      error.value = err.response?.data?.message || "Error loading season";
+      error.value = err.response?.data?.message || t('errors.loadSeason');
     }
   } finally {
     loading.value = false;
@@ -431,15 +431,15 @@ const voteForNomination = async (nominationId: number, category: string) => {
     });
 
     if (response.data.success) {
-      alert("Vote recorded successfully!");
+      alert(t('success.voteRecorded'));
       await loadNominations();
       await loadMyVotes();
     } else {
-      alert(response.data.message || "Error voting");
+      alert(response.data.message || t('errors.vote'));
     }
   } catch (err: any) {
     console.error("Error voting:", err);
-    alert(err.response?.data?.message || "Error voting");
+    alert(err.response?.data?.message || t('errors.vote'));
   } finally {
     voting.value = false;
   }

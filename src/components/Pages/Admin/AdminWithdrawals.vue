@@ -114,7 +114,7 @@ const approveWithdrawal = async (id: number) => {
     await apiClient.post(`/admin/withdrawals/${id}/approve`, {});
     await loadWithdrawals();
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error approving withdrawal');
+    alert(err.response?.data?.message || t('errors.approveWithdrawal'));
   }
 };
 
@@ -124,7 +124,7 @@ const rejectWithdrawal = async (id: number) => {
     await apiClient.post(`/admin/withdrawals/${id}/reject`, {});
     await loadWithdrawals();
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error rejecting withdrawal');
+    alert(err.response?.data?.message || t('errors.rejectWithdrawal'));
   }
 };
 

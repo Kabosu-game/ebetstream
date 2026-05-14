@@ -359,17 +359,17 @@ const submitForm = async () => {
 
     // Identity documents (required)
     if (!form.value.id_card_front) {
-      error.value = 'ID card front is required';
+      error.value = t('errors.idCardFrontRequired');
       submitting.value = false;
       return;
     }
     if (!form.value.id_card_back) {
-      error.value = 'ID card back is required';
+      error.value = t('errors.idCardBackRequired');
       submitting.value = false;
       return;
     }
     if (!form.value.selfie) {
-      error.value = 'Selfie is required';
+      error.value = t('errors.selfieRequired');
       submitting.value = false;
       return;
     }
@@ -432,13 +432,13 @@ const submitForm = async () => {
           return `${fieldLabel}: ${Array.isArray(messages) ? messages.join(', ') : messages}`;
         })
         .join('\n');
-      error.value = `Validation errors:\n${errorMessages}`;
+      error.value = t('errors.validationErrors') + ':\n' + errorMessages;
     } else if (err.response?.data?.message) {
       error.value = err.response.data.message;
     } else if (err.message) {
-      error.value = `Error: ${err.message}`;
+      error.value = t('errors.errorWithMessage', { message: err.message });
     } else {
-      error.value = 'An error occurred during submission. Please try again.';
+      error.value = t('errors.submissionFailed');
     }
   } finally {
     submitting.value = false;

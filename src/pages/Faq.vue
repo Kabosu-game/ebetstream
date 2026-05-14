@@ -3,7 +3,7 @@
     <!-- Hero -->
     <section class="tw-page-hero">
       <div class="hero-inner">
-        <p class="tw-page-hero__sub"><i class="fas fa-list-alt me-2"></i>FAQ</p>
+        <p class="tw-page-hero__sub"><i class="fas fa-list-alt me-2"></i>{{ $t('labels.faq') }}</p>
         <h1 class="tw-page-hero__title">{{ $t('ui.frequently_asked') }}<span class="accent">{{ $t('ui.questions') }}</span></h1>
         <p class="hero-desc">{{ $t('ui.quickly_find_answers_to_the_most_common_questions_about_ebet') }}</p>
       </div>

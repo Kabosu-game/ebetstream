@@ -218,7 +218,7 @@
                             </div>
                             
                             <div class="vs_text text-center mx-3">
-                              <span class="text-white-50 fw-bold">VS</span>
+                              <span class="text-white-50 fw-bold">{{ $t('labels.vs') }}</span>
                             </div>
                             
                             <div class="team_info d-flex align-items-center gap-3">
@@ -769,7 +769,7 @@ const loadChampionship = async () => {
       console.log('Matches loaded:', matches.value);
       console.log('Matches count:', matches.value.length);
     } else {
-      error.value = response.data?.message || 'Failed to load championship';
+      error.value = response.data?.message || t('errors.loadChampionshipFailed');
       console.error('Invalid response format:', response.data);
       championship.value = null;
     }
@@ -778,7 +778,7 @@ const loadChampionship = async () => {
     console.error('Error details:', err.response?.data);
     console.error('Error status:', err.response?.status);
     if (err.response?.status === 404) {
-      error.value = 'Championship not found';
+      error.value = t('errors.championshipNotFound');
     } else {
       const errorMessage = err.response?.data?.message || err.message || 'Error loading championship';
       error.value = errorMessage;
@@ -1006,7 +1006,7 @@ const getTeamLogoUrl = (logoPath: string) => {
 const selectBet = (match: any, betType: string, odds: number | string) => {
   const token = localStorage.getItem("auth_token");
   if (!token) {
-    alert('You must be logged in to place a bet');
+    alert(t('errors.mustBeLoggedInBet'));
     router.push('/login');
     return;
   }
@@ -1067,7 +1067,7 @@ const placeBet = async () => {
     );
     
     if (response.data.success) {
-      alert('Bet placed successfully!');
+      alert(t('success.betPlaced'));
       closeBetModal();
       await loadWalletBalance();
       await loadUserBalance();
@@ -1124,7 +1124,7 @@ onMounted(async () => {
     }
   } catch (e) {
     console.error('Error in onMounted:', e);
-    error.value = 'Failed to initialize page';
+    error.value = t('errors.initPageFailed');
   }
 });
 </script>

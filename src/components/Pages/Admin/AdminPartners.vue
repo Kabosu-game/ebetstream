@@ -187,7 +187,7 @@ const savePartner = async () => {
       await loadPartners();
     }
   } catch (err: any) {
-    error.value = err.response?.data?.message || 'Error saving partner';
+    error.value = err.response?.data?.message || t('errors.savePartner');
   } finally {
     saving.value = false;
   }
@@ -210,7 +210,7 @@ const deletePartner = async (id: number) => {
     await apiClient.delete(`/admin/partners/${id}`);
     await loadPartners();
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error deleting partner');
+    alert(err.response?.data?.message || t('errors.deletePartner'));
   }
 };
 

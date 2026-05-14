@@ -88,7 +88,7 @@
           <!-- Creator VS Opponent -->
           <div class="matchup">
             <span class="matchup__player">{{ challenge.creator.username }}</span>
-            <span class="matchup__vs">VS</span>
+            <span class="matchup__vs">{{ $t('labels.vs') }}</span>
             <span class="matchup__player">{{ challenge.opponent ? challenge.opponent.username : 'Pending...' }}</span>
           </div>
 
@@ -454,7 +454,7 @@ const createChallenge = async () => {
       closeCreateModal();
       newChallenge.value = { game: "", bet_amount: 10, expires_at: "" };
       await loadChallenges();
-      alert(challengeType.value === 'direct' ? 'Challenge sent successfully!' : 'Challenge created successfully!');
+      alert(challengeType.value === 'direct' ? t('success.challengeSent') : t('success.challengeCreated'));
     }
   } catch (error: any) {
     createError.value = error.response?.data?.message || "Error creating challenge";
@@ -471,10 +471,10 @@ const acceptChallenge = async (id: number) => {
 
     if (response.data.success) {
       await loadChallenges();
-      alert("Challenge accepted successfully!");
+      alert(t('success.challengeAccepted'));
     }
   } catch (error: any) {
-    alert(error.response?.data?.message || "Error accepting challenge");
+    alert(error.response?.data?.message || t('errors.acceptChallenge'));
   }
 };
 
@@ -486,10 +486,10 @@ const cancelChallenge = async (id: number) => {
 
     if (response.data.success) {
       await loadChallenges();
-      alert("Challenge cancelled successfully!");
+      alert(t('success.challengeCancelled'));
     }
   } catch (error: any) {
-    alert(error.response?.data?.message || "Error cancelling challenge");
+    alert(error.response?.data?.message || t('errors.cancelChallenge'));
   }
 };
 

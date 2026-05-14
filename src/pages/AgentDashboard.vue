@@ -186,7 +186,7 @@ const submitCryptoDeposit = async () => {
     msg.value = res.data.message; msgOk.value = true;
     cryptoForm.value = { amount: null, tx_hash: '' };
   } catch (e: any) {
-    msg.value = e.response?.data?.message || 'Erreur'; msgOk.value = false;
+    msg.value = e.response?.data?.message || t('errors.generic'); msgOk.value = false;
   } finally { submitting.value = false; }
 };
 
@@ -198,7 +198,7 @@ const depositToPlayer = async () => {
     depositForm.value = { player_identifier: '', amount: null };
     await loadDashboard();
   } catch (e: any) {
-    msg.value = e.response?.data?.message || 'Erreur'; msgOk.value = false;
+    msg.value = e.response?.data?.message || t('errors.generic'); msgOk.value = false;
   } finally { submitting.value = false; }
 };
 
@@ -209,7 +209,7 @@ const completeWithdrawal = async (code: string) => {
     msg.value = res.data.message; msgOk.value = true;
     await loadDashboard();
   } catch (e: any) {
-    msg.value = e.response?.data?.message || 'Erreur'; msgOk.value = false;
+    msg.value = e.response?.data?.message || t('errors.generic'); msgOk.value = false;
   } finally { submitting.value = false; }
 };
 

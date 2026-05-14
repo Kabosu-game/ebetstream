@@ -390,12 +390,12 @@ const loadEvent = async () => {
     if (response.data.success) {
       event.value = response.data.data;
     } else {
-      error.value = response.data.message || 'Event not found';
+      error.value = response.data.message || t('errors.eventNotFound');
     }
   } catch (err: any) {
     console.error('Error loading event:', err);
     if (err.response?.status === 404) {
-      error.value = 'Event not found';
+      error.value = t('errors.eventNotFound');
     } else {
       error.value = getApiErrorMessage(err);
     }
@@ -460,9 +460,9 @@ const handleRegistration = async () => {
       await loadEvent();
       
       // Afficher un message de succès (vous pouvez utiliser une notification toast si disponible)
-      alert('Registration successful!');
+      alert(t('success.registrationSuccess'));
     } else {
-      registrationError.value = response.data.message || 'Erreur lors de l\'inscription';
+      registrationError.value = response.data.message || t('errors.registrationFailed');
     }
   } catch (err: any) {
     console.error('Error registering for event:', err);

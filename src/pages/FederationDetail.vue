@@ -153,7 +153,7 @@
                               </div>
                               <div class="text-white-50 small mb-3">
                                 <i class="fas fa-users me-2"></i>
-                                Type: {{ tournament.type === 'team' ? 'Par équipes' : 'Individuel' }}
+                                Type: {{ tournament.type === 'team' ? $t('federation.teamType') : $t('federation.individualType') }}
                               </div>
                               <div v-if="tournament.entry_fee" class="text-warning mb-3">
                                 <i class="fas fa-coins me-2"></i>
@@ -197,7 +197,7 @@
                               </div>
                               <div class="text-white-50 small mb-3">
                                 <i class="fas fa-users me-2"></i>
-                                Type: {{ tournament.type === 'team' ? 'Par équipes' : 'Individuel' }}
+                                Type: {{ tournament.type === 'team' ? $t('federation.teamType') : $t('federation.individualType') }}
                               </div>
                               <div v-if="tournament.entry_fee" class="text-warning mb-3">
                                 <i class="fas fa-coins me-2"></i>
@@ -241,7 +241,7 @@
                               </div>
                               <div class="text-white-50 small mb-3">
                                 <i class="fas fa-users me-2"></i>
-                                Type: {{ tournament.type === 'team' ? 'Par équipes' : 'Individuel' }}
+                                Type: {{ tournament.type === 'team' ? $t('federation.teamType') : $t('federation.individualType') }}
                               </div>
                               <div v-if="tournament.entry_fee" class="text-warning mb-3">
                                 <i class="fas fa-coins me-2"></i>
@@ -353,10 +353,10 @@ const activeTab = ref("tournaments");
 
 const getStatusLabel = (status: string) => {
   const labels: Record<string, string> = {
-    pending: "En attente",
-    approved: "Approuvée",
-    rejected: "Rejetée",
-    suspended: "Suspendue",
+    pending: t('common.pending'),
+    approved: t('federation.approved'),
+    rejected: t('federation.rejected'),
+    suspended: t('common.suspended'),
   };
   return labels[status] || status;
 };
@@ -414,14 +414,14 @@ const loadFederation = async () => {
         tournaments.value = federation.value.tournaments;
       }
     } else {
-      error.value = response.data.message || "Fédération non trouvée";
+      error.value = response.data.message || t('errors.federationNotFound');
     }
   } catch (err: any) {
     console.error("Error loading federation:", err);
     if (err.response?.status === 404) {
       error.value = t('errors.federationNotFound');
     } else {
-      error.value = err.response?.data?.message || "Error loading";
+      error.value = err.response?.data?.message || t('errors.loadError');
     }
   } finally {
     loading.value = false;

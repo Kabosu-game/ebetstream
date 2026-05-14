@@ -397,11 +397,11 @@ const approveFederation = async (id: number) => {
 
     if (response.data.success) {
       await loadFederations();
-      alert("Federation approved successfully");
+      alert(t('success.federationApproved'));
     }
   } catch (err: any) {
     console.error("Error approving federation:", err);
-    alert(err.response?.data?.message || "Error approving federation");
+    alert(err.response?.data?.message || t('errors.approveFederation'));
   } finally {
     processing.value = false;
   }
@@ -425,11 +425,11 @@ const rejectFederation = async () => {
     if (response.data.success) {
       showRejectModal.value = false;
       await loadFederations();
-      alert("Federation rejected");
+      alert(t('success.federationRejected'));
     }
   } catch (err: any) {
     console.error("Error rejecting federation:", err);
-    alert(err.response?.data?.message || "Error rejecting federation");
+    alert(err.response?.data?.message || t('errors.rejectFederation'));
   } finally {
     processing.value = false;
   }
@@ -453,11 +453,11 @@ const suspendFederation = async () => {
     if (response.data.success) {
       showSuspendModal.value = false;
       await loadFederations();
-      alert("Federation suspended");
+      alert(t('success.federationSuspended'));
     }
   } catch (err: any) {
     console.error("Error suspending federation:", err);
-    alert(err.response?.data?.message || "Error suspending federation");
+    alert(err.response?.data?.message || t('errors.suspendFederation'));
   } finally {
     processing.value = false;
   }
@@ -465,7 +465,7 @@ const suspendFederation = async () => {
 
 const editFederation = (federation: any) => {
   // TODO: Implement edit functionality
-  alert("Edit functionality coming soon");
+  alert(t('success.editComingSoon'));
 };
 
 onMounted(() => {

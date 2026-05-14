@@ -436,14 +436,14 @@ const loadClan = async () => {
         startMessagePolling();
       }
     } else {
-      error.value = response.data.message || "Error loading clan";
+      error.value = response.data.message || t('errors.loadClan');
     }
   } catch (err: any) {
     console.error("Error loading clan:", err);
     if (err.response?.status === 404) {
-      error.value = "Clan not found";
+      error.value = t('errors.clanNotFound');
     } else {
-      error.value = err.response?.data?.message || "Error loading clan";
+      error.value = err.response?.data?.message || t('errors.loadClan');
     }
   } finally {
     loading.value = false;
@@ -521,11 +521,11 @@ const joinClan = async () => {
       loadMessages();
       startMessagePolling();
     } else {
-      error.value = response.data.message || "Error joining clan";
+      error.value = response.data.message || t('errors.joinClan');
     }
   } catch (err: any) {
     console.error("Error joining clan:", err);
-    error.value = err.response?.data?.message || "Error joining clan";
+    error.value = err.response?.data?.message || t('errors.joinClan');
   } finally {
     joining.value = false;
   }
@@ -550,11 +550,11 @@ const leaveClan = async () => {
       }
       await loadClan();
     } else {
-      error.value = response.data.message || "Error leaving clan";
+      error.value = response.data.message || t('errors.leaveClan');
     }
   } catch (err: any) {
     console.error("Error leaving clan:", err);
-    error.value = err.response?.data?.message || "Error leaving clan";
+    error.value = err.response?.data?.message || t('errors.leaveClan');
   } finally {
     leaving.value = false;
   }
@@ -573,11 +573,11 @@ const sendMessage = async () => {
       newMessage.value = "";
       await loadMessages();
     } else {
-      error.value = response.data.message || "Error sending message";
+      error.value = response.data.message || t('errors.sendMessage');
     }
   } catch (err: any) {
     console.error("Error sending message:", err);
-    error.value = err.response?.data?.message || "Error sending message";
+    error.value = err.response?.data?.message || t('errors.sendMessage');
   } finally {
     sendingMessage.value = false;
   }
@@ -631,11 +631,11 @@ const voteForCandidate = async (candidateId: number) => {
       hasVoted.value = true;
       await loadClan();
     } else {
-      error.value = response.data.message || "Error voting";
+      error.value = response.data.message || t('errors.vote');
     }
   } catch (err: any) {
     console.error("Error voting:", err);
-    error.value = err.response?.data?.message || "Error voting";
+    error.value = err.response?.data?.message || t('errors.vote');
   } finally {
     voting.value = false;
   }

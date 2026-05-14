@@ -434,7 +434,7 @@ const loadEvents = async () => {
     }
   } catch (err: any) {
     console.error('Error loading events:', err);
-    error.value = err.response?.data?.message || 'Error loading events';
+    error.value = err.response?.data?.message || t('errors.loadEvents');
   } finally {
     loading.value = false;
   }
@@ -534,7 +534,7 @@ const handleImageChange = (e: Event | any) => {
   const file = target.files?.[0];
   if (file) {
     if (file.size > 5 * 1024 * 1024) {
-      error.value = 'Image size must be less than 5MB';
+      error.value = t('errors.imageSizeLimit');
       return;
     }
     eventForm.value.image_file = file;
@@ -560,7 +560,7 @@ const saveEvent = async () => {
     }
     
     if (!eventForm.value.start_at) {
-      error.value = 'Start date is required';
+      error.value = t('errors.startDateRequired');
       saving.value = false;
       return;
     }
@@ -606,9 +606,9 @@ const saveEvent = async () => {
     if (response.data.success) {
       closeModal();
       await loadEvents();
-      alert(editingEvent.value ? 'Event updated successfully!' : 'Event created successfully!');
+      alert(editingEvent.value ? t('success.eventUpdated') : t('success.eventCreated'));
     } else {
-      error.value = response.data.message || 'Unknown error occurred';
+      error.value = response.data.message || t('errors.unknownError');
     }
   } catch (err: any) {
     console.error('Error saving event:', err);
@@ -621,7 +621,7 @@ const saveEvent = async () => {
       });
       error.value = errorMessages.join('\n');
     } else {
-      error.value = err.response?.data?.message || err.message || (editingEvent.value ? 'Error updating event' : 'Error creating event');
+      error.value = err.response?.data?.message || err.message || (editingEvent.value ? t('errors.updateEvent') : t('errors.createEvent'));
     }
   } finally {
     saving.value = false;
@@ -638,10 +638,10 @@ const deleteEvent = async (id: number) => {
     
     if (response.data.success) {
       await loadEvents();
-      alert('Event deleted successfully!');
+      alert(t('success.eventDeleted'));
     }
   } catch (err: any) {
-    alert(err.response?.data?.message || 'Error deleting event');
+    alert(err.response?.data?.message || t('errors.deleteEvent'));
   }
 };
 
@@ -658,7 +658,7 @@ const viewRegistrations = async (event: Event) => {
     }
   } catch (err: any) {
     console.error('Error loading registrations:', err);
-    alert('Error loading registrations: ' + (err.response?.data?.message || err.message));
+    alert(t('errors.loadRegistrations') + ': ' + (err.response?.data?.message || err.message));
   } finally {
     loadingRegistrations.value = false;
   }

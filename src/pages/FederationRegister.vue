@@ -263,7 +263,7 @@ const submitForm = async () => {
     });
 
     if (response.data.success) {
-      success.value = response.data.message || "Votre demande a été soumise avec succès !";
+      success.value = response.data.message || t('federation.requestSubmitted');
       setTimeout(() => {
         router.push("/federations");
       }, 3000);
