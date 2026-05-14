@@ -1412,4 +1412,44 @@ onBeforeUnmount(() => {
   padding: 14px 18px;
   border-top: 1px solid rgb(var(--n2));
 }
+
+/* ── Mobile landscape: player fills the full viewport ── */
+@media (orientation: landscape) and (max-height: 500px) {
+  .sv-page {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .sv-layout {
+    display: block;
+  }
+
+  .sv-back {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1001;
+    margin: 0;
+    background: rgba(0, 0, 0, 0.55);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: #fff;
+    &:hover { background: rgba(0, 0, 0, 0.75); color: #fff; }
+  }
+
+  .sv-player {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    aspect-ratio: unset;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .sv-info,
+  .sv-chat {
+    display: none;
+  }
+}
 </style>

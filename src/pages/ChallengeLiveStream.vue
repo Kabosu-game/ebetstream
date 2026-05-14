@@ -22,7 +22,7 @@
                   <!-- Left Column - Video Player -->
                   <div class="col-lg-8">
                     <div class="tw-content-block p-0 mb-4 overflow-hidden">
-                      <div class="video_container position-relative" style="background: #000; aspect-ratio: 16/9;">
+                      <div class="video_container position-relative cls-video-wrap">
 
                         <!-- WebRTC Video : muted requis pour autoplay (politique navigateur) -->
                         <video v-show="challenge.is_live && hasRemoteStream" ref="videoPlayer" autoplay playsinline muted
@@ -541,4 +541,32 @@ onUnmounted(() => {
   cleanupAll();
 });
 </script>
+
+<style scoped>
+.cls-video-wrap {
+  background: #000;
+  aspect-ratio: 16 / 9;
+}
+
+/* ── Mobile landscape: player fills the full viewport ── */
+@media (orientation: landscape) and (max-height: 500px) {
+  .tw-detail-back {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1001;
+    margin: 0;
+  }
+
+  .cls-video-wrap {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    aspect-ratio: unset;
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+  }
+}
+</style>
 
