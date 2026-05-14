@@ -4,7 +4,6 @@
       <!-- Brand + description -->
       <div class="tw-footer__brand">
         <span class="tw-footer__logo">{{ $t('ui.ebetstream_2') }}</span>
-        <p class="tw-footer__tagline">{{ $t('footer.description', 'Compete. Stream. Win. The ultimate gaming platform.') }}</p>
         <p class="tw-footer__tagline">{{ $t('footer.description2', 'Ebetstream is designed for a new generation of digital platforms where interactive entertainment, performance and community come together to create an immersive and dynamic experience.') }}</p>
       </div>
 
