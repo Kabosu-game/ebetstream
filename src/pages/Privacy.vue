@@ -3,113 +3,157 @@
     <!-- Hero -->
     <section class="tw-page-hero">
       <div class="hero-inner">
-        <p class="tw-page-hero__sub"><i class="fas fa-shield-alt me-2"></i>{{ $t('ui.legal') }}</p>
-        <h1 class="tw-page-hero__title">{{ $t('ui.privacy') }}<span class="accent">{{ $t('ui.policy') }}</span></h1>
-        <p class="hero-date">Last updated: {{ lastUpdated }}</p>
+        <p class="tw-page-hero__sub"><i class="fas fa-shield-alt me-2"></i>{{ $t('legal.hero_sub') }}</p>
+        <h1 class="tw-page-hero__title">{{ $t('legal.privacy.hero_title') }} <span class="accent">{{ $t('legal.privacy.hero_accent') }}</span></h1>
+        <p class="hero-date">{{ $t('legal.last_updated') }} : {{ lastUpdated }}</p>
       </div>
     </section>
 
     <div class="tw-page-body">
       <div class="legal-layout">
-        <!-- Table of contents (sidebar) -->
+        <!-- TOC -->
         <aside class="toc">
           <div class="tw-card toc-card">
-            <h4 class="toc-heading">{{ $t('ui.contents') }}</h4>
+            <h4 class="toc-heading">{{ $t('legal.contents') }}</h4>
             <ol class="toc-list">
-              <li><a href="#s1" class="toc-link">{{ $t('ui.introduction') }}</a></li>
-              <li><a href="#s2" class="toc-link">{{ $t('ui.data_collected') }}</a></li>
-              <li><a href="#s3" class="toc-link">{{ $t('ui.data_usage') }}</a></li>
-              <li><a href="#s4" class="toc-link">{{ $t('ui.data_sharing') }}</a></li>
-              <li><a href="#s5" class="toc-link">{{ $t('ui.security') }}</a></li>
-              <li><a href="#s6" class="toc-link">{{ $t('ui.your_rights') }}</a></li>
-              <li><a href="#s7" class="toc-link">{{ $t('ui.cookies') }}</a></li>
-              <li><a href="#s8" class="toc-link">{{ $t('ui.contact') }}</a></li>
+              <li><a href="#p1"  class="toc-link">{{ $t('legal.privacy.s1_title') }}</a></li>
+              <li><a href="#p2"  class="toc-link">{{ $t('legal.privacy.s2_title') }}</a></li>
+              <li><a href="#p3"  class="toc-link">{{ $t('legal.privacy.s3_title') }}</a></li>
+              <li><a href="#p4"  class="toc-link">{{ $t('legal.privacy.s4_title') }}</a></li>
+              <li><a href="#p5"  class="toc-link">{{ $t('legal.privacy.s5_title') }}</a></li>
+              <li><a href="#p6"  class="toc-link">{{ $t('legal.privacy.s6_title') }}</a></li>
+              <li><a href="#p7"  class="toc-link">{{ $t('legal.privacy.s7_title') }}</a></li>
+              <li><a href="#p8"  class="toc-link">{{ $t('legal.privacy.s8_title') }}</a></li>
+              <li><a href="#p9"  class="toc-link">{{ $t('legal.privacy.s9_title') }}</a></li>
+              <li><a href="#p10" class="toc-link">{{ $t('legal.privacy.s10_title') }}</a></li>
+              <li><a href="#p11" class="toc-link">{{ $t('legal.privacy.s11_title') }}</a></li>
+              <li><a href="#p12" class="toc-link">{{ $t('legal.privacy.s12_title') }}</a></li>
+              <li><a href="#p13" class="toc-link">{{ $t('legal.privacy.s13_title') }}</a></li>
             </ol>
           </div>
         </aside>
 
-        <!-- Sections -->
+        <!-- Content -->
         <main class="legal-content">
-          <div id="s1" class="tw-content-block">
-            <h3 class="section-num">{{ $t('ui.1_introduction') }}</h3>
-            <p class="body-text">
-              At eBetStream, we place great importance on protecting your personal data.
-              This privacy policy explains how we collect, use, store, and protect
-              your information when you use our platform.
-            </p>
+          <div id="p1" class="tw-content-block">
+            <h3 class="section-num">{{ $t('legal.privacy.s1_title') }}</h3>
+            <p class="body-text">{{ $t('legal.privacy.s1_p1') }}</p>
+            <p class="body-text">{{ $t('legal.privacy.s1_p2') }}</p>
           </div>
 
-          <div id="s2" class="tw-content-block">
-            <h3 class="section-num">{{ $t('ui.2_data_collected') }}</h3>
-            <p class="body-text">{{ $t('ui.we_collect_the_following_types_of_data') }}</p>
+          <div id="p2" class="tw-content-block">
+            <h3 class="section-num">{{ $t('legal.privacy.s2_title') }}</h3>
+            <p class="body-text">{{ $t('legal.privacy.s2_sub1') }}</p>
             <ul class="legal-list">
-              <li>{{ $t('ui.identification_information_name_email_username') }}</li>
-              <li>{{ $t('ui.account_information_password_hashed_preferences') }}</li>
-              <li>{{ $t('ui.transaction_data_challenge_history_payments') }}</li>
-              <li>{{ $t('ui.technical_data_ip_address_browser_type_device') }}</li>
-              <li>{{ $t('ui.usage_data_pages_visited_time_spent_on_the_platform') }}</li>
+              <li>{{ $t('legal.privacy.s2_li1') }}</li>
+              <li>{{ $t('legal.privacy.s2_li2') }}</li>
+              <li>{{ $t('legal.privacy.s2_li3') }}</li>
+            </ul>
+            <p class="body-text">{{ $t('legal.privacy.s2_sub2') }}</p>
+            <ul class="legal-list">
+              <li>{{ $t('legal.privacy.s2_li4') }}</li>
+              <li>{{ $t('legal.privacy.s2_li5') }}</li>
+              <li>{{ $t('legal.privacy.s2_li6') }}</li>
+            </ul>
+            <p class="body-text">{{ $t('legal.privacy.s2_sub3') }}</p>
+            <ul class="legal-list">
+              <li>{{ $t('legal.privacy.s2_li7') }}</li>
+              <li>{{ $t('legal.privacy.s2_li8') }}</li>
             </ul>
           </div>
 
-          <div id="s3" class="tw-content-block">
-            <h3 class="section-num">{{ $t('ui.3_data_usage') }}</h3>
-            <p class="body-text">{{ $t('ui.we_use_your_data_to') }}</p>
+          <div id="p3" class="tw-content-block">
+            <h3 class="section-num">{{ $t('legal.privacy.s3_title') }}</h3>
+            <p class="body-text">{{ $t('legal.privacy.s3_p1') }}</p>
             <ul class="legal-list">
-              <li>{{ $t('ui.provide_and_improve_our_services') }}</li>
-              <li>{{ $t('ui.manage_your_account_and_transactions') }}</li>
-              <li>{{ $t('ui.contact_you_regarding_your_account_or_our_services') }}</li>
-              <li>{{ $t('ui.ensure_security_and_prevent_fraud') }}</li>
-              <li>{{ $t('ui.comply_with_our_legal_obligations') }}</li>
-              <li>{{ $t('ui.analyze_platform_usage_to_improve_user_experience') }}</li>
+              <li>{{ $t('legal.privacy.s3_li1') }}</li>
+              <li>{{ $t('legal.privacy.s3_li2') }}</li>
+              <li>{{ $t('legal.privacy.s3_li3') }}</li>
+              <li>{{ $t('legal.privacy.s3_li4') }}</li>
+              <li>{{ $t('legal.privacy.s3_li5') }}</li>
             </ul>
           </div>
 
-          <div id="s4" class="tw-content-block">
-            <h3 class="section-num">{{ $t('ui.4_data_sharing') }}</h3>
-            <p class="body-text">
-              We never sell your personal data. We may share your information only
-              in the following cases: with your explicit consent, to comply with our legal obligations,
-              with our trusted service providers (under confidentiality agreement), or in case of
-              merger or acquisition of our company.
-            </p>
-          </div>
-
-          <div id="s5" class="tw-content-block">
-            <h3 class="section-num">{{ $t('ui.5_security') }}</h3>
-            <p class="body-text">
-              We implement appropriate technical and organizational security measures to
-              protect your data against unauthorized access, loss, destruction, or alteration.
-              This includes SSL/TLS encryption, secure storage, and strict access controls.
-            </p>
-          </div>
-
-          <div id="s6" class="tw-content-block">
-            <h3 class="section-num">{{ $t('ui.6_your_rights') }}</h3>
-            <p class="body-text">{{ $t('ui.you_have_the_right_to') }}</p>
+          <div id="p4" class="tw-content-block">
+            <h3 class="section-num">{{ $t('legal.privacy.s4_title') }}</h3>
+            <p class="body-text">{{ $t('legal.privacy.s4_p1') }}</p>
             <ul class="legal-list">
-              <li>{{ $t('ui.access_your_personal_data') }}</li>
-              <li>{{ $t('ui.correct_inaccurate_data') }}</li>
-              <li>{{ $t('ui.request_deletion_of_your_data') }}</li>
-              <li>{{ $t('ui.object_to_processing_of_your_data') }}</li>
-              <li>{{ $t('ui.request_portability_of_your_data') }}</li>
-              <li>{{ $t('ui.withdraw_your_consent_at_any_time') }}</li>
+              <li>{{ $t('legal.privacy.s4_li1') }}</li>
+              <li>{{ $t('legal.privacy.s4_li2') }}</li>
+              <li>{{ $t('legal.privacy.s4_li3') }}</li>
+              <li>{{ $t('legal.privacy.s4_li4') }}</li>
             </ul>
           </div>
 
-          <div id="s7" class="tw-content-block">
-            <h3 class="section-num">{{ $t('ui.7_cookies') }}</h3>
-            <p class="body-text">
-              We use cookies to improve your experience. See our
-              <router-link to="/cookies" class="inline-link">{{ $t('ui.cookie_policy') }}</router-link>
-              for more information.
-            </p>
+          <div id="p5" class="tw-content-block">
+            <h3 class="section-num">{{ $t('legal.privacy.s5_title') }}</h3>
+            <p class="body-text">{{ $t('legal.privacy.s5_p1') }}</p>
+            <ul class="legal-list">
+              <li>{{ $t('legal.privacy.s5_li1') }}</li>
+              <li>{{ $t('legal.privacy.s5_li2') }}</li>
+              <li>{{ $t('legal.privacy.s5_li3') }}</li>
+            </ul>
           </div>
 
-          <div id="s8" class="tw-content-block">
-            <h3 class="section-num">{{ $t('ui.8_contact') }}</h3>
+          <div id="p6" class="tw-content-block">
+            <h3 class="section-num">{{ $t('legal.privacy.s6_title') }}</h3>
+            <p class="body-text">{{ $t('legal.privacy.s6_p1') }}</p>
+            <ul class="legal-list">
+              <li>{{ $t('legal.privacy.s6_li1') }}</li>
+              <li>{{ $t('legal.privacy.s6_li2') }}</li>
+              <li>{{ $t('legal.privacy.s6_li3') }}</li>
+            </ul>
+          </div>
+
+          <div id="p7" class="tw-content-block">
+            <h3 class="section-num">{{ $t('legal.privacy.s7_title') }}</h3>
+            <p class="body-text">{{ $t('legal.privacy.s7_p1') }}</p>
+          </div>
+
+          <div id="p8" class="tw-content-block">
+            <h3 class="section-num">{{ $t('legal.privacy.s8_title') }}</h3>
+            <p class="body-text">{{ $t('legal.privacy.s8_p1') }}</p>
+            <ul class="legal-list">
+              <li>{{ $t('legal.privacy.s8_li1') }}</li>
+              <li>{{ $t('legal.privacy.s8_li2') }}</li>
+              <li>{{ $t('legal.privacy.s8_li3') }}</li>
+            </ul>
+          </div>
+
+          <div id="p9" class="tw-content-block">
+            <h3 class="section-num">{{ $t('legal.privacy.s9_title') }}</h3>
+            <p class="body-text">{{ $t('legal.privacy.s9_p1') }}</p>
+            <ul class="legal-list">
+              <li>{{ $t('legal.privacy.s9_li1') }}</li>
+              <li>{{ $t('legal.privacy.s9_li2') }}</li>
+              <li>{{ $t('legal.privacy.s9_li3') }}</li>
+              <li>{{ $t('legal.privacy.s9_li4') }}</li>
+              <li>{{ $t('legal.privacy.s9_li5') }}</li>
+              <li>{{ $t('legal.privacy.s9_li6') }}</li>
+            </ul>
+            <p class="body-text">{{ $t('legal.privacy.s9_note') }}</p>
+          </div>
+
+          <div id="p10" class="tw-content-block">
+            <h3 class="section-num">{{ $t('legal.privacy.s10_title') }}</h3>
+            <p class="body-text">{{ $t('legal.privacy.s10_p1') }}</p>
+          </div>
+
+          <div id="p11" class="tw-content-block">
+            <h3 class="section-num">{{ $t('legal.privacy.s11_title') }}</h3>
+            <p class="body-text">{{ $t('legal.privacy.s11_p1') }}</p>
+          </div>
+
+          <div id="p12" class="tw-content-block">
+            <h3 class="section-num">{{ $t('legal.privacy.s12_title') }}</h3>
+            <p class="body-text">{{ $t('legal.privacy.s12_p1') }}</p>
+          </div>
+
+          <div id="p13" class="tw-content-block">
+            <h3 class="section-num">{{ $t('legal.privacy.s13_title') }}</h3>
             <p class="body-text">
-              For any questions regarding this policy or your personal data, contact us at
-              <a href="mailto:privacy@acmpt.online" class="inline-link">{{ $t('ui.privacy_acmpt_online') }}</a>
+              {{ $t('legal.privacy.s13_p1') }}
+              <a href="mailto:privacy@acmpt.online" class="inline-link">privacy@acmpt.online</a>
             </p>
           </div>
         </main>
@@ -119,22 +163,21 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
-const { t } = useI18n();
-
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { locale } = useI18n();
 
 const lastUpdated = computed(() => {
-  return new Date().toLocaleDateString('en-US', {
+  return new Date().toLocaleDateString(locale.value === 'fr' ? 'fr-FR' : locale.value === 'es' ? 'es-ES' : 'en-US', {
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
   });
 });
 </script>
 
 <style scoped>
-/* Hero */
 .tw-page-hero {
   display: flex;
   align-items: center;
@@ -145,9 +188,7 @@ const lastUpdated = computed(() => {
   border-bottom: 1px solid rgba(37,150,190,0.15);
 }
 
-.hero-inner {
-  max-width: 580px;
-}
+.hero-inner { max-width: 580px; }
 
 .hero-date {
   color: rgb(var(--n3));
@@ -155,18 +196,14 @@ const lastUpdated = computed(() => {
   margin: 0;
 }
 
-.accent {
-  color: rgb(var(--g1));
-}
+.accent { color: rgb(var(--g1)); }
 
-/* Body */
 .tw-page-body {
   max-width: 1100px;
   margin: 0 auto;
   padding: 2.5rem 1.5rem 4rem;
 }
 
-/* Two-col layout */
 .legal-layout {
   display: grid;
   grid-template-columns: 220px 1fr;
@@ -174,15 +211,12 @@ const lastUpdated = computed(() => {
   align-items: start;
 }
 
-/* TOC sidebar */
 .toc {
   position: sticky;
   top: 80px;
 }
 
-.toc-card {
-  padding: 1.25rem;
-}
+.toc-card { padding: 1.25rem; }
 
 .toc-heading {
   font-size: 0.78rem;
@@ -198,21 +232,19 @@ const lastUpdated = computed(() => {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.35rem;
 }
 
 .toc-link {
   color: rgb(var(--n3));
   text-decoration: none;
-  font-size: 0.83rem;
+  font-size: 0.82rem;
   transition: color 0.2s;
+  line-height: 1.3;
 }
 
-.toc-link:hover {
-  color: rgb(var(--g1));
-}
+.toc-link:hover { color: rgb(var(--g1)); }
 
-/* Content */
 .legal-content {
   display: flex;
   flex-direction: column;
@@ -238,12 +270,10 @@ const lastUpdated = computed(() => {
   font-size: 0.9rem;
   line-height: 1.8;
   padding-left: 1.5rem;
-  margin: 0;
+  margin: 0 0 0.5rem;
 }
 
-.legal-list li {
-  margin-bottom: 0.25rem;
-}
+.legal-list li { margin-bottom: 0.25rem; }
 
 .inline-link {
   color: rgb(var(--g1));
@@ -251,21 +281,12 @@ const lastUpdated = computed(() => {
   font-weight: 600;
 }
 
-.inline-link:hover {
-  text-decoration: underline;
-}
+.inline-link:hover { text-decoration: underline; }
 
 @media (max-width: 860px) {
-  .legal-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .toc {
-    position: static;
-  }
-
-  .tw-page-hero {
-    padding: 2.5rem 1rem 2rem;
-  }
+  .legal-layout { grid-template-columns: 1fr; }
+  .toc { position: static; }
+  .tw-page-hero { padding: 2.5rem 1rem 2rem; }
+  .tw-page-body { padding: 1.5rem 1rem 3rem; }
 }
 </style>

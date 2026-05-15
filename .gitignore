@@ -2,6 +2,9 @@
 android/
 ios/
 
+# APK builds
+apk/
+
 # Logs
 logs
 *.log
