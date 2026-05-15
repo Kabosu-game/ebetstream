@@ -138,7 +138,7 @@
           <h3 class="section-num">{{ $t('legal.cookies.s13_title') }}</h3>
           <p class="body-text">
             {{ $t('legal.cookies.s13_p1') }}
-            <a href="mailto:privacy@acmpt.online" class="inline-link">privacy@acmpt.online</a>
+            <a :href="'mailto:' + $t('legal.email_privacy')" class="inline-link">{{ $t('legal.email_privacy') }}</a>
           </p>
         </div>
       </div>

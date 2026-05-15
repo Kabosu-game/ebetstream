@@ -183,7 +183,7 @@
             <h3 class="section-num">{{ $t('legal.terms.s19_title') }}</h3>
             <p class="body-text">
               {{ $t('legal.terms.s19_p1') }}
-              <a href="mailto:legal@acmpt.online" class="inline-link">legal@acmpt.online</a>
+              <a :href="'mailto:' + $t('legal.email_legal')" class="inline-link">{{ $t('legal.email_legal') }}</a>
             </p>
           </div>
         </main>
