@@ -2822,6 +2822,8 @@
       "s12_p1": "We reserve the right to modify this policy at any time. Any material changes will be notified by email or via a notice on the platform. The last updated date is shown at the top of this page.",
       "s13_title": "13. Contact",
       "s13_p1": "For any questions about this policy or your personal data, contact our data protection officer at:"
-    }
+    },
+    "email_privacy": "privacy@acmpt.online",
+    "email_legal": "legal@acmpt.online"
   }
 }
