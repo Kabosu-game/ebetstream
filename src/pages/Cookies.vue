@@ -3,97 +3,142 @@
     <!-- Hero -->
     <section class="tw-page-hero">
       <div class="hero-inner">
-        <p class="tw-page-hero__sub"><i class="fas fa-cookie-bite me-2"></i>{{ $t('ui.legal') }}</p>
-        <h1 class="tw-page-hero__title">{{ $t('ui.cookie') }}<span class="accent">{{ $t('ui.policy') }}</span></h1>
-        <p class="hero-date">Last updated: {{ lastUpdated }}</p>
+        <p class="tw-page-hero__sub"><i class="fas fa-cookie-bite me-2"></i>{{ $t('legal.hero_sub') }}</p>
+        <h1 class="tw-page-hero__title">{{ $t('legal.cookies.hero_title') }} <span class="accent">{{ $t('legal.cookies.hero_accent') }}</span></h1>
+        <p class="hero-date">{{ $t('legal.last_updated') }} : {{ lastUpdated }}</p>
       </div>
     </section>
 
     <div class="tw-page-body">
-      <!-- Cookie type cards grid -->
+      <!-- Cookie type cards -->
       <section class="cookie-types-section">
-        <h2 class="section-title">{{ $t('ui.types_of_cookies_we_use') }}</h2>
+        <h2 class="section-title">{{ $t('legal.cookies.types_title') }}</h2>
         <div class="tw-grid-3">
           <div class="tw-card cookie-type-card">
             <div class="cookie-icon required"><i class="fas fa-lock"></i></div>
-            <h4 class="cookie-name">{{ $t('ui.essential') }}</h4>
-            <span class="cookie-tag required">{{ $t('ui.always_active') }}</span>
-            <p class="cookie-desc">{{ $t('ui.session_and_authentication_cookies_required_for_the_platform') }}</p>
+            <h4 class="cookie-name">{{ $t('legal.cookies.essential_name') }}</h4>
+            <span class="cookie-tag required">{{ $t('legal.cookies.always_active') }}</span>
+            <p class="cookie-desc">{{ $t('legal.cookies.essential_desc') }}</p>
           </div>
           <div class="tw-card cookie-type-card">
             <div class="cookie-icon perf"><i class="fas fa-chart-line"></i></div>
-            <h4 class="cookie-name">{{ $t('ui.performance') }}</h4>
-            <span class="cookie-tag perf">{{ $t('ui.optional') }}</span>
-            <p class="cookie-desc">{{ $t('ui.collect_usage_data_to_help_us_understand_how_visitors_intera') }}</p>
+            <h4 class="cookie-name">{{ $t('legal.cookies.perf_name') }}</h4>
+            <span class="cookie-tag perf">{{ $t('legal.cookies.optional') }}</span>
+            <p class="cookie-desc">{{ $t('legal.cookies.perf_desc') }}</p>
           </div>
           <div class="tw-card cookie-type-card">
             <div class="cookie-icon func"><i class="fas fa-sliders-h"></i></div>
-            <h4 class="cookie-name">{{ $t('ui.functionality') }}</h4>
-            <span class="cookie-tag func">{{ $t('ui.optional') }}</span>
-            <p class="cookie-desc">{{ $t('ui.remember_your_preferences_like_language_and_region_for_a_per') }}</p>
+            <h4 class="cookie-name">{{ $t('legal.cookies.func_name') }}</h4>
+            <span class="cookie-tag func">{{ $t('legal.cookies.optional') }}</span>
+            <p class="cookie-desc">{{ $t('legal.cookies.func_desc') }}</p>
           </div>
           <div class="tw-card cookie-type-card">
             <div class="cookie-icon target"><i class="fas fa-bullseye"></i></div>
-            <h4 class="cookie-name">{{ $t('ui.targeting') }}</h4>
-            <span class="cookie-tag target">{{ $t('ui.optional') }}</span>
-            <p class="cookie-desc">{{ $t('ui.set_by_advertising_partners_to_show_you_relevant_advertiseme') }}</p>
+            <h4 class="cookie-name">{{ $t('legal.cookies.target_name') }}</h4>
+            <span class="cookie-tag target">{{ $t('legal.cookies.optional') }}</span>
+            <p class="cookie-desc">{{ $t('legal.cookies.target_desc') }}</p>
           </div>
         </div>
       </section>
 
       <div class="tw-divider"></div>
 
-      <!-- Sections -->
       <div class="legal-content">
         <div class="tw-content-block">
-          <h3 class="section-num">{{ $t('ui.1_what_is_a_cookie') }}</h3>
-          <p class="body-text">
-            Cookies are small text files stored on your device when you visit a website.
-            They allow the site to remember your actions and preferences over a period of time, thus avoiding
-            having to re-enter them on each visit.
-          </p>
+          <h3 class="section-num">{{ $t('legal.cookies.s1_title') }}</h3>
+          <p class="body-text">{{ $t('legal.cookies.s1_p1') }}</p>
+          <p class="body-text">{{ $t('legal.cookies.s1_p2') }}</p>
         </div>
 
         <div class="tw-content-block">
-          <h3 class="section-num">{{ $t('ui.2_how_do_we_use_cookies') }}</h3>
-          <p class="body-text">
-            eBetStream uses cookies to improve your user experience, analyze usage of
-            our platform, personalize content, and ensure the security of your account.
-          </p>
-        </div>
-
-        <div class="tw-content-block">
-          <h3 class="section-num">{{ $t('ui.3_cookie_management') }}</h3>
-          <p class="body-text">{{ $t('ui.you_can_control_and_manage_cookies_in_several_ways') }}</p>
+          <h3 class="section-num">{{ $t('legal.cookies.s2_title') }}</h3>
+          <p class="body-text">{{ $t('legal.cookies.s2_p1') }}</p>
           <ul class="legal-list">
-            <li>{{ $t('ui.browser_settings_most_browsers_allow_you_to_refuse_or_accept') }}</li>
-            <li>{{ $t('ui.platform_settings_you_can_manage_your_cookie_preferences_in_') }}</li>
-            <li>{{ $t('ui.note_disabling_certain_cookies_may_affect_the_functionality_') }}</li>
+            <li>{{ $t('legal.cookies.s2_li1') }}</li>
+            <li>{{ $t('legal.cookies.s2_li2') }}</li>
+            <li>{{ $t('legal.cookies.s2_li3') }}</li>
           </ul>
         </div>
 
         <div class="tw-content-block">
-          <h3 class="section-num">{{ $t('ui.4_third_party_cookies') }}</h3>
+          <h3 class="section-num">{{ $t('legal.cookies.s3_title') }}</h3>
+          <p class="body-text">{{ $t('legal.cookies.s3_p1') }}</p>
+        </div>
+
+        <div class="tw-content-block">
+          <h3 class="section-num">{{ $t('legal.cookies.s4_title') }}</h3>
+          <p class="body-text">{{ $t('legal.cookies.s4_p1') }}</p>
+          <ul class="legal-list">
+            <li>{{ $t('legal.cookies.s4_li1') }}</li>
+            <li>{{ $t('legal.cookies.s4_li2') }}</li>
+          </ul>
+        </div>
+
+        <div class="tw-content-block">
+          <h3 class="section-num">{{ $t('legal.cookies.s5_title') }}</h3>
+          <p class="body-text">{{ $t('legal.cookies.s5_p1') }}</p>
+        </div>
+
+        <div class="tw-content-block">
+          <h3 class="section-num">{{ $t('legal.cookies.s6_title') }}</h3>
+          <p class="body-text">{{ $t('legal.cookies.s6_p1') }}</p>
+        </div>
+
+        <div class="tw-content-block">
+          <h3 class="section-num">{{ $t('legal.cookies.s7_title') }}</h3>
+          <p class="body-text">{{ $t('legal.cookies.s7_p1') }}</p>
+          <ul class="legal-list">
+            <li>{{ $t('legal.cookies.s7_li1') }}</li>
+            <li>{{ $t('legal.cookies.s7_li2') }}</li>
+            <li>{{ $t('legal.cookies.s7_li3') }}</li>
+            <li>{{ $t('legal.cookies.s7_li4') }}</li>
+            <li>{{ $t('legal.cookies.s7_li5') }}</li>
+          </ul>
+        </div>
+
+        <div class="tw-content-block">
+          <h3 class="section-num">{{ $t('legal.cookies.s8_title') }}</h3>
+          <p class="body-text">{{ $t('legal.cookies.s8_p1') }}</p>
+          <ul class="legal-list">
+            <li>{{ $t('legal.cookies.s8_li1') }}</li>
+            <li>{{ $t('legal.cookies.s8_li2') }}</li>
+            <li>{{ $t('legal.cookies.s8_li3') }}</li>
+          </ul>
+          <p class="body-text">{{ $t('legal.cookies.s8_note') }}</p>
+        </div>
+
+        <div class="tw-content-block">
+          <h3 class="section-num">{{ $t('legal.cookies.s9_title') }}</h3>
+          <p class="body-text">{{ $t('legal.cookies.s9_p1') }}</p>
+        </div>
+
+        <div class="tw-content-block">
+          <h3 class="section-num">{{ $t('legal.cookies.s10_title') }}</h3>
+          <p class="body-text">{{ $t('legal.cookies.s10_p1') }}</p>
+          <ul class="legal-list">
+            <li>{{ $t('legal.cookies.s10_li1') }}</li>
+            <li>{{ $t('legal.cookies.s10_li2') }}</li>
+          </ul>
+        </div>
+
+        <div class="tw-content-block">
+          <h3 class="section-num">{{ $t('legal.cookies.s11_title') }}</h3>
           <p class="body-text">
-            Some cookies are placed by third-party services that appear on our pages. We have no
-            control over these third-party cookies. We recommend that you review the cookie policies of these
-            third-party services for more information.
+            {{ $t('legal.cookies.s11_p1') }}
+            <router-link to="/privacy" class="inline-link">{{ $t('legal.cookies.s11_link') }}</router-link>.
           </p>
         </div>
 
         <div class="tw-content-block">
-          <h3 class="section-num">{{ $t('ui.5_retention_period') }}</h3>
-          <p class="body-text">
-            Session cookies are deleted when you close your browser. Persistent cookies
-            remain on your device for a determined period or until you manually delete them.
-          </p>
+          <h3 class="section-num">{{ $t('legal.cookies.s12_title') }}</h3>
+          <p class="body-text">{{ $t('legal.cookies.s12_p1') }}</p>
         </div>
 
         <div class="tw-content-block">
-          <h3 class="section-num">{{ $t('ui.6_contact') }}</h3>
+          <h3 class="section-num">{{ $t('legal.cookies.s13_title') }}</h3>
           <p class="body-text">
-            For any questions regarding our use of cookies, contact us at
-            <a href="mailto:privacy@acmpt.online" class="inline-link">{{ $t('ui.privacy_acmpt_online') }}</a>
+            {{ $t('legal.cookies.s13_p1') }}
+            <a href="mailto:privacy@acmpt.online" class="inline-link">privacy@acmpt.online</a>
           </p>
         </div>
       </div>
@@ -102,22 +147,21 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
-const { t } = useI18n();
-
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { locale } = useI18n();
 
 const lastUpdated = computed(() => {
-  return new Date().toLocaleDateString('en-US', {
+  return new Date().toLocaleDateString(locale.value === 'fr' ? 'fr-FR' : locale.value === 'es' ? 'es-ES' : 'en-US', {
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
   });
 });
 </script>
 
 <style scoped>
-/* Hero */
 .tw-page-hero {
   display: flex;
   align-items: center;
@@ -128,9 +172,7 @@ const lastUpdated = computed(() => {
   border-bottom: 1px solid rgba(37,150,190,0.15);
 }
 
-.hero-inner {
-  max-width: 580px;
-}
+.hero-inner { max-width: 580px; }
 
 .hero-date {
   color: rgb(var(--n3));
@@ -138,21 +180,15 @@ const lastUpdated = computed(() => {
   margin: 0;
 }
 
-.accent {
-  color: rgb(var(--g1));
-}
+.accent { color: rgb(var(--g1)); }
 
-/* Body */
 .tw-page-body {
   max-width: 1100px;
   margin: 0 auto;
   padding: 2.5rem 1.5rem 4rem;
 }
 
-/* Section title */
-.cookie-types-section {
-  margin-bottom: 2rem;
-}
+.cookie-types-section { margin-bottom: 2rem; }
 
 .section-title {
   font-size: 1.15rem;
@@ -163,7 +199,6 @@ const lastUpdated = computed(() => {
   letter-spacing: 0.06em;
 }
 
-/* Cookie type cards */
 .cookie-type-card {
   display: flex;
   flex-direction: column;
@@ -216,7 +251,6 @@ const lastUpdated = computed(() => {
   margin: 0;
 }
 
-/* Legal sections */
 .legal-content {
   display: flex;
   flex-direction: column;
@@ -242,12 +276,10 @@ const lastUpdated = computed(() => {
   font-size: 0.9rem;
   line-height: 1.8;
   padding-left: 1.5rem;
-  margin: 0;
+  margin: 0 0 0.5rem;
 }
 
-.legal-list li {
-  margin-bottom: 0.25rem;
-}
+.legal-list li { margin-bottom: 0.25rem; }
 
 .inline-link {
   color: rgb(var(--g1));
@@ -255,13 +287,10 @@ const lastUpdated = computed(() => {
   font-weight: 600;
 }
 
-.inline-link:hover {
-  text-decoration: underline;
-}
+.inline-link:hover { text-decoration: underline; }
 
 @media (max-width: 768px) {
-  .tw-page-hero {
-    padding: 2.5rem 1rem 2rem;
-  }
+  .tw-page-hero { padding: 2.5rem 1rem 2rem; }
+  .tw-page-body { padding: 1.5rem 1rem 3rem; }
 }
 </style>
