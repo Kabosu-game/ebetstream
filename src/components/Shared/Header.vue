@@ -103,16 +103,22 @@ onBeforeUnmount(() => document.body.removeEventListener("click", handleOutside))
 
         <!-- NOT authenticated -->
         <template v-if="!isAuthenticated">
+          <!-- Desktop: text buttons -->
           <router-link to="/login" class="cmn-btn second-alt hdr-btn-text">
             {{ t('common.login') }}
           </router-link>
           <router-link to="/create-account" class="cmn-btn hdr-btn-text">
             {{ t('common.signUp') }}
           </router-link>
-          <!-- Mobile: icon-only login -->
-          <router-link to="/login" class="hdr-icon-btn hdr-btn-icon-only" :aria-label="$t('common.login')">
-            <i class="fas fa-user"></i>
-          </router-link>
+          <!-- Tablet / Mobile: two icon buttons -->
+          <div class="hdr-guest-icons">
+            <router-link to="/login" class="hdr-icon-btn" :aria-label="$t('common.login')">
+              <i class="fas fa-sign-in-alt"></i>
+            </router-link>
+            <router-link to="/create-account" class="hdr-icon-btn hdr-icon-btn--primary" :aria-label="$t('common.signUp')">
+              <i class="fas fa-user-plus"></i>
+            </router-link>
+          </div>
         </template>
 
         <!-- Authenticated user -->
@@ -184,22 +190,22 @@ onBeforeUnmount(() => document.body.removeEventListener("click", handleOutside))
 </template>
 
 <style scoped>
-/* Desktop buttons visible, avatar hidden */
+/* Desktop: text buttons visible, icon buttons hidden */
 .hdr-btn-text      { display: inline-flex; }
-.hdr-btn-icon-only { display: none; }
+.hdr-guest-icons   { display: none; }
 .hdr-user          { display: none; }
 
-/* Tablet (≤900px): hide text buttons, show avatar dropdown */
+/* Tablet (≤900px): hide text buttons, show icon buttons for guest + avatar for auth */
 @media (max-width: 900px) {
-  .hdr-btn-text      { display: none !important; }
-  .hdr-btn-icon-only { display: none !important; }
-  .hdr-user          { display: block; position: relative; cursor: pointer; }
+  .hdr-btn-text    { display: none !important; }
+  .hdr-guest-icons { display: flex; gap: 6px; align-items: center; }
+  .hdr-user        { display: block; position: relative; cursor: pointer; }
 }
 
-/* Mobile (≤575px): same but also icon-only login */
+/* Mobile (≤575px): hide lang, shrink search bar */
 @media (max-width: 575px) {
-  .hdr-lang          { display: none !important; }
-  .hdr-btn-icon-only { display: inline-flex; }
+  .hdr-lang   { display: none !important; }
+  .tw-search  { flex: 0 1 150px !important; min-width: 80px; }
 }
 
 /* User avatar circle */
@@ -290,7 +296,7 @@ onBeforeUnmount(() => document.body.removeEventListener("click", handleOutside))
   padding: 4px 16px 12px;
 }
 
-/* Icon-only login button */
+/* Icon buttons (login / signup) */
 .hdr-icon-btn {
   width: 34px;
   height: 34px;
@@ -303,7 +309,16 @@ onBeforeUnmount(() => document.body.removeEventListener("click", handleOutside))
   text-decoration: none;
   transition: background 0.15s;
   border: 1px solid rgba(var(--n8), 0.15);
+  flex-shrink: 0;
 
   &:hover { background: rgba(var(--n8), 0.15); }
+}
+
+.hdr-icon-btn--primary {
+  background: rgba(var(--g1), 0.15);
+  color: rgb(var(--g1));
+  border-color: rgba(var(--g1), 0.35);
+
+  &:hover { background: rgba(var(--g1), 0.28); }
 }
 </style>
