@@ -131,7 +131,10 @@
               <li>{{ $t('legal.privacy.s9_li5') }}</li>
               <li>{{ $t('legal.privacy.s9_li6') }}</li>
             </ul>
-            <p class="body-text">{{ $t('legal.privacy.s9_note') }}</p>
+            <p class="body-text">
+              {{ $t('legal.privacy.s9_note') }}
+              <a href="mailto:privacy@acmpt.online" class="inline-link">privacy@acmpt.online</a>
+            </p>
           </div>
 
           <div id="p10" class="tw-content-block">
